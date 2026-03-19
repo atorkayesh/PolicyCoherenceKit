@@ -185,6 +185,5 @@ MIT License — free to use, modify, and distribute with attribution.
 ---
 
 ## Author
-
+Ali Torkayesh
 Developed as a research tool for policy coherence assessment.  
-Contributions and feedback welcome via GitHub Issues.
