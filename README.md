@@ -129,7 +129,7 @@ The LLM tab supports the following engines:
 
 | Engine | Notes |
 |---|---|
-| **Groq** | Free tier available at [console.groq.com](https://console.groq.com) — no credit card needed |
+| **Groq** | Free tier available |
 | **OpenAI** | Requires paid API key |
 | **Anthropic** | Requires paid API key |
 | **Google Gemini** | Free tier available |
@@ -185,5 +185,5 @@ MIT License — free to use, modify, and distribute with attribution.
 ---
 
 ## Author
-Ali Torkayesh
+Ali Torkayesh: 
 Developed as a research tool for policy coherence assessment.  
