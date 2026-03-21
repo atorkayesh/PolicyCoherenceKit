@@ -282,6 +282,14 @@ class PolicyCoherenceApp:
                                font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor="hand2")
         rename_proj_btn.pack(side="right", padx=(0, 4))
 
+        delete_proj_btn = tk.Button(toolbar, text="Delete Project",
+                                    command=self._delete_project)
+        delete_proj_btn.config(bg=COLOR_PANEL, fg="#b71c1c",
+                               activebackground=COLOR_PANEL, activeforeground="#b71c1c",
+                               relief="flat", padx=10, pady=5,
+                               font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor="hand2")
+        delete_proj_btn.pack(side="right", padx=(0, 4))
+
     def _build_project_notebook(self):
         self._proj_nb_container = tk.Frame(self.root, bg=COLOR_BG)
         self._proj_nb_container.pack(fill="both", expand=True)
@@ -396,6 +404,26 @@ class PolicyCoherenceApp:
                         if isinstance(lbl, tk.Label):
                             lbl.config(text=f"Project:  {dlg.result}")
             self._set_status(f'Project renamed to "{dlg.result}".')
+
+    def _delete_project(self):
+        proj = self._current_project()
+        if not proj:
+            messagebox.showinfo("No Project", "No project is open.",
+                                parent=self.root)
+            return
+        if not messagebox.askyesno(
+            "Delete Project",
+            f'Permanently delete project "{proj.name}" and all its data?\n'
+            "This cannot be undone.",
+            parent=self.root,
+        ):
+            return
+        idx = self._proj_nb.index("current")
+        self._proj_nb.forget(idx)
+        self.projects.pop(idx)
+        if not self.projects:
+            self._empty_label.place(relx=0.5, rely=0.5, anchor="center")
+        self._set_status(f'Project "{proj.name}" deleted.')
 
     # ==================================================================
     # Decision-maker tab management (operates on current project)
