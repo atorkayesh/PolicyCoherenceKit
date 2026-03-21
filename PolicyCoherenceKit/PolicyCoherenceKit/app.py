@@ -220,7 +220,17 @@ class PolicyCoherenceApp:
         new_proj_btn = tk.Button(toolbar, text="  + New Project",
                                  command=self._new_project)
         style_button(new_proj_btn)
-        new_proj_btn.pack(side="left", padx=(16, 6))
+        new_proj_btn.pack(side="left", padx=(16, 4))
+
+        delete_proj_btn = tk.Button(toolbar, text="Delete Project",
+                                    command=self._delete_project)
+        delete_proj_btn.config(bg=COLOR_PANEL, fg="#b71c1c",
+                               activebackground=COLOR_PANEL,
+                               activeforeground="#b71c1c",
+                               relief="flat", padx=10, pady=5,
+                               font=(FONT_FAMILY, FONT_SIZE_NORMAL),
+                               cursor="hand2")
+        delete_proj_btn.pack(side="left", padx=(0, 6))
 
         tk.Frame(toolbar, bg=COLOR_BORDER, width=1).pack(
             side="left", fill="y", padx=8, pady=4)
@@ -273,22 +283,6 @@ class PolicyCoherenceApp:
                           relief="flat", padx=10, pady=5,
                           font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor="hand2")
         import_btn.pack(side="right", padx=(0, 4))
-
-        rename_proj_btn = tk.Button(toolbar, text="Rename Project",
-                                    command=self._rename_project)
-        rename_proj_btn.config(bg=COLOR_PANEL, fg=COLOR_ACCENT,
-                               activebackground=COLOR_PANEL, activeforeground=COLOR_ACCENT,
-                               relief="flat", padx=10, pady=5,
-                               font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor="hand2")
-        rename_proj_btn.pack(side="right", padx=(0, 4))
-
-        delete_proj_btn = tk.Button(toolbar, text="Delete Project",
-                                    command=self._delete_project)
-        delete_proj_btn.config(bg=COLOR_PANEL, fg="#b71c1c",
-                               activebackground=COLOR_PANEL, activeforeground="#b71c1c",
-                               relief="flat", padx=10, pady=5,
-                               font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor="hand2")
-        delete_proj_btn.pack(side="right", padx=(0, 4))
 
     def _build_project_notebook(self):
         self._proj_nb_container = tk.Frame(self.root, bg=COLOR_BG)
