@@ -140,8 +140,6 @@ class PolicyCoherenceApp:
         self._apply_styles()
         self._build_ui()
 
-        # Prompt for first project on launch
-        self.root.after(100, self._create_first_project)
 
     # ==================================================================
     # Setup
@@ -308,15 +306,6 @@ class PolicyCoherenceApp:
     # ==================================================================
     # Project management
     # ==================================================================
-
-    def _create_first_project(self):
-        dlg = _ProjectNameDialog(self.root, title="Welcome — Create Your First Project")
-        self.root.wait_window(dlg)
-        if dlg.result:
-            self._add_project(dlg.result)
-        else:
-            # If cancelled, still let app open but show empty state
-            pass
 
     def _new_project(self):
         existing = [p.name for p in self.projects]
