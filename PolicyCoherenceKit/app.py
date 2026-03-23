@@ -61,6 +61,7 @@ class _ProjectNameDialog(tk.Toplevel):
 
     def __init__(self, parent, title="New Project", existing_names=None):
         super().__init__(parent)
+        self.transient(parent)
         self.title(title)
         self.configure(bg=COLOR_BG)
         self.resizable(False, False)
@@ -140,8 +141,6 @@ class PolicyCoherenceApp:
         self._apply_styles()
         self._build_ui()
 
-        # Prompt for first project on launch
-        self.root.after(100, self._create_first_project)
 
     # ==================================================================
     # Setup
@@ -308,15 +307,6 @@ class PolicyCoherenceApp:
     # ==================================================================
     # Project management
     # ==================================================================
-
-    def _create_first_project(self):
-        dlg = _ProjectNameDialog(self.root, title="Welcome — Create Your First Project")
-        self.root.wait_window(dlg)
-        if dlg.result:
-            self._add_project(dlg.result)
-        else:
-            # If cancelled, still let app open but show empty state
-            pass
 
     def _new_project(self):
         existing = [p.name for p in self.projects]
