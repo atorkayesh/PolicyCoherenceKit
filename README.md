@@ -169,12 +169,12 @@ Urban Mobility   Cancelling       Enabling        Neutral
 
 ## Theoretical Background
 
-This tool implements the **Policy Coherence for Sustainable Development (PCSD)** framework, extended with quantitative network analysis methods:
+This tool implements the policy coherence framework, extended with quantitative network analysis methods:
 
-- The 7-point rating scale is based on the OECD coherence assessment vocabulary
-- Shannon entropy measures the distribution of a policy's outgoing influence
-- Network centrality metrics (betweenness, closeness) identify broker and peripheral policies
-- PCA reduces the high-dimensional influence space to two interpretable components
+- The 7-point rating scale is based on the OECD coherence assessment vocabulary.
+- Shannon entropy measures the distribution of a policy's outgoing influence.
+- Network centrality metrics (betweenness, closeness) identify broker and peripheral policies.
+- PCA reduces the high-dimensional influence space to two interpretable components.
 
 ---
 
@@ -183,7 +183,3 @@ This tool implements the **Policy Coherence for Sustainable Development (PCSD)**
 MIT License — free to use, modify, and distribute with attribution.
 
 ---
-
-## Author
-Ali Torkayesh: 
-Developed as a research tool for policy coherence assessment.  
