@@ -4,7 +4,7 @@
 # =============================================================================
 
 import tkinter as tk
-from PolicyCoherenceKit import PolicyCoherenceApp
+from app import PolicyCoherenceApp
 
 def main():
     root = tk.Tk()

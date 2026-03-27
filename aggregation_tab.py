@@ -7,8 +7,8 @@ import tkinter as tk
 from tkinter import ttk
 from typing import TYPE_CHECKING
 
-from .aggregator import AggregationResult
-from .constants import (
+from aggregator import AggregationResult
+from constants import (
     FONT_FAMILY, FONT_SIZE_SMALL, FONT_SIZE_NORMAL,
     FONT_SIZE_HEADER, FONT_SIZE_TITLE,
     COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_ACCENT2,
@@ -111,7 +111,7 @@ class AggregationTab(tk.Frame):
         ).pack(side="left", padx=(4, 10))
 
         # Show integer anchors from +3 to -3
-        from .constants import COHERENCE_RATINGS
+        from constants import COHERENCE_RATINGS
         ratings_asc = list(reversed(COHERENCE_RATINGS))   # -3 ... +3
         scores_asc  = list(range(-3, 4))
 

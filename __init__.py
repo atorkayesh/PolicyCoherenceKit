@@ -3,7 +3,7 @@
 # Package entry point. Exposes PolicyCoherenceApp and the run() launcher.
 # =============================================================================
 
-from .app import PolicyCoherenceApp
+from app import PolicyCoherenceApp
 
 __version__ = "0.1.0"
 __all__     = ["PolicyCoherenceApp", "run"]

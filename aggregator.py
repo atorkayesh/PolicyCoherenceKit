@@ -21,11 +21,11 @@
 # =============================================================================
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Any
 from collections import Counter
 
-from .constants import RATING_SCORES, DIAGONAL_VALUE
-from .models import PolicyMatrix
+from constants import RATING_SCORES, DIAGONAL_VALUE
+from models import PolicyMatrix
 
 
 # =============================================================================
@@ -56,6 +56,12 @@ class AggregationResult:
     codes    : policy codes  (P1, P2, ...)
     policies : full policy names
     method   : 'average' | 'majority' | 'weighted'
+
+    Cached analysis results (populated lazily by analysis tabs):
+    _cached_scores    : coherence scores (OI, II, WOI, WII)
+    _cached_entropy   : entropy/range of influence data
+    _cached_centrality: network centrality data
+    _cached_graph     : network graph structure
     """
     scores:   Dict[Tuple[int, int], float]
     ties:     List[TiedCell]
@@ -63,6 +69,11 @@ class AggregationResult:
     codes:    List[str]
     policies: List[str]
     method:   str
+    # Cached analysis results (populated lazily)
+    _cached_scores:     Optional[List[dict]] = field(default=None, repr=False)
+    _cached_entropy:    Optional[List[dict]] = field(default=None, repr=False)
+    _cached_centrality: Optional[List[dict]] = field(default=None, repr=False)
+    _cached_graph:      Optional[Dict]       = field(default=None, repr=False)
 
 
 # =============================================================================

@@ -14,12 +14,13 @@
 # =============================================================================
 
 import math
+import heapq
 import tkinter as tk
 from tkinter import ttk
 from typing import List, Dict, Tuple, Optional
 
-from .aggregator import AggregationResult
-from .constants import (
+from aggregator import AggregationResult
+from constants import (
     FONT_FAMILY, FONT_SIZE_SMALL, FONT_SIZE_NORMAL,
     FONT_SIZE_HEADER,
     COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_ACCENT2,
@@ -47,6 +48,7 @@ def _thickness(score: float) -> float:
 
 # =============================================================================
 # Graph / centrality helpers  (pure Python, no networkx)
+# Optimized with heapq priority queue and Brandes algorithm
 # =============================================================================
 
 def _build_graph(result: AggregationResult) -> Dict:
@@ -56,10 +58,19 @@ def _build_graph(result: AggregationResult) -> Dict:
       edges   : list of (i, j, score)
       weights : dict (i,j) -> score   (non-zero only)
       dist    : dict (i,j) -> 1/|score|  (directed distances)
+      adj     : adjacency list dict node -> [(neighbor, distance), ...]
+      adj_rev : reversed adjacency list for backward traversal
+    Results are cached in result._cached_graph for reuse.
     """
+    # Return cached graph if available
+    if result._cached_graph is not None:
+        return result._cached_graph
+
     n      = result.n
     scores = result.scores
     edges, weights, dist = [], {}, {}
+    adj = {i: [] for i in range(n)}
+    adj_rev = {i: [] for i in range(n)}
 
     for i in range(n):
         for j in range(n):
@@ -69,69 +80,121 @@ def _build_graph(result: AggregationResult) -> Dict:
             if s != 0.0:
                 edges.append((i, j, s))
                 weights[(i, j)] = s
-                dist[(i, j)]    = 1.0 / abs(s)
+                d = 1.0 / abs(s)
+                dist[(i, j)] = d
+                adj[i].append((j, d))
+                adj_rev[j].append((i, d))
 
-    return {"edges": edges, "weights": weights, "dist": dist}
+    graph = {
+        "edges": edges,
+        "weights": weights,
+        "dist": dist,
+        "adj": adj,
+        "adj_rev": adj_rev,
+        "n": n,
+    }
+
+    # Cache the graph
+    result._cached_graph = graph
+    return graph
 
 
-def _dijkstra(n: int, dist: Dict, source: int) -> List[float]:
+def _dijkstra_with_paths(n: int, adj: Dict, source: int) -> Tuple[List[float], List[List[int]], List[int]]:
     """
-    Dijkstra's shortest path from source to all nodes.
+    Optimized Dijkstra using heapq priority queue.
+    Returns:
+      d     : list of distances (inf if unreachable)
+      pred  : list of predecessor lists for each node (for path counting)
+      sigma : list of shortest path counts from source to each node
+    """
+    INF = float("inf")
+    d = [INF] * n
+    d[source] = 0.0
+    sigma = [0] * n  # number of shortest paths
+    sigma[source] = 1
+    pred = [[] for _ in range(n)]  # predecessors on shortest paths
+
+    # Priority queue: (distance, node)
+    pq = [(0.0, source)]
+    visited = [False] * n
+
+    while pq:
+        dist_u, u = heapq.heappop(pq)
+
+        if visited[u]:
+            continue
+        visited[u] = True
+
+        for v, w in adj.get(u, []):
+            new_dist = d[u] + w
+            if new_dist < d[v]:
+                d[v] = new_dist
+                pred[v] = [u]
+                sigma[v] = sigma[u]
+                heapq.heappush(pq, (new_dist, v))
+            elif abs(new_dist - d[v]) < 1e-9:
+                # Another shortest path found
+                pred[v].append(u)
+                sigma[v] += sigma[u]
+
+    return d, pred, sigma
+
+
+def _dijkstra_simple(n: int, adj: Dict, source: int) -> List[float]:
+    """
+    Simple optimized Dijkstra for closeness centrality.
     Returns list of distances (inf if unreachable).
     """
     INF = float("inf")
-    d   = [INF] * n
+    d = [INF] * n
     d[source] = 0.0
-    visited   = [False] * n
 
-    for _ in range(n):
-        # Pick unvisited node with smallest distance
-        u = min(
-            (i for i in range(n) if not visited[i]),
-            key=lambda i: d[i],
-            default=None,
-        )
-        if u is None or d[u] == INF:
-            break
+    pq = [(0.0, source)]
+    visited = [False] * n
+
+    while pq:
+        dist_u, u = heapq.heappop(pq)
+
+        if visited[u]:
+            continue
         visited[u] = True
-        for (ui, v), w in dist.items():
-            if ui == u and not visited[v]:
-                if d[u] + w < d[v]:
-                    d[v] = d[u] + w
+
+        for v, w in adj.get(u, []):
+            new_dist = d[u] + w
+            if new_dist < d[v]:
+                d[v] = new_dist
+                heapq.heappush(pq, (new_dist, v))
 
     return d
 
 
-def _all_shortest_paths_counts(n: int, dist: Dict) -> Dict:
+def _brandes_betweenness(n: int, adj: Dict) -> Dict[int, float]:
     """
-    For betweenness: count how many times each node appears
-    on a shortest path between every other pair.
-    Uses Brandes-style accumulation via Dijkstra.
+    Brandes algorithm for betweenness centrality.
+    Complexity: O(VE) instead of O(V^3) or worse.
     Returns dict node -> betweenness count (unnormalised).
     """
-    INF    = float("inf")
-    btw    = {i: 0.0 for i in range(n)}
+    btw = {i: 0.0 for i in range(n)}
 
     for s in range(n):
-        # Dijkstra from s
-        d_s   = _dijkstra(n, dist, s)
-        # For each target t, find which nodes lie on shortest path s->t
-        for t in range(n):
-            if t == s or d_s[t] == INF:
-                continue
-            # Walk backwards: a node v is on the s->t shortest path if
-            # d(s,v) + d(v,t) == d(s,t)  (approximate with tolerance)
-            d_t = _dijkstra(n, dist, t)   # distances from t (reversed)
-            # We need dist FROM each node TO t, so run Dijkstra on reversed graph
-            rev_dist = {(j, i): w for (i, j), w in dist.items()}
-            d_rev_t  = _dijkstra(n, rev_dist, t)
+        # Single-source shortest paths
+        d, pred, sigma = _dijkstra_with_paths(n, adj, s)
 
-            for v in range(n):
-                if v == s or v == t:
-                    continue
-                if (d_s[v] != INF and d_rev_t[v] != INF and
-                        abs(d_s[v] + d_rev_t[v] - d_s[t]) < 1e-9):
-                    btw[v] += 1.0
+        # Dependency accumulation (Brandes)
+        delta = [0.0] * n
+
+        # Get nodes sorted by distance (descending) for back-propagation
+        INF = float("inf")
+        nodes_by_dist = [(d[v], v) for v in range(n) if d[v] < INF and v != s]
+        nodes_by_dist.sort(reverse=True)
+
+        for _, w in nodes_by_dist:
+            for v in pred[w]:
+                # Fraction of shortest paths through v
+                if sigma[w] > 0:
+                    delta[v] += (sigma[v] / sigma[w]) * (1.0 + delta[w])
+            if w != s:
+                btw[w] += delta[w]
 
     return btw
 
@@ -139,23 +202,29 @@ def _all_shortest_paths_counts(n: int, dist: Dict) -> Dict:
 def compute_centrality(result: AggregationResult) -> List[dict]:
     """
     Compute betweenness and closeness centrality for every policy.
+    Uses optimized Brandes algorithm for betweenness (O(VE) complexity).
     Returns a list of dicts (one per policy).
+    Results are cached in result._cached_centrality for reuse.
     """
+    # Return cached result if available
+    if result._cached_centrality is not None:
+        return result._cached_centrality
+
     n     = result.n
     graph = _build_graph(result)
-    dist  = graph["dist"]
+    adj   = graph["adj"]
 
-    # ---- Betweenness ----
-    btw_raw = _all_shortest_paths_counts(n, dist)
+    # ---- Betweenness (using optimized Brandes algorithm) ----
+    btw_raw = _brandes_betweenness(n, adj)
     # Normalise: divide by (n-1)(n-2) for directed graphs
     norm_btw = (n - 1) * (n - 2) if n > 2 else 1
     btw = {i: round(btw_raw[i] / norm_btw, 4) for i in range(n)}
 
-    # ---- Closeness ----
+    # ---- Closeness (using optimized Dijkstra) ----
     INF = float("inf")
     clo = {}
     for i in range(n):
-        d_i    = _dijkstra(n, dist, i)
+        d_i    = _dijkstra_simple(n, adj, i)
         finite = [d for j, d in enumerate(d_i) if j != i and d != INF]
         if not finite:
             clo[i] = 0.0
@@ -172,6 +241,9 @@ def compute_centrality(result: AggregationResult) -> List[dict]:
             "betweenness": btw[i],
             "closeness":   clo[i],
         })
+
+    # Cache the result
+    result._cached_centrality = rows
     return rows
 
 
@@ -192,6 +264,7 @@ class NetworkTab(tk.Frame):
         self._tooltip_win: Optional[tk.Toplevel] = None
         self._layout_var  = tk.StringVar(value='Force-Directed')
         self._ego_var     = tk.StringVar(value='Full Network')
+        self._redraw_pending: Optional[str] = None  # Debounce timer ID
         self._build()
 
     # ------------------------------------------------------------------
@@ -308,7 +381,7 @@ class NetworkTab(tk.Frame):
                                  highlightthickness=2,
                                  highlightbackground=COLOR_ACCENT)
         self._canvas.pack(fill="both", expand=True, padx=8, pady=(2, 4))
-        self._canvas.bind("<Configure>", lambda e: self._on_view_change())
+        self._canvas.bind("<Configure>", lambda e: self._on_view_change_debounced())
 
         # Save button
         save_row = tk.Frame(parent, bg=COLOR_BG)
@@ -456,8 +529,17 @@ class NetworkTab(tk.Frame):
         import tkinter.messagebox as mb
         mb.showinfo("Saved", f"Network plot saved to:\n{path}")
 
+    def _on_view_change_debounced(self):
+        """Debounced version of _on_view_change to prevent excessive redraws."""
+        # Cancel any pending redraw
+        if self._redraw_pending is not None:
+            self.after_cancel(self._redraw_pending)
+        # Schedule redraw after 50ms of no new events
+        self._redraw_pending = self.after(50, self._on_view_change)
+
     def _on_view_change(self):
         """Dispatch to full network or ego view based on selector."""
+        self._redraw_pending = None
         sel = self._ego_var.get()
         if sel == "Full Network":
             self._redraw_network()

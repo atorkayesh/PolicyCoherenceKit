@@ -6,7 +6,7 @@
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
-from .constants import DIAGONAL_VALUE
+from constants import DIAGONAL_VALUE
 
 
 @dataclass

@@ -9,8 +9,8 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Callable, Optional
 
-from .models import PolicyMatrix
-from .constants import (
+from models import PolicyMatrix
+from constants import (
     COHERENCE_RATINGS, DIAGONAL_VALUE,
     RATING_COLORS, RATING_TEXT_COLORS,
     FONT_FAMILY, FONT_SIZE_SMALL, FONT_SIZE_NORMAL, FONT_SIZE_HEADER,

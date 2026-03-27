@@ -9,25 +9,25 @@ from tkinter import ttk, messagebox, filedialog
 from typing import List, Optional
 from dataclasses import dataclass, field
 
-from .models import PolicyMatrix, make_empty_matrix
-from .matrix_widget import MatrixWidget
-from .dialogs import NewMatrixDialog, _SimpleInputDialog, style_button
-from .aggregator import (
+from models import PolicyMatrix, make_empty_matrix
+from matrix_widget import MatrixWidget
+from dialogs import NewMatrixDialog, _SimpleInputDialog, style_button
+from aggregator import (
     check_completeness,
     aggregate_average, aggregate_majority, aggregate_weighted, resolve_ties,
     AggregationResult,
 )
-from .aggregation_dialog import (
+from aggregation_dialog import (
     AggregationMethodDialog, WeightDialog, TieResolutionDialog,
 )
-from .aggregation_tab import AggregationTab
-from .coherence_scores_tab import CoherenceScoresTab
-from .range_of_influence_tab import RangeOfInfluenceTab
-from .pca_tab import PCATab
-from .network_tab import NetworkTab
-from .llm_tab import LLMInterpretationTab
-from .importer import import_matrices_from_excel
-from .constants import (
+from aggregation_tab import AggregationTab
+from coherence_scores_tab import CoherenceScoresTab
+from range_of_influence_tab import RangeOfInfluenceTab
+from pca_tab import PCATab
+from network_tab import NetworkTab
+from llm_tab import LLMInterpretationTab
+from importer import import_matrices_from_excel
+from constants import (
     APP_TITLE, WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT,
     FONT_FAMILY, FONT_SIZE_SMALL, FONT_SIZE_NORMAL,
     FONT_SIZE_HEADER, FONT_SIZE_TITLE,
@@ -61,6 +61,7 @@ class _ProjectNameDialog(tk.Toplevel):
 
     def __init__(self, parent, title="New Project", existing_names=None):
         super().__init__(parent)
+        self.transient(parent)
         self.title(title)
         self.configure(bg=COLOR_BG)
         self.resizable(False, False)
@@ -756,10 +757,10 @@ def _export_to_excel(matrices, agg_results, path: str):
     except ImportError:
         raise ImportError("openpyxl is required.\nInstall: pip install openpyxl")
 
-    from .constants import RATING_COLORS, RATING_TEXT_COLORS
-    from .coherence_scores_tab import compute_scores
-    from .range_of_influence_tab import compute_entropy
-    from .network_tab import compute_centrality
+    from constants import RATING_COLORS, RATING_TEXT_COLORS
+    from coherence_scores_tab import compute_scores
+    from range_of_influence_tab import compute_entropy
+    from network_tab import compute_centrality
 
     thin   = Side(style="thin", color="CCCCCC")
     border = Border(left=thin, right=thin, top=thin, bottom=thin)

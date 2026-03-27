@@ -16,8 +16,8 @@
 from dataclasses import dataclass, field
 from typing import List, Tuple
 
-from .models import PolicyMatrix, generate_codes
-from .constants import COHERENCE_RATINGS, DIAGONAL_VALUE
+from models import PolicyMatrix, generate_codes
+from constants import COHERENCE_RATINGS, DIAGONAL_VALUE
 
 
 @dataclass

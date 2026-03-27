@@ -14,11 +14,11 @@ from tkinter import ttk, messagebox, filedialog
 import threading
 from typing import Optional
 
-from .aggregator import AggregationResult
-from .coherence_scores_tab import compute_scores
-from .range_of_influence_tab import compute_entropy
-from .network_tab import compute_centrality
-from .constants import (
+from aggregator import AggregationResult
+from coherence_scores_tab import compute_scores
+from range_of_influence_tab import compute_entropy
+from network_tab import compute_centrality
+from constants import (
     FONT_FAMILY, FONT_SIZE_SMALL, FONT_SIZE_NORMAL,
     FONT_SIZE_HEADER, FONT_SIZE_TITLE,
     COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_ACCENT2,

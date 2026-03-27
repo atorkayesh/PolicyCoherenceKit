@@ -15,8 +15,8 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from typing import List, Optional
 
-from .aggregator import TiedCell
-from .constants import (
+from aggregator import TiedCell
+from constants import (
     COHERENCE_RATINGS, RATING_SCORES,
     FONT_FAMILY, FONT_SIZE_SMALL, FONT_SIZE_NORMAL,
     FONT_SIZE_HEADER, FONT_SIZE_TITLE,
@@ -24,7 +24,7 @@ from .constants import (
     COLOR_TEXT, COLOR_TEXT_LIGHT, COLOR_BORDER,
     COLOR_BUTTON, COLOR_BUTTON_FG,
 )
-from .dialogs import style_button
+from dialogs import style_button
 
 
 # =============================================================================

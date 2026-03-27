@@ -9,7 +9,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 from typing import List, Optional, Tuple
 
-from .constants import (
+from constants import (
     FONT_FAMILY, FONT_SIZE_SMALL, FONT_SIZE_NORMAL,
     FONT_SIZE_HEADER, FONT_SIZE_TITLE,
     COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_TEXT,
