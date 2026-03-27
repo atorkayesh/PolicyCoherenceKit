@@ -4,7 +4,30 @@
 # and has completely independent state: matrices, analysis results, etc.
 # =============================================================================
 
+import io
+import math
+import sys
+import ctypes, ctypes.util
 import tkinter as tk
+
+def _preload_cairo():
+    name = ctypes.util.find_library("cairo")
+    if name:
+        try: ctypes.CDLL(name); return
+        except OSError: pass
+    fallbacks = (
+        ["/opt/homebrew/lib/libcairo.2.dylib", "/usr/local/lib/libcairo.2.dylib"]
+        if sys.platform == "darwin" else
+        ["libcairo-2.dll"] if sys.platform == "win32" else
+        ["libcairo.so.2"]
+    )
+    for p in fallbacks:
+        try: ctypes.CDLL(p); return
+        except OSError: pass
+
+_preload_cairo()
+import cairosvg
+from PIL import Image, ImageDraw, ImageTk
 from tkinter import ttk, messagebox, filedialog
 from typing import List, Optional
 from dataclasses import dataclass, field
@@ -34,6 +57,7 @@ from constants import (
     COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_ACCENT2,
     COLOR_TEXT, COLOR_TEXT_LIGHT, COLOR_BORDER,
     COLOR_TAB_BG, COLOR_BUTTON, COLOR_BUTTON_FG,
+    CURSOR_HAND,
 )
 
 
@@ -91,7 +115,7 @@ class _ProjectNameDialog(tk.Toplevel):
         self._entry = tk.Entry(
             self, textvariable=self._var,
             font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-            bg="#ffffff", fg=COLOR_TEXT,
+            bg="#f5f7fa", fg=COLOR_TEXT,
             insertbackground=COLOR_ACCENT,
             relief="solid", bd=1, width=36,
         )
@@ -193,98 +217,135 @@ class PolicyCoherenceApp:
     # ==================================================================
 
     def _build_ui(self):
-        self._build_header()
+        outer = tk.Frame(self.root, bg=COLOR_BG)
+        outer.pack(fill="both", expand=True)
+
+        self._build_sidebar(outer)
+
+        self._content = tk.Frame(outer, bg=COLOR_BG)
+        self._content.pack(side="left", fill="both", expand=True)
+
         self._build_toolbar()
-        tk.Frame(self.root, bg=COLOR_ACCENT2, height=2).pack(fill="x")
+        tk.Frame(self._content, bg=COLOR_ACCENT2, height=2).pack(fill="x")
         self._build_project_notebook()
         self._build_statusbar()
 
-    def _build_header(self):
-        header = tk.Frame(self.root, bg=COLOR_ACCENT, height=56)
-        header.pack(fill="x")
-        header.pack_propagate(False)
-        tk.Label(header, text="Policy Coherence Kit",
-                 font=(FONT_FAMILY, FONT_SIZE_TITLE, "bold"),
-                 bg=COLOR_ACCENT, fg="#ffffff").pack(side="left", padx=(20,8), pady=10)
-        tk.Label(header,
-                 text="Assess interactions between policies across decision-makers",
-                 font=(FONT_FAMILY, FONT_SIZE_NORMAL, "italic"),
-                 bg=COLOR_ACCENT, fg="#c8d8ea").pack(side="left", pady=10)
+    def _build_sidebar(self, parent):
+        sidebar = tk.Frame(parent, bg="#f5f7fa", width=280)
+        sidebar.pack(side="left", fill="y")
+        sidebar.pack_propagate(False)
+
+        # Header: title & slogan
+        header = tk.Frame(sidebar, bg="#f5f7fa")
+        header.pack(anchor="w", padx=16, pady=(14, 8))
+
+        text_col = tk.Frame(header, bg="#f5f7fa")
+        text_col.pack(side="left", anchor="center")
+
+        tk.Label(
+            text_col, text="Policy Coherence Kit",
+            font=(FONT_FAMILY, 16, "bold"),
+            bg="#f5f7fa", fg="#1f2937", justify="left",
+        ).pack(anchor="w")
+
+        tk.Label(
+            text_col,
+            text="Evaluate interactions between policies using multiple decision-makers",
+            font=(FONT_FAMILY, FONT_SIZE_SMALL),
+            bg="#f5f7fa", fg="#a3a3a3", justify="left",
+            wraplength=240,
+        ).pack(anchor="w", pady=(1, 0))
+
+        # Divider
+        tk.Frame(sidebar, bg="#d3d3d3", height=1).pack(fill="x", pady=(0, 4))
+
+        # PROJECTS section
+        tk.Label(
+            sidebar, text="PROJECTS",
+            font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"),
+            bg="#f5f7fa", fg="#a3a3a3", anchor="w",
+        ).pack(fill="x", padx=16, pady=(12, 10))
+
+        self._sidebar_proj_list = tk.Frame(sidebar, bg="#f5f7fa")
+        self._sidebar_proj_list.pack(fill="x")
+
+        # Add Decision-Maker button
+        add_dm_btn = tk.Button(
+            sidebar, text="+ Add Decision-Maker",
+            command=self._add_matrix,
+            bg="#f5f7fa", fg=COLOR_ACCENT,
+            activebackground="#e8edf3", activeforeground=COLOR_ACCENT,
+            relief="flat", padx=16, pady=10,
+            font=(FONT_FAMILY, FONT_SIZE_NORMAL),
+            cursor=CURSOR_HAND, anchor="w",
+        )
+        add_dm_btn.pack(fill="x", pady=(24, 0))
+
+        # New Project button pinned to the bottom
+        bottom = tk.Frame(sidebar, bg="#f5f7fa")
+        bottom.pack(side="bottom", fill="x", padx=16, pady=20)
+
+        new_proj_btn = tk.Label(
+            bottom, text="+ New Project",
+            bg="#2563EB", fg="#ffffff",
+            padx=12, pady=8,
+            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"),
+            cursor=CURSOR_HAND, anchor="center",
+        )
+        new_proj_btn.pack(fill="x")
+        new_proj_btn.bind("<Button-1>", lambda e: self._new_project())
+        new_proj_btn.bind("<Enter>",    lambda e: new_proj_btn.config(bg="#1D4ED8"))
+        new_proj_btn.bind("<Leave>",    lambda e: new_proj_btn.config(bg="#2563EB"))
 
     def _build_toolbar(self):
-        toolbar = tk.Frame(self.root, bg=COLOR_PANEL, pady=8)
+        toolbar = tk.Frame(self._content, bg=COLOR_PANEL, pady=8)
         toolbar.pack(fill="x")
 
-        # Left side
-        new_proj_btn = tk.Button(toolbar, text="  + New Project",
-                                 command=self._new_project)
-        style_button(new_proj_btn)
-        new_proj_btn.pack(side="left", padx=(16, 4))
-
-        delete_proj_btn = tk.Button(toolbar, text="Delete Project",
-                                    command=self._delete_project)
-        delete_proj_btn.config(bg=COLOR_PANEL, fg="#b71c1c",
-                               activebackground=COLOR_PANEL,
-                               activeforeground="#b71c1c",
-                               relief="flat", padx=10, pady=5,
-                               font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-                               cursor="hand2")
-        delete_proj_btn.pack(side="left", padx=(0, 6))
-
-        tk.Frame(toolbar, bg=COLOR_BORDER, width=1).pack(
-            side="left", fill="y", padx=8, pady=4)
-
-        add_dm_btn = tk.Button(toolbar, text="  + Add Decision-Maker",
-                               command=self._add_matrix)
-        add_dm_btn.config(bg=COLOR_PANEL, fg=COLOR_ACCENT,
+        # All buttons on the right
+        export_btn = tk.Button(toolbar, text="Export to Excel",
+                               command=self._export_excel)
+        export_btn.config(bg=COLOR_PANEL, fg=COLOR_ACCENT2,
                           activebackground=COLOR_PANEL, activeforeground=COLOR_ACCENT,
                           relief="flat", padx=10, pady=5,
-                          font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"),
-                          cursor="hand2")
-        add_dm_btn.pack(side="left", padx=4)
+                          font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor=CURSOR_HAND)
+        export_btn.pack(side="right", padx=(4, 16))
 
-        for label, cmd, fg in [
-            ("Rename Tab",    self._rename_current_tab,  COLOR_ACCENT),
-            ("Remove Tab",    self._remove_current_tab,  "#b71c1c"),
-        ]:
-            btn = tk.Button(toolbar, text=label, command=cmd)
-            btn.config(bg=COLOR_PANEL, fg=fg,
-                       activebackground=COLOR_PANEL, activeforeground=fg,
-                       relief="flat", padx=10, pady=5,
-                       font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor="hand2")
-            btn.pack(side="left", padx=4)
+        import_btn = tk.Button(toolbar, text="Import Excel",
+                               command=self._import_excel)
+        import_btn.config(bg=COLOR_PANEL, fg=COLOR_ACCENT2,
+                          activebackground=COLOR_PANEL, activeforeground=COLOR_ACCENT,
+                          relief="flat", padx=10, pady=5,
+                          font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor=CURSOR_HAND)
+        import_btn.pack(side="right", padx=(0, 4))
 
         tk.Frame(toolbar, bg=COLOR_BORDER, width=1).pack(
-            side="left", fill="y", padx=8, pady=4)
+            side="right", fill="y", padx=8, pady=4)
 
-        agg_btn = tk.Button(toolbar, text="  Run Analysis",
+        agg_btn = tk.Button(toolbar, text="Run Analysis",
                             command=self._run_aggregation)
         agg_btn.config(bg=COLOR_PANEL, fg="#1a6e3c",
                        activebackground=COLOR_PANEL, activeforeground="#1a6e3c",
                        relief="flat", padx=10, pady=5,
                        font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"),
-                       cursor="hand2")
-        agg_btn.pack(side="left", padx=4)
+                       cursor=CURSOR_HAND)
+        agg_btn.pack(side="right", padx=4)
 
-        # Right side
-        export_btn = tk.Button(toolbar, text="  Export to Excel",
-                               command=self._export_excel)
-        export_btn.config(bg=COLOR_PANEL, fg=COLOR_ACCENT2,
-                          activebackground=COLOR_PANEL, activeforeground=COLOR_ACCENT,
-                          relief="flat", padx=10, pady=5,
-                          font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor="hand2")
-        export_btn.pack(side="right", padx=(4, 16))
+        tk.Frame(toolbar, bg=COLOR_BORDER, width=1).pack(
+            side="right", fill="y", padx=8, pady=4)
 
-        import_btn = tk.Button(toolbar, text="  Import Excel",
-                               command=self._import_excel)
-        import_btn.config(bg=COLOR_PANEL, fg=COLOR_ACCENT2,
-                          activebackground=COLOR_PANEL, activeforeground=COLOR_ACCENT,
-                          relief="flat", padx=10, pady=5,
-                          font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor="hand2")
-        import_btn.pack(side="right", padx=(0, 4))
+        for label, cmd, fg in [
+            ("Remove Tab",    self._remove_current_tab,  "#b71c1c"),
+            ("Rename Tab",    self._rename_current_tab,  COLOR_ACCENT),
+        ]:
+            btn = tk.Button(toolbar, text=label, command=cmd)
+            btn.config(bg=COLOR_PANEL, fg=fg,
+                       activebackground=COLOR_PANEL, activeforeground=fg,
+                       relief="flat", padx=10, pady=5,
+                       font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor=CURSOR_HAND)
+            btn.pack(side="right", padx=4)
 
     def _build_project_notebook(self):
-        self._proj_nb_container = tk.Frame(self.root, bg=COLOR_BG)
+        self._proj_nb_container = tk.Frame(self._content, bg=COLOR_BG)
         self._proj_nb_container.pack(fill="both", expand=True)
         self._proj_nb = ttk.Notebook(self._proj_nb_container)
         self._proj_nb.pack(fill="both", expand=True)
@@ -299,7 +360,7 @@ class PolicyCoherenceApp:
 
     def _build_statusbar(self):
         self._status_var = tk.StringVar(value="Ready")
-        tk.Label(self.root, textvariable=self._status_var,
+        tk.Label(self._content, textvariable=self._status_var,
                  font=(FONT_FAMILY, FONT_SIZE_SMALL),
                  bg=COLOR_PANEL, fg=COLOR_TEXT_LIGHT,
                  anchor="w", padx=12, pady=4).pack(fill="x", side="bottom")
@@ -351,7 +412,92 @@ class PolicyCoherenceApp:
         proj._empty_label = empty
 
         self.projects.append(proj)
+        self._refresh_sidebar_projects()
         self._set_status(f'Project "{name}" created.')
+
+    # ------------------------------------------------------------------
+    # Sidebar project list helpers
+    # ------------------------------------------------------------------
+
+    def _make_chevron(self, parent, direction="right"):
+        """Canvas drawing of a chevron-right or chevron-down icon (16×16)."""
+        size = 16
+        c = tk.Canvas(parent, width=size, height=size,
+                      bg="#f5f7fa", highlightthickness=0)
+        s = size / 24.0
+        if direction == "right":
+            pts = [9*s, 18*s, 15*s, 12*s, 9*s, 6*s]
+        else:
+            pts = [6*s, 9*s, 12*s, 15*s, 18*s, 9*s]
+        c.create_line(*pts, fill="#a3a3a3", width=1.35,
+                      capstyle="round", joinstyle="round")
+        return c
+
+    def _make_folder(self, parent):
+        """Canvas drawing of folder icon tracing the Lucide SVG path (16×16)."""
+        size = 16
+        c = tk.Canvas(parent, width=size, height=size,
+                      bg="#f5f7fa", highlightthickness=0)
+        s = size / 24.0
+        # Trace: M20 20 ... a2 2 ... V8 ... h-7.9 ... L9.6 3.9 ... H4 ... v13 ... Z
+        # Approximated with straight-line segments (corner radii are ~1px at this scale)
+        pts = [
+            2*s,    5*s,    # top-left (after corner)
+            4*s,    3*s,    # top-left body start
+            7.93*s, 3*s,    # tab top-left
+            9.6*s,  3.9*s,  # tab curve point
+            12.1*s, 6*s,    # tab right meets body
+            20*s,   6*s,    # top-right (before corner)
+            22*s,   8*s,    # top-right (after corner)
+            22*s,   18*s,   # bottom-right (before corner)
+            20*s,   20*s,   # bottom-right (after corner)
+            2*s,    20*s,   # bottom-left (before corner)
+            2*s,    5*s,    # close back to start
+        ]
+        c.create_line(pts, fill="#a3a3a3", width=1.35,
+                      capstyle="round", joinstyle="round")
+        return c
+
+    def _refresh_sidebar_projects(self):
+        """Rebuild the project rows in the sidebar."""
+        for w in self._sidebar_proj_list.winfo_children():
+            w.destroy()
+
+        for proj in self.projects:
+            state = {"open": False}
+
+            row = tk.Frame(self._sidebar_proj_list, bg="#f5f7fa", cursor=CURSOR_HAND)
+            row.pack(fill="x", padx=20, pady=1)
+
+            chevron = self._make_chevron(row, "right")
+            chevron.pack(side="left", padx=(0, 4))
+
+            folder = self._make_folder(row)
+            folder.pack(side="left", padx=(0, 3))
+
+            name_lbl = tk.Label(
+                row, text=proj.name,
+                font=(FONT_FAMILY, 12),
+                bg="#f5f7fa", fg="#535353", anchor="w",
+            )
+            name_lbl.pack(side="left", fill="x", expand=True)
+
+            def _toggle(event, cv=chevron, st=state):
+                st["open"] = not st["open"]
+                direction = "down" if st["open"] else "right"
+                cv.delete("all")
+                s = 16 / 24.0
+                if direction == "right":
+                    pts = [9*s, 18*s, 15*s, 12*s, 9*s, 6*s]
+                else:
+                    pts = [6*s, 9*s, 12*s, 15*s, 18*s, 9*s]
+                cv.create_line(*pts, fill="#a3a3a3", width=1.35,
+                               capstyle="round", joinstyle="round")
+
+            chevron.bind("<Button-1>", _toggle)
+            row.bind("<Button-1>", _toggle)
+            name_lbl.bind("<Button-1>", _toggle)
+            folder.bind("<Button-1>", _toggle)
 
     def _current_project(self) -> Optional[Project]:
         """Return the currently selected project, or None."""
@@ -405,6 +551,7 @@ class PolicyCoherenceApp:
         idx = self._proj_nb.index("current")
         self._proj_nb.forget(idx)
         self.projects.pop(idx)
+        self._refresh_sidebar_projects()
         if not self.projects:
             self._empty_label.place(relx=0.5, rely=0.5, anchor="center")
         self._set_status(f'Project "{proj.name}" deleted.')

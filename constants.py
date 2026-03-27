@@ -3,6 +3,11 @@
 # All application-wide constants: ratings, colours, fonts, dimensions.
 # =============================================================================
 
+import sys
+
+# Pointer cursor: native feel on each platform
+CURSOR_HAND = "pointinghand" if sys.platform == "darwin" else "hand2"
+
 # -----------------------------------------------------------------------------
 # Coherence rating vocabulary (order: most synergistic -> most conflicting)
 # -----------------------------------------------------------------------------
@@ -53,7 +58,7 @@ WINDOW_MIN_HEIGHT = 600
 # -----------------------------------------------------------------------------
 # Typography
 # -----------------------------------------------------------------------------
-FONT_FAMILY      = "Helvetica"
+FONT_FAMILY      = "Inter"
 FONT_SIZE_SMALL  = 9
 FONT_SIZE_NORMAL = 10
 FONT_SIZE_HEADER = 11
@@ -68,7 +73,7 @@ HEADER_WIDTH = 14   # width of row/column header labels
 # -----------------------------------------------------------------------------
 # Application colour palette
 # -----------------------------------------------------------------------------
-COLOR_BG         = "#f4f1ec"   # warm off-white -- main background
+COLOR_BG         = "#f5f7fa"   # light cool grey -- main background
 COLOR_PANEL      = "#eae7e0"   # slightly darker -- toolbar / info bars
 COLOR_ACCENT     = "#2c4a6e"   # deep navy -- headers, buttons, active tabs
 COLOR_ACCENT2    = "#5a7fa8"   # lighter navy -- secondary actions

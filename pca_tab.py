@@ -21,6 +21,7 @@ from constants import (
     FONT_SIZE_HEADER,
     COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_ACCENT2,
     COLOR_TEXT, COLOR_TEXT_LIGHT, COLOR_BORDER,
+    CURSOR_HAND,
 )
 
 # Default point colour (single-colour mode)
@@ -189,7 +190,7 @@ class PCATab(tk.Frame):
             command=self._redraw,
             bg=COLOR_BG,
             activebackground=COLOR_BG,
-            cursor="hand2",
+            cursor=CURSOR_HAND,
         )
         cb.pack(side="left")
 
@@ -216,7 +217,7 @@ class PCATab(tk.Frame):
             command=self._save_canvas,
             font=(FONT_FAMILY, FONT_SIZE_SMALL),
             bg=COLOR_PANEL, fg=COLOR_ACCENT,
-            relief="flat", padx=8, pady=3, cursor="hand2",
+            relief="flat", padx=8, pady=3, cursor=CURSOR_HAND,
         ).pack(side="right")
 
     # ------------------------------------------------------------------
