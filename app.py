@@ -29,6 +29,7 @@ _preload_cairo()
 import cairosvg
 from PIL import Image, ImageDraw, ImageTk
 from tkinter import ttk, messagebox, filedialog
+import tkinter.font as tkFont
 from typing import List, Optional
 from dataclasses import dataclass, field
 
@@ -59,6 +60,15 @@ from constants import (
     COLOR_TAB_BG, COLOR_BUTTON, COLOR_BUTTON_FG,
     CURSOR_HAND,
 )
+
+
+def _hex_interp(c1, c2, t):
+    """Interpolate between two hex colours. t=0 → c1, t=1 → c2."""
+    t = max(0.0, min(1.0, t))
+    r = int(int(c1[1:3], 16) + (int(c2[1:3], 16) - int(c1[1:3], 16)) * t)
+    g = int(int(c1[3:5], 16) + (int(c2[3:5], 16) - int(c1[3:5], 16)) * t)
+    b = int(int(c1[5:7], 16) + (int(c2[5:7], 16) - int(c1[5:7], 16)) * t)
+    return f"#{r:02x}{g:02x}{b:02x}"
 
 
 # =============================================================================
@@ -231,30 +241,32 @@ class PolicyCoherenceApp:
         self._build_statusbar()
 
     def _build_sidebar(self, parent):
-        sidebar = tk.Frame(parent, bg="#f5f7fa", width=280)
+        self._sidebar_open_states = {}
+        sidebar = tk.Frame(parent, bg="#f5f7fa", width=320)
         sidebar.pack(side="left", fill="y")
         sidebar.pack_propagate(False)
 
         # Header: title & slogan
-        header = tk.Frame(sidebar, bg="#f5f7fa")
-        header.pack(anchor="w", padx=16, pady=(14, 8))
+        header = tk.Frame(sidebar, bg="#f5f7fa", height=90)
+        header.pack(fill="x")
+        header.pack_propagate(False)
 
         text_col = tk.Frame(header, bg="#f5f7fa")
-        text_col.pack(side="left", anchor="center")
+        text_col.place(relx=0, rely=0.5, anchor="w", x=20)
 
         tk.Label(
             text_col, text="Policy Coherence Kit",
-            font=(FONT_FAMILY, 16, "bold"),
+            font=(FONT_FAMILY, 20, "bold"),
             bg="#f5f7fa", fg="#1f2937", justify="left",
         ).pack(anchor="w")
 
         tk.Label(
             text_col,
             text="Evaluate interactions between policies using multiple decision-makers",
-            font=(FONT_FAMILY, FONT_SIZE_SMALL),
+            font=(FONT_FAMILY, 10),
             bg="#f5f7fa", fg="#a3a3a3", justify="left",
-            wraplength=240,
-        ).pack(anchor="w", pady=(1, 0))
+            wraplength=280,
+        ).pack(anchor="w", pady=(0, 0))
 
         # Divider
         tk.Frame(sidebar, bg="#d3d3d3", height=1).pack(fill="x", pady=(0, 4))
@@ -269,33 +281,113 @@ class PolicyCoherenceApp:
         self._sidebar_proj_list = tk.Frame(sidebar, bg="#f5f7fa")
         self._sidebar_proj_list.pack(fill="x")
 
-        # Add Decision-Maker button
-        add_dm_btn = tk.Button(
-            sidebar, text="+ Add Decision-Maker",
-            command=self._add_matrix,
-            bg="#f5f7fa", fg=COLOR_ACCENT,
-            activebackground="#e8edf3", activeforeground=COLOR_ACCENT,
-            relief="flat", padx=16, pady=10,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-            cursor=CURSOR_HAND, anchor="w",
-        )
-        add_dm_btn.pack(fill="x", pady=(24, 0))
-
         # New Project button pinned to the bottom
         bottom = tk.Frame(sidebar, bg="#f5f7fa")
-        bottom.pack(side="bottom", fill="x", padx=16, pady=20)
+        bottom.pack(side="bottom", fill="x", padx=16, pady=(20, 32))
 
-        new_proj_btn = tk.Label(
-            bottom, text="+ New Project",
-            bg="#2563EB", fg="#ffffff",
-            padx=12, pady=8,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"),
-            cursor=CURSOR_HAND, anchor="center",
-        )
-        new_proj_btn.pack(fill="x")
-        new_proj_btn.bind("<Button-1>", lambda e: self._new_project())
-        new_proj_btn.bind("<Enter>",    lambda e: new_proj_btn.config(bg="#1D4ED8"))
-        new_proj_btn.bind("<Leave>",    lambda e: new_proj_btn.config(bg="#2563EB"))
+        _NP_BG     = "#eaeef4"
+        _NP_HOVER  = "#d0dbe7"
+        _NP_FG     = "#1f2937"
+        _NP_RADIUS = 5
+        _NP_H      = 40
+        _NP_ICON   = 18
+        _NP_GAP    = 6
+        _NP_LABEL  = "New Project"
+
+        _np_font   = tkFont.Font(family=FONT_FAMILY, size=13)
+        _np_text_w = _np_font.measure(_NP_LABEL)
+        _np_block  = _NP_ICON + _NP_GAP + _np_text_w   # total icon+gap+text width
+        _np_t      = [0.0]   # animation progress 0=normal 1=hover
+        _np_anim   = [None]  # pending after id
+
+        btn_c = tk.Canvas(bottom, height=_NP_H+2, bg="#f5f7fa",
+                          highlightthickness=0, cursor=CURSOR_HAND)
+        btn_c.pack(fill="x")
+
+        def _np_draw(color):
+            btn_c.delete("all")
+            W = btn_c.winfo_width()
+            if W < 2:
+                return
+            H = _NP_H
+            r = _NP_RADIUS
+            s = _NP_ICON / 24.0
+
+            # Proper rounded rect via arcs + fill rectangles (no clipping)
+            x1, y1, x2, y2 = 1, 1, W-1, H-1
+            d = r * 2
+            btn_c.create_arc(x1,    y1,    x1+d, y1+d, start=90,  extent=90,  fill=color, outline=color)
+            btn_c.create_arc(x2-d,  y1,    x2,   y1+d, start=0,   extent=90,  fill=color, outline=color)
+            btn_c.create_arc(x1,    y2-d,  x1+d, y2,   start=180, extent=90,  fill=color, outline=color)
+            btn_c.create_arc(x2-d,  y2-d,  x2,   y2,   start=270, extent=90,  fill=color, outline=color)
+            btn_c.create_rectangle(x1+r, y1,   x2-r, y2,   fill=color, outline=color)
+            btn_c.create_rectangle(x1,   y1+r, x2,   y2-r, fill=color, outline=color)
+
+            ix = (W - _np_block) / 2
+            iy = H / 2
+            ox, oy = ix, iy - _NP_ICON / 2
+
+            fp = [
+                4*s+ox,     20*s+oy,
+                2*s+ox,     20*s+oy,
+                2*s+ox,     5*s+oy,
+                2*s+ox,     3*s+oy,
+                7.93*s+ox,  3*s+oy,
+                9.6*s+ox,   3.9*s+oy,
+                10.21*s+ox, 5*s+oy,
+                12.1*s+ox,  6*s+oy,
+                20*s+ox,    6*s+oy,
+                22*s+ox,    8*s+oy,
+                22*s+ox,    20*s+oy,
+                20*s+ox,    20*s+oy,
+                4*s+ox,     20*s+oy,
+            ]
+            btn_c.create_line(*fp, fill=_NP_FG, width=1.35,
+                              capstyle="round", joinstyle="round")
+            btn_c.create_line(12*s+ox, 10*s+oy, 12*s+ox, 16*s+oy,
+                              fill=_NP_FG, width=1.35, capstyle="round")
+            btn_c.create_line(9*s+ox, 13*s+oy, 15*s+ox, 13*s+oy,
+                              fill=_NP_FG, width=1.35, capstyle="round")
+            btn_c.create_text(ix + _NP_ICON + _NP_GAP, iy, text=_NP_LABEL,
+                              fill=_NP_FG, anchor="w", font=_np_font)
+
+        def _np_animate(target):
+            if _np_anim[0]:
+                btn_c.after_cancel(_np_anim[0])
+                _np_anim[0] = None
+            def tick():
+                diff = target - _np_t[0]
+                if abs(diff) < 0.02:
+                    _np_t[0] = target
+                    _np_draw(_hex_interp(_NP_BG, _NP_HOVER, target))
+                    _np_anim[0] = None
+                    return
+                _np_t[0] += diff * 0.3
+                _np_draw(_hex_interp(_NP_BG, _NP_HOVER, _np_t[0]))
+                _np_anim[0] = btn_c.after(16, tick)
+            tick()
+
+        def _np_poll():
+            try:
+                mx = btn_c.winfo_pointerx()
+                my = btn_c.winfo_pointery()
+                bx = btn_c.winfo_rootx()
+                by = btn_c.winfo_rooty()
+                bw = btn_c.winfo_width()
+                bh = btn_c.winfo_height()
+                over = bx <= mx <= bx + bw and by <= my <= by + bh
+                target = 1.0 if over else 0.0
+                if abs(_np_t[0] - target) > 0.01 and _np_anim[0] is None:
+                    _np_animate(target)
+            except tk.TclError:
+                return
+            btn_c.after(30, _np_poll)
+
+        btn_c.bind("<Configure>", lambda e: _np_draw(_hex_interp(_NP_BG, _NP_HOVER, _np_t[0])))
+        btn_c.bind("<Button-1>",  lambda e: self._new_project())
+        btn_c.after(100, _np_poll)
+
+        self._refresh_sidebar_projects()
 
     def _build_toolbar(self):
         toolbar = tk.Frame(self._content, bg=COLOR_PANEL, pady=8)
@@ -412,6 +504,7 @@ class PolicyCoherenceApp:
         proj._empty_label = empty
 
         self.projects.append(proj)
+        self._sidebar_open_states[name] = True
         self._refresh_sidebar_projects()
         self._set_status(f'Project "{name}" created.')
 
@@ -431,6 +524,45 @@ class PolicyCoherenceApp:
             pts = [6*s, 9*s, 12*s, 15*s, 18*s, 9*s]
         c.create_line(*pts, fill="#a3a3a3", width=1.35,
                       capstyle="round", joinstyle="round")
+        return c
+
+    def _make_plus(self, parent, bg="#f5f7fa"):
+        """Canvas drawing of a plus icon (16×16)."""
+        size = 16
+        c = tk.Canvas(parent, width=size, height=size,
+                      bg=bg, highlightthickness=0)
+        s = size / 24.0
+        c.create_line(5*s, 12*s, 19*s, 12*s,
+                      fill="#a3a3a3", width=1.35, capstyle="round")
+        c.create_line(12*s, 5*s, 12*s, 19*s,
+                      fill="#a3a3a3", width=1.35, capstyle="round")
+        return c
+
+    def _make_user_icon(self, parent, bg="#f5f7fa"):
+        """Canvas drawing of Lucide user icon (16×16)."""
+        size = 16
+        c = tk.Canvas(parent, width=size, height=size,
+                      bg=bg, highlightthickness=0)
+        s = size / 24.0
+        # Body arc: M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2
+        # Approximate shoulders with a polyline
+        c.create_line(
+            19*s, 21*s, 19*s, 19*s,
+            fill="#a3a3a3", width=1.35, capstyle="round", joinstyle="round",
+        )
+        c.create_line(
+            5*s, 21*s, 5*s, 19*s,
+            fill="#a3a3a3", width=1.35, capstyle="round", joinstyle="round",
+        )
+        # Shoulder curve approximated as arc
+        c.create_arc(5*s, 11*s, 19*s, 23*s,
+                     start=0, extent=180,
+                     outline="#a3a3a3", width=1.35, style="arc")
+        # Head circle: cx=12, cy=7, r=4
+        r = 4*s
+        cx, cy = 12*s, 7*s
+        c.create_oval(cx-r, cy-r, cx+r, cy+r,
+                      outline="#a3a3a3", width=1.35, fill="")
         return c
 
     def _make_folder(self, parent):
@@ -459,40 +591,217 @@ class PolicyCoherenceApp:
         return c
 
     def _refresh_sidebar_projects(self):
-        """Rebuild the project rows in the sidebar."""
+        """Rebuild the project rows in the sidebar, preserving open/close state."""
+        # Preserve which projects are currently open
+        if not hasattr(self, "_sidebar_open_states"):
+            self._sidebar_open_states = {}
+
         for w in self._sidebar_proj_list.winfo_children():
             w.destroy()
 
+        if not self.projects:
+            tk.Label(
+                self._sidebar_proj_list,
+                text="No projects available.\nCreate a new project to begin assessing interactions between policies across decision-makers.",
+                font=(FONT_FAMILY, 11),
+                bg="#f5f7fa", fg="#a3a3a3",
+                justify="left", anchor="w",
+                wraplength=270,
+            ).pack(anchor="w", padx=20, pady=(4, 0))
+            return
+
+        _HOVER_BG  = "#ebebeb"
+        _NORMAL_BG = "#f5f7fa"
+
         for proj in self.projects:
-            state = {"open": False}
+            is_open = self._sidebar_open_states.get(proj.name, False)
 
             row = tk.Frame(self._sidebar_proj_list, bg="#f5f7fa", cursor=CURSOR_HAND)
             row.pack(fill="x", padx=20, pady=1)
 
-            chevron = self._make_chevron(row, "right")
+            chevron = self._make_chevron(row, "down" if is_open else "right")
             chevron.pack(side="left", padx=(0, 4))
 
             folder = self._make_folder(row)
-            folder.pack(side="left", padx=(0, 3))
+            folder.pack(side="left", padx=(0, 6))
 
             name_lbl = tk.Label(
                 row, text=proj.name,
-                font=(FONT_FAMILY, 12),
-                bg="#f5f7fa", fg="#535353", anchor="w",
+                font=(FONT_FAMILY, 14),
+                bg="#f5f7fa", fg="#2c3b4e", anchor="w",
+                justify="left", wraplength=210,
             )
             name_lbl.pack(side="left", fill="x", expand=True)
 
-            def _toggle(event, cv=chevron, st=state):
-                st["open"] = not st["open"]
-                direction = "down" if st["open"] else "right"
+            # Collapsible content
+            content = tk.Frame(self._sidebar_proj_list, bg="#f5f7fa")
+            tk.Frame(content, bg="#f5f7fa", height=8).pack(fill="x")  # top spacer
+
+            # Add DM button — canvas for rounded corners
+            dm_wrap = tk.Frame(content, bg="#f5f7fa")
+            dm_wrap.pack(fill="x", padx=20, pady=(0, 2))
+
+            _DM_RR       = 5
+            _dm_btn_t    = [0.0]
+            _dm_btn_anim = [None]
+            _dm_bg_items = []
+
+            dm_row = tk.Canvas(dm_wrap, height=32, bg="#f5f7fa",
+                               highlightthickness=0, cursor=CURSOR_HAND)
+            dm_row.pack(fill="x")
+
+            dm_lbl = tk.Label(
+                dm_row, text="DECISION-MAKERS",
+                font=(FONT_FAMILY, 11),
+                bg=_NORMAL_BG, fg="#a3a3a3", anchor="w",
+                padx=0, pady=0,
+            )
+            lbl_win  = dm_row.create_window(20, 15, anchor="w", window=dm_lbl)
+            plus_icon = self._make_plus(dm_row, bg=_NORMAL_BG)
+            icon_win = [dm_row.create_window(0, 15, anchor="e", window=plus_icon)]
+
+            def _dm_rebuild_rr(color):
+                for item in _dm_bg_items:
+                    try: dm_row.delete(item)
+                    except tk.TclError: pass
+                _dm_bg_items.clear()
+                W = dm_row.winfo_width()
+                if W < 2:
+                    return
+                H = 30; r = _DM_RR; d = r * 2
+                x1, y1, x2, y2 = 1, 1, W-1, H-1
+                kw = dict(fill=color, outline=color)
+                _dm_bg_items.extend([
+                    dm_row.create_arc(x1,    y1,    x1+d, y1+d, start=90,  extent=90, **kw),
+                    dm_row.create_arc(x2-d,  y1,    x2,   y1+d, start=0,   extent=90, **kw),
+                    dm_row.create_arc(x1,    y2-d,  x1+d, y2,   start=180, extent=90, **kw),
+                    dm_row.create_arc(x2-d,  y2-d,  x2,   y2,   start=270, extent=90, **kw),
+                    dm_row.create_rectangle(x1+r, y1,   x2-r, y2,   **kw),
+                    dm_row.create_rectangle(x1,   y1+r, x2,   y2-r, **kw),
+                ])
+                dm_row.tag_raise(lbl_win)
+                dm_row.tag_raise(icon_win[0])
+                dm_row.coords(icon_win[0], W - 12, 15)
+                try: dm_lbl.config(bg=color); plus_icon.config(bg=color)
+                except tk.TclError: pass
+
+            def _dm_update_color(color):
+                for item in _dm_bg_items:
+                    try: dm_row.itemconfig(item, fill=color, outline=color)
+                    except tk.TclError: pass
+                try: dm_lbl.config(bg=color); plus_icon.config(bg=color)
+                except tk.TclError: pass
+
+            def _dm_btn_animate(target):
+                if _dm_btn_anim[0]:
+                    dm_row.after_cancel(_dm_btn_anim[0])
+                    _dm_btn_anim[0] = None
+                def tick():
+                    diff = target - _dm_btn_t[0]
+                    if abs(diff) < 0.02:
+                        _dm_btn_t[0] = target
+                        _dm_update_color(_hex_interp(_NORMAL_BG, _HOVER_BG, target))
+                        _dm_btn_anim[0] = None
+                        return
+                    _dm_btn_t[0] += diff * 0.3
+                    _dm_update_color(_hex_interp(_NORMAL_BG, _HOVER_BG, _dm_btn_t[0]))
+                    _dm_btn_anim[0] = dm_row.after(16, tick)
+                tick()
+
+            def _hover_in(e):
+                _dm_btn_animate(1.0)
+
+            def _hover_out(e):
+                _dm_btn_animate(0.0)
+
+            dm_row.bind("<Configure>", lambda e: _dm_rebuild_rr(
+                _hex_interp(_NORMAL_BG, _HOVER_BG, _dm_btn_t[0])))
+            dm_row.after(50, lambda: _dm_rebuild_rr(_NORMAL_BG))
+
+            for w in (dm_wrap, dm_row, dm_lbl, plus_icon):
+                w.bind("<Enter>", _hover_in)
+                w.bind("<Leave>", _hover_out)
+                w.bind("<Button-1>", lambda e: self._add_matrix())
+
+            # DM list
+            dm_list_frame = tk.Frame(content, bg="#f5f7fa")
+            dm_list_frame.pack(fill="x", pady=(1, 0))
+
+            for matrix in proj.matrices:
+                dm_item = tk.Frame(dm_list_frame, bg="#f5f7fa", cursor=CURSOR_HAND)
+                dm_item.pack(fill="x", padx=20, pady=1)
+
+                user_ic = self._make_user_icon(dm_item, bg="#f5f7fa")
+                user_ic.pack(side="left", padx=(28, 4))
+
+                dm_name_lbl = tk.Label(
+                    dm_item, text=matrix.decision_maker,
+                    font=(FONT_FAMILY, 13),
+                    bg="#f5f7fa", fg="#30455c", anchor="w",
+                    justify="left", wraplength=230,
+                )
+                dm_name_lbl.pack(side="left", fill="x", expand=True, pady=8)
+
+                _item_t    = [0.0]
+                _item_anim = [None]
+
+                _DM_ITEM_HOVER = "#eaeef4"
+
+                def _dm_item_animate(target, f=dm_item, l=dm_name_lbl, u=user_ic,
+                                     t=_item_t, anim=_item_anim):
+                    if anim[0]:
+                        f.after_cancel(anim[0])
+                        anim[0] = None
+                    def tick():
+                        diff = target - t[0]
+                        if abs(diff) < 0.02:
+                            t[0] = target
+                            c = _hex_interp(_NORMAL_BG, _DM_ITEM_HOVER, target)
+                            try: f.config(bg=c); l.config(bg=c); u.config(bg=c)
+                            except tk.TclError: pass
+                            anim[0] = None
+                            return
+                        t[0] += diff * 0.3
+                        c = _hex_interp(_NORMAL_BG, _DM_ITEM_HOVER, t[0])
+                        try: f.config(bg=c); l.config(bg=c); u.config(bg=c)
+                        except tk.TclError: return
+                        anim[0] = f.after(16, tick)
+                    tick()
+
+                def _dm_hover_in(e, animate=_dm_item_animate):
+                    animate(1.0)
+
+                def _dm_hover_out(e, animate=_dm_item_animate):
+                    animate(0.0)
+
+                def _dm_click(e, p=proj, m=matrix):
+                    self._proj_nb.select(p.frame)
+                    if hasattr(m, "_tab"):
+                        p.notebook.select(m._tab)
+
+                for w in (dm_item, dm_name_lbl, user_ic):
+                    w.bind("<Enter>", _dm_hover_in)
+                    w.bind("<Leave>", _dm_hover_out)
+                    w.bind("<Button-1>", _dm_click)
+
+            def _toggle(event, cv=chevron, pname=proj.name, ct=content, rw=row):
+                self._sidebar_open_states[pname] = not self._sidebar_open_states.get(pname, False)
+                opened = self._sidebar_open_states[pname]
                 cv.delete("all")
                 s = 16 / 24.0
-                if direction == "right":
-                    pts = [9*s, 18*s, 15*s, 12*s, 9*s, 6*s]
-                else:
+                if opened:
                     pts = [6*s, 9*s, 12*s, 15*s, 18*s, 9*s]
+                else:
+                    pts = [9*s, 18*s, 15*s, 12*s, 9*s, 6*s]
                 cv.create_line(*pts, fill="#a3a3a3", width=1.35,
                                capstyle="round", joinstyle="round")
+                if opened:
+                    ct.pack(fill="x", after=rw)
+                else:
+                    ct.pack_forget()
+
+            if is_open:
+                content.pack(fill="x", after=row)
 
             chevron.bind("<Button-1>", _toggle)
             row.bind("<Button-1>", _toggle)
@@ -586,6 +895,7 @@ class PolicyCoherenceApp:
         matrix = make_empty_matrix(dm_name, policies)
         proj.matrices.append(matrix)
         self._create_dm_tab(proj, matrix)
+        self._refresh_sidebar_projects()
         self._set_status(f'"{dm_name}" added to project "{proj.name}".')
 
     def _create_dm_tab(self, proj: Project, matrix: PolicyMatrix):
@@ -595,6 +905,7 @@ class PolicyCoherenceApp:
         tab = tk.Frame(proj.notebook, bg=COLOR_BG)
         proj.notebook.add(tab, text=f"  {matrix.decision_maker}  ")
         proj.notebook.select(tab)
+        matrix._tab = tab
 
         # Info bar
         info = tk.Frame(tab, bg=COLOR_PANEL, pady=6)
