@@ -81,11 +81,91 @@ COLLAPSED_PLUS_COLOR       = "#a3a3a3"
 COLLAPSED_PLUS_STROKE      = 1.5
 COLLAPSED_PLUS_CANVAS_SIZE = 28          # px
 
+# ── Top bar ───────────────────────────────────────────────────────────────────
+TOPBAR_BG              = "#ffffff"
+TOPBAR_HEIGHT          = 70           # px — fixed height of the top bar
+TOPBAR_DIVIDER_COLOR   = "#e6e6e6"   # 1px separator below the top bar
+TOPBAR_PADX            = 20          # px — left/right edge padding
+
+# Project name (left, top line)
+TOPBAR_PROJECT_NAME_COLOR     = "#2c3b4e"
+TOPBAR_PROJECT_NAME_TEXT_SIZE = 12          # pt, bold
+
+# Stats line (left, below project name)
+TOPBAR_STATS_DM_COLOR       = "#7799b9"   # dm name color
+TOPBAR_STATS_TEXT_COLOR     = "#a3a3a3"   # policies / cells text color
+TOPBAR_STATS_SEP_COLOR      = "#808080"   # . and | separators
+TOPBAR_STATS_TEXT_SIZE      = 8           # pt
+
+# Button shared styles (flat tk.Button — Export, Import, Delete, Rename)
+TOPBAR_BTN_BG          = "#ffffff"   # matches topbar bg
+TOPBAR_BTN_HOVER_BG    = "#f5f7fa"   # subtle grey on hover
+TOPBAR_BTN_PADX        = 10          # px — horizontal inner padding
+TOPBAR_BTN_PADY        = 5           # px — vertical inner padding
+
+# Run Analysis button (canvas rounded button)
+TOPBAR_RUN_ANALYSIS_BG          = "#2c3b4e"   # dark navy
+TOPBAR_RUN_ANALYSIS_HOVER_BG    = "#37506d"   # lighter navy on hover
+TOPBAR_RUN_ANALYSIS_FG          = "#f5f7fa"   # icon + text color
+TOPBAR_RUN_ANALYSIS_HEIGHT      = 33          # px
+TOPBAR_RUN_ANALYSIS_RADIUS      = 5           # px — corner radius
+TOPBAR_RUN_ANALYSIS_ICON_SIZE   = 11          # px (Lucide play path, scaled from 24×24 viewBox)
+TOPBAR_RUN_ANALYSIS_ICON_STROKE = 1.35        # SVG stroke-width
+TOPBAR_RUN_ANALYSIS_ICON_COLOR  = "#f5f7fa"  # icon stroke color
+TOPBAR_RUN_ANALYSIS_ICON_GAP    = 7           # px — gap between icon and label
+TOPBAR_RUN_ANALYSIS_PADX        = 18          # px — left/right inner padding
+TOPBAR_RUN_ANALYSIS_TEXT_SIZE   = 11          # pt, regular weight
+# Icon SVG path (Lucide play): rendered via cairosvg at runtime
+# M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z
+
+# Export / Import Excel buttons (canvas rounded buttons, shared design)
+TOPBAR_EXCEL_BG          = "#f5f7fa"
+TOPBAR_EXCEL_HOVER_BG    = "#eaeef4"
+TOPBAR_EXCEL_BORDER      = "#eaeef4"
+TOPBAR_EXCEL_FG          = "#2c3b4e"   # icon + text color
+TOPBAR_EXCEL_HEIGHT      = 33          # px — matches Run Analysis height
+TOPBAR_EXCEL_RADIUS      = 5           # px
+TOPBAR_EXCEL_ICON_SIZE   = 14          # px (Lucide file-up/file-down, 24×24 viewBox)
+TOPBAR_EXCEL_ICON_STROKE = 1.35
+TOPBAR_EXCEL_ICON_GAP    = 7           # px — gap between icon and label
+TOPBAR_EXCEL_PADX        = 16          # px — left/right inner padding
+TOPBAR_EXCEL_TEXT_SIZE   = 11          # pt
+TOPBAR_EXCEL_PADX        = 20          # px — increased for wider buttons (was 16)
+# Export icon: Lucide file-up   — arrow pointing up inside document
+# Import icon: Lucide file-down — arrow pointing down inside document
+
+# Rename Tab button (canvas, same design as Import/Export)
+TOPBAR_RENAME_TAB_FG   = "#2c3b4e"   # icon + text color (= TOPBAR_EXCEL_FG)
+# Rename icon: Lucide pencil
+
+# Delete Tab button (canvas, same design as Import/Export)
+TOPBAR_DELETE_TAB_FG   = "#DC2626"   # danger red — icon + text color
+# Delete icon: Lucide trash
+
+# Button order (left → right): Rename Tab | Delete Tab | sep | Import Excel | Export Excel | sep | Run Analysis
+
+# Vertical separators between button groups
+TOPBAR_SEP_COLOR       = "#e6e6e6"
+TOPBAR_SEP_WIDTH       = 1           # px
+TOPBAR_SEP_PADY        = 8           # px — top/bottom inset so separator doesn't span full height
+TOPBAR_SEP_PADX        = 6           # px — horizontal gap around each separator
+
 # ── Misc ──────────────────────────────────────────────────────────────────────
-BG_COLOR      = "#f5f7fa"
-GREY          = "#808080"
-DIVIDER_COLOR = "#d3d3d3"
-MAIN_COLOR    = "#1F2937"
+BG_COLOR        = "#ffffff"   # main content background
+SIDEBAR_BG      = "#fafbfc"   # sidebar background
+COLOR_ERROR     = "#DC2626"   # main error / danger red
+GREY            = "#808080"
+DIVIDER_COLOR   = "#e6e6e6"
+MAIN_COLOR      = "#1F2937"
+
+# ── Sidebar: logo badge ───────────────────────────────────────────────────────
+LOGO_BADGE_BG      = "#1f2937"   # dark badge background
+LOGO_BADGE_FG      = "#f5f7fa"   # icon color
+LOGO_BADGE_SIZE    = 35          # px — badge square
+LOGO_BADGE_RADIUS  = 5           # px — corner radius
+LOGO_ICON_SIZE     = 17          # px — icon drawing area inside badge
+LOGO_ICON_PAD      = 9           # px — padding around icon
+# Icon: Lucide waypoints (4 circles at N/S/E/W connected by lines)
 
 
 

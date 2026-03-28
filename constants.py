@@ -73,7 +73,7 @@ HEADER_WIDTH = 14   # width of row/column header labels
 # -----------------------------------------------------------------------------
 # Application colour palette
 # -----------------------------------------------------------------------------
-COLOR_BG         = "#f5f7fa"   # light cool grey -- main background
+COLOR_BG         = "#ffffff"   # white -- main background
 COLOR_PANEL      = "#eae7e0"   # slightly darker -- toolbar / info bars
 COLOR_ACCENT     = "#2c4a6e"   # deep navy -- headers, buttons, active tabs
 COLOR_ACCENT2    = "#5a7fa8"   # lighter navy -- secondary actions
