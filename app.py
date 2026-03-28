@@ -885,6 +885,18 @@ class PolicyCoherenceApp:
                 lbl.config(text="")
             return
 
+        if getattr(proj, "_in_analysis_view", False):
+            n_dms      = len(proj.matrices)
+            n_policies = len(proj.matrices[0].policies)
+            pol_text   = f"{n_policies} {'policy' if n_policies == 1 else 'policies'}"
+            dm_text    = f"{n_dms} decision-maker{'s' if n_dms != 1 else ''}"
+            self._stats_dm_lbl.config(text=dm_text)
+            self._stats_dot_lbl.config(text="  .  ")
+            self._stats_policies_lbl.config(text=pol_text)
+            self._stats_pipe_lbl.config(text="  |  ")
+            self._stats_cells_lbl.config(text="Analysis")
+            return
+
         # Get currently selected DM tab
         selected_tab = proj.notebook.select()
         matrix = next((m for m in proj.matrices if str(m._tab) == selected_tab),
@@ -1335,21 +1347,184 @@ class PolicyCoherenceApp:
         self._proj_nb.select(outer)
         proj.frame = outer
 
-        # Inner notebook for DM tabs + analysis tabs
-        inner_nb = ttk.Notebook(outer, style="Inner.TNotebook")
+        # ── View switcher bar (persistent pill toggle, right-aligned) ────────
+        SW_BG     = "#ffffff"
+        SW_H      = 48                     # switcher bar fixed height
+        switcher  = tk.Frame(outer, bg=SW_BG, height=SW_H)
+        switcher.pack(fill="x")
+        switcher.pack_propagate(False)
+        tk.Frame(outer, bg="#e8eaed", height=1).pack(fill="x")
+
+        TRACK_BG  = "#a6bcd3"
+        THUMB_BG  = "#e8eef4"
+        ACT_FG    = "#30455c"
+        INACT_FG  = "#ffffff"
+        ICON_LW   = 1.4
+        PILL_H    = 30
+        THUMB_PAD = 3
+        ICON_SZ   = 16
+        _s        = ICON_SZ / 24.0
+        SEG_W     = ICON_SZ + 28          # icon + 14px padding each side
+        PILL_W    = SEG_W * 2
+
+        toggle_c = tk.Canvas(switcher, width=PILL_W, height=PILL_H,
+                             bg=SW_BG, highlightthickness=0, bd=0, cursor=CURSOR_HAND)
+        toggle_c.place(relx=1.0, rely=0.5, anchor="e", x=-12)
+
+        def _fill_pill(c, x1, y1, x2, y2, fill):
+            """Reliable pill fill: two ovals on the ends + rectangle in the middle."""
+            r = (y2 - y1) / 2
+            c.create_oval(x1, y1, x1 + 2*r, y2, fill=fill, outline="")
+            c.create_oval(x2 - 2*r, y1, x2, y2, fill=fill, outline="")
+            c.create_rectangle(x1 + r, y1, x2 - r, y2, fill=fill, outline="")
+
+        def _icon_users(c, ox, oy, color):
+            lkw = dict(fill=color, width=ICON_LW, capstyle="round", joinstyle="round")
+            # head: circle cx=9 cy=7 r=4
+            hr = 4 * _s
+            c.create_oval(9*_s+ox-hr, 7*_s+oy-hr, 9*_s+ox+hr, 7*_s+oy+hr,
+                          outline=color, width=ICON_LW, fill="")
+            # front body
+            body = [(16,21),(16,19),(12,15),(6,15),(2,19),(2,21)]
+            pts  = [v for x_,y_ in body for v in (x_*_s+ox, y_*_s+oy)]
+            c.create_line(*pts, **lkw, smooth=True)
+            # back head arc (left portion of circle at (20,7) r=4)
+            c.create_arc((20-4)*_s+ox, (7-4)*_s+oy, (20+4)*_s+ox, (7+4)*_s+oy,
+                         start=125, extent=110, style="arc", outline=color, width=ICON_LW)
+            # back body
+            body2 = [(22,21),(22,19),(19,15.13)]
+            pts2  = [v for x_,y_ in body2 for v in (x_*_s+ox, y_*_s+oy)]
+            c.create_line(*pts2, **lkw, smooth=True)
+
+        def _icon_chart_spline(c, ox, oy, color):
+            lkw = dict(fill=color, width=ICON_LW, capstyle="round", joinstyle="round")
+            # vertical axis
+            c.create_line(3*_s+ox, 3*_s+oy, 3*_s+ox, 19*_s+oy, **lkw)
+            # corner arc r=2
+            c.create_arc(3*_s+ox, 19*_s+oy, 7*_s+ox, 23*_s+oy,
+                         start=90, extent=90, style="arc", outline=color, width=ICON_LW)
+            # horizontal axis
+            c.create_line(5*_s+ox, 21*_s+oy, 21*_s+ox, 21*_s+oy, **lkw)
+            # spline (sampled cubic bezier segments)
+            def _bez(P0, C1, C2, P1, n=14):
+                out = []
+                for i in range(n):
+                    t  = i / (n - 1)
+                    mt = 1 - t
+                    x_ = mt**3*P0[0]+3*mt**2*t*C1[0]+3*mt*t**2*C2[0]+t**3*P1[0]
+                    y_ = mt**3*P0[1]+3*mt**2*t*C1[1]+3*mt*t**2*C2[1]+t**3*P1[1]
+                    out.extend([x_*_s+ox, y_*_s+oy])
+                return out
+            spline = (
+                _bez((7,16),(7.5,14),(8.5,9),(11,9))
+                + _bez((11,9),(13,9),(13,12),(15,12))
+                + _bez((15,12),(17.5,12),(19.5,7),(20,5))
+            )
+            c.create_line(*spline, **lkw)
+
+        def _draw_toggle(active_dm: bool):
+            toggle_c.delete("all")
+            _fill_pill(toggle_c, 0, 0, PILL_W, PILL_H, TRACK_BG)
+            tp = THUMB_PAD
+            if active_dm:
+                _fill_pill(toggle_c, tp, tp, SEG_W - tp, PILL_H - tp, THUMB_BG)
+            else:
+                _fill_pill(toggle_c, SEG_W + tp, tp, PILL_W - tp, PILL_H - tp, THUMB_BG)
+            dm_col  = ACT_FG if active_dm else INACT_FG
+            an_col  = INACT_FG if active_dm else ACT_FG
+            icon_oy = (PILL_H - ICON_SZ) / 2
+            _icon_users(toggle_c,        (SEG_W - ICON_SZ) / 2,         icon_oy, dm_col)
+            _icon_chart_spline(toggle_c, SEG_W + (SEG_W - ICON_SZ) / 2, icon_oy, an_col)
+
+        def _set_nav_active(is_analysis: bool):
+            _draw_toggle(not is_analysis)
+
+        proj._nav_an_btn     = toggle_c
+        proj._set_nav_active = _set_nav_active
+        _draw_toggle(True)
+
+        # ── Tooltip on hover ──────────────────────────────────────────────
+        _tip     = [None]
+        _tip_txt = [None]
+
+        def _tip_show(text, event):
+            if _tip_txt[0] == text and _tip[0] and _tip[0].winfo_exists():
+                return
+            _tip_hide()
+            _tip_txt[0] = text
+            tw = tk.Toplevel(toggle_c)
+            tw.wm_overrideredirect(True)
+            tw.configure(bg="#2c3b4e")
+            tk.Label(tw, text=text, bg="#2c3b4e", fg="#ffffff",
+                     font=(FONT_FAMILY, 10), padx=8, pady=4).pack()
+            tw.update_idletasks()
+            # Anchor below the pill; clamp so it never leaves the screen
+            tip_w    = tw.winfo_reqwidth()
+            tip_h    = tw.winfo_reqheight()
+            scr_w    = toggle_c.winfo_screenwidth()
+            scr_h    = toggle_c.winfo_screenheight()
+            x = toggle_c.winfo_rootx() + (0 if event.x < SEG_W else SEG_W)
+            y = toggle_c.winfo_rooty() + PILL_H + 6
+            x = max(0, min(x, scr_w - tip_w - 4))
+            y = max(0, min(y, scr_h - tip_h - 4))
+            tw.wm_geometry(f"+{x}+{y}")
+            _tip[0] = tw
+
+        def _tip_hide(event=None):
+            if _tip[0] and _tip[0].winfo_exists():
+                _tip[0].destroy()
+            _tip[0]     = None
+            _tip_txt[0] = None
+
+        def _on_motion(event):
+            _tip_show("Decision Makers" if event.x < SEG_W else "Analysis", event)
+
+        def _on_toggle_click(event):
+            if event.x < SEG_W:
+                self._show_matrix_view(proj)
+            else:
+                if proj.agg_tab_ids:
+                    self._show_analysis_view(proj)
+
+        toggle_c.bind("<Motion>",    _on_motion)
+        toggle_c.bind("<Leave>",     _tip_hide)
+        toggle_c.bind("<Button-1>",  _on_toggle_click)
+
+        # ── Matrix view (default) ─────────────────────────────────────────
+        matrix_frame = tk.Frame(outer, bg=COLOR_BG)
+        matrix_frame.pack(fill="both", expand=True)
+        proj._matrix_frame = matrix_frame
+
+        inner_nb = ttk.Notebook(matrix_frame, style="Inner.TNotebook")
         inner_nb.pack(fill="both", expand=True)
         proj.notebook = inner_nb
         inner_nb.bind("<<NotebookTabChanged>>", lambda e: self._update_topbar())
 
-        # Empty state inside project
         empty = tk.Label(
-            outer,
+            matrix_frame,
             text='Click  "+ Add Decision-Maker"  to add the first matrix.',
             font=(FONT_FAMILY, FONT_SIZE_HEADER),
             bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
         )
         empty.place(relx=0.5, rely=0.55, anchor="center")
         proj._empty_label = empty
+
+        # ── Analysis view (hidden until Run Analysis) ─────────────────────
+        analysis_frame = tk.Frame(outer, bg=COLOR_BG)
+        proj._analysis_frame  = analysis_frame
+        proj._in_analysis_view = False
+
+        # Breadcrumb bar removed — navigation is now handled by the switcher bar above
+        crumb_bar = tk.Frame(analysis_frame, bg="#ffffff", height=0)
+        crumb_bar.pack(fill="x")
+        proj._crumb_bar = crumb_bar
+
+        # Analysis notebook
+        analysis_nb = ttk.Notebook(analysis_frame, style="Inner.TNotebook")
+        analysis_nb.pack(fill="both", expand=True)
+        proj._analysis_nb = analysis_nb
+        analysis_nb.bind("<<NotebookTabChanged>>",
+                         lambda e, p=proj: self._update_analysis_breadcrumb(p))
 
         self.projects.append(proj)
         self._sidebar_open_states[name] = True
@@ -1881,15 +2056,13 @@ class PolicyCoherenceApp:
         proj = self._current_project()
         if not proj:
             return
-        idx = self._current_inner_index(proj)
-        if idx < 0:
-            return
-        # Only DM tabs (before agg tabs) can be renamed
-        n_dm = len(proj.matrices)
-        if idx >= n_dm:
+        if getattr(proj, "_in_analysis_view", False):
             messagebox.showinfo("Cannot Rename",
                                 "Analysis result tabs cannot be renamed.",
                                 parent=self.root)
+            return
+        idx = self._current_inner_index(proj)
+        if idx < 0:
             return
         matrix = proj.matrices[idx]
         dlg = _SimpleInputDialog(self.root, "Rename Tab",
@@ -1904,24 +2077,27 @@ class PolicyCoherenceApp:
         proj = self._current_project()
         if not proj:
             return
-        idx = self._current_inner_index(proj)
-        if idx < 0:
-            return
-        n_dm = len(proj.matrices)
 
-        if idx >= n_dm:
-            # Analysis result tab
+        if getattr(proj, "_in_analysis_view", False):
+            # Remove selected analysis tab
             if not messagebox.askyesno("Remove Tab",
                                        "Remove this analysis result tab?",
                                        parent=self.root):
                 return
-            tab_id = proj.notebook.tabs()[idx]
-            proj.notebook.forget(idx)
-            if tab_id in proj.agg_tab_ids:
-                proj.agg_tab_ids.remove(tab_id)
+            try:
+                idx    = proj._analysis_nb.index("current")
+                tab_id = proj._analysis_nb.tabs()[idx]
+                proj._analysis_nb.forget(idx)
+                if tab_id in proj.agg_tab_ids:
+                    proj.agg_tab_ids.remove(tab_id)
+            except tk.TclError:
+                pass
             self._set_status("Analysis tab removed.")
         else:
-            # DM tab
+            # Remove selected DM tab
+            idx = self._current_inner_index(proj)
+            if idx < 0:
+                return
             dm = proj.matrices[idx].decision_maker
             if not messagebox.askyesno("Remove Matrix",
                                        f'Remove matrix for "{dm}"?',
@@ -2006,7 +2182,7 @@ class PolicyCoherenceApp:
         )
 
     def _create_analysis_tabs(self, proj: Project, result: AggregationResult):
-        """Add all six analysis tabs to the project's inner notebook."""
+        """Populate the analysis notebook and switch to the analysis view."""
         method_label = {
             "average":  "Average",
             "majority": "Majority",
@@ -2015,24 +2191,63 @@ class PolicyCoherenceApp:
 
         proj.agg_results.append(result)
 
+        # Clear any existing analysis tabs
+        for tab_id in list(proj.agg_tab_ids):
+            try:
+                proj._analysis_nb.forget(tab_id)
+            except tk.TclError:
+                pass
+        proj.agg_tab_ids.clear()
+
         tabs = [
-            (f"  Aggregated ({method_label})  ",       AggregationTab),
-            (f"  Coherence Scores ({method_label})  ", CoherenceScoresTab),
+            (f"  Aggregated ({method_label})  ",         AggregationTab),
+            (f"  Coherence Scores ({method_label})  ",   CoherenceScoresTab),
             (f"  Range of Influence ({method_label})  ", RangeOfInfluenceTab),
-            (f"  PCA ({method_label})  ",              PCATab),
-            (f"  Network Analysis ({method_label})  ", NetworkTab),
+            (f"  PCA ({method_label})  ",                PCATab),
+            (f"  Network Analysis ({method_label})  ",   NetworkTab),
             (f"  LLM Interpretation ({method_label})  ", LLMInterpretationTab),
         ]
 
         first = True
         for title, TabClass in tabs:
-            widget = TabClass(proj.notebook, result)
-            proj.notebook.add(widget, text=title)
-            tab_id = proj.notebook.tabs()[-1]
+            widget = TabClass(proj._analysis_nb, result)
+            proj._analysis_nb.add(widget, text=title)
+            tab_id = proj._analysis_nb.tabs()[-1]
             proj.agg_tab_ids.append(tab_id)
             if first:
-                proj.notebook.select(widget)
+                proj._analysis_nb.select(widget)
                 first = False
+
+        self._build_analysis_breadcrumb(proj)
+        self._show_analysis_view(proj)
+
+    # ==================================================================
+    # Analysis view navigation
+    # ==================================================================
+
+    def _show_analysis_view(self, proj: Project):
+        if not proj.agg_tab_ids:
+            return
+        proj._matrix_frame.pack_forget()
+        proj._analysis_frame.pack(fill="both", expand=True)
+        proj._in_analysis_view = True
+        proj._set_nav_active(True)
+        self._update_topbar()
+
+    def _show_matrix_view(self, proj: Project):
+        proj._analysis_frame.pack_forget()
+        proj._matrix_frame.pack(fill="both", expand=True)
+        proj._in_analysis_view = False
+        proj._set_nav_active(False)
+        self._update_topbar()
+
+    def _build_analysis_breadcrumb(self, proj: Project):
+        """No-op — navigation is handled by the persistent switcher bar."""
+        self._update_analysis_breadcrumb(proj)
+
+    def _update_analysis_breadcrumb(self, proj: Project):
+        """Redraw toggle to reflect that analysis results now exist."""
+        proj._set_nav_active(proj._in_analysis_view)
 
     # ==================================================================
     # Import (operates on current project)

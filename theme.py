@@ -188,6 +188,37 @@ EMPTY_STATE_BTN_RADIUS        = 4           # px
 EMPTY_STATE_BTN_ICON_SIZE     = 16          # px
 EMPTY_STATE_BTN_TEXT_SIZE     = 11          # pt
 
+# ── View switcher pill toggle (Decision Makers / Analysis) ───────────────────
+# ── View switcher pill toggle (Decision Makers / Analysis) ───────────────────
+# Pill colours
+VIEW_TOGGLE_TRACK_BG     = "#a6bcd3"   # outer pill background
+VIEW_TOGGLE_THUMB_BG     = "#e8eef4"   # active-side floating thumb
+VIEW_TOGGLE_ACT_FG       = "#30455c"   # icon colour on active (thumb) side
+VIEW_TOGGLE_INACT_FG     = "#ffffff"   # icon colour on inactive (track) side
+
+# Pill geometry
+VIEW_TOGGLE_PILL_HEIGHT  = 30          # px — overall pill height
+VIEW_TOGGLE_PILL_RADIUS  = 15          # px — corner radius (= height/2 → full pill)
+VIEW_TOGGLE_THUMB_PAD    = 3           # px — gap between track edge and thumb
+VIEW_TOGGLE_MARGIN       = 1           # px — extra canvas margin so edge arcs aren't clipped
+VIEW_TOGGLE_ICON_SIZE    = 16          # px — icon drawing area (scaled from 24×24 viewBox)
+VIEW_TOGGLE_SEG_PADDING  = 28          # px — total horizontal padding around icon in each segment
+VIEW_TOGGLE_ICON_STROKE  = 1.4        # stroke-width for both icons
+
+# Bar that hosts the toggle
+VIEW_TOGGLE_BAR_BG       = "#ffffff"   # switcher bar background
+VIEW_TOGGLE_BAR_HEIGHT   = 46          # px — switcher bar height
+VIEW_TOGGLE_BAR_SEP      = "#e8eaed"   # 1px separator below the bar
+VIEW_TOGGLE_BAR_PADX     = 12          # px — right margin between toggle and window edge
+
+# Tooltip
+VIEW_TOGGLE_TIP_BG       = "#2c3b4e"   # tooltip background
+VIEW_TOGGLE_TIP_FG       = "#ffffff"   # tooltip text colour
+VIEW_TOGGLE_TIP_SIZE     = 10          # pt — tooltip font size
+VIEW_TOGGLE_TIP_PADX     = 8           # px — tooltip horizontal inner padding
+VIEW_TOGGLE_TIP_PADY     = 4           # px — tooltip vertical inner padding
+VIEW_TOGGLE_TIP_OFFSET_Y = 6           # px — gap between pill bottom and tooltip top
+
 # ── Status bar ("Ready") — bottom of notebook content area ───────────────────
 STATUSBAR_BG        = "#f5f7fa"   # background
 STATUSBAR_FG        = "#a6bcd3"   # text color
