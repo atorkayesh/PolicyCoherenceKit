@@ -71,6 +71,17 @@ def _hex_interp(c1, c2, t):
     return f"#{r:02x}{g:02x}{b:02x}"
 
 
+def _rrect_pts(x1, y1, x2, y2, r, steps=10):
+    """Return polygon points for a rounded rectangle."""
+    pts = []
+    for cx, cy, a0 in [(x2-r, y1+r, -90), (x2-r, y2-r, 0),
+                        (x1+r, y2-r,  90), (x1+r, y1+r, 180)]:
+        for i in range(steps + 1):
+            a = math.radians(a0 + 90 * i / steps)
+            pts += [cx + r * math.cos(a), cy + r * math.sin(a)]
+    return pts
+
+
 # =============================================================================
 # Project data container
 # =============================================================================
@@ -653,15 +664,6 @@ class PolicyCoherenceApp:
         _EX_PADX   = 20
         _ex_font   = tkFont.Font(family=FONT_FAMILY, size=11)
 
-        def _rrect_pts(x1, y1, x2, y2, r, steps=10):
-            pts = []
-            for cx, cy, a0 in [(x2-r, y1+r, -90), (x2-r, y2-r, 0),
-                                (x1+r, y2-r,  90), (x1+r, y1+r, 180)]:
-                for i in range(steps + 1):
-                    a = math.radians(a0 + 90 * i / steps)
-                    pts += [cx + r * math.cos(a), cy + r * math.sin(a)]
-            return pts
-
         def _make_icon_btn(label, cmd, icon_fn, fg):
             tw   = _ex_font.measure(label)
             w    = _EX_PADX + _EX_ICON + _EX_GAP + tw + _EX_PADX
@@ -904,20 +906,360 @@ class PolicyCoherenceApp:
         self._proj_nb = ttk.Notebook(self._proj_nb_container, style="Headless.TNotebook")
         self._proj_nb.pack(fill="both", expand=True)
 
-        self._empty_label = tk.Label(
-            self._proj_nb_container,
-            text='Click  "+ New Project"  to get started.',
-            font=(FONT_FAMILY, FONT_SIZE_HEADER),
-            bg=COLOR_BG, fg=COLOR_TEXT_LIGHT, justify="center",
+        self._empty_panel_w = 500
+        self._empty_resize_job = None
+        self._empty_label = self._build_empty_state(self._proj_nb_container, 500)
+        self._empty_label.place(x=0, y=0, relwidth=1, relheight=1)
+        self._proj_nb_container.bind("<Configure>", self._on_empty_resize)
+
+    def _on_empty_resize(self, event):
+        if self._empty_resize_job:
+            self.root.after_cancel(self._empty_resize_job)
+        self._empty_resize_job = self.root.after(
+            120, lambda w=event.width: self._rebuild_empty_state(w)
         )
-        self._empty_label.place(relx=0.5, rely=0.5, anchor="center")
+
+    def _rebuild_empty_state(self, avail_w):
+        self._empty_resize_job = None
+        new_w = max(280, min(500, avail_w - 80))
+        if abs(new_w - self._empty_panel_w) < 10:
+            return
+        self._empty_panel_w = new_w
+        visible = self._empty_label.winfo_ismapped()
+        self._empty_label.destroy()
+        self._empty_label = self._build_empty_state(self._proj_nb_container, new_w)
+        if visible:
+            self._empty_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+    def _build_empty_state(self, parent, panel_w=500):
+        """Scrollable centered instruction panel shown when no project exists."""
+        PANEL_W  = panel_w
+        BG       = COLOR_BG
+
+        # Full-size wrapper — fills the container via place(relwidth=1, relheight=1)
+        wrapper = tk.Frame(parent, bg=BG)
+        _sc = tk.Canvas(wrapper, bg=BG, highlightthickness=0)
+        _sc.pack(fill="both", expand=True)
+
+        outer = tk.Frame(_sc, bg=BG)
+
+        # ── Icon badge ──────────────────────────────────────────────────
+        BADGE_SIZE = 58
+        ICON_SIZE  = 26        # px (24×24 SVG viewBox scaled to this)
+        BADGE_BG   = "#eaeef4"
+        ICON_COLOR = "#30455c"
+        BADGE_R    = 8
+        LW         = 1.6
+
+        badge_c = tk.Canvas(outer, width=BADGE_SIZE+2, height=BADGE_SIZE+2,
+                            bg=BG, highlightthickness=0)
+        badge_c.pack(pady=(0, 18))
+
+        # Rounded-rect badge background (inset 1px so corners aren't clipped)
+        pts = _rrect_pts(1, 1, BADGE_SIZE+1, BADGE_SIZE+1, BADGE_R)
+        badge_c.create_polygon(*pts, fill=BADGE_BG, outline=BADGE_BG)
+
+        # Network icon — Lucide "network", 24×24 viewBox scaled to ICON_SIZE
+        s  = ICON_SIZE / 24.0
+        ox = 1 + (BADGE_SIZE - ICON_SIZE) / 2
+        oy = 1 + (BADGE_SIZE - ICON_SIZE) / 2
+        lkw = dict(fill=ICON_COLOR, width=LW, capstyle="round", joinstyle="round")
+
+        # rect x="16" y="16" width="6" height="6" rx="1"
+        pts = _rrect_pts(16*s+ox, 16*s+oy, 22*s+ox, 22*s+oy, 1*s)
+        badge_c.create_polygon(*pts, fill="", outline=ICON_COLOR, width=LW)
+        # rect x="2" y="16" width="6" height="6" rx="1"
+        pts = _rrect_pts(2*s+ox, 16*s+oy, 8*s+ox, 22*s+oy, 1*s)
+        badge_c.create_polygon(*pts, fill="", outline=ICON_COLOR, width=LW)
+        # rect x="9" y="2" width="6" height="6" rx="1"
+        pts = _rrect_pts(9*s+ox, 2*s+oy, 15*s+ox, 8*s+oy, 1*s)
+        badge_c.create_polygon(*pts, fill="", outline=ICON_COLOR, width=LW)
+        # path M5 16 v-3 a1 1 0 0 1 1-1 h12 a1 1 0 0 1 1 1 v3
+        badge_c.create_line(
+            5*s+ox, 16*s+oy, 5*s+ox, 13*s+oy,
+            6*s+ox, 12*s+oy, 18*s+ox, 12*s+oy,
+            19*s+ox, 13*s+oy, 19*s+ox, 16*s+oy,
+            **lkw
+        )
+        # path M12 12 V8
+        badge_c.create_line(12*s+ox, 12*s+oy, 12*s+ox, 8*s+oy, **lkw)
+
+        # ── Title ────────────────────────────────────────────────────────
+        tk.Label(
+            outer,
+            text="Start a new policy coherence assessment",
+            font=(FONT_FAMILY, 23),
+            bg=BG, fg="#1f2937",
+            wraplength=PANEL_W, justify="center",
+        ).pack(pady=(0, 10))
+
+        # ── Subtitle ─────────────────────────────────────────────────────
+        tk.Label(
+            outer,
+            text=(
+                "Create a project to define policies, add decision-makers, and evaluate "
+                "interactions across expert perspectives. The tool supports structured matrix "
+                "input, aggregation methods, and advanced analytical outputs."
+            ),
+            font=(FONT_FAMILY, 12),
+            bg=BG, fg="#808080",
+            wraplength=PANEL_W, justify="left",
+        ).pack(pady=(0, 22), anchor="w")
+
+        # ── Workflow box (rounded border + drop shadow via Canvas) ────────
+        WF_R        = 6
+        WF_PX       = 28    # inner horizontal padding
+        WF_PY       = 26    # inner vertical padding
+        WF_W        = PANEL_W
+        WF_BG       = "#fafbfc"
+        WF_BORDER   = "#f5f7fa"
+        WF_INNER_W  = WF_W - 2 * WF_PX - 2
+        SHADOW_OFF  = 1.25
+        SHADOW_CLR  = "#e8eaed"
+
+        STEP_H      = 55
+        STEP_R      = 4
+        STEP_BG     = "#ffffff"
+        STEP_BORDER = "#f5f5f5"
+        STEP_GAP    = 8
+        STEPS = (
+            "Create a project",
+            "Add decision-makers",
+            "Define policies",
+            "Complete the interaction matrix",
+            "Run aggregation and analysis",
+        )
+        N_STEPS = len(STEPS)
+        LBL_H   = 22
+        LBL_GAP = 12
+        WF_H    = (WF_PY + LBL_H + LBL_GAP
+                   + N_STEPS * STEP_H + (N_STEPS - 1) * STEP_GAP
+                   + WF_PY)
+
+        wf_c = tk.Canvas(outer, width=WF_W + SHADOW_OFF, height=WF_H + SHADOW_OFF,
+                         bg=BG, highlightthickness=0)
+        wf_c.pack(pady=(0, 22))
+
+        # Drop shadow (drawn first, offset by SHADOW_OFF)
+        s_pts = _rrect_pts(1 + SHADOW_OFF, 1 + SHADOW_OFF,
+                           WF_W - 1 + SHADOW_OFF, WF_H - 1 + SHADOW_OFF, WF_R)
+        wf_c.create_polygon(*s_pts, fill=SHADOW_CLR, outline="")
+
+        # Main box
+        pts = _rrect_pts(1, 1, WF_W - 1, WF_H - 1, WF_R)
+        wf_c.create_polygon(*pts, fill=WF_BG, outline=WF_BORDER, width=1)
+
+        wf_inner = tk.Frame(wf_c, bg=WF_BG, width=WF_INNER_W)
+        wf_c.create_window(WF_PX + 1, WF_PY + 1, window=wf_inner, anchor="nw")
+
+        tk.Label(
+            wf_inner, text="WORKFLOW",
+            font=(FONT_FAMILY, 12),
+            bg=WF_BG, fg="#a3a3a3",
+            anchor="w",
+        ).pack(fill="x", pady=(0, LBL_GAP))
+
+        # ── Step icon constants ───────────────────────────────────────────
+        ICON_COLOR   = "#2c3b4e"
+        ICON_LW      = 1.35
+        BADGE_SZ     = 28
+        BADGE_R_ICN  = 5
+        BADGE_BG_ICN = "#f5f7fa"
+        ICON_SZ      = 14
+        SC           = ICON_SZ / 24.0          # scale factor from 24px viewBox
+        BADGE_X      = 40                       # badge left edge in step canvas
+        BADGE_Y      = (STEP_H - BADGE_SZ) / 2
+        IOX          = BADGE_X + (BADGE_SZ - ICON_SZ) / 2
+        IOY          = BADGE_Y + (BADGE_SZ - ICON_SZ) / 2
+        TEXT_X       = BADGE_X + BADGE_SZ + 12
+
+        def _ilkw():
+            return dict(fill=ICON_COLOR, width=ICON_LW, capstyle="round", joinstyle="round")
+
+        def _icon_folder_plus(c, ox, oy):
+            lkw = _ilkw()
+            fp = [(2,5),(2,18),(4,20),(20,20),(22,18),(22,8),(20,6),
+                  (12.1,6),(10.41,5.1),(9.6,3.9),(7.93,3),(4,3),(2,5)]
+            flat = [v for x, y in fp for v in (x*SC+ox, y*SC+oy)]
+            c.create_line(*flat, **lkw)
+            c.create_line(12*SC+ox, 10*SC+oy, 12*SC+ox, 16*SC+oy, **lkw)
+            c.create_line( 9*SC+ox, 13*SC+oy, 15*SC+ox, 13*SC+oy, **lkw)
+
+        def _icon_user_plus(c, ox, oy):
+            lkw = _ilkw()
+            body = [(16,21),(16,19),(15,17),(12,16),(6,16),(3,17),(2,19),(2,21)]
+            flat = [v for x, y in body for v in (x*SC+ox, y*SC+oy)]
+            c.create_line(*flat, **lkw)
+            r = 4 * SC
+            c.create_oval(9*SC+ox-r, 7*SC+oy-r, 9*SC+ox+r, 7*SC+oy+r,
+                          outline=ICON_COLOR, width=ICON_LW, fill="")
+            c.create_line(19*SC+ox,  8*SC+oy, 19*SC+ox, 14*SC+oy, **lkw)
+            c.create_line(22*SC+ox, 11*SC+oy, 16*SC+ox, 11*SC+oy, **lkw)
+
+        def _icon_file_text(c, ox, oy):
+            lkw = _ilkw()
+            fp = [(6,22),(4,20),(4,4),(6,2),(14,2),(15.7,2.7),
+                  (19.6,6.3),(20,8),(20,20),(18,22),(6,22)]
+            flat = [v for x, y in fp for v in (x*SC+ox, y*SC+oy)]
+            c.create_line(*flat, **lkw)
+            c.create_line(14*SC+ox, 2*SC+oy, 14*SC+ox, 7*SC+oy, 20*SC+ox, 7*SC+oy, **lkw)
+            c.create_line(10*SC+ox,  9*SC+oy,  8*SC+ox,  9*SC+oy, **lkw)
+            c.create_line(16*SC+ox, 13*SC+oy,  8*SC+ox, 13*SC+oy, **lkw)
+            c.create_line(16*SC+ox, 17*SC+oy,  8*SC+ox, 17*SC+oy, **lkw)
+
+        def _icon_square_pointer(c, ox, oy):
+            lkw = _ilkw()
+            sq = [(21,11),(21,5),(19,3),(5,3),(3,5),(3,19),(5,21),(11,21)]
+            flat = [v for x, y in sq for v in (x*SC+ox, y*SC+oy)]
+            c.create_line(*flat, **lkw)
+            cur = [(12.034,12.681),(21.681,15.534),(18.204,17.545),(16.477,21.648),(12.034,12.681)]
+            flat2 = [v for x, y in cur for v in (x*SC+ox, y*SC+oy)]
+            c.create_line(*flat2, **lkw)
+
+        def _icon_chart_network(c, ox, oy):
+            lkw = _ilkw()
+            c.create_line(3*SC+ox, 3*SC+oy, 3*SC+ox, 19*SC+oy,
+                          5*SC+ox, 21*SC+oy, 21*SC+ox, 21*SC+oy, **lkw)
+            c.create_line(13.11*SC+ox, 7.664*SC+oy, 14.89*SC+ox, 10.336*SC+oy, **lkw)
+            c.create_line(14.162*SC+ox, 12.788*SC+oy, 10.838*SC+ox, 14.212*SC+oy, **lkw)
+            c.create_line(20*SC+ox, 4*SC+oy, 13.94*SC+ox, 5.515*SC+oy, **lkw)
+            r = 2 * SC
+            for nx, ny in ((12, 6), (16, 12), (9, 15)):
+                c.create_oval(nx*SC+ox-r, ny*SC+oy-r, nx*SC+ox+r, ny*SC+oy+r,
+                              outline=ICON_COLOR, width=ICON_LW, fill="")
+
+        ICON_FUNCS = [
+            _icon_folder_plus, _icon_user_plus, _icon_file_text,
+            _icon_square_pointer, _icon_chart_network,
+        ]
+
+        for i, step in enumerate(STEPS):
+            pady = (0, STEP_GAP) if i < N_STEPS - 1 else 0
+
+            step_c = tk.Canvas(wf_inner, width=WF_INNER_W, height=STEP_H,
+                               bg=WF_BG, highlightthickness=0)
+            step_c.pack(fill="x", pady=pady)
+
+            sp = _rrect_pts(1, 1, WF_INNER_W - 1, STEP_H - 1, STEP_R)
+            step_c.create_polygon(*sp, fill=STEP_BG, outline=STEP_BORDER, width=1)
+
+            # Step number
+            step_c.create_text(
+                14, STEP_H / 2,
+                text=f"{i + 1:02d}", anchor="w",
+                font=(FONT_FAMILY, 10),
+                fill="#d3d3d3",
+            )
+
+            # Icon badge + icon
+            bp = _rrect_pts(BADGE_X, BADGE_Y, BADGE_X + BADGE_SZ, BADGE_Y + BADGE_SZ, BADGE_R_ICN)
+            step_c.create_polygon(*bp, fill=BADGE_BG_ICN, outline="")
+            ICON_FUNCS[i](step_c, IOX, IOY)
+
+            # Step text
+            step_c.create_text(
+                TEXT_X, STEP_H / 2,
+                text=step, anchor="w",
+                font=(FONT_FAMILY, 13),
+                fill="#1f2937",
+            )
+
+        # ── New Project button ────────────────────────────────────────────
+        BTN_BG    = "#426387"
+        BTN_HOVER = "#30455c"
+        BTN_FG    = "#eaeef4"
+        BTN_H     = 40
+        BTN_R     = 4
+        BTN_ICON  = 16
+        BTN_GAP   = 7
+        BTN_PADX  = 18
+        BTN_LABEL = "New Project"
+
+        btn_font = tkFont.Font(family=FONT_FAMILY, size=11)
+        tw       = btn_font.measure(BTN_LABEL)
+        btn_w    = BTN_PADX + BTN_ICON + BTN_GAP + tw + BTN_PADX
+
+        t    = [0.0]
+        anim = [None]
+
+        btn_c = tk.Canvas(outer, width=btn_w+2, height=BTN_H+2,
+                          bg=BG, highlightthickness=0, cursor=CURSOR_HAND)
+        btn_c.pack()
+
+        def draw_btn(bg):
+            btn_c.delete("all")
+            pts = _rrect_pts(1, 1, btn_w+1, BTN_H+1, BTN_R)
+            btn_c.create_polygon(*pts, fill=bg, outline=bg)
+            s2  = BTN_ICON / 24.0
+            ix  = 1 + BTN_PADX
+            iy  = 1 + (BTN_H - BTN_ICON) / 2
+            cy  = 1 + BTN_H / 2
+            pkw = dict(fill=BTN_FG, width=1.35, capstyle="round")
+            btn_c.create_line(5*s2+ix, 12*s2+iy, 19*s2+ix, 12*s2+iy, **pkw)
+            btn_c.create_line(12*s2+ix, 5*s2+iy, 12*s2+ix, 19*s2+iy, **pkw)
+            btn_c.create_text(
+                ix + BTN_ICON + BTN_GAP, cy,
+                text=BTN_LABEL, fill=BTN_FG, anchor="w", font=btn_font,
+            )
+
+        def animate_btn(target):
+            if anim[0]: btn_c.after_cancel(anim[0]); anim[0] = None
+            def tick():
+                diff = target - t[0]
+                if abs(diff) < 0.02:
+                    t[0] = target; draw_btn(_hex_interp(BTN_BG, BTN_HOVER, target))
+                    anim[0] = None; return
+                t[0] += diff * 0.3
+                draw_btn(_hex_interp(BTN_BG, BTN_HOVER, t[0]))
+                anim[0] = btn_c.after(16, tick)
+            tick()
+
+        def poll_btn():
+            try:
+                mx = btn_c.winfo_pointerx(); my = btn_c.winfo_pointery()
+                bx = btn_c.winfo_rootx();    by = btn_c.winfo_rooty()
+                over = bx <= mx <= bx + btn_w and by <= my <= by + BTN_H
+                tgt  = 1.0 if over else 0.0
+                if abs(t[0] - tgt) > 0.01 and anim[0] is None:
+                    animate_btn(tgt)
+            except tk.TclError:
+                return
+            btn_c.after(30, poll_btn)
+
+        draw_btn(BTN_BG)
+        btn_c.bind("<Button-1>", lambda e: self._new_project())
+        btn_c.after(100, poll_btn)
+
+        _win = _sc.create_window(0, 0, window=outer, anchor="nw")
+
+        def _layout(ev=None):
+            cw = _sc.winfo_width()
+            ch = _sc.winfo_height()
+            ow = outer.winfo_reqwidth()
+            oh = outer.winfo_reqheight()
+            x  = max(0, (cw - ow) // 2)
+            y  = max(20, (ch - oh) // 2)
+            _sc.coords(_win, x, y)
+            _sc.configure(scrollregion=(0, 0, cw, max(ch, y + oh + 20)))
+
+        _sc.bind("<Configure>", lambda e: _sc.after(10, _layout))
+        outer.bind("<Configure>", lambda e: _sc.after(10, _layout))
+
+        def _on_wheel(event):
+            _sc.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        _sc.bind("<MouseWheel>", _on_wheel)
+
+        return wrapper
 
     def _build_statusbar(self):
         self._status_var = tk.StringVar(value="Ready")
-        tk.Label(self._content, textvariable=self._status_var,
-                 font=(FONT_FAMILY, FONT_SIZE_SMALL),
-                 bg=COLOR_PANEL, fg=COLOR_TEXT_LIGHT,
-                 anchor="w", padx=12, pady=4).pack(fill="x", side="bottom")
+        bar = tk.Frame(self._content, bg="#f5f7fa", height=27)
+        bar.pack(fill="x", side="bottom")
+        bar.pack_propagate(False)
+        tk.Label(bar, textvariable=self._status_var,
+                 font=(FONT_FAMILY, 11),
+                 bg="#f5f7fa", fg="#a6bcd3",
+                 anchor="w", padx=12).pack(fill="both", expand=True)
 
     # ==================================================================
     # Project management
@@ -1406,7 +1748,7 @@ class PolicyCoherenceApp:
         self.projects.pop(idx)
         self._refresh_sidebar_projects()
         if not self.projects:
-            self._empty_label.place(relx=0.5, rely=0.5, anchor="center")
+            self._empty_label.place(x=0, y=0, relwidth=1, relheight=1)
         self._set_status(f'Project "{proj.name}" deleted.')
 
     # ==================================================================

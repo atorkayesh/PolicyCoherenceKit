@@ -150,6 +150,50 @@ TOPBAR_SEP_WIDTH       = 1           # px
 TOPBAR_SEP_PADY        = 8           # px — top/bottom inset so separator doesn't span full height
 TOPBAR_SEP_PADX        = 6           # px — horizontal gap around each separator
 
+# ── Empty state — instruction panel (shown when no project exists) ────────────
+EMPTY_STATE_PANEL_WIDTH       = 500          # px — fixed panel width
+EMPTY_STATE_BADGE_SIZE        = 58           # px — icon badge square
+EMPTY_STATE_BADGE_BG          = "#eaeef4"   # badge background
+EMPTY_STATE_BADGE_RADIUS      = 8           # px — badge corner radius
+EMPTY_STATE_ICON_SIZE         = 26          # px — network icon inside badge
+EMPTY_STATE_ICON_COLOR        = "#30455c"   # icon stroke color
+EMPTY_STATE_ICON_STROKE       = 1.6         # stroke-width
+EMPTY_STATE_TITLE_COLOR       = "#1f2937"
+EMPTY_STATE_TITLE_SIZE        = 23          # pt
+EMPTY_STATE_SUBTITLE_COLOR    = "#808080"
+EMPTY_STATE_SUBTITLE_SIZE     = 12          # pt
+EMPTY_STATE_WORKFLOW_BG            = "#fafbfc"
+EMPTY_STATE_WORKFLOW_BORDER        = "#f5f7fa"
+EMPTY_STATE_WORKFLOW_RADIUS        = 6           # px — border radius
+EMPTY_STATE_WORKFLOW_PADX          = 28          # px — inner horizontal padding
+EMPTY_STATE_WORKFLOW_PADY          = 26          # px — inner vertical padding
+EMPTY_STATE_WORKFLOW_SHADOW_COLOR  = "#e8eaed"
+EMPTY_STATE_WORKFLOW_SHADOW_OFFSET = 1.25        # px
+EMPTY_STATE_WORKFLOW_LBL_COLOR     = "#a3a3a3"
+EMPTY_STATE_WORKFLOW_LBL_SIZE      = 12          # pt
+EMPTY_STATE_WORKFLOW_STEP_BG       = "#ffffff"
+EMPTY_STATE_WORKFLOW_STEP_BORDER   = "#f5f5f5"
+EMPTY_STATE_WORKFLOW_STEP_RADIUS   = 4           # px
+EMPTY_STATE_WORKFLOW_STEP_HEIGHT   = 55          # px
+EMPTY_STATE_WORKFLOW_STEP_GAP      = 8           # px between steps
+EMPTY_STATE_WORKFLOW_STEP_NUM_COLOR = "#d3d3d3"
+EMPTY_STATE_WORKFLOW_STEP_NUM_SIZE  = 10         # pt
+EMPTY_STATE_WORKFLOW_STEP_COLOR    = "#1f2937"
+EMPTY_STATE_WORKFLOW_STEP_SIZE     = 13          # pt
+EMPTY_STATE_BTN_BG            = "#426387"
+EMPTY_STATE_BTN_HOVER         = "#30455c"
+EMPTY_STATE_BTN_FG            = "#eaeef4"
+EMPTY_STATE_BTN_HEIGHT        = 40          # px
+EMPTY_STATE_BTN_RADIUS        = 4           # px
+EMPTY_STATE_BTN_ICON_SIZE     = 16          # px
+EMPTY_STATE_BTN_TEXT_SIZE     = 11          # pt
+
+# ── Status bar ("Ready") — bottom of notebook content area ───────────────────
+STATUSBAR_BG        = "#f5f7fa"   # background
+STATUSBAR_FG        = "#a6bcd3"   # text color
+STATUSBAR_TEXT_SIZE = 11          # pt
+STATUSBAR_HEIGHT    = 27          # px
+
 # ── Misc ──────────────────────────────────────────────────────────────────────
 BG_COLOR        = "#ffffff"   # main content background
 SIDEBAR_BG      = "#fafbfc"   # sidebar background
