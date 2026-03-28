@@ -95,7 +95,7 @@ TOPBAR_PROJECT_NAME_TEXT_SIZE = 12          # pt, bold
 TOPBAR_STATS_DM_COLOR       = "#7799b9"   # dm name color
 TOPBAR_STATS_TEXT_COLOR     = "#a3a3a3"   # policies / cells text color
 TOPBAR_STATS_SEP_COLOR      = "#808080"   # . and | separators
-TOPBAR_STATS_TEXT_SIZE      = 8           # pt
+TOPBAR_STATS_TEXT_SIZE      = 9           # pt
 
 # Button shared styles (flat tk.Button — Export, Import, Delete, Rename)
 TOPBAR_BTN_BG          = "#ffffff"   # matches topbar bg

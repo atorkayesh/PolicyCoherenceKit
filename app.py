@@ -637,7 +637,7 @@ class PolicyCoherenceApp:
 
         _sf = tk.Frame(left_inner, bg="#ffffff")
         _sf.pack(anchor="w")
-        _f10 = (FONT_FAMILY, 8)
+        _f10 = (FONT_FAMILY, 9)
         self._stats_dm_lbl       = tk.Label(_sf, text="", font=_f10, bg="#ffffff", fg="#7799b9")
         self._stats_dot_lbl      = tk.Label(_sf, text="", font=_f10, bg="#ffffff", fg="#808080")
         self._stats_policies_lbl = tk.Label(_sf, text="", font=_f10, bg="#ffffff", fg="#a3a3a3")
@@ -941,309 +941,360 @@ class PolicyCoherenceApp:
         _sc = tk.Canvas(wrapper, bg=BG, highlightthickness=0)
         _sc.pack(fill="both", expand=True)
 
-        outer = tk.Frame(_sc, bg=BG)
+        _mode    = [None]   # "normal" | "compact"
+        _win_ref = [None]
+        _outer_ref = [None]
+
+        def _build_inner(compact):
+            if _outer_ref[0] is not None:
+                if _win_ref[0] is not None:
+                    _sc.delete(_win_ref[0])
+                _outer_ref[0].destroy()
+
+            outer = tk.Frame(_sc, bg=BG)
+            _outer_ref[0] = outer
+
+            # ── Responsive size tokens ───────────────────────────────────
+            if compact:
+                BADGE_SIZE_  = 44
+                ICON_SIZE_   = 20
+                BADGE_R_     = 7
+                LW_          = 1.5
+                BADGE_PADY   = 8
+                TITLE_SIZE   = 17
+                TITLE_PADY   = (0, 6)
+                SUB_PADY     = (0, 10)
+                WF_PY_       = 14
+                LBL_GAP_     = 6
+                STEP_H_      = 40
+                STEP_GAP_    = 5
+                WF_PADY      = (0, 10)
+            else:
+                BADGE_SIZE_  = 58
+                ICON_SIZE_   = 26
+                BADGE_R_     = 8
+                LW_          = 1.6
+                BADGE_PADY   = 18
+                TITLE_SIZE   = 23
+                TITLE_PADY   = (0, 10)
+                SUB_PADY     = (0, 22)
+                WF_PY_       = 26
+                LBL_GAP_     = 12
+                STEP_H_      = 55
+                STEP_GAP_    = 8
+                WF_PADY      = (0, 22)
 
         # ── Icon badge ──────────────────────────────────────────────────
-        BADGE_SIZE = 58
-        ICON_SIZE  = 26        # px (24×24 SVG viewBox scaled to this)
-        BADGE_BG   = "#eaeef4"
-        ICON_COLOR = "#30455c"
-        BADGE_R    = 8
-        LW         = 1.6
+            BADGE_SIZE = BADGE_SIZE_
+            ICON_SIZE  = ICON_SIZE_
+            BADGE_BG   = "#eaeef4"
+            ICON_COLOR = "#30455c"
+            BADGE_R    = BADGE_R_
+            LW         = LW_
 
-        badge_c = tk.Canvas(outer, width=BADGE_SIZE+2, height=BADGE_SIZE+2,
-                            bg=BG, highlightthickness=0)
-        badge_c.pack(pady=(0, 18))
+            badge_c = tk.Canvas(outer, width=BADGE_SIZE+2, height=BADGE_SIZE+2,
+                                bg=BG, highlightthickness=0)
+            badge_c.pack(pady=(0, BADGE_PADY))
 
-        # Rounded-rect badge background (inset 1px so corners aren't clipped)
-        pts = _rrect_pts(1, 1, BADGE_SIZE+1, BADGE_SIZE+1, BADGE_R)
-        badge_c.create_polygon(*pts, fill=BADGE_BG, outline=BADGE_BG)
+            # Rounded-rect badge background (inset 1px so corners aren't clipped)
+            pts = _rrect_pts(1, 1, BADGE_SIZE+1, BADGE_SIZE+1, BADGE_R)
+            badge_c.create_polygon(*pts, fill=BADGE_BG, outline=BADGE_BG)
 
-        # Network icon — Lucide "network", 24×24 viewBox scaled to ICON_SIZE
-        s  = ICON_SIZE / 24.0
-        ox = 1 + (BADGE_SIZE - ICON_SIZE) / 2
-        oy = 1 + (BADGE_SIZE - ICON_SIZE) / 2
-        lkw = dict(fill=ICON_COLOR, width=LW, capstyle="round", joinstyle="round")
+            # Network icon — Lucide "network", 24×24 viewBox scaled to ICON_SIZE
+            s  = ICON_SIZE / 24.0
+            ox = 1 + (BADGE_SIZE - ICON_SIZE) / 2
+            oy = 1 + (BADGE_SIZE - ICON_SIZE) / 2
+            lkw = dict(fill=ICON_COLOR, width=LW, capstyle="round", joinstyle="round")
 
-        # rect x="16" y="16" width="6" height="6" rx="1"
-        pts = _rrect_pts(16*s+ox, 16*s+oy, 22*s+ox, 22*s+oy, 1*s)
-        badge_c.create_polygon(*pts, fill="", outline=ICON_COLOR, width=LW)
-        # rect x="2" y="16" width="6" height="6" rx="1"
-        pts = _rrect_pts(2*s+ox, 16*s+oy, 8*s+ox, 22*s+oy, 1*s)
-        badge_c.create_polygon(*pts, fill="", outline=ICON_COLOR, width=LW)
-        # rect x="9" y="2" width="6" height="6" rx="1"
-        pts = _rrect_pts(9*s+ox, 2*s+oy, 15*s+ox, 8*s+oy, 1*s)
-        badge_c.create_polygon(*pts, fill="", outline=ICON_COLOR, width=LW)
-        # path M5 16 v-3 a1 1 0 0 1 1-1 h12 a1 1 0 0 1 1 1 v3
-        badge_c.create_line(
-            5*s+ox, 16*s+oy, 5*s+ox, 13*s+oy,
-            6*s+ox, 12*s+oy, 18*s+ox, 12*s+oy,
-            19*s+ox, 13*s+oy, 19*s+ox, 16*s+oy,
-            **lkw
-        )
-        # path M12 12 V8
-        badge_c.create_line(12*s+ox, 12*s+oy, 12*s+ox, 8*s+oy, **lkw)
+            # rect x="16" y="16" width="6" height="6" rx="1"
+            pts = _rrect_pts(16*s+ox, 16*s+oy, 22*s+ox, 22*s+oy, 1*s)
+            badge_c.create_polygon(*pts, fill="", outline=ICON_COLOR, width=LW)
+            # rect x="2" y="16" width="6" height="6" rx="1"
+            pts = _rrect_pts(2*s+ox, 16*s+oy, 8*s+ox, 22*s+oy, 1*s)
+            badge_c.create_polygon(*pts, fill="", outline=ICON_COLOR, width=LW)
+            # rect x="9" y="2" width="6" height="6" rx="1"
+            pts = _rrect_pts(9*s+ox, 2*s+oy, 15*s+ox, 8*s+oy, 1*s)
+            badge_c.create_polygon(*pts, fill="", outline=ICON_COLOR, width=LW)
+            # path M5 16 v-3 a1 1 0 0 1 1-1 h12 a1 1 0 0 1 1 1 v3
+            badge_c.create_line(
+                5*s+ox, 16*s+oy, 5*s+ox, 13*s+oy,
+                6*s+ox, 12*s+oy, 18*s+ox, 12*s+oy,
+                19*s+ox, 13*s+oy, 19*s+ox, 16*s+oy,
+                **lkw
+            )
+            # path M12 12 V8
+            badge_c.create_line(12*s+ox, 12*s+oy, 12*s+ox, 8*s+oy, **lkw)
 
-        # ── Title ────────────────────────────────────────────────────────
-        tk.Label(
-            outer,
-            text="Start a new policy coherence assessment",
-            font=(FONT_FAMILY, 23),
-            bg=BG, fg="#1f2937",
-            wraplength=PANEL_W, justify="center",
-        ).pack(pady=(0, 10))
+            # ── Title ────────────────────────────────────────────────────────
+            tk.Label(
+                outer,
+                text="Start a new policy coherence assessment",
+                font=(FONT_FAMILY, TITLE_SIZE),
+                bg=BG, fg="#1f2937",
+                wraplength=PANEL_W, justify="center",
+            ).pack(pady=TITLE_PADY)
 
-        # ── Subtitle ─────────────────────────────────────────────────────
-        tk.Label(
-            outer,
-            text=(
-                "Create a project to define policies, add decision-makers, and evaluate "
-                "interactions across expert perspectives. The tool supports structured matrix "
-                "input, aggregation methods, and advanced analytical outputs."
-            ),
-            font=(FONT_FAMILY, 12),
-            bg=BG, fg="#808080",
-            wraplength=PANEL_W, justify="left",
-        ).pack(pady=(0, 22), anchor="w")
+            # ── Subtitle ─────────────────────────────────────────────────────
+            tk.Label(
+                outer,
+                text=(
+                    "Create a project to define policies, add decision-makers, and evaluate "
+                    "interactions across expert perspectives. The tool supports structured matrix "
+                    "input, aggregation methods, and advanced analytical outputs."
+                ),
+                font=(FONT_FAMILY, 12),
+                bg=BG, fg="#808080",
+                wraplength=PANEL_W, justify="left",
+            ).pack(pady=SUB_PADY, anchor="w")
 
         # ── Workflow box (rounded border + drop shadow via Canvas) ────────
-        WF_R        = 6
-        WF_PX       = 28    # inner horizontal padding
-        WF_PY       = 26    # inner vertical padding
-        WF_W        = PANEL_W
-        WF_BG       = "#fafbfc"
-        WF_BORDER   = "#f5f7fa"
-        WF_INNER_W  = WF_W - 2 * WF_PX - 2
-        SHADOW_OFF  = 1.25
-        SHADOW_CLR  = "#e8eaed"
+            WF_R        = 6
+            WF_PX       = 28    # inner horizontal padding
+            WF_PY       = WF_PY_
+            WF_W        = PANEL_W
+            WF_BG       = "#fafbfc"
+            WF_BORDER   = "#f5f7fa"
+            WF_INNER_W  = WF_W - 2 * WF_PX - 2
+            SHADOW_OFF  = 1.25
+            SHADOW_CLR  = "#e8eaed"
 
-        STEP_H      = 55
-        STEP_R      = 4
-        STEP_BG     = "#ffffff"
-        STEP_BORDER = "#f5f5f5"
-        STEP_GAP    = 8
-        STEPS = (
+            STEP_H      = STEP_H_
+            STEP_R      = 4
+            STEP_BG     = "#ffffff"
+            STEP_BORDER = "#f5f5f5"
+            STEP_GAP    = STEP_GAP_
+            STEPS = (
             "Create a project",
             "Add decision-makers",
             "Define policies",
             "Complete the interaction matrix",
             "Run aggregation and analysis",
         )
-        N_STEPS = len(STEPS)
-        LBL_H   = 22
-        LBL_GAP = 12
-        WF_H    = (WF_PY + LBL_H + LBL_GAP
-                   + N_STEPS * STEP_H + (N_STEPS - 1) * STEP_GAP
-                   + WF_PY)
+            N_STEPS = len(STEPS)
+            LBL_H   = 22
+            LBL_GAP = LBL_GAP_
+            WF_H    = (WF_PY + LBL_H + LBL_GAP
+                       + N_STEPS * STEP_H + (N_STEPS - 1) * STEP_GAP
+                       + WF_PY)
 
-        wf_c = tk.Canvas(outer, width=WF_W + SHADOW_OFF, height=WF_H + SHADOW_OFF,
-                         bg=BG, highlightthickness=0)
-        wf_c.pack(pady=(0, 22))
+            wf_c = tk.Canvas(outer, width=WF_W + SHADOW_OFF, height=WF_H + SHADOW_OFF,
+                             bg=BG, highlightthickness=0)
+            wf_c.pack(pady=WF_PADY)
 
         # Drop shadow (drawn first, offset by SHADOW_OFF)
-        s_pts = _rrect_pts(1 + SHADOW_OFF, 1 + SHADOW_OFF,
-                           WF_W - 1 + SHADOW_OFF, WF_H - 1 + SHADOW_OFF, WF_R)
-        wf_c.create_polygon(*s_pts, fill=SHADOW_CLR, outline="")
+            s_pts = _rrect_pts(1 + SHADOW_OFF, 1 + SHADOW_OFF,
+                               WF_W - 1 + SHADOW_OFF, WF_H - 1 + SHADOW_OFF, WF_R)
+            wf_c.create_polygon(*s_pts, fill=SHADOW_CLR, outline="")
 
-        # Main box
-        pts = _rrect_pts(1, 1, WF_W - 1, WF_H - 1, WF_R)
-        wf_c.create_polygon(*pts, fill=WF_BG, outline=WF_BORDER, width=1)
+            # Main box
+            pts = _rrect_pts(1, 1, WF_W - 1, WF_H - 1, WF_R)
+            wf_c.create_polygon(*pts, fill=WF_BG, outline=WF_BORDER, width=1)
 
-        wf_inner = tk.Frame(wf_c, bg=WF_BG, width=WF_INNER_W)
-        wf_c.create_window(WF_PX + 1, WF_PY + 1, window=wf_inner, anchor="nw")
+            wf_inner = tk.Frame(wf_c, bg=WF_BG, width=WF_INNER_W)
+            wf_c.create_window(WF_PX + 1, WF_PY + 1, window=wf_inner, anchor="nw")
 
-        tk.Label(
-            wf_inner, text="WORKFLOW",
-            font=(FONT_FAMILY, 12),
-            bg=WF_BG, fg="#a3a3a3",
-            anchor="w",
-        ).pack(fill="x", pady=(0, LBL_GAP))
+            tk.Label(
+                wf_inner, text="WORKFLOW",
+                font=(FONT_FAMILY, 12),
+                bg=WF_BG, fg="#a3a3a3",
+                anchor="w",
+            ).pack(fill="x", pady=(0, LBL_GAP))
 
-        # ── Step icon constants ───────────────────────────────────────────
-        ICON_COLOR   = "#2c3b4e"
-        ICON_LW      = 1.35
-        BADGE_SZ     = 28
-        BADGE_R_ICN  = 5
-        BADGE_BG_ICN = "#f5f7fa"
-        ICON_SZ      = 14
-        SC           = ICON_SZ / 24.0          # scale factor from 24px viewBox
-        BADGE_X      = 40                       # badge left edge in step canvas
-        BADGE_Y      = (STEP_H - BADGE_SZ) / 2
-        IOX          = BADGE_X + (BADGE_SZ - ICON_SZ) / 2
-        IOY          = BADGE_Y + (BADGE_SZ - ICON_SZ) / 2
-        TEXT_X       = BADGE_X + BADGE_SZ + 12
+            # ── Step icon constants ───────────────────────────────────────────
+            ICON_COLOR   = "#2c3b4e"
+            ICON_LW      = 1.35
+            BADGE_SZ     = 28
+            BADGE_R_ICN  = 5
+            BADGE_BG_ICN = "#f5f7fa"
+            ICON_SZ      = 14
+            SC           = ICON_SZ / 24.0          # scale factor from 24px viewBox
+            BADGE_X      = 40                       # badge left edge in step canvas
+            BADGE_Y      = (STEP_H - BADGE_SZ) / 2
+            IOX          = BADGE_X + (BADGE_SZ - ICON_SZ) / 2
+            IOY          = BADGE_Y + (BADGE_SZ - ICON_SZ) / 2
+            TEXT_X       = BADGE_X + BADGE_SZ + 12
 
-        def _ilkw():
-            return dict(fill=ICON_COLOR, width=ICON_LW, capstyle="round", joinstyle="round")
+            def _ilkw():
+                return dict(fill=ICON_COLOR, width=ICON_LW, capstyle="round", joinstyle="round")
 
-        def _icon_folder_plus(c, ox, oy):
-            lkw = _ilkw()
-            fp = [(2,5),(2,18),(4,20),(20,20),(22,18),(22,8),(20,6),
-                  (12.1,6),(10.41,5.1),(9.6,3.9),(7.93,3),(4,3),(2,5)]
-            flat = [v for x, y in fp for v in (x*SC+ox, y*SC+oy)]
-            c.create_line(*flat, **lkw)
-            c.create_line(12*SC+ox, 10*SC+oy, 12*SC+ox, 16*SC+oy, **lkw)
-            c.create_line( 9*SC+ox, 13*SC+oy, 15*SC+ox, 13*SC+oy, **lkw)
+            def _icon_folder_plus(c, ox, oy):
+                lkw = _ilkw()
+                fp = [(2,5),(2,18),(4,20),(20,20),(22,18),(22,8),(20,6),
+                      (12.1,6),(10.41,5.1),(9.6,3.9),(7.93,3),(4,3),(2,5)]
+                flat = [v for x, y in fp for v in (x*SC+ox, y*SC+oy)]
+                c.create_line(*flat, **lkw)
+                c.create_line(12*SC+ox, 10*SC+oy, 12*SC+ox, 16*SC+oy, **lkw)
+                c.create_line( 9*SC+ox, 13*SC+oy, 15*SC+ox, 13*SC+oy, **lkw)
 
-        def _icon_user_plus(c, ox, oy):
-            lkw = _ilkw()
-            body = [(16,21),(16,19),(15,17),(12,16),(6,16),(3,17),(2,19),(2,21)]
-            flat = [v for x, y in body for v in (x*SC+ox, y*SC+oy)]
-            c.create_line(*flat, **lkw)
-            r = 4 * SC
-            c.create_oval(9*SC+ox-r, 7*SC+oy-r, 9*SC+ox+r, 7*SC+oy+r,
-                          outline=ICON_COLOR, width=ICON_LW, fill="")
-            c.create_line(19*SC+ox,  8*SC+oy, 19*SC+ox, 14*SC+oy, **lkw)
-            c.create_line(22*SC+ox, 11*SC+oy, 16*SC+ox, 11*SC+oy, **lkw)
-
-        def _icon_file_text(c, ox, oy):
-            lkw = _ilkw()
-            fp = [(6,22),(4,20),(4,4),(6,2),(14,2),(15.7,2.7),
-                  (19.6,6.3),(20,8),(20,20),(18,22),(6,22)]
-            flat = [v for x, y in fp for v in (x*SC+ox, y*SC+oy)]
-            c.create_line(*flat, **lkw)
-            c.create_line(14*SC+ox, 2*SC+oy, 14*SC+ox, 7*SC+oy, 20*SC+ox, 7*SC+oy, **lkw)
-            c.create_line(10*SC+ox,  9*SC+oy,  8*SC+ox,  9*SC+oy, **lkw)
-            c.create_line(16*SC+ox, 13*SC+oy,  8*SC+ox, 13*SC+oy, **lkw)
-            c.create_line(16*SC+ox, 17*SC+oy,  8*SC+ox, 17*SC+oy, **lkw)
-
-        def _icon_square_pointer(c, ox, oy):
-            lkw = _ilkw()
-            sq = [(21,11),(21,5),(19,3),(5,3),(3,5),(3,19),(5,21),(11,21)]
-            flat = [v for x, y in sq for v in (x*SC+ox, y*SC+oy)]
-            c.create_line(*flat, **lkw)
-            cur = [(12.034,12.681),(21.681,15.534),(18.204,17.545),(16.477,21.648),(12.034,12.681)]
-            flat2 = [v for x, y in cur for v in (x*SC+ox, y*SC+oy)]
-            c.create_line(*flat2, **lkw)
-
-        def _icon_chart_network(c, ox, oy):
-            lkw = _ilkw()
-            c.create_line(3*SC+ox, 3*SC+oy, 3*SC+ox, 19*SC+oy,
-                          5*SC+ox, 21*SC+oy, 21*SC+ox, 21*SC+oy, **lkw)
-            c.create_line(13.11*SC+ox, 7.664*SC+oy, 14.89*SC+ox, 10.336*SC+oy, **lkw)
-            c.create_line(14.162*SC+ox, 12.788*SC+oy, 10.838*SC+ox, 14.212*SC+oy, **lkw)
-            c.create_line(20*SC+ox, 4*SC+oy, 13.94*SC+ox, 5.515*SC+oy, **lkw)
-            r = 2 * SC
-            for nx, ny in ((12, 6), (16, 12), (9, 15)):
-                c.create_oval(nx*SC+ox-r, ny*SC+oy-r, nx*SC+ox+r, ny*SC+oy+r,
+            def _icon_user_plus(c, ox, oy):
+                lkw = _ilkw()
+                body = [(16,21),(16,19),(15,17),(12,16),(6,16),(3,17),(2,19),(2,21)]
+                flat = [v for x, y in body for v in (x*SC+ox, y*SC+oy)]
+                c.create_line(*flat, **lkw)
+                r = 4 * SC
+                c.create_oval(9*SC+ox-r, 7*SC+oy-r, 9*SC+ox+r, 7*SC+oy+r,
                               outline=ICON_COLOR, width=ICON_LW, fill="")
+                c.create_line(19*SC+ox,  8*SC+oy, 19*SC+ox, 14*SC+oy, **lkw)
+                c.create_line(22*SC+ox, 11*SC+oy, 16*SC+ox, 11*SC+oy, **lkw)
 
-        ICON_FUNCS = [
-            _icon_folder_plus, _icon_user_plus, _icon_file_text,
-            _icon_square_pointer, _icon_chart_network,
-        ]
+            def _icon_file_text(c, ox, oy):
+                lkw = _ilkw()
+                fp = [(6,22),(4,20),(4,4),(6,2),(14,2),(15.7,2.7),
+                      (19.6,6.3),(20,8),(20,20),(18,22),(6,22)]
+                flat = [v for x, y in fp for v in (x*SC+ox, y*SC+oy)]
+                c.create_line(*flat, **lkw)
+                c.create_line(14*SC+ox, 2*SC+oy, 14*SC+ox, 7*SC+oy, 20*SC+ox, 7*SC+oy, **lkw)
+                c.create_line(10*SC+ox,  9*SC+oy,  8*SC+ox,  9*SC+oy, **lkw)
+                c.create_line(16*SC+ox, 13*SC+oy,  8*SC+ox, 13*SC+oy, **lkw)
+                c.create_line(16*SC+ox, 17*SC+oy,  8*SC+ox, 17*SC+oy, **lkw)
 
-        for i, step in enumerate(STEPS):
-            pady = (0, STEP_GAP) if i < N_STEPS - 1 else 0
+            def _icon_square_pointer(c, ox, oy):
+                lkw = _ilkw()
+                sq = [(21,11),(21,5),(19,3),(5,3),(3,5),(3,19),(5,21),(11,21)]
+                flat = [v for x, y in sq for v in (x*SC+ox, y*SC+oy)]
+                c.create_line(*flat, **lkw)
+                cur = [(12.034,12.681),(21.681,15.534),(18.204,17.545),(16.477,21.648),(12.034,12.681)]
+                flat2 = [v for x, y in cur for v in (x*SC+ox, y*SC+oy)]
+                c.create_line(*flat2, **lkw)
 
-            step_c = tk.Canvas(wf_inner, width=WF_INNER_W, height=STEP_H,
-                               bg=WF_BG, highlightthickness=0)
-            step_c.pack(fill="x", pady=pady)
+            def _icon_chart_network(c, ox, oy):
+                lkw = _ilkw()
+                c.create_line(3*SC+ox, 3*SC+oy, 3*SC+ox, 19*SC+oy,
+                              5*SC+ox, 21*SC+oy, 21*SC+ox, 21*SC+oy, **lkw)
+                c.create_line(13.11*SC+ox, 7.664*SC+oy, 14.89*SC+ox, 10.336*SC+oy, **lkw)
+                c.create_line(14.162*SC+ox, 12.788*SC+oy, 10.838*SC+ox, 14.212*SC+oy, **lkw)
+                c.create_line(20*SC+ox, 4*SC+oy, 13.94*SC+ox, 5.515*SC+oy, **lkw)
+                r = 2 * SC
+                for nx, ny in ((12, 6), (16, 12), (9, 15)):
+                    c.create_oval(nx*SC+ox-r, ny*SC+oy-r, nx*SC+ox+r, ny*SC+oy+r,
+                                  outline=ICON_COLOR, width=ICON_LW, fill="")
 
-            sp = _rrect_pts(1, 1, WF_INNER_W - 1, STEP_H - 1, STEP_R)
-            step_c.create_polygon(*sp, fill=STEP_BG, outline=STEP_BORDER, width=1)
+            ICON_FUNCS = [
+                _icon_folder_plus, _icon_user_plus, _icon_file_text,
+                _icon_square_pointer, _icon_chart_network,
+            ]
 
-            # Step number
-            step_c.create_text(
-                14, STEP_H / 2,
-                text=f"{i + 1:02d}", anchor="w",
-                font=(FONT_FAMILY, 10),
-                fill="#d3d3d3",
-            )
+            for i, step in enumerate(STEPS):
+                pady = (0, STEP_GAP) if i < N_STEPS - 1 else 0
 
-            # Icon badge + icon
-            bp = _rrect_pts(BADGE_X, BADGE_Y, BADGE_X + BADGE_SZ, BADGE_Y + BADGE_SZ, BADGE_R_ICN)
-            step_c.create_polygon(*bp, fill=BADGE_BG_ICN, outline="")
-            ICON_FUNCS[i](step_c, IOX, IOY)
+                step_c = tk.Canvas(wf_inner, width=WF_INNER_W, height=STEP_H,
+                                   bg=WF_BG, highlightthickness=0)
+                step_c.pack(fill="x", pady=pady)
 
-            # Step text
-            step_c.create_text(
-                TEXT_X, STEP_H / 2,
-                text=step, anchor="w",
-                font=(FONT_FAMILY, 13),
-                fill="#1f2937",
-            )
+                sp = _rrect_pts(1, 1, WF_INNER_W - 1, STEP_H - 1, STEP_R)
+                step_c.create_polygon(*sp, fill=STEP_BG, outline=STEP_BORDER, width=1)
 
-        # ── New Project button ────────────────────────────────────────────
-        BTN_BG    = "#426387"
-        BTN_HOVER = "#30455c"
-        BTN_FG    = "#eaeef4"
-        BTN_H     = 40
-        BTN_R     = 4
-        BTN_ICON  = 16
-        BTN_GAP   = 7
-        BTN_PADX  = 18
-        BTN_LABEL = "New Project"
+                # Step number
+                step_c.create_text(
+                    14, STEP_H / 2,
+                    text=f"{i + 1:02d}", anchor="w",
+                    font=(FONT_FAMILY, 10),
+                    fill="#d3d3d3",
+                )
 
-        btn_font = tkFont.Font(family=FONT_FAMILY, size=11)
-        tw       = btn_font.measure(BTN_LABEL)
-        btn_w    = BTN_PADX + BTN_ICON + BTN_GAP + tw + BTN_PADX
+                # Icon badge + icon
+                bp = _rrect_pts(BADGE_X, BADGE_Y, BADGE_X + BADGE_SZ, BADGE_Y + BADGE_SZ, BADGE_R_ICN)
+                step_c.create_polygon(*bp, fill=BADGE_BG_ICN, outline="")
+                ICON_FUNCS[i](step_c, IOX, IOY)
 
-        t    = [0.0]
-        anim = [None]
+                # Step text
+                step_c.create_text(
+                    TEXT_X, STEP_H / 2,
+                    text=step, anchor="w",
+                    font=(FONT_FAMILY, 13),
+                    fill="#1f2937",
+                )
 
-        btn_c = tk.Canvas(outer, width=btn_w+2, height=BTN_H+2,
-                          bg=BG, highlightthickness=0, cursor=CURSOR_HAND)
-        btn_c.pack()
+            # ── New Project button ────────────────────────────────────────────
+            BTN_BG    = "#426387"
+            BTN_HOVER = "#30455c"
+            BTN_FG    = "#eaeef4"
+            BTN_H     = 40
+            BTN_R     = 4
+            BTN_ICON  = 16
+            BTN_GAP   = 7
+            BTN_PADX  = 18
+            BTN_LABEL = "New Project"
 
-        def draw_btn(bg):
-            btn_c.delete("all")
-            pts = _rrect_pts(1, 1, btn_w+1, BTN_H+1, BTN_R)
-            btn_c.create_polygon(*pts, fill=bg, outline=bg)
-            s2  = BTN_ICON / 24.0
-            ix  = 1 + BTN_PADX
-            iy  = 1 + (BTN_H - BTN_ICON) / 2
-            cy  = 1 + BTN_H / 2
-            pkw = dict(fill=BTN_FG, width=1.35, capstyle="round")
-            btn_c.create_line(5*s2+ix, 12*s2+iy, 19*s2+ix, 12*s2+iy, **pkw)
-            btn_c.create_line(12*s2+ix, 5*s2+iy, 12*s2+ix, 19*s2+iy, **pkw)
-            btn_c.create_text(
-                ix + BTN_ICON + BTN_GAP, cy,
-                text=BTN_LABEL, fill=BTN_FG, anchor="w", font=btn_font,
-            )
+            btn_font = tkFont.Font(family=FONT_FAMILY, size=11)
+            tw       = btn_font.measure(BTN_LABEL)
+            btn_w    = BTN_PADX + BTN_ICON + BTN_GAP + tw + BTN_PADX
 
-        def animate_btn(target):
-            if anim[0]: btn_c.after_cancel(anim[0]); anim[0] = None
-            def tick():
-                diff = target - t[0]
-                if abs(diff) < 0.02:
-                    t[0] = target; draw_btn(_hex_interp(BTN_BG, BTN_HOVER, target))
-                    anim[0] = None; return
-                t[0] += diff * 0.3
-                draw_btn(_hex_interp(BTN_BG, BTN_HOVER, t[0]))
-                anim[0] = btn_c.after(16, tick)
-            tick()
+            t    = [0.0]
+            anim = [None]
 
-        def poll_btn():
-            try:
-                mx = btn_c.winfo_pointerx(); my = btn_c.winfo_pointery()
-                bx = btn_c.winfo_rootx();    by = btn_c.winfo_rooty()
-                over = bx <= mx <= bx + btn_w and by <= my <= by + BTN_H
-                tgt  = 1.0 if over else 0.0
-                if abs(t[0] - tgt) > 0.01 and anim[0] is None:
-                    animate_btn(tgt)
-            except tk.TclError:
-                return
-            btn_c.after(30, poll_btn)
+            btn_c = tk.Canvas(outer, width=btn_w+2, height=BTN_H+2,
+                              bg=BG, highlightthickness=0, cursor=CURSOR_HAND)
+            btn_c.pack()
 
-        draw_btn(BTN_BG)
-        btn_c.bind("<Button-1>", lambda e: self._new_project())
-        btn_c.after(100, poll_btn)
+            def draw_btn(bg):
+                btn_c.delete("all")
+                pts = _rrect_pts(1, 1, btn_w+1, BTN_H+1, BTN_R)
+                btn_c.create_polygon(*pts, fill=bg, outline=bg)
+                s2  = BTN_ICON / 24.0
+                ix  = 1 + BTN_PADX
+                iy  = 1 + (BTN_H - BTN_ICON) / 2
+                cy  = 1 + BTN_H / 2
+                pkw = dict(fill=BTN_FG, width=1.35, capstyle="round")
+                btn_c.create_line(5*s2+ix, 12*s2+iy, 19*s2+ix, 12*s2+iy, **pkw)
+                btn_c.create_line(12*s2+ix, 5*s2+iy, 12*s2+ix, 19*s2+iy, **pkw)
+                btn_c.create_text(
+                    ix + BTN_ICON + BTN_GAP, cy,
+                    text=BTN_LABEL, fill=BTN_FG, anchor="w", font=btn_font,
+                )
 
-        _win = _sc.create_window(0, 0, window=outer, anchor="nw")
+            def animate_btn(target):
+                if anim[0]: btn_c.after_cancel(anim[0]); anim[0] = None
+                def tick():
+                    diff = target - t[0]
+                    if abs(diff) < 0.02:
+                        t[0] = target; draw_btn(_hex_interp(BTN_BG, BTN_HOVER, target))
+                        anim[0] = None; return
+                    t[0] += diff * 0.3
+                    draw_btn(_hex_interp(BTN_BG, BTN_HOVER, t[0]))
+                    anim[0] = btn_c.after(16, tick)
+                tick()
+
+            def poll_btn():
+                try:
+                    mx = btn_c.winfo_pointerx(); my = btn_c.winfo_pointery()
+                    bx = btn_c.winfo_rootx();    by = btn_c.winfo_rooty()
+                    over = bx <= mx <= bx + btn_w and by <= my <= by + BTN_H
+                    tgt  = 1.0 if over else 0.0
+                    if abs(t[0] - tgt) > 0.01 and anim[0] is None:
+                        animate_btn(tgt)
+                except tk.TclError:
+                    return
+                btn_c.after(30, poll_btn)
+
+            draw_btn(BTN_BG)
+            btn_c.bind("<Button-1>", lambda e: self._new_project())
+            btn_c.after(100, poll_btn)
+
+            outer.bind("<Configure>", lambda e: _sc.after(10, _layout))
+            _win_ref[0] = _sc.create_window(0, 0, window=outer, anchor="nw")
 
         def _layout(ev=None):
             cw = _sc.winfo_width()
             ch = _sc.winfo_height()
+            compact    = ch < 680
+            new_mode   = "compact" if compact else "normal"
+            if new_mode != _mode[0]:
+                _mode[0] = new_mode
+                _build_inner(compact)
+                _sc.after(10, _layout)
+                return
+            outer = _outer_ref[0]
+            if outer is None:
+                return
             ow = outer.winfo_reqwidth()
             oh = outer.winfo_reqheight()
             x  = max(0, (cw - ow) // 2)
             y  = max(20, (ch - oh) // 2)
-            _sc.coords(_win, x, y)
+            _sc.coords(_win_ref[0], x, y)
             _sc.configure(scrollregion=(0, 0, cw, max(ch, y + oh + 20)))
 
         _sc.bind("<Configure>", lambda e: _sc.after(10, _layout))
-        outer.bind("<Configure>", lambda e: _sc.after(10, _layout))
 
         def _on_wheel(event):
             _sc.yview_scroll(int(-1 * (event.delta / 120)), "units")
