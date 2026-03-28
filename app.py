@@ -242,49 +242,101 @@ class PolicyCoherenceApp:
 
     def _build_sidebar(self, parent):
         self._sidebar_open_states = {}
-        sidebar = tk.Frame(parent, bg="#f5f7fa", width=320)
+        self._sidebar_expanded    = True
+        _EXP_W = 320
+        _COL_W = 80
+
+        sidebar = tk.Frame(parent, bg="#f5f7fa", width=_EXP_W)
         sidebar.pack(side="left", fill="y")
         sidebar.pack_propagate(False)
+        self._sidebar       = sidebar
+        self._sidebar_exp_w = _EXP_W
+        self._sidebar_col_w = _COL_W
 
-        # Header: title & slogan
-        header = tk.Frame(sidebar, bg="#f5f7fa", height=90)
-        header.pack(fill="x")
-        header.pack_propagate(False)
+        # ── Expanded header ────────────────────────────────────────────
+        hdr_exp = tk.Frame(sidebar, bg="#f5f7fa", height=90, cursor=CURSOR_HAND)
+        hdr_exp.pack(fill="x")
+        hdr_exp.pack_propagate(False)
+        self._sidebar_hdr_exp = hdr_exp
 
-        text_col = tk.Frame(header, bg="#f5f7fa")
+        text_col = tk.Frame(hdr_exp, bg="#f5f7fa", cursor=CURSOR_HAND)
         text_col.place(relx=0, rely=0.5, anchor="w", x=20)
 
-        tk.Label(
+        _title_lbl = tk.Label(
             text_col, text="Policy Coherence Kit",
             font=(FONT_FAMILY, 20, "bold"),
-            bg="#f5f7fa", fg="#1f2937", justify="left",
-        ).pack(anchor="w")
+            bg="#f5f7fa", fg="#1f2937", justify="left", cursor=CURSOR_HAND,
+        )
+        _title_lbl.pack(anchor="w")
 
-        tk.Label(
+        _slogan_lbl = tk.Label(
             text_col,
             text="Evaluate interactions between policies using multiple decision-makers",
             font=(FONT_FAMILY, 10),
             bg="#f5f7fa", fg="#a3a3a3", justify="left",
-            wraplength=280,
-        ).pack(anchor="w", pady=(0, 0))
+            wraplength=280, cursor=CURSOR_HAND,
+        )
+        _slogan_lbl.pack(anchor="w")
 
-        # Divider
-        tk.Frame(sidebar, bg="#d3d3d3", height=1).pack(fill="x", pady=(0, 4))
+        for _w in (hdr_exp, text_col, _title_lbl, _slogan_lbl):
+            _w.bind("<Button-1>", lambda e: self._toggle_sidebar())
 
-        # PROJECTS section
-        tk.Label(
-            sidebar, text="PROJECTS",
+        # ── Collapsed header ───────────────────────────────────────────
+        hdr_col = tk.Frame(sidebar, bg="#f5f7fa", height=90, cursor=CURSOR_HAND)
+        hdr_col.pack_propagate(False)
+        self._sidebar_hdr_col = hdr_col
+
+        _PCK_BG  = "#1f2937"
+        _PCK_FG  = "#f5f7fa"
+        _PCK_R   = 6
+        _PCK_PAD = 7
+        _pck_font = tkFont.Font(family=FONT_FAMILY, size=12, weight="bold")
+        _pck_tw   = _pck_font.measure("PCK")
+        _pck_lh   = _pck_font.metrics("linespace")
+        _pck_side = max(_pck_tw + _PCK_PAD * 2, _pck_lh + _PCK_PAD * 2)
+        _pck_bw   = _pck_side
+        _pck_bh   = _pck_side
+
+        pck_c = tk.Canvas(hdr_col, width=_pck_bw, height=_pck_bh,
+                          bg="#f5f7fa", highlightthickness=0, cursor=CURSOR_HAND)
+        pck_c.place(relx=0.5, rely=0.5, anchor="center")
+
+        def _draw_pck():
+            pck_c.delete("all")
+            x1, y1, x2, y2 = 1, 1, _pck_bw-1, _pck_bh-1
+            r = _PCK_R; d = r * 2
+            kw = dict(fill=_PCK_BG, outline=_PCK_BG)
+            pck_c.create_arc(x1,      y1,      x1+d, y1+d, start=90,  extent=90, **kw)
+            pck_c.create_arc(x2-d,    y1,      x2,   y1+d, start=0,   extent=90, **kw)
+            pck_c.create_arc(x1,      y2-d,    x1+d, y2,   start=180, extent=90, **kw)
+            pck_c.create_arc(x2-d,    y2-d,    x2,   y2,   start=270, extent=90, **kw)
+            pck_c.create_rectangle(x1+r, y1, x2-r, y2, fill=_PCK_BG, outline=_PCK_BG)
+            pck_c.create_rectangle(x1, y1+r, x2, y2-r, fill=_PCK_BG, outline=_PCK_BG)
+            pck_c.create_text(_pck_bw//2, _pck_bh//2, text="PCK",
+                              fill=_PCK_FG, font=_pck_font, anchor="center")
+
+        _draw_pck()
+        hdr_col.bind("<Button-1>", lambda e: self._toggle_sidebar())
+        pck_c.bind("<Button-1>",   lambda e: self._toggle_sidebar())
+
+        # ── Divider + PROJECTS label (always in layout for spacing) ──────
+        exp_content = tk.Frame(sidebar, bg="#f5f7fa")
+        exp_content.pack(fill="x")
+        self._sidebar_exp_content = exp_content
+
+        tk.Frame(exp_content, bg="#d3d3d3", height=1).pack(fill="x", pady=(0, 4))
+        self._sidebar_proj_lbl = tk.Label(
+            exp_content, text="PROJECTS",
             font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"),
             bg="#f5f7fa", fg="#a3a3a3", anchor="w",
-        ).pack(fill="x", padx=16, pady=(12, 10))
+        )
+        self._sidebar_proj_lbl.pack(fill="x", padx=16, pady=(12, 10))
 
+        # ── Project list (shared, content differs by state) ────────────
         self._sidebar_proj_list = tk.Frame(sidebar, bg="#f5f7fa")
         self._sidebar_proj_list.pack(fill="x")
 
-        # New Project button pinned to the bottom
-        bottom = tk.Frame(sidebar, bg="#f5f7fa")
-        bottom.pack(side="bottom", fill="x", padx=16, pady=(20, 32))
-
+        # Shared New Project button constants (used by both collapsed + expanded)
         _NP_BG     = "#eaeef4"
         _NP_HOVER  = "#d0dbe7"
         _NP_FG     = "#1f2937"
@@ -297,36 +349,12 @@ class PolicyCoherenceApp:
         _np_font   = tkFont.Font(family=FONT_FAMILY, size=13)
         _np_text_w = _np_font.measure(_NP_LABEL)
         _np_block  = _NP_ICON + _NP_GAP + _np_text_w   # total icon+gap+text width
-        _np_t      = [0.0]   # animation progress 0=normal 1=hover
-        _np_anim   = [None]  # pending after id
 
-        btn_c = tk.Canvas(bottom, height=_NP_H+2, bg="#f5f7fa",
-                          highlightthickness=0, cursor=CURSOR_HAND)
-        btn_c.pack(fill="x")
-
-        def _np_draw(color):
-            btn_c.delete("all")
-            W = btn_c.winfo_width()
-            if W < 2:
-                return
-            H = _NP_H
-            r = _NP_RADIUS
-            s = _NP_ICON / 24.0
-
-            # Proper rounded rect via arcs + fill rectangles (no clipping)
-            x1, y1, x2, y2 = 1, 1, W-1, H-1
-            d = r * 2
-            btn_c.create_arc(x1,    y1,    x1+d, y1+d, start=90,  extent=90,  fill=color, outline=color)
-            btn_c.create_arc(x2-d,  y1,    x2,   y1+d, start=0,   extent=90,  fill=color, outline=color)
-            btn_c.create_arc(x1,    y2-d,  x1+d, y2,   start=180, extent=90,  fill=color, outline=color)
-            btn_c.create_arc(x2-d,  y2-d,  x2,   y2,   start=270, extent=90,  fill=color, outline=color)
-            btn_c.create_rectangle(x1+r, y1,   x2-r, y2,   fill=color, outline=color)
-            btn_c.create_rectangle(x1,   y1+r, x2,   y2-r, fill=color, outline=color)
-
-            ix = (W - _np_block) / 2
-            iy = H / 2
-            ox, oy = ix, iy - _NP_ICON / 2
-
+        def _draw_np_icon(canvas, color, cx, cy):
+            """Draw the folder+plus icon centered at (cx, cy)."""
+            s  = _NP_ICON / 24.0
+            ox = cx - _NP_ICON / 2
+            oy = cy - _NP_ICON / 2
             fp = [
                 4*s+ox,     20*s+oy,
                 2*s+ox,     20*s+oy,
@@ -342,14 +370,51 @@ class PolicyCoherenceApp:
                 20*s+ox,    20*s+oy,
                 4*s+ox,     20*s+oy,
             ]
-            btn_c.create_line(*fp, fill=_NP_FG, width=1.35,
-                              capstyle="round", joinstyle="round")
-            btn_c.create_line(12*s+ox, 10*s+oy, 12*s+ox, 16*s+oy,
-                              fill=_NP_FG, width=1.35, capstyle="round")
-            btn_c.create_line(9*s+ox, 13*s+oy, 15*s+ox, 13*s+oy,
-                              fill=_NP_FG, width=1.35, capstyle="round")
-            btn_c.create_text(ix + _NP_ICON + _NP_GAP, iy, text=_NP_LABEL,
-                              fill=_NP_FG, anchor="w", font=_np_font)
+            canvas.create_line(*fp, fill=color, width=1.35, capstyle="round", joinstyle="round")
+            canvas.create_line(12*s+ox, 10*s+oy, 12*s+ox, 16*s+oy,
+                               fill=color, width=1.35, capstyle="round")
+            canvas.create_line(9*s+ox, 13*s+oy, 15*s+ox, 13*s+oy,
+                               fill=color, width=1.35, capstyle="round")
+
+        # ── Bottom: single New Project button (always packed at bottom) ──
+        self._sidebar_bottom_exp = tk.Frame(sidebar, bg="#f5f7fa")
+        self._sidebar_bottom_exp.pack(side="bottom", fill="x", padx=16, pady=(20, 32))
+
+        _np_t    = [0.0]
+        _np_anim = [None]
+
+        btn_c = tk.Canvas(self._sidebar_bottom_exp, height=_NP_H+2, bg="#f5f7fa",
+                          highlightthickness=0, cursor=CURSOR_HAND)
+        btn_c.pack(fill="x")
+        self._np_btn_c    = btn_c
+        self._np_btn_draw = None  # set after _np_draw is defined
+
+        def _np_draw(color):
+            btn_c.delete("all")
+            W = btn_c.winfo_width()
+            if W < 2:
+                return
+            H = _NP_H
+            r = _NP_RADIUS; d = r * 2
+            x1, y1, x2, y2 = 1, 1, W-1, H-1
+            btn_c.create_arc(x1,    y1,    x1+d, y1+d, start=90,  extent=90,  fill=color, outline=color)
+            btn_c.create_arc(x2-d,  y1,    x2,   y1+d, start=0,   extent=90,  fill=color, outline=color)
+            btn_c.create_arc(x1,    y2-d,  x1+d, y2,   start=180, extent=90,  fill=color, outline=color)
+            btn_c.create_arc(x2-d,  y2-d,  x2,   y2,   start=270, extent=90,  fill=color, outline=color)
+            btn_c.create_rectangle(x1+r, y1,   x2-r, y2,   fill=color, outline=color)
+            btn_c.create_rectangle(x1,   y1+r, x2,   y2-r, fill=color, outline=color)
+            if getattr(self, "_sidebar_expanded", True):
+                # Expanded: icon + label centered together
+                ix = (W - _np_block) / 2
+                iy = H / 2
+                _draw_np_icon(btn_c, _NP_FG, ix + _NP_ICON / 2, iy)
+                btn_c.create_text(ix + _NP_ICON + _NP_GAP, iy, text=_NP_LABEL,
+                                  fill=_NP_FG, anchor="w", font=_np_font)
+            else:
+                # Collapsed: icon only, centered
+                _draw_np_icon(btn_c, _NP_FG, W / 2, H / 2)
+
+        self._np_btn_draw = _np_draw
 
         def _np_animate(target):
             if _np_anim[0]:
@@ -387,6 +452,25 @@ class PolicyCoherenceApp:
         btn_c.bind("<Button-1>",  lambda e: self._new_project())
         btn_c.after(100, _np_poll)
 
+        self._refresh_sidebar_projects()
+
+    def _toggle_sidebar(self):
+        self._sidebar_expanded = not self._sidebar_expanded
+        if self._sidebar_expanded:
+            self._sidebar_hdr_col.pack_forget()
+            self._sidebar_hdr_exp.pack(fill="x", before=self._sidebar_exp_content)
+            self._sidebar_proj_lbl.config(fg="#a3a3a3")
+            self._sidebar_bottom_exp.pack_configure(padx=16, pady=(20, 32))
+            self._sidebar.config(width=self._sidebar_exp_w)
+        else:
+            self._sidebar_hdr_exp.pack_forget()
+            self._sidebar_hdr_col.pack(fill="x", before=self._sidebar_exp_content)
+            self._sidebar_proj_lbl.config(fg="#f5f7fa")   # invisible text, keeps spacing
+            self._sidebar_bottom_exp.pack_configure(padx=12, pady=(20, 32))
+            self._sidebar.config(width=self._sidebar_col_w)
+        # Redraw NP button for new state
+        if self._np_btn_draw:
+            self._np_btn_c.event_generate("<Configure>")
         self._refresh_sidebar_projects()
 
     def _build_toolbar(self):
@@ -592,13 +676,46 @@ class PolicyCoherenceApp:
 
     def _refresh_sidebar_projects(self):
         """Rebuild the project rows in the sidebar, preserving open/close state."""
-        # Preserve which projects are currently open
         if not hasattr(self, "_sidebar_open_states"):
             self._sidebar_open_states = {}
 
         for w in self._sidebar_proj_list.winfo_children():
             w.destroy()
 
+        # ── Collapsed view ─────────────────────────────────────────────
+        if not getattr(self, "_sidebar_expanded", True):
+            for proj in self.projects:
+                abbrev = proj.name[:2].upper()
+                _BG    = "#426387"
+                _FG    = "#f5f7fa"
+                _R     = 6
+                _PAD   = 10
+                _f     = tkFont.Font(family=FONT_FAMILY, size=12, weight="bold")
+                _tw    = _f.measure(abbrev)
+                _lh    = _f.metrics("linespace")
+                _side  = max(_tw + _PAD * 2, _lh + _PAD * 2)
+                bw = _side
+                bh = _side
+                wrap = tk.Frame(self._sidebar_proj_list, bg="#f5f7fa")
+                wrap.pack(fill="x", pady=4)
+                bc = tk.Canvas(wrap, width=bw, height=bh,
+                               bg="#f5f7fa", highlightthickness=0, cursor=CURSOR_HAND)
+                bc.pack()
+                r = _R; d = r * 2
+                x1, y1, x2, y2 = 1, 1, bw-1, bh-1
+                kw = dict(fill=_BG, outline=_BG)
+                bc.create_arc(x1,    y1,    x1+d, y1+d, start=90,  extent=90, **kw)
+                bc.create_arc(x2-d,  y1,    x2,   y1+d, start=0,   extent=90, **kw)
+                bc.create_arc(x1,    y2-d,  x1+d, y2,   start=180, extent=90, **kw)
+                bc.create_arc(x2-d,  y2-d,  x2,   y2,   start=270, extent=90, **kw)
+                bc.create_rectangle(x1+r, y1, x2-r, y2, fill=_BG, outline=_BG)
+                bc.create_rectangle(x1, y1+r, x2, y2-r, fill=_BG, outline=_BG)
+                bc.create_text(bw // 2, bh // 2, text=abbrev,
+                               fill=_FG, font=_f, anchor="center")
+                bc.bind("<Button-1>", lambda e, p=proj: self._proj_nb.select(p.frame))
+            return
+
+        # ── Expanded view ──────────────────────────────────────────────
         if not self.projects:
             tk.Label(
                 self._sidebar_proj_list,
@@ -620,18 +737,20 @@ class PolicyCoherenceApp:
             row.pack(fill="x", padx=20, pady=1)
 
             chevron = self._make_chevron(row, "down" if is_open else "right")
-            chevron.pack(side="left", padx=(0, 4))
+            chevron.grid(row=0, column=0, padx=(0, 4), pady=(3, 0), sticky="n")
 
             folder = self._make_folder(row)
-            folder.pack(side="left", padx=(0, 6))
+            folder.grid(row=0, column=1, padx=(0, 6), pady=(3, 0), sticky="n")
 
             name_lbl = tk.Label(
                 row, text=proj.name,
                 font=(FONT_FAMILY, 14),
-                bg="#f5f7fa", fg="#2c3b4e", anchor="w",
-                justify="left", wraplength=210,
+                bg="#f5f7fa", fg="#2c3b4e", anchor="nw",
+                justify="left", wraplength=236,
+                pady=0,
             )
-            name_lbl.pack(side="left", fill="x", expand=True)
+            name_lbl.grid(row=0, column=2, sticky="nw")
+            row.grid_columnconfigure(2, weight=1)
 
             # Collapsible content
             content = tk.Frame(self._sidebar_proj_list, bg="#f5f7fa")
@@ -727,45 +846,94 @@ class PolicyCoherenceApp:
             dm_list_frame = tk.Frame(content, bg="#f5f7fa")
             dm_list_frame.pack(fill="x", pady=(1, 0))
 
+            _DM_ITEM_RR    = 5
+            _DM_ITEM_HOVER = "#eaeef4"
+
             for matrix in proj.matrices:
-                dm_item = tk.Frame(dm_list_frame, bg="#f5f7fa", cursor=CURSOR_HAND)
-                dm_item.pack(fill="x", padx=20, pady=1)
+                dm_item_wrap = tk.Frame(dm_list_frame, bg="#f5f7fa")
+                dm_item_wrap.pack(fill="x", padx=20, pady=1)
+
+                _item_t       = [0.0]
+                _item_anim    = [None]
+                _item_bg_itms = []
+
+                dm_item = tk.Canvas(dm_item_wrap, height=36, bg="#f5f7fa",
+                                    highlightthickness=0, cursor=CURSOR_HAND)
+                dm_item.pack(fill="x")
 
                 user_ic = self._make_user_icon(dm_item, bg="#f5f7fa")
-                user_ic.pack(side="left", padx=(28, 4))
+                u_win = dm_item.create_window(28, 18, anchor="w", window=user_ic)
 
                 dm_name_lbl = tk.Label(
                     dm_item, text=matrix.decision_maker,
                     font=(FONT_FAMILY, 13),
-                    bg="#f5f7fa", fg="#30455c", anchor="w",
-                    justify="left", wraplength=230,
+                    bg="#f5f7fa", fg="#426387", anchor="w",
+                    justify="left", wraplength=210,
+                    pady=0,
                 )
-                dm_name_lbl.pack(side="left", fill="x", expand=True, pady=8)
+                n_win = dm_item.create_window(50, 18, anchor="w", window=dm_name_lbl)
 
-                _item_t    = [0.0]
-                _item_anim = [None]
+                def _resize_canvas(e, cv=dm_item, lbl=dm_name_lbl,
+                                   uw=u_win, nw=n_win):
+                    lh = lbl.winfo_reqheight()
+                    new_h = max(36, lh + 16)
+                    cv.config(height=new_h)
+                    cy = new_h // 2
+                    cv.coords(uw, 28, cy)
+                    cv.coords(nw, 50, cy)
 
-                _DM_ITEM_HOVER = "#eaeef4"
+                dm_name_lbl.bind("<Configure>", _resize_canvas)
 
-                def _dm_item_animate(target, f=dm_item, l=dm_name_lbl, u=user_ic,
-                                     t=_item_t, anim=_item_anim):
+                def _item_rebuild_rr(color, cv=dm_item, bi=_item_bg_itms,
+                                     uw=u_win, nw=n_win,
+                                     u=user_ic, lbl=dm_name_lbl):
+                    for item in bi:
+                        try: cv.delete(item)
+                        except tk.TclError: pass
+                    bi.clear()
+                    W = cv.winfo_width()
+                    H = cv.winfo_height()
+                    if W < 2 or H < 2:
+                        return
+                    r = _DM_ITEM_RR; d = r * 2
+                    x1, y1, x2, y2 = 1, 1, W-1, H-1
+                    kw = dict(fill=color, outline=color)
+                    bi.extend([
+                        cv.create_arc(x1,    y1,    x1+d, y1+d, start=90,  extent=90, **kw),
+                        cv.create_arc(x2-d,  y1,    x2,   y1+d, start=0,   extent=90, **kw),
+                        cv.create_arc(x1,    y2-d,  x1+d, y2,   start=180, extent=90, **kw),
+                        cv.create_arc(x2-d,  y2-d,  x2,   y2,   start=270, extent=90, **kw),
+                        cv.create_rectangle(x1+r, y1,   x2-r, y2,   **kw),
+                        cv.create_rectangle(x1,   y1+r, x2,   y2-r, **kw),
+                    ])
+                    cv.tag_raise(uw)
+                    cv.tag_raise(nw)
+                    try: u.config(bg=color); lbl.config(bg=color)
+                    except tk.TclError: pass
+
+                def _item_update_color(color, cv=dm_item, bi=_item_bg_itms,
+                                       u=user_ic, lbl=dm_name_lbl):
+                    for item in bi:
+                        try: cv.itemconfig(item, fill=color, outline=color)
+                        except tk.TclError: pass
+                    try: u.config(bg=color); lbl.config(bg=color)
+                    except tk.TclError: pass
+
+                def _dm_item_animate(target, cv=dm_item, t=_item_t, anim=_item_anim,
+                                     upd=_item_update_color):
                     if anim[0]:
-                        f.after_cancel(anim[0])
+                        cv.after_cancel(anim[0])
                         anim[0] = None
                     def tick():
                         diff = target - t[0]
                         if abs(diff) < 0.02:
                             t[0] = target
-                            c = _hex_interp(_NORMAL_BG, _DM_ITEM_HOVER, target)
-                            try: f.config(bg=c); l.config(bg=c); u.config(bg=c)
-                            except tk.TclError: pass
+                            upd(_hex_interp(_NORMAL_BG, _DM_ITEM_HOVER, target))
                             anim[0] = None
                             return
                         t[0] += diff * 0.3
-                        c = _hex_interp(_NORMAL_BG, _DM_ITEM_HOVER, t[0])
-                        try: f.config(bg=c); l.config(bg=c); u.config(bg=c)
-                        except tk.TclError: return
-                        anim[0] = f.after(16, tick)
+                        upd(_hex_interp(_NORMAL_BG, _DM_ITEM_HOVER, t[0]))
+                        anim[0] = cv.after(16, tick)
                     tick()
 
                 def _dm_hover_in(e, animate=_dm_item_animate):
@@ -779,7 +947,11 @@ class PolicyCoherenceApp:
                     if hasattr(m, "_tab"):
                         p.notebook.select(m._tab)
 
-                for w in (dm_item, dm_name_lbl, user_ic):
+                dm_item.bind("<Configure>", lambda e, rb=_item_rebuild_rr, t=_item_t:
+                             rb(_hex_interp(_NORMAL_BG, _DM_ITEM_HOVER, t[0])))
+                dm_item.after(50, lambda rb=_item_rebuild_rr: rb(_NORMAL_BG))
+
+                for w in (dm_item_wrap, dm_item, dm_name_lbl, user_ic):
                     w.bind("<Enter>", _dm_hover_in)
                     w.bind("<Leave>", _dm_hover_out)
                     w.bind("<Button-1>", _dm_click)

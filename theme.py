@@ -3,7 +3,7 @@
 # ── Sidebar: Project title (app name) ────────────────────────────────────────
 PROJECT_TITLE_COLOR     = "#1f2937"
 PROJECT_TITLE_TEXT_SIZE = 20          # pt
-SIDEBAR_HEADER_HEIGHT   = 90          # px — fixed height of the title/slogan section
+SIDEBAR_HEADER_HEIGHT   = 90          # px — fixed height of the title/slogan section (expanded and collapsed)
 
 # ── Sidebar: Slogan ───────────────────────────────────────────────────────────
 SLOGAN_COLOR     = "#a3a3a3"
@@ -22,7 +22,7 @@ PROJ_NAME_COLOR     = "#2c3b4e"
 PROJ_NAME_TEXT_SIZE = 14              # pt
 
 # ── Sidebar: DM name rows ─────────────────────────────────────────────────────
-DM_NAME_COLOR     = "#30455c"
+DM_NAME_COLOR     = "#426387"
 DM_NAME_TEXT_SIZE = 13                # pt
 
 # ── Sidebar: Icons (chevron + folder) ────────────────────────────────────────
@@ -56,10 +56,36 @@ RADIUS_PROJECT_HEADER   = 0     # Project header bar (flat, full-width)
 RADIUS_DM_ROW           = 4     # Decision-maker hover rows
 RADIUS_DIALOG           = 6     # Modal dialogs (e.g. New Project name dialog)
 
+# ── Sidebar: collapsed state ──────────────────────────────────────────────────
+SIDEBAR_EXPANDED_WIDTH    = 320          # px
+SIDEBAR_COLLAPSED_WIDTH   = 80           # px
+
+# PCK badge (shown in header when sidebar is collapsed)
+PCK_BADGE_BG      = "#1f2937"
+PCK_BADGE_FG      = "#f5f7fa"
+PCK_BADGE_RADIUS  = 6                    # px
+PCK_BADGE_PADDING = 7                    # px — inner padding on each side
+PCK_BADGE_TEXT    = "PCK"
+PCK_BADGE_TEXT_SIZE = 12                 # pt, bold
+
+# Project name badge (shown per project when sidebar is collapsed)
+PROJ_BADGE_BG      = "#426387"
+PROJ_BADGE_FG      = "#f5f7fa"
+PROJ_BADGE_RADIUS  = 5                   # px
+PROJ_BADGE_PADDING = 3                   # px — inner padding on each side
+PROJ_BADGE_TEXT_SIZE = 9                 # pt
+PROJ_BADGE_WORDS   = 2                   # number of words from project name to show
+
+# Collapsed bottom "+" icon
+COLLAPSED_PLUS_COLOR       = "#a3a3a3"
+COLLAPSED_PLUS_STROKE      = 1.5
+COLLAPSED_PLUS_CANVAS_SIZE = 28          # px
+
 # ── Misc ──────────────────────────────────────────────────────────────────────
 BG_COLOR      = "#f5f7fa"
 GREY          = "#808080"
 DIVIDER_COLOR = "#d3d3d3"
 MAIN_COLOR    = "#1F2937"
+
 
 
