@@ -1359,11 +1359,9 @@ class PolicyCoherenceApp:
         THUMB_BG  = "#e8eef4"
         ACT_FG    = "#30455c"
         INACT_FG  = "#ffffff"
-        ICON_LW   = 1.4
         PILL_H    = 30
         THUMB_PAD = 3
         ICON_SZ   = 16
-        _s        = ICON_SZ / 24.0
         SEG_W     = ICON_SZ + 28          # icon + 14px padding each side
         PILL_W    = SEG_W * 2
 
@@ -1378,49 +1376,42 @@ class PolicyCoherenceApp:
             c.create_oval(x2 - 2*r, y1, x2, y2, fill=fill, outline="")
             c.create_rectangle(x1 + r, y1, x2 - r, y2, fill=fill, outline="")
 
-        def _icon_users(c, ox, oy, color):
-            lkw = dict(fill=color, width=ICON_LW, capstyle="round", joinstyle="round")
-            # head: circle cx=9 cy=7 r=4
-            hr = 4 * _s
-            c.create_oval(9*_s+ox-hr, 7*_s+oy-hr, 9*_s+ox+hr, 7*_s+oy+hr,
-                          outline=color, width=ICON_LW, fill="")
-            # front body
-            body = [(16,21),(16,19),(12,15),(6,15),(2,19),(2,21)]
-            pts  = [v for x_,y_ in body for v in (x_*_s+ox, y_*_s+oy)]
-            c.create_line(*pts, **lkw, smooth=True)
-            # back head arc (left portion of circle at (20,7) r=4)
-            c.create_arc((20-4)*_s+ox, (7-4)*_s+oy, (20+4)*_s+ox, (7+4)*_s+oy,
-                         start=125, extent=110, style="arc", outline=color, width=ICON_LW)
-            # back body
-            body2 = [(22,21),(22,19),(19,15.13)]
-            pts2  = [v for x_,y_ in body2 for v in (x_*_s+ox, y_*_s+oy)]
-            c.create_line(*pts2, **lkw, smooth=True)
+        _s      = ICON_SZ / 24.0
+        ICON_LW = 1.4
 
-        def _icon_chart_spline(c, ox, oy, color):
+        def _icon_circle_user(c, ox, oy, color):
+            """Lucide 'user': head circle + body path. Head bottom y=11, body top y=15 → 4-unit gap."""
             lkw = dict(fill=color, width=ICON_LW, capstyle="round", joinstyle="round")
-            # vertical axis
+            # Head: circle cx=12, cy=7, r=4
+            cr = 4*_s
+            c.create_oval(12*_s+ox-cr, 7*_s+oy-cr, 12*_s+ox+cr, 7*_s+oy+cr,
+                          outline=color, fill="", width=ICON_LW)
+            # Body: M19 21v-2a4 4 ... H9 a4 4 ... v2
+            # Key points: (19,21)→(19,19)→(15,15)→(9,15)→(5,19)→(5,21)
+            pts = [(19,21),(19,19),(15,15),(9,15),(5,19),(5,21)]
+            c.create_line(*[v for x_,y_ in pts for v in (x_*_s+ox, y_*_s+oy)],
+                          **lkw, smooth=True)
+
+        def _icon_chart_network(c, ox, oy, color):
+            """Lucide 'chart-network': axes + 3 node dots + connecting lines."""
+            lkw = dict(fill=color, width=ICON_LW, capstyle="round", joinstyle="round")
+            # L-shaped axes: vertical (3,3)→(3,19), corner arc, horizontal (5,21)→(21,21)
             c.create_line(3*_s+ox, 3*_s+oy, 3*_s+ox, 19*_s+oy, **lkw)
-            # corner arc r=2
-            c.create_arc(3*_s+ox, 19*_s+oy, 7*_s+ox, 23*_s+oy,
-                         start=90, extent=90, style="arc", outline=color, width=ICON_LW)
-            # horizontal axis
+            cpts = []
+            for i in range(11):
+                a = math.radians(180 + 90*i/10)
+                cpts += [5*_s+ox + 2*_s*math.cos(a), 19*_s+oy - 2*_s*math.sin(a)]
+            c.create_line(*cpts, **lkw)
             c.create_line(5*_s+ox, 21*_s+oy, 21*_s+ox, 21*_s+oy, **lkw)
-            # spline (sampled cubic bezier segments)
-            def _bez(P0, C1, C2, P1, n=14):
-                out = []
-                for i in range(n):
-                    t  = i / (n - 1)
-                    mt = 1 - t
-                    x_ = mt**3*P0[0]+3*mt**2*t*C1[0]+3*mt*t**2*C2[0]+t**3*P1[0]
-                    y_ = mt**3*P0[1]+3*mt**2*t*C1[1]+3*mt*t**2*C2[1]+t**3*P1[1]
-                    out.extend([x_*_s+ox, y_*_s+oy])
-                return out
-            spline = (
-                _bez((7,16),(7.5,14),(8.5,9),(11,9))
-                + _bez((11,9),(13,9),(13,12),(15,12))
-                + _bez((15,12),(17.5,12),(19.5,7),(20,5))
-            )
-            c.create_line(*spline, **lkw)
+            # Connecting lines between nodes (boundary-to-boundary as in SVG)
+            c.create_line(13.11*_s+ox, 7.664*_s+oy, 14.89*_s+ox, 10.336*_s+oy, **lkw)
+            c.create_line(14.162*_s+ox, 12.788*_s+oy, 10.838*_s+ox, 14.212*_s+oy, **lkw)
+            c.create_line(20*_s+ox, 4*_s+oy, 13.94*_s+ox, 5.515*_s+oy, **lkw)
+            # Node circles (r=2) — same approach as logo badge dots
+            cr = 2*_s
+            ckw = dict(outline=color, fill="", width=ICON_LW)
+            for nx, ny in [(12,6), (16,12), (9,15)]:
+                c.create_oval(nx*_s+ox-cr, ny*_s+oy-cr, nx*_s+ox+cr, ny*_s+oy+cr, **ckw)
 
         def _draw_toggle(active_dm: bool):
             toggle_c.delete("all")
@@ -1433,8 +1424,8 @@ class PolicyCoherenceApp:
             dm_col  = ACT_FG if active_dm else INACT_FG
             an_col  = INACT_FG if active_dm else ACT_FG
             icon_oy = (PILL_H - ICON_SZ) / 2
-            _icon_users(toggle_c,        (SEG_W - ICON_SZ) / 2,         icon_oy, dm_col)
-            _icon_chart_spline(toggle_c, SEG_W + (SEG_W - ICON_SZ) / 2, icon_oy, an_col)
+            _icon_circle_user(toggle_c,   (SEG_W - ICON_SZ) / 2,         icon_oy, dm_col)
+            _icon_chart_network(toggle_c, SEG_W + (SEG_W - ICON_SZ) / 2, icon_oy, an_col)
 
         def _set_nav_active(is_analysis: bool):
             _draw_toggle(not is_analysis)
