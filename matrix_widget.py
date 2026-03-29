@@ -6,7 +6,6 @@
 # =============================================================================
 
 import tkinter as tk
-from tkinter import ttk
 from typing import Callable, Optional
 
 from models import PolicyMatrix
@@ -191,8 +190,9 @@ class MatrixWidget(tk.Frame):
         self._row_canvas:  Optional[tk.Canvas] = None   # row headers
         self._legend_cvs:  Optional[tk.Canvas] = None   # legend strip
 
-        self._combo:       Optional[ttk.Combobox] = None
-        self._tooltip_win: Optional[tk.Toplevel]  = None
+        self._combo:            Optional[tk.Toplevel] = None
+        self._combo_close_fn                        = None
+        self._tooltip_win: Optional[tk.Toplevel]    = None
 
         # x offset within col/main canvases (centering for n > 5)
         self._ox: int = _PADX
@@ -305,6 +305,10 @@ class MatrixWidget(tk.Frame):
         main.bind("<Configure>", self._on_configure)
         main.bind("<Button-1>",  self._on_canvas_click)
 
+        for cvs in (row_cvs, col_cvs):
+            cvs.bind("<Button-1>",
+                     lambda e: self._close_active_combo() or "break", add="+")
+
         self.after_idle(self._redraw)
 
     # ------------------------------------------------------------------
@@ -335,14 +339,14 @@ class MatrixWidget(tk.Frame):
     # Smooth scrolling
     # ------------------------------------------------------------------
 
-    _SCROLL_STEP   = 0.05
-    _SCROLL_DECAY  = 0.92
-    _SCROLL_CUTOFF = 0.00005
-    _SCROLL_FRAME  = 8          # ~120 fps for silky smooth animation
+    _SCROLL_STEP   = 0.15
+    _SCROLL_DECAY  = 0.85
+    _SCROLL_CUTOFF = 0.0002
+    _SCROLL_FRAME  = 16         # ~60 fps
 
     def _add_scroll_velocity(self, ticks: float):
         self._scroll_vy += ticks * self._SCROLL_STEP
-        self._scroll_vy = max(-0.15, min(0.15, self._scroll_vy))
+        self._scroll_vy = max(-0.5, min(0.5, self._scroll_vy))
         if self._scroll_anim is None:
             self._scroll_tick()
 
@@ -380,9 +384,9 @@ class MatrixWidget(tk.Frame):
         # x offset (centering for n > 5)
         if n > 5:
             total_cells_w = n * (cw + _GAP)
-            self._ox = max(_PADX, (canvas_w - total_cells_w) // 2)
+            self._ox = max(0, (canvas_w - total_cells_w) // 2)
         else:
-            self._ox = _PADX
+            self._ox = 0
 
         # Scroll regions
         content_w = self._ox + n * (cw + _GAP) + _PADX
@@ -532,19 +536,24 @@ class MatrixWidget(tk.Frame):
                 x1, y1, x2, y2 = self._cell_bbox(i, j)
 
                 if is_diag:
-                    bg   = RATING_COLORS[DIAGONAL_VALUE]
-                    fg   = RATING_TEXT_COLORS[DIAGONAL_VALUE]
+                    bg   = "#f5f5f5"
+                    fg   = "#a3a3a3"
                     text = DIAGONAL_VALUE
                 elif value:
-                    bg   = RATING_COLORS.get(value, "#fafafa")
+                    bg   = RATING_COLORS.get(value, "#ffffff")
                     fg   = RATING_TEXT_COLORS.get(value, COLOR_TEXT)
                     text = value
                 else:
-                    bg   = "#fafafa"
+                    bg   = "#ffffff"
                     fg   = "#a3a3a3"
                     text = "--"
 
-                outline = "#f5f5f5" if not value and not is_diag else ""
+                if is_diag:
+                    outline = "#e6e6e6"
+                elif value:
+                    outline = "#f5f5f5"
+                else:
+                    outline = "#f5f5f5"
                 rid = _round_rect(canvas, x1, y1, x2, y2, _CELL_RADIUS,
                                   fill=bg, outline=outline)
                 tid = canvas.create_text((x1 + x2) // 2, (y1 + y2) // 2,
@@ -553,17 +562,17 @@ class MatrixWidget(tk.Frame):
                                         fill=fg)
                 # Chevron-down icon at right of cell (all selectable/non-diagonal cells)
                 if not is_diag:
-                    cw, ch  = 9, 5          # chevron width and height
-                    pad     = 10            # distance from right edge
+                    cw, ch  = 8, 4          # chevron width and height
+                    pad     = 12            # distance from right edge
                     cx      = x2 - pad
                     cy      = (y1 + y2) // 2
                     c1 = canvas.create_line(cx - cw//2, cy - ch//2,
                                             cx,          cy + ch//2,
-                                            fill="#e6e6e6", width=1.35,
+                                            fill="#a3a3a3", width=1.35,
                                             capstyle="round", joinstyle="round")
                     c2 = canvas.create_line(cx,          cy + ch//2,
                                             cx + cw//2,  cy - ch//2,
-                                            fill="#e6e6e6", width=1.35,
+                                            fill="#a3a3a3", width=1.35,
                                             capstyle="round", joinstyle="round")
                     self._cell_chevrons[(i, j)] = (c1, c2)
                 self._cell_rects[(i, j)] = rid
@@ -574,6 +583,10 @@ class MatrixWidget(tk.Frame):
     # ------------------------------------------------------------------
 
     def _on_canvas_click(self, event):
+        if self._combo is not None:
+            self._close_active_combo()
+            return "break"
+
         main = self._canvas
         cx   = main.canvasx(event.x)
         cy   = main.canvasy(event.y)
@@ -597,42 +610,90 @@ class MatrixWidget(tk.Frame):
         if self._combo is not None:
             return
 
-        canvas  = self._canvas
-        matrix  = self._matrix
+        canvas = self._canvas
+        matrix = self._matrix
         x1, y1, x2, y2 = self._cell_bbox(i, j)
+        cell_w = x2 - x1
 
-        screen_x = int(x1 - canvas.canvasx(0))
-        screen_y = int(y1 - canvas.canvasy(0))
-        cell_w   = x2 - x1
-        cell_h   = y2 - y1
+        _ITEM_H = 38
+        _PAD    = 1
+        popup_h = len(COHERENCE_RATINGS) * _ITEM_H + _PAD * 2
 
-        var   = tk.StringVar(value=matrix.get_rating(i, j))
-        combo = ttk.Combobox(canvas, textvariable=var,
-                             values=COHERENCE_RATINGS,
-                             state="readonly",
-                             font=(FONT_FAMILY, _CELL_FONT_SIZE))
-        combo.place(x=screen_x, y=screen_y, width=cell_w, height=cell_h)
-        combo.focus_set()
-        combo.event_generate("<Button-1>")
+        cell_top_screen_y = canvas.winfo_rooty() + int(y1 - canvas.canvasy(0))
+        cell_bot_screen_y = canvas.winfo_rooty() + int(y2 - canvas.canvasy(0))
+        screen_x          = canvas.winfo_rootx() + int(x1 - canvas.canvasx(0))
+        screen_h          = self.winfo_screenheight()
 
-        def _commit(e=None):
-            selected = var.get()
-            if selected:
-                matrix.set_rating(i, j, selected)
-                self._on_change(i, j, selected)
-                self._update_cell_display(i, j, selected)
-            _close()
+        # Show above the cell if not enough room below
+        if cell_bot_screen_y + popup_h + 4 > screen_h - 20:
+            screen_y = cell_top_screen_y - popup_h - 4
+        else:
+            screen_y = cell_bot_screen_y + 4
+
+        # Highlight active cell
+        canvas.itemconfig(self._cell_rects[(i, j)], outline="#426387")
+
+        popup = tk.Toplevel(self)
+        popup.wm_overrideredirect(True)
+        popup.configure(bg="#e0e0e0")
+        popup.wm_geometry(f"{cell_w}x{popup_h}+{screen_x}+{screen_y}")
+
+        for idx, rating in enumerate(COHERENCE_RATINGS):
+            lbl = tk.Label(popup, text=rating, bg="white", fg=COLOR_TEXT,
+                           font=(FONT_FAMILY, _CELL_FONT_SIZE),
+                           anchor="w", padx=12)
+            lbl.place(x=_PAD, y=_PAD + idx * _ITEM_H,
+                      width=cell_w - _PAD * 2, height=_ITEM_H)
+
+            def _on_enter(e, b=lbl):  b.configure(bg="#f0f4f8")
+            def _on_leave(e, b=lbl):  b.configure(bg="white")
+            def _on_pick(e, r=rating):
+                matrix.set_rating(i, j, r)
+                self._on_change(i, j, r)
+                self._update_cell_display(i, j, r)
+                _close()
+
+            lbl.bind("<Enter>",     _on_enter)
+            lbl.bind("<Leave>",     _on_leave)
+            lbl.bind("<Button-1>",  _on_pick)
+
+        root    = self.winfo_toplevel()
+        _bid    = [None]
 
         def _close(e=None):
             if self._combo is not None:
-                self._combo.destroy()
-                self._combo = None
-            self._canvas.focus_set()
+                if _bid[0]:
+                    root.unbind("<Button-1>", _bid[0])
+                    _bid[0] = None
+                canvas.itemconfig(self._cell_rects[(i, j)], outline="#f5f5f5")
+                try:
+                    self._combo.destroy()
+                except Exception:
+                    pass
+                self._combo          = None
+                self._combo_close_fn = None
+            if self._canvas:
+                self._canvas.focus_set()
 
-        combo.bind("<<ComboboxSelected>>", _commit)
-        combo.bind("<FocusOut>",           lambda e: self.after(50, _close))
-        combo.bind("<Escape>",             _close)
-        self._combo = combo
+        self._combo          = popup
+        self._combo_close_fn = _close
+
+        _bid[0] = root.bind("<Button-1>", lambda e: _close(), "+")
+
+        popup.bind("<Escape>", _close)
+
+    def _close_active_combo(self, e=None):
+        if self._combo_close_fn is not None:
+            self._combo_close_fn()
+        elif self._combo is not None:
+            try:
+                self._combo.grab_release()
+                self._combo.destroy()
+            except Exception:
+                pass
+            self._combo = None
+            if self._canvas:
+                self._canvas.focus_set()
 
     # ------------------------------------------------------------------
     # Tooltip
@@ -673,9 +734,9 @@ class MatrixWidget(tk.Frame):
 
     def _update_cell_display(self, i: int, j: int, value: str):
         canvas = self._canvas
-        bg = RATING_COLORS.get(value, "#fafafa")
+        bg = RATING_COLORS.get(value, "#ffffff")
         fg = RATING_TEXT_COLORS.get(value, COLOR_TEXT)
-        canvas.itemconfig(self._cell_rects[(i, j)], fill=bg)
+        canvas.itemconfig(self._cell_rects[(i, j)], fill=bg, outline="#f5f5f5")
         canvas.itemconfig(self._cell_texts[(i, j)], text=value, fill=fg)
 
     def refresh_cell(self, row: int, col: int):
