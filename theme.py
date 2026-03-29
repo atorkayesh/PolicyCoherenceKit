@@ -231,11 +231,14 @@ TAB_TEXT_SIZE    = 12          # pt
 # ── Status bar ("Ready") — bottom of notebook content area ───────────────────
 STATUSBAR_BG           = "#ffffff"   # background
 STATUSBAR_FG           = "#a6bcd3"   # text color
-STATUSBAR_TEXT_SIZE    = 11          # pt
-STATUSBAR_HEIGHT       = 33          # px
+STATUSBAR_TEXT_SIZE    = 10          # pt
+STATUSBAR_HEIGHT       = 35          # px
 STATUSBAR_DIVIDER_COLOR = "#e6e6e6"  # 1px top divider
 
 # ── Matrix widget ────────────────────────────────────────────────────────────
+MATRIX_PADX           = 32      # px — right padding (cell area to widget right edge)
+MATRIX_HDR_LEFT_PAD   = 28      # px — left padding (sidebar to row-header column)
+MATRIX_HDR_CELL_GAP   = 5       # px — gap between row-header column and first cell
 MATRIX_CELL_H         = 40      # px — cell height (also used for col/row header height)
 MATRIX_HDR_W          = 120     # px — first column (P1, P2…) width
 MATRIX_CELL_W_LARGE   = 160     # px — cell width when number of policies > 5

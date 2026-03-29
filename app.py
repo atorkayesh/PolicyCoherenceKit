@@ -1316,12 +1316,12 @@ class PolicyCoherenceApp:
 
     def _build_statusbar(self):
         self._status_var = tk.StringVar(value="Ready")
-        bar = tk.Frame(self._content, bg="#ffffff", height=36)
+        bar = tk.Frame(self._content, bg="#ffffff", height=35)
         bar.pack(fill="x", side="bottom")
         bar.pack_propagate(False)
         tk.Frame(bar, bg="#e6e6e6", height=1).pack(fill="x", side="top")
         tk.Label(bar, textvariable=self._status_var,
-                 font=(FONT_FAMILY, 11, "normal"),
+                 font=tkFont.Font(family=FONT_FAMILY, size=10, weight="normal"),
                  bg="#ffffff", fg="#a6bcd3",
                  anchor="w", padx=12).pack(fill="both", expand=True)
 

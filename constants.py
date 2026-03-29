@@ -69,6 +69,7 @@ FONT_SIZE_TITLE  = 14
 # -----------------------------------------------------------------------------
 CELL_WIDTH   = 14   # width of each data cell
 HEADER_WIDTH = 14   # width of row/column header labels
+MATRIX_PADX  = 32   # px — left / right padding around the matrix grid
 
 # -----------------------------------------------------------------------------
 # Application colour palette
