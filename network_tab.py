@@ -25,6 +25,7 @@ from constants import (
     FONT_SIZE_HEADER,
     COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_ACCENT2,
     COLOR_TEXT, COLOR_TEXT_LIGHT, COLOR_BORDER,
+    CURSOR_HAND,
 )
 
 # Visual constants
@@ -391,7 +392,7 @@ class NetworkTab(tk.Frame):
             command=self._save_network,
             font=(FONT_FAMILY, FONT_SIZE_SMALL),
             bg=COLOR_PANEL, fg=COLOR_ACCENT,
-            relief="flat", padx=8, pady=3, cursor="hand2",
+            relief="flat", padx=8, pady=3, cursor=CURSOR_HAND,
         ).pack(side="right")
 
     # ------------------------------------------------------------------

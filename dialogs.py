@@ -14,6 +14,7 @@ from constants import (
     FONT_SIZE_HEADER, FONT_SIZE_TITLE,
     COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_TEXT,
     COLOR_TEXT_LIGHT, COLOR_BUTTON, COLOR_BUTTON_FG,
+    CURSOR_HAND,
 )
 
 
@@ -32,7 +33,7 @@ def style_button(btn: tk.Button, danger: bool = False):
         relief="flat",
         padx=12, pady=5,
         font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-        cursor="hand2",
+        cursor=CURSOR_HAND,
     )
 
 
@@ -162,7 +163,7 @@ class NewMatrixDialog(tk.Toplevel):
             activebackground=COLOR_PANEL,
             relief="flat", padx=12, pady=5,
             font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-            cursor="hand2",
+            cursor=CURSOR_HAND,
         )
         cancel_btn.pack(side="left", padx=(0, 8))
 
@@ -318,7 +319,7 @@ class _SimpleInputDialog(tk.Toplevel):
             bg=COLOR_PANEL, fg=COLOR_TEXT,
             relief="flat", padx=10, pady=4,
             font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-            cursor="hand2",
+            cursor=CURSOR_HAND,
         )
         cancel_btn.pack(side="left", padx=(0, 6))
 

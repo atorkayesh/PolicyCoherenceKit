@@ -23,6 +23,7 @@ from constants import (
     COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_ACCENT2,
     COLOR_TEXT, COLOR_TEXT_LIGHT, COLOR_BORDER,
     COLOR_BUTTON, COLOR_BUTTON_FG,
+    CURSOR_HAND,
 )
 from dialogs import style_button
 
@@ -135,7 +136,7 @@ class AggregationMethodDialog(tk.Toplevel):
         cancel.config(
             bg=COLOR_PANEL, fg=COLOR_TEXT, relief="flat",
             padx=12, pady=5,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor="hand2",
+            font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor=CURSOR_HAND,
         )
         cancel.pack(side="left", padx=(0, 8))
 
@@ -255,7 +256,7 @@ class WeightDialog(tk.Toplevel):
         cancel.config(
             bg=COLOR_PANEL, fg=COLOR_TEXT, relief="flat",
             padx=12, pady=5,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor="hand2",
+            font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor=CURSOR_HAND,
         )
         cancel.pack(side="left", padx=(0, 8))
 
@@ -455,7 +456,7 @@ class TieResolutionDialog(tk.Toplevel):
         cancel.config(
             bg=COLOR_PANEL, fg=COLOR_TEXT, relief="flat",
             padx=12, pady=5,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor="hand2",
+            font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor=CURSOR_HAND,
         )
         cancel.pack(side="left", padx=(0, 8))
 

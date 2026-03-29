@@ -24,6 +24,7 @@ from constants import (
     COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_ACCENT2,
     COLOR_TEXT, COLOR_TEXT_LIGHT, COLOR_BORDER,
     COLOR_BUTTON, COLOR_BUTTON_FG,
+    CURSOR_HAND,
 )
 
 # =============================================================================
@@ -443,7 +444,7 @@ class LLMInterpretationTab(tk.Frame):
             command=_toggle_key,
             font=(FONT_FAMILY, FONT_SIZE_SMALL),
             bg=COLOR_BG, activebackground=COLOR_BG,
-            cursor="hand2",
+            cursor=CURSOR_HAND,
         ).grid(row=1, column=4, padx=4, pady=4, sticky="w")
 
     # ------------------------------------------------------------------
@@ -514,7 +515,7 @@ class LLMInterpretationTab(tk.Frame):
             bg=COLOR_BUTTON, fg=COLOR_BUTTON_FG,
             activebackground=COLOR_ACCENT2,
             relief="flat", padx=14, pady=6,
-            cursor="hand2",
+            cursor=CURSOR_HAND,
         )
         self._gen_btn.pack(side="left")
 
@@ -537,7 +538,7 @@ class LLMInterpretationTab(tk.Frame):
                 font=(FONT_FAMILY, FONT_SIZE_SMALL),
                 bg=COLOR_PANEL, fg=COLOR_ACCENT,
                 relief="flat", padx=8, pady=5,
-                cursor="hand2",
+                cursor=CURSOR_HAND,
             ).pack(side="right", padx=(4, 0))
 
     # ------------------------------------------------------------------
