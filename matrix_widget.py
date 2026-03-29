@@ -5,7 +5,6 @@
 # tab switching remains fast regardless of matrix size.
 # =============================================================================
 
-import math
 import tkinter as tk
 from tkinter import ttk
 from typing import Callable, Optional
@@ -28,7 +27,7 @@ _CELL_W_LARGE = 200   # cell width when n > 5
 _GAP          = 4     # gap between cells / headers
 _AXIS_H       = 40    # height of "Influencing / Influenced" label row
 _COL_HDR_H    = 40    # column-header row height (same as _CELL_H)
-_PADX         = 24    # left / right padding around the grid block
+_PADX         = 8     # left / right padding around the grid block
 _CELL_RADIUS  = 8     # border radius for all matrix cells and headers
 
 # Header label styling (P1, P2 … boxes)
@@ -36,11 +35,10 @@ _HDR_BG        = "#426387"
 _HDR_FG        = "#f5f7fa"
 _HDR_FONT_SIZE = 10    # pt, not bold
 
-# Legend strip (drawn on canvas above the grid)
+# Legend strip (drawn on a separate canvas above the grid)
 _LEGEND_H         = 40    # total height of the legend row
-_LEGEND_GAP       = 16    # empty space between legend and matrix grid
 _BADGE_H          = 25    # height of each rating badge rectangle
-_BADGE_PAD_X      = 10    # horizontal inner padding inside each badge (drives width)
+_BADGE_PAD_X      = 10    # horizontal inner padding inside each badge
 _BADGE_FONT_SIZE  = 10    # pt — badge label font size
 _BADGE_GAP        = 3     # gap between consecutive badges
 _BADGE_RADIUS     = 4     # border radius of each rating badge
@@ -62,7 +60,7 @@ def _round_rect(canvas, x1, y1, x2, y2, r, **kwargs):
 class _PillScrollbar(tk.Canvas):
     """Canvas scrollbar with fully-rounded (pill) thumb ends."""
 
-    _THICK     = 10    # track thickness in pixels
+    _THICK     = 5     # track thickness in pixels
     _TROUGH    = "#eaeef4"
     _THUMB     = "#d0dbe7"
     _THUMB_HOV = "#b8c8d8"
@@ -73,7 +71,7 @@ class _PillScrollbar(tk.Canvas):
         self._command  = command
         self._first    = 0.0
         self._last     = 1.0
-        self._drag_ref = None   # (mouse_coord, first_at_press)
+        self._drag_ref = None
         self._hovered  = False
 
         kw: dict = dict(highlightthickness=0, bg=self._TROUGH, bd=0)
@@ -90,14 +88,10 @@ class _PillScrollbar(tk.Canvas):
         self.bind("<Enter>", lambda e: self._set_hover(True))
         self.bind("<Leave>", lambda e: self._set_hover(False))
 
-    # ── public scrollbar interface ──────────────────────────────────────
-
     def set(self, first, last):
         self._first = float(first)
         self._last  = float(last)
         self._redraw()
-
-    # ── drawing ─────────────────────────────────────────────────────────
 
     def _redraw(self, _event=None):
         self.delete("thumb")
@@ -107,7 +101,7 @@ class _PillScrollbar(tk.Canvas):
             return
 
         t = self._THICK
-        r = t // 2   # full radius → circular ends
+        r = t // 2
 
         if self._orient == "vertical":
             track = H
@@ -133,8 +127,6 @@ class _PillScrollbar(tk.Canvas):
         ]
         self.create_polygon(pts, smooth=True, fill=color, outline="", tags="thumb")
 
-    # ── interaction ──────────────────────────────────────────────────────
-
     def _on_press(self, event):
         coord = event.y if self._orient == "vertical" else event.x
         self._drag_ref = (coord, self._first)
@@ -159,13 +151,18 @@ class _PillScrollbar(tk.Canvas):
 
 class MatrixWidget(tk.Frame):
     """
-    Renders the full n x n coherence matrix on a single Canvas.
-    No scrollbars — the content block (legend + grid) is centered
-    vertically and horizontally in the available space.
+    Renders the full n x n coherence matrix using four coordinated canvases
+    so that row and column headers stay fixed while cells scroll.
+
+    Layout:
+      row 0 : legend canvas  (spans full width, non-scrollable)
+      row 1 : corner | col_hdr_canvas (scrolls X)
+      row 2 : row_hdr_canvas (scrolls Y) | main_canvas (scrolls X+Y) | vbar
+      row 3 :                              hbar
 
     Cell width rules:
-      n ≤ 5 → cells expand to fill the canvas width (full-width layout)
-      n > 5 → each cell is _CELL_W_LARGE (160 px) wide; block is centered
+      n ≤ 5 → cells expand to fill main_canvas width
+      n > 5 → each cell is _CELL_W_LARGE (200 px) wide; block is centered
     """
 
     def __init__(
@@ -180,24 +177,28 @@ class MatrixWidget(tk.Frame):
         self._on_change = on_change or (lambda r, c, v: None)
         self._n         = len(matrix.policies)
 
-        # canvas item IDs
+        # canvas item IDs (main_canvas only)
         self._cell_rects: dict[tuple, int] = {}
         self._cell_texts: dict[tuple, int] = {}
 
-        self._canvas: Optional[tk.Canvas] = None
-        self._combo:  Optional[ttk.Combobox] = None
-        self._tooltip_win: Optional[tk.Toplevel] = None
+        # canvas handles
+        self._canvas:      Optional[tk.Canvas] = None   # main (cells)
+        self._col_canvas:  Optional[tk.Canvas] = None   # column headers
+        self._row_canvas:  Optional[tk.Canvas] = None   # row headers
+        self._legend_cvs:  Optional[tk.Canvas] = None   # legend strip
 
-        # Centering offsets (updated on every redraw)
-        self._ox: int = 0   # horizontal offset for the grid block
-        self._oy: int = 0   # vertical offset for the whole block
+        self._combo:       Optional[ttk.Combobox] = None
+        self._tooltip_win: Optional[tk.Toplevel]  = None
+
+        # x offset within col/main canvases (centering for n > 5)
+        self._ox: int = _PADX
 
         # Current computed cell width
         self._cell_w: int = _CELL_W_LARGE
 
         # Smooth-scroll state
-        self._scroll_vy:   float         = 0.0   # vertical velocity (fraction/frame)
-        self._scroll_anim: Optional[str] = None  # after() id
+        self._scroll_vy:   float         = 0.0
+        self._scroll_anim: Optional[str] = None
 
         self._build()
 
@@ -205,101 +206,145 @@ class MatrixWidget(tk.Frame):
     # Dynamic cell width
     # ------------------------------------------------------------------
 
-    def _compute_cell_w(self, canvas_w: int) -> int:
+    def _compute_cell_w(self, main_canvas_w: int) -> int:
         n = self._n
         if n > 5:
             return _CELL_W_LARGE
-        # Expand cells to fill canvas width minus left/right padding
-        available = canvas_w - 2 * _PADX - _HDR_W - _GAP * (n + 1)
+        # Expand cells to fill main canvas width (no row header here)
+        available = main_canvas_w - 2 * _PADX - (n - 1) * _GAP
         return max(60, available // n)
 
     # ------------------------------------------------------------------
-    # Block dimension helpers
-    # ------------------------------------------------------------------
-
-    def _block_w(self) -> int:
-        return _HDR_W + _GAP + self._n * (self._cell_w + _GAP)
-
-    def _block_h(self) -> int:
-        return _LEGEND_H + _LEGEND_GAP + _AXIS_H + _COL_HDR_H + _GAP + self._n * (_CELL_H + _GAP)
-
-    # ------------------------------------------------------------------
-    # Geometry helpers (use instance offsets + current cell_w)
+    # Geometry helpers  (coordinates within their respective canvases)
     # ------------------------------------------------------------------
 
     def _cell_bbox(self, i: int, j: int):
-        """Canvas coordinates (x1, y1, x2, y2) of data cell (i, j)."""
-        ox, oy = self._ox, self._oy
-        x1 = ox + _HDR_W + _GAP + j * (self._cell_w + _GAP)
-        y1 = oy + _LEGEND_H + _LEGEND_GAP + _AXIS_H + _COL_HDR_H + _GAP + i * (_CELL_H + _GAP)
+        """main_canvas coords of cell (i, j)."""
+        x1 = self._ox + j * (self._cell_w + _GAP)
+        y1 = _GAP + i * (_CELL_H + _GAP)
         return x1, y1, x1 + self._cell_w, y1 + _CELL_H
 
     def _col_hdr_bbox(self, j: int):
-        """Canvas coordinates of column header j."""
-        ox, oy = self._ox, self._oy
-        x1 = ox + _HDR_W + _GAP + j * (self._cell_w + _GAP)
-        y1 = oy + _LEGEND_H + _LEGEND_GAP + _AXIS_H
+        """col_canvas coords of column header j."""
+        x1 = self._ox + j * (self._cell_w + _GAP)
+        y1 = _AXIS_H
         return x1, y1, x1 + self._cell_w, y1 + _COL_HDR_H - _GAP
 
     def _row_hdr_bbox(self, i: int):
-        """Canvas coordinates of row header i."""
-        ox, oy = self._ox, self._oy
-        x1 = ox
-        y1 = oy + _LEGEND_H + _LEGEND_GAP + _AXIS_H + _COL_HDR_H + _GAP + i * (_CELL_H + _GAP)
-        return x1, y1, x1 + _HDR_W - _GAP, y1 + _CELL_H
+        """row_canvas coords of row header i."""
+        x1 = 0
+        y1 = _GAP + i * (_CELL_H + _GAP)
+        return x1, y1, _HDR_W - _GAP, y1 + _CELL_H
 
     # ------------------------------------------------------------------
     # Build
     # ------------------------------------------------------------------
 
     def _build(self):
-        canvas = tk.Canvas(self, bg=COLOR_BG, highlightthickness=0)
-        canvas.pack(fill="both", expand=True)
-        self._canvas = canvas
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_columnconfigure(1, weight=1)
 
-        # ── Pill scrollbars (canvas children, overlay) ──────────────────
-        self._vbar = _PillScrollbar(canvas, orient="vertical",   command=canvas.yview)
-        self._hbar = _PillScrollbar(canvas, orient="horizontal",  command=canvas.xview)
+        # ── Legend strip (spans full width, non-scrollable) ──────────
+        leg = tk.Canvas(self, bg=COLOR_BG, height=_LEGEND_H,
+                        highlightthickness=0)
+        leg.grid(row=0, column=0, columnspan=3, sticky="ew")
+        leg.bind("<Configure>", lambda e: self._draw_legend(e.width))
+        self._legend_cvs = leg
 
-        canvas.configure(
-            yscrollcommand=lambda f, l: self._on_scrollcmd(self._vbar, f, l, vertical=True),
-            xscrollcommand=lambda f, l: self._on_scrollcmd(self._hbar, f, l, vertical=False),
+        # ── Corner (axis label, fixed) ────────────────────────────────
+        corner_h = _AXIS_H + _COL_HDR_H
+        corner = tk.Canvas(self, bg=COLOR_BG, highlightthickness=0,
+                           width=_HDR_W + _GAP, height=corner_h)
+        corner.grid(row=1, column=0, sticky="nsew")
+        self._corner = corner
+
+        # ── Column headers (scrolls X, synced with main) ─────────────
+        col_cvs = tk.Canvas(self, bg=COLOR_BG, highlightthickness=0,
+                            height=corner_h)
+        col_cvs.grid(row=1, column=1, sticky="ew", padx=(0, 32))
+        self._col_canvas = col_cvs
+
+        # ── Row headers (scrolls Y, synced with main) ─────────────────
+        row_cvs = tk.Canvas(self, bg=COLOR_BG, highlightthickness=0,
+                            width=_HDR_W + _GAP)
+        row_cvs.grid(row=2, column=0, sticky="ns")
+        self._row_canvas = row_cvs
+
+        # ── Main canvas (cells, scrolls X+Y) ─────────────────────────
+        main = tk.Canvas(self, bg=COLOR_BG, highlightthickness=0)
+        main.grid(row=2, column=1, sticky="nsew", padx=(0, 32))
+        self._canvas = main
+
+        # ── Pill scrollbars ───────────────────────────────────────────
+        self._vbar  = _PillScrollbar(self, orient="vertical",   command=main.yview)
+        self._hbar  = _PillScrollbar(main, orient="horizontal", command=main.xview)
+        self._hbar_shown = False
+
+        main.configure(
+            xscrollcommand=self._on_x_scroll,
+            yscrollcommand=self._on_y_scroll,
         )
 
         # Smooth mouse-wheel scrolling
-        canvas.bind("<MouseWheel>",
-                    lambda e: self._add_scroll_velocity(-e.delta / 120))
-        canvas.bind("<Button-4>", lambda e: self._add_scroll_velocity(-1))
-        canvas.bind("<Button-5>", lambda e: self._add_scroll_velocity( 1))
+        main.bind("<MouseWheel>",
+                  lambda e: self._add_scroll_velocity(-e.delta / 120))
+        main.bind("<Button-4>", lambda e: self._add_scroll_velocity(-1))
+        main.bind("<Button-5>", lambda e: self._add_scroll_velocity( 1))
 
-        canvas.bind("<Configure>", self._on_configure)
-        canvas.bind("<Button-1>", self._on_canvas_click)
+        main.bind("<Configure>", self._on_configure)
+        main.bind("<Button-1>",  self._on_canvas_click)
 
-        # Initial draw once the widget is laid out
         self.after_idle(self._redraw)
 
-    def _on_scrollcmd(self, bar, first, last, *, vertical: bool):
-        """Auto-show / auto-hide a scrollbar based on whether scrolling is needed."""
-        bar.set(first, last)
-        needs_scroll = not (float(first) <= 0.0 and float(last) >= 1.0)
-        if needs_scroll:
-            if vertical:
-                bar.place(relx=1.0, rely=0.0, relheight=1.0, anchor="ne",
-                          width=_PillScrollbar._THICK, x=-8)
-            else:
-                bar.place(relx=0.0, rely=1.0, relwidth=1.0, anchor="sw",
-                          height=_PillScrollbar._THICK)
+    # ------------------------------------------------------------------
+    # Scroll sync
+    # ------------------------------------------------------------------
+
+    def _on_x_scroll(self, first, last):
+        self._col_canvas.xview_moveto(first)
+        needs = not (float(first) <= 0.0 and float(last) >= 1.0)
+        self._hbar.set(first, last)
+        self._hbar_shown = needs
+        if needs:
+            self._place_hbar()
         else:
-            bar.place_forget()
+            self._hbar.place_forget()
+
+    def _on_y_scroll(self, first, last):
+        self._row_canvas.yview_moveto(first)
+        needs = not (float(first) <= 0.0 and float(last) >= 1.0)
+        self._vbar.set(first, last)
+        if needs:
+            self._vbar.grid(row=2, column=2, sticky="ns", padx=(20, 4))
+        else:
+            self._vbar.grid_remove()
+        if self._hbar_shown:
+            self._place_hbar()
+
+    def _place_hbar(self):
+        """Position hbar just below the matrix content (or at canvas bottom if overflowing)."""
+        canvas   = self._canvas
+        canvas_h = canvas.winfo_height()
+        n        = self._n
+        bar_h    = _PillScrollbar._THICK
+        gap      = 8
+
+        content_bottom = _GAP + n * (_CELL_H + _GAP)
+        scroll_offset  = int(canvas.canvasy(0))
+        screen_y = content_bottom - scroll_offset + gap
+        screen_y = max(gap, min(screen_y, canvas_h - bar_h - gap))
+
+        canvas_w = canvas.winfo_width()
+        self._hbar.place(x=0, y=screen_y, width=canvas_w, height=bar_h)
 
     # ------------------------------------------------------------------
     # Smooth scrolling
     # ------------------------------------------------------------------
 
-    _SCROLL_STEP    = 0.006   # fraction of view added per wheel tick
-    _SCROLL_DECAY   = 0.82    # velocity multiplied each frame (< 1 = friction)
-    _SCROLL_CUTOFF  = 0.0001  # stop animating below this velocity
-    _SCROLL_FRAME   = 16      # ms per animation frame (~60 fps)
+    _SCROLL_STEP   = 0.006
+    _SCROLL_DECAY  = 0.82
+    _SCROLL_CUTOFF = 0.0001
+    _SCROLL_FRAME  = 16
 
     def _add_scroll_velocity(self, ticks: float):
         self._scroll_vy += ticks * self._SCROLL_STEP
@@ -309,166 +354,184 @@ class MatrixWidget(tk.Frame):
 
     def _scroll_tick(self):
         if abs(self._scroll_vy) < self._SCROLL_CUTOFF:
-            self._scroll_vy  = 0.0
+            self._scroll_vy   = 0.0
             self._scroll_anim = None
             return
-        canvas = self._canvas
+        canvas  = self._canvas
         current = float(canvas.yview()[0])
         canvas.yview_moveto(max(0.0, min(1.0, current + self._scroll_vy)))
         self._scroll_vy  *= self._SCROLL_DECAY
         self._scroll_anim = self.after(self._SCROLL_FRAME, self._scroll_tick)
 
     # ------------------------------------------------------------------
-    # Redraw (called on resize and after build)
+    # Redraw
     # ------------------------------------------------------------------
 
     def _on_configure(self, event):
         self._redraw(event.width, event.height)
 
     def _redraw(self, canvas_w: int = None, canvas_h: int = None):
-        canvas = self._canvas
+        main = self._canvas
         if canvas_w is None:
-            canvas_w = canvas.winfo_width()
+            canvas_w = main.winfo_width()
         if canvas_h is None:
-            canvas_h = canvas.winfo_height()
+            canvas_h = main.winfo_height()
         if canvas_w <= 1 or canvas_h <= 1:
             return
 
-        canvas.delete("all")
+        n = self._n
+        self._cell_w = self._compute_cell_w(canvas_w)
+        cw = self._cell_w
+
+        # x offset (centering for n > 5)
+        if n > 5:
+            total_cells_w = n * (cw + _GAP)
+            self._ox = max(_PADX, (canvas_w - total_cells_w) // 2)
+        else:
+            self._ox = _PADX
+
+        # Scroll regions
+        content_w = self._ox + n * (cw + _GAP) + _PADX
+        content_h = _GAP + n * (_CELL_H + _GAP) + _GAP
+        hdr_h     = _AXIS_H + _COL_HDR_H
+
+        if n > 5:
+            sr_w = max(canvas_w, content_w)
+            sr_h = max(canvas_h, content_h)
+        else:
+            sr_w = canvas_w
+            sr_h = canvas_h
+
+        main.configure(scrollregion=(0, 0, sr_w, sr_h))
+        self._col_canvas.configure(scrollregion=(0, 0, sr_w, hdr_h))
+        self._row_canvas.configure(scrollregion=(0, 0, _HDR_W + _GAP, sr_h))
+
+        # Clear all
+        main.delete("all")
+        self._col_canvas.delete("all")
+        self._row_canvas.delete("all")
+        self._corner.delete("all")
         self._cell_rects.clear()
         self._cell_texts.clear()
 
-        n = self._n
-
-        # Compute dynamic cell width
-        self._cell_w = self._compute_cell_w(canvas_w)
-
-        # Compute centering offsets
-        block_h = self._block_h()
-        if n > 5:
-            block_w = self._block_w()
-            self._ox = max(_PADX, (canvas_w - block_w) // 2)
-        else:
-            self._ox = _PADX   # full-width layout: respect left/right padding
-
-        self._oy = max(0, (canvas_h - block_h) // 2)
-
-        # Configure scroll region: only enable scrolling for n > 5
-        if n > 5:
-            sr_w = max(canvas_w, _PADX + self._block_w() + _PADX)
-            sr_h = max(canvas_h, block_h + 16)
-            self._canvas.configure(scrollregion=(0, 0, sr_w, sr_h))
-        else:
-            self._canvas.configure(scrollregion=(0, 0, canvas_w, canvas_h))
-
-        self._draw_legend(canvas_w)
-        self._draw_canvas_grid()
+        self._draw_legend(self._legend_cvs.winfo_width())
+        self._draw_col_hdrs()
+        self._draw_row_hdrs()
+        self._draw_cells()
 
     # ------------------------------------------------------------------
-    # Legend (drawn on canvas, centered over full canvas width)
+    # Legend
     # ------------------------------------------------------------------
 
     def _draw_legend(self, canvas_w: int):
-        canvas = self._canvas
-        oy     = self._oy
-        label_y = oy + _LEGEND_H // 2
+        canvas = self._legend_cvs
+        if canvas_w <= 1:
+            return
+        canvas.delete("all")
+        label_y = _LEGEND_H // 2
 
-        # --- measure label width ---
         lbl_text = "Click a cell to rate it:"
         _tmp = canvas.create_text(0, -1000, text=lbl_text,
-                                   font=(FONT_FAMILY, 9, "italic"), anchor="w")
+                                  font=(FONT_FAMILY, 9, "italic"), anchor="w")
         lbl_w = canvas.bbox(_tmp)[2] - canvas.bbox(_tmp)[0]
         canvas.delete(_tmp)
 
-        # --- measure badge widths ---
         badge_widths = []
         for rating in COHERENCE_RATINGS:
             _tmp = canvas.create_text(0, -1000, text=rating,
-                                       font=(FONT_FAMILY, _BADGE_FONT_SIZE), anchor="w")
+                                      font=(FONT_FAMILY, _BADGE_FONT_SIZE), anchor="w")
             tw = canvas.bbox(_tmp)[2] - canvas.bbox(_tmp)[0]
             canvas.delete(_tmp)
             badge_widths.append(tw + 2 * _BADGE_PAD_X)
 
-        total_legend_w = (lbl_w + 10
-                          + sum(badge_widths)
-                          + _BADGE_GAP * (len(badge_widths) - 1))
-        start_x = max(0, (canvas_w - total_legend_w) // 2)
+        total_w = lbl_w + 10 + sum(badge_widths) + _BADGE_GAP * (len(badge_widths) - 1)
+        start_x = max(0, (canvas_w - total_w) // 2)
 
-        # --- draw label ---
         canvas.create_text(start_x, label_y,
                            text=lbl_text,
                            font=(FONT_FAMILY, 9, "italic"),
-                           fill="#a3a3a3", anchor="w", tags="legend")
+                           fill="#a3a3a3", anchor="w")
 
-        # --- draw rating badges ---
         x = start_x + lbl_w + 10
         badge_y1 = label_y - _BADGE_H // 2
         badge_y2 = badge_y1 + _BADGE_H
-
         for rating, bw in zip(COHERENCE_RATINGS, badge_widths):
             bg = RATING_COLORS[rating]
             fg = RATING_TEXT_COLORS[rating]
             _round_rect(canvas, x, badge_y1, x + bw, badge_y2,
-                        _BADGE_RADIUS, fill=bg, outline="", tags="legend")
+                        _BADGE_RADIUS, fill=bg, outline="")
             canvas.create_text(x + bw // 2, label_y, text=rating,
-                               font=(FONT_FAMILY, _BADGE_FONT_SIZE), fill=fg, tags="legend")
+                               font=(FONT_FAMILY, _BADGE_FONT_SIZE), fill=fg)
             x += bw + _BADGE_GAP
 
     # ------------------------------------------------------------------
-    # Grid (axis label + column headers + row headers + cells)
+    # Column headers  (drawn on _col_canvas)
     # ------------------------------------------------------------------
 
-    def _draw_canvas_grid(self):
-        canvas   = self._canvas
-        n        = self._n
+    def _draw_col_hdrs(self):
+        canvas   = self._col_canvas
         codes    = self._matrix.codes
         policies = self._matrix.policies
-        ox, oy   = self._ox, self._oy
 
-        # ── Axis label ──────────────────────────────────────────────────
-        axis_y = oy + _LEGEND_H + _LEGEND_GAP + _AXIS_H // 2
+        # Axis label
         canvas.create_text(
-            ox + _HDR_W + _GAP + 4, axis_y,
+            self._ox + 4, _AXIS_H // 2,
             text="<-- Influencing  |  Influenced -->",
             font=(FONT_FAMILY, 9, "italic"),
             fill="#a3a3a3",
             anchor="w",
         )
 
-        # ── Column headers ───────────────────────────────────────────────
         for j, code in enumerate(codes):
             x1, y1, x2, y2 = self._col_hdr_bbox(j)
             tag = f"chdr_{j}"
             _round_rect(canvas, x1, y1, x2, y2, _CELL_RADIUS,
                         fill=_HDR_BG, outline="", tags=tag)
             canvas.create_text((x1 + x2) // 2, (y1 + y2) // 2,
-                                text=code,
-                                font=(FONT_FAMILY, _HDR_FONT_SIZE),
-                                fill=_HDR_FG, tags=tag)
+                               text=code,
+                               font=(FONT_FAMILY, _HDR_FONT_SIZE),
+                               fill=_HDR_FG, tags=tag)
 
             tip = f"{code}:  {policies[j]}"
             canvas.tag_bind(tag, "<Enter>",
-                            lambda e, t=tip, bx=x1, by=y2: self._show_tooltip(t, bx, by))
+                lambda e, t=tip, bx=x1, by=y2:
+                    self._show_tooltip(t, bx, by, self._col_canvas))
             canvas.tag_bind(tag, "<Leave>", lambda e: self._hide_tooltip())
 
-        # ── Row headers + cells ──────────────────────────────────────────
-        for i in range(n):
-            # Row header
+    # ------------------------------------------------------------------
+    # Row headers  (drawn on _row_canvas)
+    # ------------------------------------------------------------------
+
+    def _draw_row_hdrs(self):
+        canvas   = self._row_canvas
+        codes    = self._matrix.codes
+        policies = self._matrix.policies
+
+        for i, code in enumerate(codes):
             x1, y1, x2, y2 = self._row_hdr_bbox(i)
             tag = f"rhdr_{i}"
             _round_rect(canvas, x1, y1, x2, y2, _CELL_RADIUS,
                         fill=_HDR_BG, outline="", tags=tag)
             canvas.create_text((x1 + x2) // 2, (y1 + y2) // 2,
-                                text=codes[i],
-                                font=(FONT_FAMILY, _HDR_FONT_SIZE),
-                                fill=_HDR_FG, tags=tag)
+                               text=code,
+                               font=(FONT_FAMILY, _HDR_FONT_SIZE),
+                               fill=_HDR_FG, tags=tag)
 
-            tip = f"{codes[i]}:  {policies[i]}"
+            tip = f"{code}:  {policies[i]}"
             canvas.tag_bind(tag, "<Enter>",
-                            lambda e, t=tip, bx=x2, by=y2: self._show_tooltip(t, bx, by))
+                lambda e, t=tip, bx=x2, by=y2:
+                    self._show_tooltip(t, bx, by, self._row_canvas))
             canvas.tag_bind(tag, "<Leave>", lambda e: self._hide_tooltip())
 
-            # Cells
+    # ------------------------------------------------------------------
+    # Cells  (drawn on _canvas / main_canvas)
+    # ------------------------------------------------------------------
+
+    def _draw_cells(self):
+        canvas = self._canvas
+        n      = self._n
+
+        for i in range(n):
             for j in range(n):
                 is_diag = (i == j)
                 value   = self._matrix.get_rating(i, j)
@@ -490,9 +553,9 @@ class MatrixWidget(tk.Frame):
                 rid = _round_rect(canvas, x1, y1, x2, y2, _CELL_RADIUS,
                                   fill=bg, outline="")
                 tid = canvas.create_text((x1 + x2) // 2, (y1 + y2) // 2,
-                                         text=text,
-                                         font=(FONT_FAMILY, 9),
-                                         fill=fg)
+                                        text=text,
+                                        font=(FONT_FAMILY, 9),
+                                        fill=fg)
                 self._cell_rects[(i, j)] = rid
                 self._cell_texts[(i, j)] = tid
 
@@ -501,27 +564,19 @@ class MatrixWidget(tk.Frame):
     # ------------------------------------------------------------------
 
     def _on_canvas_click(self, event):
-        canvas = self._canvas
-        cx = canvas.canvasx(event.x)
-        cy = canvas.canvasy(event.y)
-        n  = self._n
-        ox, oy = self._ox, self._oy
+        main = self._canvas
+        cx   = main.canvasx(event.x)
+        cy   = main.canvasy(event.y)
+        n    = self._n
 
-        col_start = ox + _HDR_W + _GAP
-        row_start = oy + _LEGEND_H + _AXIS_H + _COL_HDR_H + _GAP
-
-        if cx < col_start or cy < row_start:
-            return
-
-        j = int((cx - col_start) / (self._cell_w + _GAP))
-        i = int((cy - row_start) / (_CELL_H + _GAP))
+        j = int((cx - self._ox) / (self._cell_w + _GAP))
+        i = int((cy - _GAP)     / (_CELL_H     + _GAP))
 
         if not (0 <= i < n and 0 <= j < n):
             return
         if i == j:
             return
 
-        # Confirm the click landed inside the cell (not in the gap)
         x1, y1, x2, y2 = self._cell_bbox(i, j)
         if not (x1 <= cx <= x2 and y1 <= cy <= y2):
             return
@@ -536,7 +591,6 @@ class MatrixWidget(tk.Frame):
         matrix  = self._matrix
         x1, y1, x2, y2 = self._cell_bbox(i, j)
 
-        # Translate canvas coords → widget-relative screen coords
         screen_x = int(x1 - canvas.canvasx(0))
         screen_y = int(y1 - canvas.canvasy(0))
         cell_w   = x2 - x1
@@ -573,13 +627,14 @@ class MatrixWidget(tk.Frame):
     # Tooltip
     # ------------------------------------------------------------------
 
-    def _show_tooltip(self, text: str, canvas_x: int, canvas_y: int):
+    def _show_tooltip(self, text: str, canvas_x: int, canvas_y: int,
+                      src: tk.Canvas = None):
         self._hide_tooltip()
-        canvas   = self._canvas
-        screen_x = canvas.winfo_rootx() + int(canvas_x - canvas.canvasx(0))
-        screen_y = canvas.winfo_rooty() + int(canvas_y - canvas.canvasy(0)) + 4
+        src      = src or self._canvas
+        screen_x = src.winfo_rootx() + int(canvas_x - src.canvasx(0))
+        screen_y = src.winfo_rooty() + int(canvas_y - src.canvasy(0)) + 4
 
-        tw = tk.Toplevel(canvas)
+        tw = tk.Toplevel(src)
         tw.wm_overrideredirect(True)
         tw.wm_geometry(f"+{screen_x}+{screen_y}")
         tk.Label(
@@ -606,7 +661,6 @@ class MatrixWidget(tk.Frame):
     # ------------------------------------------------------------------
 
     def _update_cell_display(self, i: int, j: int, value: str):
-        """Update a cell's colour and text on the canvas."""
         canvas = self._canvas
         bg = RATING_COLORS.get(value, "#f9f9f9")
         fg = RATING_TEXT_COLORS.get(value, COLOR_TEXT)
