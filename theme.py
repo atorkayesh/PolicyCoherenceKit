@@ -46,7 +46,7 @@ NEW_PROJECT_FG          = "#1f2937"
 NEW_PROJECT_ICON_COLOR  = "#1f2937"
 NEW_PROJECT_ICON_STROKE = 1.35
 NEW_PROJECT_ICON_SIZE   = 18          # px (scaled from 24×24 viewBox)
-NEW_PROJECT_HEIGHT      = 40          # px
+NEW_PROJECT_HEIGHT      = 35          # px
 NEW_PROJECT_RADIUS      = 5           # px — border radius
 
 # ── Border radii ───────────────────────────────────────────────────────────────
@@ -234,6 +234,43 @@ STATUSBAR_FG           = "#a6bcd3"   # text color
 STATUSBAR_TEXT_SIZE    = 11          # pt
 STATUSBAR_HEIGHT       = 33          # px
 STATUSBAR_DIVIDER_COLOR = "#e6e6e6"  # 1px top divider
+
+# ── Matrix widget ────────────────────────────────────────────────────────────
+MATRIX_CELL_H         = 40      # px — cell height (also used for col/row header height)
+MATRIX_HDR_W          = 120     # px — first column (P1, P2…) width
+MATRIX_CELL_W_LARGE   = 160     # px — cell width when number of policies > 5
+# When number of policies ≤ 5: cell widths expand to fill canvas width (full-width layout)
+# When number of policies > 5: each cell is MATRIX_CELL_W_LARGE and the block is centred
+MATRIX_HDR_BG         = "#426387"   # background colour for P1, P2… header boxes
+MATRIX_HDR_FG         = "#f5f7fa"   # text colour for P1, P2… header boxes
+MATRIX_HDR_TEXT_SIZE  = 10          # pt — header label font size (not bold)
+MATRIX_LEGEND_H       = 40          # px — height of the "Click a cell to rate it:" strip
+MATRIX_LEGEND_GAP     = 16          # px — empty space between legend and matrix grid
+MATRIX_BADGE_H        = 25          # px — rating badge height inside legend
+MATRIX_BADGE_PAD_X    = 10          # px — horizontal inner padding inside each badge (drives width)
+MATRIX_BADGE_FONT_SIZE = 10         # pt — rating badge label font size
+MATRIX_BADGE_GAP      = 3           # px — gap between consecutive badges
+MATRIX_BADGE_RADIUS   = 4           # px — border radius of each rating badge
+MATRIX_CELL_RADIUS    = 8           # px — border radius of all matrix cells and headers
+
+# Thin overlay scrollbars (shown only when n > 5 and content overflows)
+MATRIX_SCROLLBAR_W          = 7           # px — scrollbar thumb+trough width
+MATRIX_SCROLLBAR_TROUGH     = "#f0f2f4"   # trough (track) colour
+MATRIX_SCROLLBAR_THUMB      = "#c4ccd4"   # thumb colour (idle)
+MATRIX_SCROLLBAR_THUMB_HOVER = "#8fa0b0"  # thumb colour (hover/active)
+MATRIX_AXIS_H         = 22          # px — height of the axis-label row
+MATRIX_CELL_GAP       = 4           # px — gap between cells / headers
+MATRIX_PADX           = 24          # px — left / right padding around the grid block
+MATRIX_LEGEND_LABEL_COLOR = "#a3a3a3"   # "Click a cell to rate it:" text colour
+
+# Rating badge background colours (legend + matrix cells)
+MATRIX_COLOR_INDIVISIBLE   = "#0B6E6E"
+MATRIX_COLOR_REINFORCING   = "#2A9D8F"
+MATRIX_COLOR_ENABLING      = "#6BAF92"
+MATRIX_COLOR_NEUTRAL       = "#B0B7C3"
+MATRIX_COLOR_CONSTRAINING  = "#E9C46A"
+MATRIX_COLOR_COUNTERACTING = "#E76F51"
+MATRIX_COLOR_CANCELLING    = "#9B2226"
 
 # ── Misc ──────────────────────────────────────────────────────────────────────
 BG_COLOR        = "#ffffff"   # main content background

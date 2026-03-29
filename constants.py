@@ -28,13 +28,13 @@ DIAGONAL_VALUE = "Neutral"   # diagonal cells are always locked to this
 # Background fill colour for matrix cells (hex strings)
 # -----------------------------------------------------------------------------
 RATING_COLORS = {
-    "Indivisible":   "#1a6e3c",  # deep green
-    "Reinforcing":   "#4caf7d",  # medium green
-    "Enabling":      "#a8d5b5",  # light green
-    "Neutral":       "#d9d9d9",  # neutral grey
-    "Constraining":  "#f5c07a",  # light amber
-    "Counteracting": "#e07b39",  # orange-red
-    "Cancelling":    "#b71c1c",  # deep red
+    "Indivisible":   "#0B6E6E",
+    "Reinforcing":   "#2A9D8F",
+    "Enabling":      "#6BAF92",
+    "Neutral":       "#B0B7C3",
+    "Constraining":  "#E9C46A",
+    "Counteracting": "#E76F51",
+    "Cancelling":    "#9B2226",
 }
 
 # Foreground (text) colour for each rated cell

@@ -1221,11 +1221,11 @@ class PolicyCoherenceApp:
             BTN_BG    = "#426387"
             BTN_HOVER = "#30455c"
             BTN_FG    = "#eaeef4"
-            BTN_H     = 40
+            BTN_H     = 35
             BTN_R     = 4
             BTN_ICON  = 16
             BTN_GAP   = 7
-            BTN_PADX  = 18
+            BTN_PADX  = 22
             BTN_LABEL = "New Project"
 
             btn_font = tkFont.Font(family=FONT_FAMILY, size=11)
@@ -1316,7 +1316,7 @@ class PolicyCoherenceApp:
 
     def _build_statusbar(self):
         self._status_var = tk.StringVar(value="Ready")
-        bar = tk.Frame(self._content, bg="#ffffff", height=33)
+        bar = tk.Frame(self._content, bg="#ffffff", height=36)
         bar.pack(fill="x", side="bottom")
         bar.pack_propagate(False)
         tk.Frame(bar, bg="#e6e6e6", height=1).pack(fill="x", side="top")
