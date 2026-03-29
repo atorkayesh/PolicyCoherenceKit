@@ -174,15 +174,9 @@ class MatrixWidget(tk.Frame):
     # ------------------------------------------------------------------
 
     def _build(self):
-        # Outer scrollable canvas
+        # Outer scrollable canvas (scrollbars hidden; mouse-wheel still works)
         canvas = tk.Canvas(self, bg=COLOR_BG, highlightthickness=0)
-        v_scroll = ttk.Scrollbar(self, orient="vertical",   command=canvas.yview)
-        h_scroll = ttk.Scrollbar(self, orient="horizontal", command=canvas.xview)
-        canvas.configure(yscrollcommand=v_scroll.set, xscrollcommand=h_scroll.set)
-
-        v_scroll.pack(side="right",  fill="y")
-        h_scroll.pack(side="bottom", fill="x")
-        canvas.pack(side="left", fill="both", expand=True)
+        canvas.pack(fill="both", expand=True)
 
         inner = tk.Frame(canvas, bg=COLOR_BG)
         canvas.create_window((0, 0), window=inner, anchor="nw")

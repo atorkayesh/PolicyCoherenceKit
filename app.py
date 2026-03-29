@@ -1316,12 +1316,13 @@ class PolicyCoherenceApp:
 
     def _build_statusbar(self):
         self._status_var = tk.StringVar(value="Ready")
-        bar = tk.Frame(self._content, bg="#f5f7fa", height=27)
+        bar = tk.Frame(self._content, bg="#ffffff", height=33)
         bar.pack(fill="x", side="bottom")
         bar.pack_propagate(False)
+        tk.Frame(bar, bg="#e6e6e6", height=1).pack(fill="x", side="top")
         tk.Label(bar, textvariable=self._status_var,
-                 font=(FONT_FAMILY, 11),
-                 bg="#f5f7fa", fg="#a6bcd3",
+                 font=(FONT_FAMILY, 11, "normal"),
+                 bg="#ffffff", fg="#a6bcd3",
                  anchor="w", padx=12).pack(fill="both", expand=True)
 
     # ==================================================================
@@ -1355,6 +1356,15 @@ class PolicyCoherenceApp:
         switcher.pack_propagate(False)
         tk.Frame(outer, bg="#e8eaed", height=1).pack(fill="x")
 
+        # Custom tab label strips (left of switcher; pill toggle uses place so no conflict)
+        dm_tab_bar = tk.Frame(switcher, bg=SW_BG)
+        dm_tab_bar.pack(side="left", fill="y")
+        an_tab_bar = tk.Frame(switcher, bg=SW_BG)   # packed only when analysis is active
+        proj._dm_tab_bar     = dm_tab_bar
+        proj._an_tab_bar     = an_tab_bar
+        proj._dm_tab_entries = []   # [(nb_tab_widget, label, underline, container)]
+        proj._an_tab_entries = []   # [(tab_id_str,   label, underline, container)]
+
         TRACK_BG  = "#a6bcd3"
         THUMB_BG  = "#e8eef4"
         ACT_FG    = "#30455c"
@@ -1380,17 +1390,29 @@ class PolicyCoherenceApp:
         ICON_LW = 1.4
 
         def _icon_circle_user(c, ox, oy, color):
-            """Lucide 'user': head circle + body path. Head bottom y=11, body top y=15 → 4-unit gap."""
+            """Lucide 'user': head circle (cx=12,cy=7,r=4) + body path with proper arc corners.
+            Path: M19 21 v-2 a4 4 0 0 0 -4 -4 H9 a4 4 0 0 0 -4 4 v2"""
             lkw = dict(fill=color, width=ICON_LW, capstyle="round", joinstyle="round")
             # Head: circle cx=12, cy=7, r=4
-            cr = 4*_s
+            cr = 4 * _s
             c.create_oval(12*_s+ox-cr, 7*_s+oy-cr, 12*_s+ox+cr, 7*_s+oy+cr,
                           outline=color, fill="", width=ICON_LW)
-            # Body: M19 21v-2a4 4 ... H9 a4 4 ... v2
-            # Key points: (19,21)→(19,19)→(15,15)→(9,15)→(5,19)→(5,21)
-            pts = [(19,21),(19,19),(15,15),(9,15),(5,19),(5,21)]
-            c.create_line(*[v for x_,y_ in pts for v in (x_*_s+ox, y_*_s+oy)],
-                          **lkw, smooth=True)
+            # Body: build polyline from straight segments + sampled arc curves
+            # Right arc: center(15,19) r=4, 0° → -90° (east→north in screen coords)
+            # Left  arc: center(9,19)  r=4, -90° → -180° (north→west in screen coords)
+            def _arc(cx_, cy_, r_, a0, a1, n=10):
+                return [(cx_ + r_*math.cos(a0 + (a1-a0)*i/(n-1)),
+                         cy_ + r_*math.sin(a0 + (a1-a0)*i/(n-1)))
+                        for i in range(n)]
+            right_arc = _arc(15, 19, 4,  0,             -math.pi/2)
+            left_arc  = _arc( 9, 19, 4, -math.pi/2, -math.pi)
+            pts = ([(19, 21), (19, 19)]   # M19,21 v-2
+                   + right_arc[1:]         # arc to (15,15)
+                   + [(9, 15)]             # H9
+                   + left_arc[1:]          # arc to (5,19)
+                   + [(5, 21)])            # v2
+            flat = [v for x_, y_ in pts for v in (x_*_s+ox, y_*_s+oy)]
+            c.create_line(*flat, **lkw)
 
         def _icon_chart_network(c, ox, oy, color):
             """Lucide 'chart-network': axes + 3 node dots + connecting lines."""
@@ -1486,10 +1508,12 @@ class PolicyCoherenceApp:
         matrix_frame.pack(fill="both", expand=True)
         proj._matrix_frame = matrix_frame
 
-        inner_nb = ttk.Notebook(matrix_frame, style="Inner.TNotebook")
+        inner_nb = ttk.Notebook(matrix_frame, style="Headless.TNotebook")
         inner_nb.pack(fill="both", expand=True)
         proj.notebook = inner_nb
-        inner_nb.bind("<<NotebookTabChanged>>", lambda e: self._update_topbar())
+        inner_nb.bind("<<NotebookTabChanged>>",
+                      lambda e, p=proj: (self._update_topbar(),
+                                         self._refresh_dm_underlines(p)))
 
         empty = tk.Label(
             matrix_frame,
@@ -1511,11 +1535,12 @@ class PolicyCoherenceApp:
         proj._crumb_bar = crumb_bar
 
         # Analysis notebook
-        analysis_nb = ttk.Notebook(analysis_frame, style="Inner.TNotebook")
+        analysis_nb = ttk.Notebook(analysis_frame, style="Headless.TNotebook")
         analysis_nb.pack(fill="both", expand=True)
         proj._analysis_nb = analysis_nb
         analysis_nb.bind("<<NotebookTabChanged>>",
-                         lambda e, p=proj: self._update_analysis_breadcrumb(p))
+                         lambda e, p=proj: (self._update_analysis_breadcrumb(p),
+                                            self._refresh_an_underlines(p)))
 
         self.projects.append(proj)
         self._sidebar_open_states[name] = True
@@ -2007,22 +2032,11 @@ class PolicyCoherenceApp:
         proj._empty_label.place_forget()
 
         tab = tk.Frame(proj.notebook, bg=COLOR_BG)
-        proj.notebook.add(tab, text=f"  {matrix.decision_maker}  ")
+        proj.notebook.add(tab, text=matrix.decision_maker)
         proj.notebook.select(tab)
         matrix._tab = tab
+        self._add_dm_tab_label(proj, matrix, tab)
 
-        # Info bar
-        info = tk.Frame(tab, bg=COLOR_PANEL, pady=6)
-        info.pack(fill="x")
-        tk.Label(info, text=f"Decision-Maker:  {matrix.decision_maker}",
-                 font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
-                 bg=COLOR_PANEL, fg=COLOR_ACCENT).pack(side="left", padx=16)
-        tk.Label(info, text=f"{len(matrix.policies)} policies  |  "
-                            f"{matrix.total_cells()} cells to fill",
-                 font=(FONT_FAMILY, FONT_SIZE_NORMAL, "italic"),
-                 bg=COLOR_PANEL, fg=COLOR_TEXT_LIGHT).pack(side="left", padx=6)
-
-        tk.Frame(tab, bg=COLOR_BORDER, height=1).pack(fill="x", pady=4)
 
         def on_change(r, c, v):
             filled = matrix.filled_count()
@@ -2061,7 +2075,9 @@ class PolicyCoherenceApp:
         self.root.wait_window(dlg)
         if dlg.result:
             matrix.decision_maker = dlg.result
-            proj.notebook.tab(idx, text=f"  {dlg.result}  ")
+            proj.notebook.tab(idx, text=dlg.result)
+            if idx < len(proj._dm_tab_entries):
+                proj._dm_tab_entries[idx][1].configure(text=dlg.result)
             self._set_status(f'Renamed to "{dlg.result}".')
 
     def _remove_current_tab(self):
@@ -2081,6 +2097,12 @@ class PolicyCoherenceApp:
                 proj._analysis_nb.forget(idx)
                 if tab_id in proj.agg_tab_ids:
                     proj.agg_tab_ids.remove(tab_id)
+                for i, (tid, _, _, cont) in enumerate(proj._an_tab_entries):
+                    if str(tid) == str(tab_id):
+                        cont.destroy()
+                        proj._an_tab_entries.pop(i)
+                        break
+                self._refresh_an_underlines(proj)
             except tk.TclError:
                 pass
             self._set_status("Analysis tab removed.")
@@ -2096,6 +2118,10 @@ class PolicyCoherenceApp:
                 return
             proj.notebook.forget(idx)
             proj.matrices.pop(idx)
+            if idx < len(proj._dm_tab_entries):
+                _, _, _, cont = proj._dm_tab_entries.pop(idx)
+                cont.destroy()
+            self._refresh_dm_underlines(proj)
             if not proj.matrices:
                 proj._empty_label.place(relx=0.5, rely=0.55, anchor="center")
             self._set_status(f'Removed "{dm}".')
@@ -2216,24 +2242,151 @@ class PolicyCoherenceApp:
     # Analysis view navigation
     # ==================================================================
 
+    # ------------------------------------------------------------------
+    # Custom tab-strip helpers (DM labels + Analysis labels in switcher)
+    # ------------------------------------------------------------------
+
+    _TAB_BG          = "#ffffff"
+    _TAB_ACTIVE_FG   = "#30455c"
+    _TAB_INACTIVE_FG = "#a3a3a3"
+    _TAB_UNDERLINE   = "#557ca2"
+    _TAB_TEXT_SIZE   = 12          # pt — tab label font size
+    _TAB_PADX        = 14          # horizontal inner padding on each label
+    _TAB_UL_EXTRA    = 4           # px beyond text width on each side of underline
+
+    def _bind_ul_to_text(self, lbl, ul):
+        """After each layout pass, resize ul so it is _TAB_UL_EXTRA px beyond the text on each side."""
+        import tkinter.font as tkFont
+
+        def _update(e):
+            try:
+                font = tkFont.nametofont(lbl.cget("font"))
+            except Exception:
+                font = tkFont.Font(family=FONT_FAMILY, size=self._TAB_TEXT_SIZE)
+            tw   = font.measure(lbl.cget("text"))
+            padx = max(0, (e.width - tw) // 2 - self._TAB_UL_EXTRA)
+            ul.pack_configure(padx=padx)
+
+        lbl.bind("<Configure>", _update)
+
+    def _add_dm_tab_label(self, proj, matrix, nb_tab):
+        """Append one DM tab label to the switcher's dm_tab_bar."""
+        container = tk.Frame(proj._dm_tab_bar, bg=self._TAB_BG, cursor=CURSOR_HAND)
+        container.pack(side="left", fill="y")
+
+        lbl = tk.Label(container, text=matrix.decision_maker,
+                       bg=self._TAB_BG, fg=self._TAB_INACTIVE_FG,
+                       padx=self._TAB_PADX,
+                       font=(FONT_FAMILY, self._TAB_TEXT_SIZE, "normal"))
+        lbl.pack(side="top", fill="both", expand=True)
+
+        ul = tk.Frame(container, height=1, bg=self._TAB_BG)
+        ul.pack(side="bottom", fill="x", padx=self._TAB_PADX)
+        ul.pack_propagate(False)
+        self._bind_ul_to_text(lbl, ul)
+
+        def _select(e, t=nb_tab):
+            proj.notebook.select(t)
+
+        container.bind("<Button-1>", _select)
+        lbl.bind("<Button-1>", _select)
+
+        proj._dm_tab_entries.append((nb_tab, lbl, ul, container))
+        self._refresh_dm_underlines(proj)
+
+    def _refresh_dm_underlines(self, proj):
+        """Update active/inactive styling on all DM tab labels."""
+        try:
+            current = proj.notebook.select()
+        except (tk.TclError, AttributeError):
+            return
+        for (nb_tab, lbl, ul, _) in proj._dm_tab_entries:
+            active = (str(nb_tab) == str(current))
+            lbl.configure(
+                fg=self._TAB_ACTIVE_FG if active else self._TAB_INACTIVE_FG,
+                font=(FONT_FAMILY, self._TAB_TEXT_SIZE, "normal"),
+            )
+            ul.configure(bg=self._TAB_UNDERLINE if active else self._TAB_BG)
+
+    def _rebuild_an_tab_bar(self, proj):
+        """Clear and rebuild the analysis tab strip from the current analysis notebook."""
+        for (_, _, _, cont) in proj._an_tab_entries:
+            cont.destroy()
+        proj._an_tab_entries.clear()
+
+        try:
+            all_tabs = proj._analysis_nb.tabs()
+        except (tk.TclError, AttributeError):
+            return
+
+        for tab_id in proj.agg_tab_ids:
+            if tab_id not in all_tabs:
+                continue
+            title = proj._analysis_nb.tab(tab_id, "text").strip()
+
+            container = tk.Frame(proj._an_tab_bar, bg=self._TAB_BG, cursor=CURSOR_HAND)
+            container.pack(side="left", fill="y")
+
+            lbl = tk.Label(container, text=title,
+                           bg=self._TAB_BG, fg=self._TAB_INACTIVE_FG,
+                           padx=self._TAB_PADX,
+                           font=(FONT_FAMILY, FONT_SIZE_NORMAL, "normal"))
+            lbl.pack(side="top", fill="both", expand=True)
+
+            ul = tk.Frame(container, height=1, bg=self._TAB_BG)
+            ul.pack(side="bottom", fill="x", padx=self._TAB_PADX)
+            ul.pack_propagate(False)
+            self._bind_ul_to_text(lbl, ul)
+
+            def _select(e, tid=tab_id):
+                proj._analysis_nb.select(tid)
+
+            container.bind("<Button-1>", _select)
+            lbl.bind("<Button-1>", _select)
+
+            proj._an_tab_entries.append((tab_id, lbl, ul, container))
+
+        self._refresh_an_underlines(proj)
+
+    def _refresh_an_underlines(self, proj):
+        """Update active/inactive styling on all analysis tab labels."""
+        try:
+            current = proj._analysis_nb.select()
+        except (tk.TclError, AttributeError):
+            return
+        for (tab_id, lbl, ul, _) in proj._an_tab_entries:
+            active = (str(tab_id) == str(current))
+            lbl.configure(
+                fg=self._TAB_ACTIVE_FG if active else self._TAB_INACTIVE_FG,
+                font=(FONT_FAMILY, self._TAB_TEXT_SIZE, "normal"),
+            )
+            ul.configure(bg=self._TAB_UNDERLINE if active else self._TAB_BG)
+
     def _show_analysis_view(self, proj: Project):
         if not proj.agg_tab_ids:
             return
         proj._matrix_frame.pack_forget()
+        proj._dm_tab_bar.pack_forget()
         proj._analysis_frame.pack(fill="both", expand=True)
+        proj._an_tab_bar.pack(side="left", fill="y")
         proj._in_analysis_view = True
         proj._set_nav_active(True)
+        self._refresh_an_underlines(proj)
         self._update_topbar()
 
     def _show_matrix_view(self, proj: Project):
         proj._analysis_frame.pack_forget()
+        proj._an_tab_bar.pack_forget()
         proj._matrix_frame.pack(fill="both", expand=True)
+        proj._dm_tab_bar.pack(side="left", fill="y")
         proj._in_analysis_view = False
         proj._set_nav_active(False)
+        self._refresh_dm_underlines(proj)
         self._update_topbar()
 
     def _build_analysis_breadcrumb(self, proj: Project):
-        """No-op — navigation is handled by the persistent switcher bar."""
+        """Rebuild the analysis tab strip in the switcher bar."""
+        self._rebuild_an_tab_bar(proj)
         self._update_analysis_breadcrumb(proj)
 
     def _update_analysis_breadcrumb(self, proj: Project):

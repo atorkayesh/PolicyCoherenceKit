@@ -219,11 +219,21 @@ VIEW_TOGGLE_TIP_PADX     = 8           # px — tooltip horizontal inner padding
 VIEW_TOGGLE_TIP_PADY     = 4           # px — tooltip vertical inner padding
 VIEW_TOGGLE_TIP_OFFSET_Y = 6           # px — gap between pill bottom and tooltip top
 
+# ── Switcher bar: DM / Analysis tab labels ───────────────────────────────────
+TAB_BG           = "#ffffff"   # tab strip background (matches switcher bar)
+TAB_ACTIVE_FG    = "#30455c"   # active tab text colour
+TAB_INACTIVE_FG  = "#a3a3a3"   # inactive tab text colour
+TAB_UNDERLINE    = "#557ca2"   # 1px underline shown on the active tab
+TAB_PADX         = 14          # px — horizontal inner padding on each label
+TAB_UNDERLINE_EXTRA = 4        # px — underline extends this many px beyond text width on each side
+TAB_TEXT_SIZE    = 12          # pt
+
 # ── Status bar ("Ready") — bottom of notebook content area ───────────────────
-STATUSBAR_BG        = "#f5f7fa"   # background
-STATUSBAR_FG        = "#a6bcd3"   # text color
-STATUSBAR_TEXT_SIZE = 11          # pt
-STATUSBAR_HEIGHT    = 27          # px
+STATUSBAR_BG           = "#ffffff"   # background
+STATUSBAR_FG           = "#a6bcd3"   # text color
+STATUSBAR_TEXT_SIZE    = 11          # pt
+STATUSBAR_HEIGHT       = 33          # px
+STATUSBAR_DIVIDER_COLOR = "#e6e6e6"  # 1px top divider
 
 # ── Misc ──────────────────────────────────────────────────────────────────────
 BG_COLOR        = "#ffffff"   # main content background
