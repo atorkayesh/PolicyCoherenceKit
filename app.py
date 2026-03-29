@@ -1513,7 +1513,8 @@ class PolicyCoherenceApp:
         proj.notebook = inner_nb
         inner_nb.bind("<<NotebookTabChanged>>",
                       lambda e, p=proj: (self._update_topbar(),
-                                         self._refresh_dm_underlines(p)))
+                                         self._refresh_dm_underlines(p),
+                                         self._ensure_current_dm_widget(p)))
 
         empty = tk.Label(
             matrix_frame,
@@ -2035,19 +2036,35 @@ class PolicyCoherenceApp:
         proj.notebook.add(tab, text=matrix.decision_maker)
         proj.notebook.select(tab)
         matrix._tab = tab
+        tab._dm_matrix = matrix   # stored for lazy widget construction
+        tab._dm_widget_built = False
         self._add_dm_tab_label(proj, matrix, tab)
 
+    def _ensure_current_dm_widget(self, proj: Project):
+        """Lazily build the MatrixWidget for the currently selected DM tab."""
+        try:
+            selected = proj.notebook.select()
+        except (tk.TclError, AttributeError):
+            return
+        for tab_id in proj.notebook.tabs():
+            if str(tab_id) != str(selected):
+                continue
+            tab = proj.notebook.nametowidget(tab_id)
+            if not getattr(tab, "_dm_widget_built", True):
+                matrix = tab._dm_matrix
 
-        def on_change(r, c, v):
-            filled = matrix.filled_count()
-            total  = matrix.total_cells()
-            self._set_status(
-                f'"{matrix.decision_maker}"  --  {filled}/{total} cells filled  '
-                f'|  {matrix.codes[r]} -> {matrix.codes[c]}: {v}'
-            )
+                def on_change(r, c, v, m=matrix):
+                    filled = m.filled_count()
+                    total  = m.total_cells()
+                    self._set_status(
+                        f'"{m.decision_maker}"  --  {filled}/{total} cells filled  '
+                        f'|  {m.codes[r]} -> {m.codes[c]}: {v}'
+                    )
 
-        mw = MatrixWidget(tab, matrix, on_change=on_change)
-        mw.pack(fill="both", expand=True, padx=8, pady=8)
+                mw = MatrixWidget(tab, matrix, on_change=on_change)
+                mw.pack(fill="both", expand=True, padx=8, pady=8)
+                tab._dm_widget_built = True
+            break
 
     def _current_inner_index(self, proj: Project) -> int:
         if not proj.notebook.tabs():
