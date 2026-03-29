@@ -16,6 +16,7 @@ from constants import (
     FONT_FAMILY,
     COLOR_BG, COLOR_TEXT, COLOR_TEXT_LIGHT,
     COLOR_BORDER,
+    MATRIX_PADX,
 )
 
 # ---------------------------------------------------------------------------
@@ -24,16 +25,18 @@ from constants import (
 _CELL_H       = 40    # cell and header height in pixels
 _HDR_W        = 120   # row-header (P1, P2…) width in pixels
 _CELL_W_LARGE = 200   # cell width when n > 5
-_GAP          = 4     # gap between cells / headers
+_GAP          = 6     # gap between cells / headers
 _AXIS_H       = 40    # height of "Influencing / Influenced" label row
-_COL_HDR_H    = 40    # column-header row height (same as _CELL_H)
-_PADX         = 8     # left / right padding around the grid block
+_COL_HDR_H    = 44    # column-header row height (same as _CELL_H)
+_PADX         = 5             # internal left/right buffer inside cell canvas
+_HDR_LEFT_PAD = 28           # px — space between left sidebar and row-header column
 _CELL_RADIUS  = 8     # border radius for all matrix cells and headers
 
 # Header label styling (P1, P2 … boxes)
 _HDR_BG        = "#426387"
 _HDR_FG        = "#f5f7fa"
-_HDR_FONT_SIZE = 10    # pt, not bold
+_HDR_FONT_SIZE  = 10    # pt, not bold
+_CELL_FONT_SIZE = 12    # pt — text inside matrix cells and cell input
 
 # Legend strip (drawn on a separate canvas above the grid)
 _LEGEND_H         = 40    # total height of the legend row
@@ -178,8 +181,9 @@ class MatrixWidget(tk.Frame):
         self._n         = len(matrix.policies)
 
         # canvas item IDs (main_canvas only)
-        self._cell_rects: dict[tuple, int] = {}
-        self._cell_texts: dict[tuple, int] = {}
+        self._cell_rects:    dict[tuple, int] = {}
+        self._cell_texts:    dict[tuple, int] = {}
+        self._cell_chevrons: dict[tuple, tuple] = {}  # (line1_id, line2_id)
 
         # canvas handles
         self._canvas:      Optional[tk.Canvas] = None   # main (cells)
@@ -232,9 +236,9 @@ class MatrixWidget(tk.Frame):
 
     def _row_hdr_bbox(self, i: int):
         """row_canvas coords of row header i."""
-        x1 = 0
+        x1 = 2
         y1 = _GAP + i * (_CELL_H + _GAP)
-        return x1, y1, _HDR_W - _GAP, y1 + _CELL_H
+        return x1, y1, _HDR_W - _GAP, y1 + _COL_HDR_H - _GAP
 
     # ------------------------------------------------------------------
     # Build
@@ -255,29 +259,29 @@ class MatrixWidget(tk.Frame):
         corner_h = _AXIS_H + _COL_HDR_H
         corner = tk.Canvas(self, bg=COLOR_BG, highlightthickness=0,
                            width=_HDR_W + _GAP, height=corner_h)
-        corner.grid(row=1, column=0, sticky="nsew")
+        corner.grid(row=1, column=0, sticky="nsew", padx=(_HDR_LEFT_PAD, 0))
         self._corner = corner
 
         # ── Column headers (scrolls X, synced with main) ─────────────
         col_cvs = tk.Canvas(self, bg=COLOR_BG, highlightthickness=0,
                             height=corner_h)
-        col_cvs.grid(row=1, column=1, sticky="ew", padx=(0, 32))
+        col_cvs.grid(row=1, column=1, sticky="ew", padx=(0, MATRIX_PADX))
         self._col_canvas = col_cvs
 
         # ── Row headers (scrolls Y, synced with main) ─────────────────
         row_cvs = tk.Canvas(self, bg=COLOR_BG, highlightthickness=0,
                             width=_HDR_W + _GAP)
-        row_cvs.grid(row=2, column=0, sticky="ns")
+        row_cvs.grid(row=2, column=0, sticky="ns", padx=(_HDR_LEFT_PAD, 0))
         self._row_canvas = row_cvs
 
         # ── Main canvas (cells, scrolls X+Y) ─────────────────────────
         main = tk.Canvas(self, bg=COLOR_BG, highlightthickness=0)
-        main.grid(row=2, column=1, sticky="nsew", padx=(0, 32))
+        main.grid(row=2, column=1, sticky="nsew", padx=(0, MATRIX_PADX))
         self._canvas = main
 
         # ── Pill scrollbars ───────────────────────────────────────────
         self._vbar  = _PillScrollbar(self, orient="vertical",   command=main.yview)
-        self._hbar  = _PillScrollbar(main, orient="horizontal", command=main.xview)
+        self._hbar  = _PillScrollbar(self, orient="horizontal", command=main.xview)
         self._hbar_shown = False
 
         main.configure(
@@ -285,11 +289,18 @@ class MatrixWidget(tk.Frame):
             yscrollcommand=self._on_y_scroll,
         )
 
-        # Smooth mouse-wheel scrolling
-        main.bind("<MouseWheel>",
-                  lambda e: self._add_scroll_velocity(-e.delta / 120))
-        main.bind("<Button-4>", lambda e: self._add_scroll_velocity(-1))
-        main.bind("<Button-5>", lambda e: self._add_scroll_velocity( 1))
+        # Mouse-wheel scrolls when hovering the scrollbars
+        self._vbar.bind("<MouseWheel>", lambda e: self._add_scroll_velocity(-e.delta / 120))
+        self._vbar.bind("<Button-4>",   lambda e: self._add_scroll_velocity(-1))
+        self._vbar.bind("<Button-5>",   lambda e: self._add_scroll_velocity( 1))
+        self._hbar.bind("<MouseWheel>", lambda e: self._add_scroll_velocity(-e.delta / 120))
+        self._hbar.bind("<Button-4>",   lambda e: self._add_scroll_velocity(-1))
+        self._hbar.bind("<Button-5>",   lambda e: self._add_scroll_velocity( 1))
+
+        for w in (main, row_cvs, col_cvs):
+            w.bind("<MouseWheel>", lambda e: self._add_scroll_velocity(-e.delta / 120))
+            w.bind("<Button-4>",   lambda e: self._add_scroll_velocity(-1))
+            w.bind("<Button-5>",   lambda e: self._add_scroll_velocity( 1))
 
         main.bind("<Configure>", self._on_configure)
         main.bind("<Button-1>",  self._on_canvas_click)
@@ -306,9 +317,10 @@ class MatrixWidget(tk.Frame):
         self._hbar.set(first, last)
         self._hbar_shown = needs
         if needs:
-            self._place_hbar()
+            self._hbar.grid(row=3, column=1, sticky="ew",
+                            padx=(0, MATRIX_PADX), pady=(4, 0))
         else:
-            self._hbar.place_forget()
+            self._hbar.grid_remove()
 
     def _on_y_scroll(self, first, last):
         self._row_canvas.yview_moveto(first)
@@ -318,37 +330,19 @@ class MatrixWidget(tk.Frame):
             self._vbar.grid(row=2, column=2, sticky="ns", padx=(20, 4))
         else:
             self._vbar.grid_remove()
-        if self._hbar_shown:
-            self._place_hbar()
-
-    def _place_hbar(self):
-        """Position hbar just below the matrix content (or at canvas bottom if overflowing)."""
-        canvas   = self._canvas
-        canvas_h = canvas.winfo_height()
-        n        = self._n
-        bar_h    = _PillScrollbar._THICK
-        gap      = 8
-
-        content_bottom = _GAP + n * (_CELL_H + _GAP)
-        scroll_offset  = int(canvas.canvasy(0))
-        screen_y = content_bottom - scroll_offset + gap
-        screen_y = max(gap, min(screen_y, canvas_h - bar_h - gap))
-
-        canvas_w = canvas.winfo_width()
-        self._hbar.place(x=0, y=screen_y, width=canvas_w, height=bar_h)
 
     # ------------------------------------------------------------------
     # Smooth scrolling
     # ------------------------------------------------------------------
 
-    _SCROLL_STEP   = 0.006
-    _SCROLL_DECAY  = 0.82
-    _SCROLL_CUTOFF = 0.0001
-    _SCROLL_FRAME  = 16
+    _SCROLL_STEP   = 0.05
+    _SCROLL_DECAY  = 0.92
+    _SCROLL_CUTOFF = 0.00005
+    _SCROLL_FRAME  = 8          # ~120 fps for silky smooth animation
 
     def _add_scroll_velocity(self, ticks: float):
         self._scroll_vy += ticks * self._SCROLL_STEP
-        self._scroll_vy = max(-0.06, min(0.06, self._scroll_vy))
+        self._scroll_vy = max(-0.15, min(0.15, self._scroll_vy))
         if self._scroll_anim is None:
             self._scroll_tick()
 
@@ -542,20 +536,36 @@ class MatrixWidget(tk.Frame):
                     fg   = RATING_TEXT_COLORS[DIAGONAL_VALUE]
                     text = DIAGONAL_VALUE
                 elif value:
-                    bg   = RATING_COLORS.get(value, "#f9f9f9")
+                    bg   = RATING_COLORS.get(value, "#fafafa")
                     fg   = RATING_TEXT_COLORS.get(value, COLOR_TEXT)
                     text = value
                 else:
-                    bg   = "#f9f9f9"
-                    fg   = COLOR_TEXT_LIGHT
+                    bg   = "#fafafa"
+                    fg   = "#a3a3a3"
                     text = "--"
 
+                outline = "#f5f5f5" if not value and not is_diag else ""
                 rid = _round_rect(canvas, x1, y1, x2, y2, _CELL_RADIUS,
-                                  fill=bg, outline="")
+                                  fill=bg, outline=outline)
                 tid = canvas.create_text((x1 + x2) // 2, (y1 + y2) // 2,
                                         text=text,
-                                        font=(FONT_FAMILY, 9),
+                                        font=(FONT_FAMILY, _CELL_FONT_SIZE),
                                         fill=fg)
+                # Chevron-down icon at right of cell (all selectable/non-diagonal cells)
+                if not is_diag:
+                    cw, ch  = 9, 5          # chevron width and height
+                    pad     = 10            # distance from right edge
+                    cx      = x2 - pad
+                    cy      = (y1 + y2) // 2
+                    c1 = canvas.create_line(cx - cw//2, cy - ch//2,
+                                            cx,          cy + ch//2,
+                                            fill="#e6e6e6", width=1.35,
+                                            capstyle="round", joinstyle="round")
+                    c2 = canvas.create_line(cx,          cy + ch//2,
+                                            cx + cw//2,  cy - ch//2,
+                                            fill="#e6e6e6", width=1.35,
+                                            capstyle="round", joinstyle="round")
+                    self._cell_chevrons[(i, j)] = (c1, c2)
                 self._cell_rects[(i, j)] = rid
                 self._cell_texts[(i, j)] = tid
 
@@ -600,7 +610,7 @@ class MatrixWidget(tk.Frame):
         combo = ttk.Combobox(canvas, textvariable=var,
                              values=COHERENCE_RATINGS,
                              state="readonly",
-                             font=(FONT_FAMILY, 9))
+                             font=(FONT_FAMILY, _CELL_FONT_SIZE))
         combo.place(x=screen_x, y=screen_y, width=cell_w, height=cell_h)
         combo.focus_set()
         combo.event_generate("<Button-1>")
@@ -617,9 +627,10 @@ class MatrixWidget(tk.Frame):
             if self._combo is not None:
                 self._combo.destroy()
                 self._combo = None
+            self._canvas.focus_set()
 
         combo.bind("<<ComboboxSelected>>", _commit)
-        combo.bind("<FocusOut>",           _close)
+        combo.bind("<FocusOut>",           lambda e: self.after(50, _close))
         combo.bind("<Escape>",             _close)
         self._combo = combo
 
@@ -662,7 +673,7 @@ class MatrixWidget(tk.Frame):
 
     def _update_cell_display(self, i: int, j: int, value: str):
         canvas = self._canvas
-        bg = RATING_COLORS.get(value, "#f9f9f9")
+        bg = RATING_COLORS.get(value, "#fafafa")
         fg = RATING_TEXT_COLORS.get(value, COLOR_TEXT)
         canvas.itemconfig(self._cell_rects[(i, j)], fill=bg)
         canvas.itemconfig(self._cell_texts[(i, j)], text=value, fill=fg)
@@ -674,6 +685,6 @@ class MatrixWidget(tk.Frame):
             self._update_cell_display(row, col, value)
         else:
             canvas = self._canvas
-            canvas.itemconfig(self._cell_rects[(row, col)], fill="#f9f9f9")
+            canvas.itemconfig(self._cell_rects[(row, col)], fill="#fafafa", outline="#f5f5f5")
             canvas.itemconfig(self._cell_texts[(row, col)],
-                              text="--", fill=COLOR_TEXT_LIGHT)
+                              text="--", fill="#a3a3a3")
