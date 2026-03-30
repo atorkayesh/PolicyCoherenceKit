@@ -56,6 +56,9 @@ class AggregationResult:
     codes    : policy codes  (P1, P2, ...)
     policies : full policy names
     method   : 'average' | 'majority' | 'weighted'
+    decision_makers: number of source matrices
+    decision_maker_names: source matrix names in aggregation order
+    source_scores: per-cell numeric source ratings for agreement analysis
 
     Cached analysis results (populated lazily by analysis tabs):
     _cached_scores    : coherence scores (OI, II, WOI, WII)
@@ -69,6 +72,9 @@ class AggregationResult:
     codes:    List[str]
     policies: List[str]
     method:   str
+    decision_makers: int = 0
+    decision_maker_names: List[str] = field(default_factory=list)
+    source_scores: Dict[Tuple[int, int], List[float]] = field(default_factory=dict, repr=False)
     # Cached analysis results (populated lazily)
     _cached_scores:     Optional[List[dict]] = field(default=None, repr=False)
     _cached_entropy:    Optional[List[dict]] = field(default=None, repr=False)
@@ -118,19 +124,26 @@ def aggregate_average(matrices: List[PolicyMatrix]) -> AggregationResult:
     n        = len(matrices[0].policies)
     codes    = matrices[0].codes
     policies = matrices[0].policies
+    dm_names = [m.decision_maker for m in matrices]
     scores: Dict[Tuple[int, int], float] = {}
+    source_scores: Dict[Tuple[int, int], List[float]] = {}
 
     for i in range(n):
         for j in range(n):
             if i == j:
                 scores[(i, j)] = 0.0
+                source_scores[(i, j)] = [0.0 for _ in matrices]
                 continue
             values = [RATING_SCORES[m.get_rating(i, j)] for m in matrices]
             scores[(i, j)] = round(sum(values) / len(values), 2)
+            source_scores[(i, j)] = [float(v) for v in values]
 
     return AggregationResult(
         scores=scores, ties=[], n=n,
         codes=codes, policies=policies, method="average",
+        decision_makers=len(matrices),
+        decision_maker_names=dm_names,
+        source_scores=source_scores,
     )
 
 
@@ -147,16 +160,21 @@ def aggregate_majority(matrices: List[PolicyMatrix]) -> AggregationResult:
     n        = len(matrices[0].policies)
     codes    = matrices[0].codes
     policies = matrices[0].policies
+    dm_names = [m.decision_maker for m in matrices]
     scores: Dict[Tuple[int, int], float] = {}
     ties:   List[TiedCell] = []
+    source_scores: Dict[Tuple[int, int], List[float]] = {}
 
     for i in range(n):
         for j in range(n):
             if i == j:
                 scores[(i, j)] = 0.0
+                source_scores[(i, j)] = [0.0 for _ in matrices]
                 continue
 
             labels    = [m.get_rating(i, j) for m in matrices]
+            values    = [float(RATING_SCORES[label]) for label in labels]
+            source_scores[(i, j)] = values
             counter   = Counter(labels)
             max_count = max(counter.values())
             winners   = [lbl for lbl, cnt in counter.items() if cnt == max_count]
@@ -178,6 +196,9 @@ def aggregate_majority(matrices: List[PolicyMatrix]) -> AggregationResult:
     return AggregationResult(
         scores=scores, ties=ties, n=n,
         codes=codes, policies=policies, method="majority",
+        decision_makers=len(matrices),
+        decision_maker_names=dm_names,
+        source_scores=source_scores,
     )
 
 
@@ -214,22 +235,30 @@ def aggregate_weighted(
     n        = len(matrices[0].policies)
     codes    = matrices[0].codes
     policies = matrices[0].policies
+    dm_names = [m.decision_maker for m in matrices]
     scores: Dict[Tuple[int, int], float] = {}
+    source_scores: Dict[Tuple[int, int], List[float]] = {}
 
     for i in range(n):
         for j in range(n):
             if i == j:
                 scores[(i, j)] = 0.0
+                source_scores[(i, j)] = [0.0 for _ in matrices]
                 continue
+            raw_values = [float(RATING_SCORES[m.get_rating(i, j)]) for m in matrices]
             value = sum(
-                w * RATING_SCORES[m.get_rating(i, j)]
-                for w, m in zip(weights, matrices)
+                w * raw
+                for w, raw in zip(weights, raw_values)
             )
             scores[(i, j)] = round(value, 2)
+            source_scores[(i, j)] = raw_values
 
     return AggregationResult(
         scores=scores, ties=[], n=n,
         codes=codes, policies=policies, method="weighted",
+        decision_makers=len(matrices),
+        decision_maker_names=dm_names,
+        source_scores=source_scores,
     )
 
 

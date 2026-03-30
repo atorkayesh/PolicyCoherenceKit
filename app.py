@@ -7,6 +7,7 @@
 import io
 import math
 import sys
+from pathlib import Path
 import ctypes, ctypes.util
 import tkinter as tk
 
@@ -35,7 +36,7 @@ from dataclasses import dataclass, field
 
 from models import PolicyMatrix, make_empty_matrix
 from matrix_widget import MatrixWidget
-from dialogs import NewMatrixDialog, _SimpleInputDialog, style_button
+from dialogs import NewMatrixDialog, ProjectSetupDialog, _SimpleInputDialog, style_button
 from aggregator import (
     check_completeness,
     aggregate_average, aggregate_majority, aggregate_weighted, resolve_ties,
@@ -50,6 +51,7 @@ from range_of_influence_tab import RangeOfInfluenceTab
 from pca_tab import PCATab
 from network_tab import NetworkTab
 from llm_tab import LLMInterpretationTab
+from results_insights_tab import ResultsInsightsTab
 from importer import import_matrices_from_excel
 from constants import (
     APP_TITLE, WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT,
@@ -1361,10 +1363,30 @@ class PolicyCoherenceApp:
 
     def _new_project(self):
         existing = [p.name for p in self.projects]
-        dlg = _ProjectNameDialog(self.root, existing_names=existing)
+        dlg = ProjectSetupDialog(
+            self.root,
+            title="Create Project",
+            include_project_name=True,
+            existing_project_names=existing,
+        )
         self.root.wait_window(dlg)
         if dlg.result:
-            self._add_project(dlg.result)
+            data = dlg.result
+            if data.get("action") == "import_excel":
+                self._import_excel_new_project()
+                return
+            proj = self._add_project(data["project_name"])
+            for dm_name in data["decision_makers"]:
+                matrix = make_empty_matrix(dm_name, data["policies"])
+                proj.matrices.append(matrix)
+                self._create_dm_tab(proj, matrix)
+            self._proj_nb.select(proj.frame)
+            self._refresh_sidebar_projects()
+            self._set_status(
+                f'Project "{proj.name}" created with {len(data["decision_makers"])} decision-maker'
+                f'{"s" if len(data["decision_makers"]) != 1 else ""}.'
+            )
+            self._update_topbar()
 
     def _add_project(self, name: str):
         """Create a new Project and its top-level notebook tab."""
@@ -1667,6 +1689,7 @@ class PolicyCoherenceApp:
         self._refresh_sidebar_projects()
         self._set_status(f'Project "{name}" created.')
         self._update_topbar()
+        return proj
 
     # ------------------------------------------------------------------
     # Sidebar project list helpers
@@ -2138,28 +2161,34 @@ class PolicyCoherenceApp:
                                 "Create a project first.", parent=self.root)
             return
 
-        if proj.matrices:
-            # Reuse existing policy list
-            dlg = _SimpleInputDialog(self.root, "Add Decision-Maker",
-                                     "Decision-Maker Name:")
-            self.root.wait_window(dlg)
-            if not dlg.result:
-                return
-            dm_name  = dlg.result
-            policies = proj.matrices[0].policies
-        else:
-            dlg = NewMatrixDialog(self.root)
-            self.root.wait_window(dlg)
-            if dlg.result is None:
-                return
-            dm_name, policies = dlg.result
+        existing_dm_names = [m.decision_maker for m in proj.matrices]
+        dlg = ProjectSetupDialog(
+            self.root,
+            title="Add Decision-Makers",
+            include_project_name=False,
+            existing_dm_names=existing_dm_names,
+            fixed_policies=proj.matrices[0].policies if proj.matrices else None,
+        )
+        self.root.wait_window(dlg)
+        if dlg.result is None:
+            return
 
-        matrix = make_empty_matrix(dm_name, policies)
-        proj.matrices.append(matrix)
-        self._create_dm_tab(proj, matrix)
+        data = dlg.result
+        if data.get("action") == "import_excel":
+            self._import_excel_into_project(proj)
+            return
+        policies = proj.matrices[0].policies if proj.matrices else data["policies"]
+
+        for dm_name in data["decision_makers"]:
+            matrix = make_empty_matrix(dm_name, policies)
+            proj.matrices.append(matrix)
+            self._create_dm_tab(proj, matrix)
         self._proj_nb.select(proj.frame)
         self._refresh_sidebar_projects()
-        self._set_status(f'"{dm_name}" added to project "{proj.name}".')
+        self._set_status(
+            f'Added {len(data["decision_makers"])} decision-maker'
+            f'{"s" if len(data["decision_makers"]) != 1 else ""} to project "{proj.name}".'
+        )
         self._update_topbar()
 
     def _create_dm_tab(self, proj: Project, matrix: PolicyMatrix):
@@ -2368,6 +2397,7 @@ class PolicyCoherenceApp:
         proj.agg_tab_ids.clear()
 
         tabs = [
+            (f"  Results Insights ({method_label})  ",  ResultsInsightsTab),
             (f"  Aggregated ({method_label})  ",         AggregationTab),
             (f"  Coherence Scores ({method_label})  ",   CoherenceScoresTab),
             (f"  Range of Influence ({method_label})  ", RangeOfInfluenceTab),
@@ -2573,19 +2603,38 @@ class PolicyCoherenceApp:
             messagebox.showinfo("No Project", "Create a project first.",
                                 parent=self.root)
             return
+        self._import_excel_into_project(proj)
 
-        path = filedialog.askopenfilename(
+    def _ask_excel_path(self):
+        return filedialog.askopenfilename(
             parent=self.root,
             title="Import matrices from Excel workbook",
             filetypes=[("Excel Workbook", "*.xlsx *.xls")],
         )
+
+    def _load_import_result(self, path):
+        try:
+            return import_matrices_from_excel(path)
+        except (ValueError, ImportError) as exc:
+            messagebox.showerror("Import Error", str(exc), parent=self.root)
+            return None
+
+    def _unique_project_name(self, base_name: str) -> str:
+        existing = {p.name for p in self.projects}
+        if base_name not in existing:
+            return base_name
+        i = 2
+        while f"{base_name} {i}" in existing:
+            i += 1
+        return f"{base_name} {i}"
+
+    def _import_excel_into_project(self, proj: Project):
+        path = self._ask_excel_path()
         if not path:
             return
 
-        try:
-            result = import_matrices_from_excel(path)
-        except (ValueError, ImportError) as exc:
-            messagebox.showerror("Import Error", str(exc), parent=self.root)
+        result = self._load_import_result(path)
+        if result is None:
             return
 
         if not result.matrices:
@@ -2628,6 +2677,43 @@ class PolicyCoherenceApp:
                                 parent=self.root)
 
         self._set_status(f"Imported {added} matrix/matrices from: {path}")
+        self._update_topbar()
+
+    def _import_excel_new_project(self):
+        path = self._ask_excel_path()
+        if not path:
+            return
+
+        result = self._load_import_result(path)
+        if result is None:
+            return
+
+        if not result.matrices:
+            messagebox.showwarning("Nothing Imported",
+                                   "No valid matrices were found in the workbook.",
+                                   parent=self.root)
+            return
+
+        project_name = self._unique_project_name(Path(path).stem)
+        proj = self._add_project(project_name)
+        for matrix in result.matrices:
+            proj.matrices.append(matrix)
+            self._create_dm_tab(proj, matrix)
+
+        if result.warnings:
+            msg = (str(len(result.matrices)) + " matrix/matrices imported.\n\n"
+                   "The following sheets have blank cells:\n\n"
+                   + "\n".join(result.warnings))
+            messagebox.showwarning("Import Complete with Warnings",
+                                   msg, parent=self.root)
+        else:
+            messagebox.showinfo("Import Complete",
+                                str(len(result.matrices)) + " matrix/matrices imported successfully.",
+                                parent=self.root)
+
+        self._proj_nb.select(proj.frame)
+        self._refresh_sidebar_projects()
+        self._set_status(f'Project "{proj.name}" created from import: {path}')
         self._update_topbar()
 
     # ==================================================================
