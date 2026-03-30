@@ -1415,40 +1415,49 @@ class PolicyCoherenceApp:
         dm_tab_bar.bind("<MouseWheel>", _scroll_fn)
 
         # ── Drag-to-scroll with momentum on the tab bar ───────────────
-        _dm_drag = {"x": 0, "dragging": False, "vx": 0.0, "t": 0, "anim": [None]}
+        _dm_drag = {"x": 0, "dragging": False, "vx": 0.0,
+                    "history": [], "anim": [None]}
 
         def _dm_drag_start(e, d=_dm_drag, c=_dm_scroll_c):
             if d["anim"][0]:
                 c.after_cancel(d["anim"][0])
                 d["anim"][0] = None
-            d["x"] = e.x_root
-            d["vx"] = 0.0
-            d["t"] = e.time
+            d["x"]       = e.x_root
+            d["vx"]      = 0.0
+            d["history"] = [(e.time, e.x_root)]
             d["dragging"] = False
 
         def _dm_drag_motion(e, c=_dm_scroll_c, d=_dm_drag):
             dx = d["x"] - e.x_root
-            dt = max(1, e.time - d["t"])
-            d["vx"] = d["vx"] * 0.6 + (dx / dt) * 0.4   # smoothed velocity (px/ms)
             d["x"] = e.x_root
-            d["t"] = e.time
+
+            # Keep a 80 ms position history for stable velocity estimation
+            d["history"].append((e.time, e.x_root))
+            d["history"] = [(t, x) for t, x in d["history"]
+                            if e.time - t <= 80]
+            if len(d["history"]) >= 2:
+                t0, x0 = d["history"][0]
+                t1, x1 = d["history"][-1]
+                dt = max(1, t1 - t0)
+                d["vx"] = (x0 - x1) / dt     # px / ms, positive = scroll right
+
             if abs(dx) > 1:
                 d["dragging"] = True
             if not d["dragging"]:
                 return
-            x1, x2 = c.xview()
-            span = x2 - x1
+            x1v, x2v = c.xview()
+            span = x2v - x1v
             if span >= 1.0:
                 return
             cw = c.winfo_width()
             if cw > 0:
-                c.xview_moveto(max(0.0, min(1.0 - span, x1 + dx * span / cw)))
+                c.xview_moveto(max(0.0, min(1.0 - span, x1v + dx * span / cw)))
 
         def _dm_drag_end(e, c=_dm_scroll_c, d=_dm_drag):
             vx = [d["vx"]]
 
             def _coast():
-                if abs(vx[0]) < 0.01:
+                if abs(vx[0]) < 0.08:         # stop when imperceptibly slow
                     d["anim"][0] = None
                     d["dragging"] = False
                     return
@@ -1460,12 +1469,12 @@ class PolicyCoherenceApp:
                     return
                 cw = c.winfo_width()
                 if cw > 0:
-                    px = vx[0] * 16           # distance this frame (16 ms)
+                    px = vx[0] * 16           # pixels this frame at 60 fps
                     c.xview_moveto(max(0.0, min(1.0 - span, x1 + px * span / cw)))
-                vx[0] *= 0.88                 # friction — higher = longer glide
+                vx[0] *= 0.92                 # gentle friction — feels like glass
                 d["anim"][0] = c.after(16, _coast)
 
-            if abs(d["vx"]) > 0.05:
+            if abs(d["vx"]) > 0.08:
                 d["anim"][0] = c.after(16, _coast)
             else:
                 d["dragging"] = False
@@ -2418,7 +2427,7 @@ class PolicyCoherenceApp:
 
         lbl = tk.Label(container, text=matrix.decision_maker,
                        bg=self._TAB_BG, fg=self._TAB_INACTIVE_FG,
-                       padx=self._TAB_PADX,
+                       padx=self._TAB_PADX, wraplength=0,
                        font=(FONT_FAMILY, self._TAB_TEXT_SIZE, "normal"))
         lbl.pack(side="top", fill="both", expand=True)
 
@@ -2527,9 +2536,9 @@ class PolicyCoherenceApp:
         if not proj.agg_tab_ids:
             return
         proj._matrix_frame.pack_forget()
-        proj._dm_tab_bar.pack_forget()
+        proj._dm_scroll_c.pack_forget()
         proj._analysis_frame.pack(fill="both", expand=True)
-        proj._an_tab_bar.pack(side="left", fill="y")
+        proj._an_tab_bar.pack(side="left", fill="both", expand=True)
         proj._in_analysis_view = True
         proj._set_nav_active(True)
         self._refresh_an_underlines(proj)
@@ -2539,7 +2548,7 @@ class PolicyCoherenceApp:
         proj._analysis_frame.pack_forget()
         proj._an_tab_bar.pack_forget()
         proj._matrix_frame.pack(fill="both", expand=True)
-        proj._dm_tab_bar.pack(side="left", fill="y")
+        proj._dm_scroll_c.pack(side="left", fill="both", expand=True)
         proj._in_analysis_view = False
         proj._set_nav_active(False)
         self._refresh_dm_underlines(proj)
