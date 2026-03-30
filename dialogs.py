@@ -1008,7 +1008,7 @@ class ProjectSetupDialog(tk.Toplevel):
             req_h = self._shell_frame.winfo_reqheight() + 2 * MODAL_RADIUS
             parent_w = max(1, parent.winfo_width())
             parent_h = max(1, parent.winfo_height())
-            target_modal_h = 665 if self._include_project_name else 560
+            target_modal_h = 665 if self._include_project_name else 400
             modal_w = min(max(860, req_w + 40), max(320, parent_w - 80))
             modal_h = min(max(target_modal_h, req_h + 20), target_modal_h, max(240, parent_h - 80))
             if self._modal_x is None:

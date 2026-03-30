@@ -4,6 +4,7 @@
 # =============================================================================
 
 import math
+import re
 import tkinter as tk
 from collections import Counter
 from typing import Dict, List, Optional, Tuple
@@ -18,15 +19,87 @@ from constants import (
     COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_ACCENT2,
     COLOR_TEXT, COLOR_TEXT_LIGHT, COLOR_BORDER,
 )
-
-_CARD_BG = "#ffffff"
-_CARD_BORDER = "#d9d5ce"
-_POS = "#2A9D8F"
-_NEG = "#C8643B"
-_MID = "#E7B34A"
-_SCATTER_BG = "#fbfcfd"
-_SOFT_BG = "#f7f8fa"
-_TEAL_BAR = "#2b7a78"
+from theme import (
+    RESULTS_CARD_BG as _CARD_BG,
+    RESULTS_CARD_BORDER as _CARD_BORDER,
+    RESULTS_CARD_RADIUS as _CARD_RADIUS,
+    RESULTS_CARD_INSET as _CARD_INSET,
+    RESULTS_CARD_GAP as _CARD_GAP,
+    RESULTS_SCATTER_BG as _SCATTER_BG,
+    RESULTS_SCATTER_BORDER as _SCATTER_BORDER,
+    RESULTS_SCATTER_AXIS as _SCATTER_AXIS,
+    RESULTS_SCATTER_GUIDE as _SCATTER_GUIDE,
+    RESULTS_SCATTER_LABEL as _SCATTER_LABEL,
+    RESULTS_SOFT_BG as _SOFT_BG,
+    RESULTS_SOFT_BORDER as _SOFT_BORDER,
+    RESULTS_TEAL_BAR as _TEAL_BAR,
+    RESULTS_BANNER_BG as _BANNER_BG,
+    RESULTS_BANNER_BORDER as _BANNER_BORDER,
+    RESULTS_BANNER_LEFT_BG as _BANNER_LEFT_BG,
+    RESULTS_BANNER_RIGHT_BG as _BANNER_RIGHT_BG,
+    RESULTS_BANNER_TITLE_COLOR as _BANNER_TITLE_COLOR,
+    RESULTS_BANNER_TITLE_SIZE as _BANNER_TITLE_SIZE,
+    RESULTS_BANNER_TEXT_COLOR as _BANNER_TEXT_COLOR,
+    RESULTS_BANNER_TEXT_SIZE as _BANNER_TEXT_SIZE,
+    RESULTS_BANNER_EMPH_COLOR as _BANNER_EMPH_COLOR,
+    RESULTS_BANNER_RELATION_COLOR as _BANNER_RELATION_COLOR,
+    RESULTS_BANNER_SUPPORTING_WRAP as _BANNER_SUPPORTING_WRAP,
+    RESULTS_BANNER_OUTER_PADX as _BANNER_OUTER_PADX,
+    RESULTS_BANNER_OUTER_PADY as _BANNER_OUTER_PADY,
+    RESULTS_BANNER_COLUMN_GAP as _BANNER_COLUMN_GAP,
+    RESULTS_BANNER_TITLE_GAP as _BANNER_TITLE_GAP,
+    RESULTS_BANNER_TEXT_GAP as _BANNER_TEXT_GAP,
+    RESULTS_BANNER_SUPPORTING_BOTTOM as _BANNER_SUPPORTING_BOTTOM,
+    RESULTS_BANNER_INTERPRETATION_LABEL as _BANNER_INTERPRETATION_LABEL,
+    RESULTS_BANNER_INTERPRETATION_TEXT as _BANNER_INTERPRETATION_TEXT,
+    RESULTS_BANNER_STATS_PADX as _BANNER_STATS_PADX,
+    RESULTS_BANNER_STATS_TOP as _BANNER_STATS_TOP,
+    RESULTS_BANNER_STATS_GAP as _BANNER_STATS_GAP,
+    RESULTS_BANNER_STATS_BOTTOM as _BANNER_STATS_BOTTOM,
+    RESULTS_BANNER_META_HEIGHT as _BANNER_META_HEIGHT,
+    RESULTS_BANNER_META_RADIUS as _BANNER_META_RADIUS,
+    RESULTS_BANNER_META_TEXT_SIZE as _BANNER_META_TEXT_SIZE,
+    RESULTS_BANNER_STAT_HEIGHT_DELTA as _BANNER_STAT_HEIGHT_DELTA,
+    RESULTS_BANNER_TAG_HEIGHT as _BANNER_TAG_HEIGHT,
+    RESULTS_BANNER_TAG_RADIUS as _BANNER_TAG_RADIUS,
+    RESULTS_BANNER_TAG_TEXT_SIZE as _BANNER_TAG_TEXT_SIZE,
+    RESULTS_BANNER_TAG_TOP_DRIVER_BG as _BANNER_TAG_TOP_DRIVER_BG,
+    RESULTS_BANNER_TAG_TOP_DRIVER_FG as _BANNER_TAG_TOP_DRIVER_FG,
+    RESULTS_BANNER_TAG_STRONGEST_BG as _BANNER_TAG_STRONGEST_BG,
+    RESULTS_BANNER_TAG_STRONGEST_FG as _BANNER_TAG_STRONGEST_FG,
+    RESULTS_BANNER_TAG_CONTESTED_BG as _BANNER_TAG_CONTESTED_BG,
+    RESULTS_BANNER_TAG_CONTESTED_FG as _BANNER_TAG_CONTESTED_FG,
+    RESULTS_BANNER_METHOD_BG as _BANNER_METHOD_BG,
+    RESULTS_BANNER_METHOD_FG as _BANNER_METHOD_FG,
+    RESULTS_BANNER_POLICIES_BG as _BANNER_POLICIES_BG,
+    RESULTS_BANNER_POLICIES_FG as _BANNER_POLICIES_FG,
+    RESULTS_BANNER_DMS_BG as _BANNER_DMS_BG,
+    RESULTS_BANNER_DMS_FG as _BANNER_DMS_FG,
+    RESULTS_HEALTH_BAR_BG as _HEALTH_BAR_BG,
+    RESULTS_LINK_COLOR as _LINK_COLOR,
+    RESULTS_AGREEMENT_ACCENT as _AGREEMENT_ACCENT,
+    RESULTS_CONFIG_PILL_FG as _CONFIG_PILL_FG,
+    RESULTS_PROMINENCE_BAR_BG as _PROMINENCE_BAR_BG,
+    RESULTS_RANKING_BAR_BG as _RANKING_BAR_BG,
+    RESULTS_HEATMAP_BG as _HEATMAP_BG,
+    RESULTS_HEATMAP_DIAGONAL as _HEATMAP_DIAGONAL,
+    RESULTS_CANVAS_LIGHT_TEXT as _CANVAS_LIGHT_TEXT,
+    RESULTS_ON_ACCENT_TEXT as _ON_ACCENT_TEXT,
+    RESULTS_DRIVER as _DRIVER,
+    RESULTS_DEPENDENT as _DEPENDENT,
+    RESULTS_BALANCED as _BALANCED,
+    RESULTS_HEAT_LOW as _HEAT_LOW,
+    RESULTS_HEAT_HIGH as _HEAT_HIGH,
+    RESULTS_SURFACE as _SURFACE,
+    RESULTS_SOFT_RED as _SOFT_RED,
+    RESULTS_SOFT_GREEN as _SOFT_GREEN,
+    RESULTS_SOFT_ORANGE as _SOFT_ORANGE,
+    RESULTS_SOFT_BLUE as _SOFT_BLUE,
+    RESULTS_SOFT_PURPLE as _SOFT_PURPLE,
+    RESULTS_POSITIVE as _POS,
+    RESULTS_NEGATIVE as _NEG,
+    RESULTS_MID as _MID,
+)
 
 
 class _WrapFrame(tk.Frame):
@@ -57,6 +130,78 @@ class _WrapFrame(tk.Frame):
             x += w + self._gap
             row_h = max(row_h, h)
         self.configure(height=y + row_h)
+
+
+def _hex_interp(c1: str, c2: str, t: float) -> str:
+    t = max(0.0, min(1.0, t))
+    r = int(int(c1[1:3], 16) + (int(c2[1:3], 16) - int(c1[1:3], 16)) * t)
+    g = int(int(c1[3:5], 16) + (int(c2[3:5], 16) - int(c1[3:5], 16)) * t)
+    b = int(int(c1[5:7], 16) + (int(c2[5:7], 16) - int(c1[5:7], 16)) * t)
+    return f"#{r:02x}{g:02x}{b:02x}"
+
+
+def _rrect_pts(x1: float, y1: float, x2: float, y2: float, r: float, steps: int = 10) -> List[float]:
+    pts = []
+    for cx, cy, a0 in [
+        (x2 - r, y1 + r, -90),
+        (x2 - r, y2 - r, 0),
+        (x1 + r, y2 - r, 90),
+        (x1 + r, y1 + r, 180),
+    ]:
+        for i in range(steps + 1):
+            a = math.radians(a0 + 90 * i / steps)
+            pts += [cx + r * math.cos(a), cy + r * math.sin(a)]
+    return pts
+
+
+class _RoundedCard(tk.Canvas):
+    def __init__(self, parent, bg: str, radius: int = _CARD_RADIUS, border: Optional[str] = None, border_width: int = 0):
+        super().__init__(parent, bg=COLOR_BG, highlightthickness=0, bd=0)
+        self._fill = bg
+        self._radius = radius
+        self._border = border or bg
+        self._border_width = border_width
+        self._body = tk.Frame(self, bg=bg, bd=0, highlightthickness=0)
+        self._window = self.create_window(0, 0, window=self._body, anchor="nw")
+        self.bind("<Configure>", self._redraw)
+        self._body.bind("<Configure>", self._sync_body)
+
+    @property
+    def body(self) -> tk.Frame:
+        return self._body
+
+    def _sync_body(self, _event=None):
+        req_h = self._body.winfo_reqheight() + (_CARD_INSET * 2)
+        current_req_h = int(self.cget("height")) if str(self.cget("height")).isdigit() else 0
+        target_h = max(req_h, current_req_h)
+        if self.winfo_height() <= 1 or self.winfo_height() < target_h:
+            self.configure(height=target_h)
+        self._redraw()
+
+    def _redraw(self, _event=None):
+        width = self.winfo_width()
+        height = self.winfo_height()
+        if width <= 1:
+            width = self._body.winfo_reqwidth() + (_CARD_INSET * 2)
+        if height <= 1:
+            height = self._body.winfo_reqheight() + (_CARD_INSET * 2)
+        self.delete("card_bg")
+        pts = _rrect_pts(1, 1, width - 1, height - 1, self._radius)
+        self.create_polygon(
+            *pts,
+            fill=self._fill,
+            outline=self._border,
+            width=self._border_width,
+            smooth=True,
+            tags="card_bg",
+        )
+        self.tag_lower("card_bg")
+        self.coords(self._window, _CARD_INSET, _CARD_INSET)
+        self.itemconfigure(
+            self._window,
+            width=max(1, width - (_CARD_INSET * 2)),
+            height=max(1, height - (_CARD_INSET * 2)),
+        )
 
 
 def _method_label(method: str) -> str:
@@ -197,6 +342,83 @@ def _build_narrative(result: AggregationResult, insights: Dict[str, object]) -> 
     return lines[:4]
 
 
+def _role_for_row(row: dict) -> Tuple[str, str, str]:
+    net = row["net"]
+    if net > 0.05:
+        return "Strategic Driver", _DRIVER, "↑"
+    if net < -0.05:
+        return "System Dependent", _DEPENDENT, "↓"
+    return "Balanced Node", _BALANCED, "•"
+
+
+def _strongest_link(result: AggregationResult, row_index: int) -> Tuple[str, float]:
+    best_pair = None
+    best_score = 0.0
+    for j in range(result.n):
+        if j == row_index:
+            continue
+        score = result.scores.get((row_index, j), 0.0) or 0.0
+        if abs(score) > abs(best_score):
+            best_score = score
+            best_pair = (row_index, j)
+    if best_pair is None:
+        return "No strong outgoing link", 0.0
+    _, j = best_pair
+    tone = "Reinforcing" if best_score > 0 else "Constraining"
+    return f"{result.codes[row_index]} -> {result.codes[j]} ({best_score:+.2f} {tone})", best_score
+
+
+def _build_story_banner(result: AggregationResult, insights: Dict[str, object]) -> str:
+    top_driver = insights["top_driver"]
+    contested = insights["agreement"]["contested"][0] if insights["agreement"]["contested"] else None
+    if not top_driver:
+        return "The current result set is too sparse to describe a clear system story."
+    link_text, score = _strongest_link(result, top_driver["index"])
+    if contested:
+        return (
+            f"{top_driver['code']} is the main driver shaping the system, with the clearest pull through {link_text}. "
+            f"That said, {contested['pair']} remains contested across decision-makers."
+        )
+    if abs(score) > 0:
+        return (
+            f"{top_driver['code']} is the main driver shaping the system, and its strongest visible effect is {link_text}. "
+            f"Overall agreement is {insights['agreement']['average_agreement']:.2f}, so the pattern is relatively stable."
+        )
+    return (
+        f"{top_driver['code']} has the strongest net influence in the system, but no single outgoing relation dominates yet. "
+        f"The structure is still diffuse and should be interpreted with care."
+    )
+
+
+def _build_system_health(insights: Dict[str, object], result: AggregationResult) -> Dict[str, int]:
+    graph = insights["graph"]
+    max_edges = max(1, result.n * (result.n - 1))
+    synergy = round((graph["positive_edges"] / max_edges) * 100)
+    conflict = round((graph["negative_edges"] / max_edges) * 100)
+    uncertainty = round((1 - insights["agreement"]["average_agreement"]) * 100)
+    score = max(0, min(100, 50 + synergy - conflict - round(uncertainty * 0.7)))
+    return {
+        "score": score,
+        "synergy": synergy,
+        "conflict": conflict,
+        "uncertainty": uncertainty,
+    }
+
+
+def _build_supporting_interpretation(insights: Dict[str, object]) -> str:
+    contested = insights["agreement"]["contested"][0] if insights["agreement"]["contested"] else None
+    agreement = insights["agreement"]["average_agreement"]
+    if contested and agreement >= 0.75:
+        return "Interpretation: The system is relatively stable, but one important relation still lacks consensus."
+    if contested and agreement >= 0.5:
+        return "Interpretation: The system shows a workable pattern overall, though a few relations still need careful interpretation."
+    if contested:
+        return "Interpretation: The system remains contested, so the strongest signals should be treated as provisional."
+    if agreement >= 0.75:
+        return "Interpretation: The system is highly consistent across decision-makers, so the main structure looks robust."
+    return "Interpretation: The system is moderately stable, with some signals requiring additional scrutiny."
+
+
 def compute_insights(result: AggregationResult) -> Dict[str, object]:
     score_rows = compute_scores(result)
     entropy_rows = compute_entropy(result)
@@ -218,6 +440,7 @@ def compute_insights(result: AggregationResult) -> Dict[str, object]:
         )
         enriched_row = {
             **row,
+            "index": idx,
             "net": net,
             "prominence": prominence,
             "entropy": entropy_by_code[row["code"]]["entropy"],
@@ -261,25 +484,24 @@ class ResultsInsightsTab(tk.Frame):
         super().__init__(parent, bg=COLOR_BG, **kwargs)
         self._result = result
         self._insights = compute_insights(result)
+        self._story = _build_story_banner(result, self._insights)
+        self._health = _build_system_health(self._insights, result)
         self._build()
 
     def _build(self):
-        canvas = tk.Canvas(self, bg=COLOR_BG, highlightthickness=0)
-        scroll = tk.Scrollbar(self, orient="vertical", command=canvas.yview)
-        canvas.configure(yscrollcommand=scroll.set)
-        scroll.pack(side="right", fill="y")
-        canvas.pack(side="left", fill="both", expand=True)
+        for child in self.winfo_children():
+            child.destroy()
+        shell = tk.Frame(self, bg=COLOR_BG)
+        shell.pack(fill="both", expand=True, padx=24, pady=24)
+        for col in range(3):
+            shell.grid_columnconfigure(col, weight=1, uniform="insights")
+        shell.grid_rowconfigure(0, weight=3)
+        shell.grid_rowconfigure(1, weight=2)
+        shell.grid_rowconfigure(2, weight=1, minsize=150)
 
-        body = tk.Frame(canvas, bg=COLOR_BG)
-        canvas.create_window((0, 0), window=body, anchor="nw")
-        body.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.bind_all("<MouseWheel>", lambda e: canvas.yview_scroll(int(-1 * (e.delta / 120)), "units"))
-        canvas.bind_all("<Button-4>", lambda e: canvas.yview_scroll(-1, "units"))
-        canvas.bind_all("<Button-5>", lambda e: canvas.yview_scroll(1, "units"))
-
-        self._build_top_dashboard(body)
-        self._build_analysis_grid(body)
-        self._build_bottom_grid(body)
+        self._build_key_insight(shell, row=0)
+        self._build_primary_signal_row(shell, row=1)
+        self._build_secondary_signal_row(shell, row=2)
 
     def _build_info_bar(self):
         bar = tk.Frame(self, bg=COLOR_PANEL, pady=8)
@@ -305,65 +527,260 @@ class ResultsInsightsTab(tk.Frame):
             bg=COLOR_PANEL, fg=COLOR_TEXT_LIGHT,
         ).pack(side="left", padx=6)
 
-    def _build_top_dashboard(self, parent: tk.Frame):
-        panel = tk.Frame(parent, bg=COLOR_BG)
-        panel.pack(fill="x", padx=16, pady=(10, 10))
-        panel.grid_columnconfigure(0, weight=5, uniform="hero")
-        panel.grid_columnconfigure(1, weight=5, uniform="hero")
-        panel.grid_columnconfigure(2, weight=5, uniform="hero")
+    def _card(self, parent: tk.Frame, bg: str = _CARD_BG) -> Tuple[_RoundedCard, tk.Frame]:
+        card = _RoundedCard(parent, bg=bg, radius=_CARD_RADIUS)
+        return card, card.body
 
-        self._summary_panel(panel).grid(row=0, column=0, padx=6, sticky="nsew")
-        self._configuration_panel(panel).grid(row=0, column=1, padx=6, sticky="nsew")
-        self._group_ranking_panel(panel).grid(row=0, column=2, padx=6, sticky="nsew")
+    def _build_key_insight(self, parent: tk.Frame, row: int):
+        section = tk.Frame(parent, bg=COLOR_BG)
+        section.grid(row=row, column=0, columnspan=3, sticky="nsew")
+        gap = _CARD_GAP // 2
+        section.grid_columnconfigure(0, weight=1, uniform="key-insight")
+        section.grid_columnconfigure(1, weight=1, uniform="key-insight")
+        section.grid_rowconfigure(0, weight=1)
+        self._key_insight_main_card(section).grid(row=0, column=0, sticky="nsew", padx=gap, pady=gap)
+        self._key_insight_stats_card(section).grid(row=0, column=1, sticky="nsew", padx=gap, pady=gap)
 
-    def _summary_panel(self, parent: tk.Frame) -> tk.Frame:
-        card = tk.Frame(parent, bg=_CARD_BG, highlightbackground=_CARD_BORDER, highlightthickness=1)
-        tk.Label(card, text="Summary Insights", font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"), bg=_CARD_BG, fg=COLOR_TEXT).pack(anchor="w", padx=16, pady=(14, 2))
-        tk.Label(card, text="Key structural signals from the aggregated analysis.", font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=_CARD_BG, fg=COLOR_TEXT_LIGHT).pack(anchor="w", padx=16, pady=(0, 12))
+    def _build_primary_signal_row(self, parent: tk.Frame, row: int):
+        gap = _CARD_GAP // 2
+        self._system_health_card(parent).grid(row=row, column=0, sticky="nsew", padx=gap, pady=gap)
+        self._top_driver_card(parent).grid(row=row, column=1, sticky="nsew", padx=gap, pady=gap)
+        self._top_dependent_card(parent).grid(row=row, column=2, sticky="nsew", padx=gap, pady=gap)
 
-        grid = tk.Frame(card, bg=_CARD_BG)
-        grid.pack(fill="x", padx=12, pady=(0, 12))
-        for col in range(2):
-            grid.grid_columnconfigure(col, weight=1, uniform="summarybox")
+    def _build_secondary_signal_row(self, parent: tk.Frame, row: int):
+        gap = _CARD_GAP // 2
+        self._strongest_link_card(parent).grid(row=row, column=0, sticky="nsew", padx=gap, pady=gap)
+        self._most_contested_card(parent).grid(row=row, column=1, sticky="nsew", padx=gap, pady=gap)
+        self._agreement_score_card(parent).grid(row=row, column=2, sticky="nsew", padx=gap, pady=gap)
+
+    def _key_insight_main_card(self, parent: tk.Frame) -> tk.Frame:
+        card = _RoundedCard(parent, bg=_BANNER_LEFT_BG, radius=_CARD_RADIUS, border=_BANNER_LEFT_BG, border_width=1)
+        body = card.body
+        policy_colors = {row["code"]: _role_for_row(row)[1] for row in self._insights["rows"]}
+        pad_x = _BANNER_OUTER_PADX
+        pad_y = _BANNER_OUTER_PADY
+        title_gap = _BANNER_TITLE_GAP
+        text_gap = _BANNER_TEXT_GAP
+        supporting_gap = _BANNER_SUPPORTING_BOTTOM
+        tk.Label(
+            body,
+            text="Key Insights",
+            font=(FONT_FAMILY, _BANNER_TITLE_SIZE, "normal"),
+            bg=_BANNER_LEFT_BG,
+            fg=_BANNER_TITLE_COLOR,
+        ).pack(anchor="w", padx=pad_x, pady=(pad_y, title_gap))
+        story = tk.Text(
+            body,
+            height=4,
+            wrap="word",
+            bg=_BANNER_LEFT_BG,
+            fg=_BANNER_TEXT_COLOR,
+            relief="flat",
+            bd=0,
+            highlightthickness=0,
+            font=(FONT_FAMILY, _BANNER_TEXT_SIZE, "normal"),
+        )
+        story.pack(fill="x", padx=pad_x, pady=(0, text_gap))
+        story.insert("1.0", self._story)
+        story_text = self._story
+        relation_pattern = r"P\d+\s*->\s*P\d+(?:\s*\([^)]+\))?"
+        relation_ranges = []
+        for match in re.finditer(relation_pattern, story_text):
+            relation_ranges.append((match.start(), match.end()))
+            story.tag_add("relation", f"1.{match.start()}", f"1.{match.end()}")
+        for match in re.finditer(r"P\d+\b", story_text):
+            if any(start <= match.start() and match.end() <= end for start, end in relation_ranges):
+                continue
+            code = match.group(0)
+            tag = f"policy_{code}"
+            story.tag_add(tag, f"1.{match.start()}", f"1.{match.end()}")
+            story.tag_configure(
+                tag,
+                foreground=policy_colors.get(code, _BANNER_EMPH_COLOR),
+                font=(FONT_FAMILY, _BANNER_TEXT_SIZE, "bold"),
+            )
+        story.tag_configure(
+            "relation",
+            foreground=_BANNER_RELATION_COLOR,
+            font=(FONT_FAMILY, _BANNER_TEXT_SIZE, "bold"),
+        )
+        story.configure(state="disabled")
+
+        interpretation = _build_supporting_interpretation(self._insights)
+        prefix = "Interpretation:"
+        detail = interpretation[len(prefix):].lstrip() if interpretation.startswith(prefix) else interpretation
+        supporting = tk.Frame(body, bg=_BANNER_LEFT_BG)
+        supporting.pack(anchor="w", fill="x", padx=pad_x, pady=(0, supporting_gap))
+        tk.Label(
+            supporting,
+            text=prefix,
+            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "normal"),
+            bg=_BANNER_LEFT_BG,
+            fg=_BANNER_INTERPRETATION_LABEL,
+        ).pack(side="left")
+        tk.Label(
+            supporting,
+            text=f" {detail}",
+            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "normal"),
+            bg=_BANNER_LEFT_BG,
+            fg=_BANNER_INTERPRETATION_TEXT,
+            wraplength=_BANNER_SUPPORTING_WRAP,
+            justify="left",
+        ).pack(side="left")
+
+        tags = tk.Frame(body, bg=_BANNER_LEFT_BG)
+        tags.pack(fill="x", padx=pad_x, pady=(0, supporting_gap))
+        for col in range(3):
+            tags.grid_columnconfigure(col, weight=1, uniform="insight-tags")
+        tag_items = [
+            (
+                f"Top Driver: {self._insights['top_driver']['code'] if self._insights['top_driver'] else 'N/A'}",
+                _BANNER_TAG_TOP_DRIVER_BG,
+                _BANNER_TAG_TOP_DRIVER_FG,
+            ),
+            (
+                f"Strongest Link: {self._format_pair(self._insights['graph']['strongest_pos_pair']).replace('->', '→')}",
+                _BANNER_TAG_STRONGEST_BG,
+                _BANNER_TAG_STRONGEST_FG,
+            ),
+            (
+                f"Contested: {(self._insights['agreement']['contested'][0]['pair'].replace('->', '→') if self._insights['agreement']['contested'] else 'None')}",
+                _BANNER_TAG_CONTESTED_BG,
+                _BANNER_TAG_CONTESTED_FG,
+            ),
+        ]
+        for idx, (text, bg, fg) in enumerate(tag_items):
+            tag = _RoundedCard(tags, bg=bg, radius=_BANNER_TAG_RADIUS)
+            tag.configure(height=_BANNER_TAG_HEIGHT)
+            row = 0
+            col = idx
+            colspan = 1
+            tag.grid(row=row, column=col, columnspan=colspan, sticky="ew", padx=4, pady=4)
+            tk.Label(
+                tag.body,
+                text=text,
+                font=(FONT_FAMILY, _BANNER_TAG_TEXT_SIZE, "normal"),
+                bg=bg,
+                fg=fg,
+                wraplength=180,
+                justify="center",
+            ).pack(expand=True, fill="both")
+        return card
+
+    def _key_insight_stats_card(self, parent: tk.Frame) -> tk.Frame:
+        card = _RoundedCard(parent, bg=_BANNER_RIGHT_BG, radius=_CARD_RADIUS, border=_BANNER_RIGHT_BG, border_width=1)
+        body = card.body
 
         stats = [
-            ("Driving Factors", str(len(self._insights["drivers"])), "Policies acting as net drivers."),
-            ("Dependent Factors", str(len(self._insights["dependents"])), "Policies primarily influenced by others."),
-            ("Top Prominence", self._value_text(self._insights["top_prominent"], "prominence"), "Highest overall structural load."),
-            ("Strongest Relation", f"{self._insights['graph']['strongest_pos']:+.2f}", self._format_pair(self._insights["graph"]["strongest_pos_pair"])),
+            ("Method", _method_label(self._result.method), _BANNER_METHOD_BG, _BANNER_METHOD_FG),
+            ("Policies", str(self._result.n), _BANNER_POLICIES_BG, _BANNER_POLICIES_FG),
+            ("Decision-makers", str(self._result.decision_makers), _BANNER_DMS_BG, _BANNER_DMS_FG),
         ]
-        for idx, (title, value, caption) in enumerate(stats):
-            self._mini_stat_card(grid, title, value, caption).grid(row=idx // 2, column=idx % 2, padx=4, pady=4, sticky="nsew")
+        agreement = self._insights["agreement"]["average_agreement"]
+        if agreement >= 0.75:
+            agreement_text = f"{agreement:.2f} / High"
+        elif agreement >= 0.5:
+            agreement_text = f"{agreement:.2f} / Moderate"
+        else:
+            agreement_text = f"{agreement:.2f} / Low"
+        stats.append(("Agreement", agreement_text, _BANNER_RIGHT_BG, COLOR_ACCENT))
+        for idx, (label, value, bg, fg) in enumerate(stats):
+            stat = _RoundedCard(body, bg=bg, radius=_BANNER_META_RADIUS)
+            stat.configure(height=_BANNER_META_HEIGHT + _BANNER_STAT_HEIGHT_DELTA)
+            stat.pack(
+                fill="x",
+                padx=_BANNER_STATS_PADX,
+                pady=(
+                    _BANNER_STATS_TOP if idx == 0 else 0,
+                    _BANNER_STATS_GAP if idx < len(stats) - 1 else _BANNER_STATS_BOTTOM,
+                ),
+            )
+            inner = stat.body
+            tk.Label(
+                inner,
+                text=label,
+                font=(FONT_FAMILY, FONT_SIZE_SMALL, "normal"),
+                bg=bg,
+                fg=fg,
+                anchor="w",
+            ).pack(fill="x", padx=16, pady=(10, 2))
+            tk.Label(
+                inner,
+                text=value,
+                font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"),
+                bg=bg,
+                fg=fg,
+                anchor="w",
+                wraplength=220,
+                justify="left",
+            ).pack(fill="x", padx=16, pady=(0, 10))
         return card
 
-    def _configuration_panel(self, parent: tk.Frame) -> tk.Frame:
-        card = tk.Frame(parent, bg=_CARD_BG, highlightbackground=_CARD_BORDER, highlightthickness=1)
-        tk.Label(card, text="Analysis Configuration", font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"), bg=_CARD_BG, fg=COLOR_TEXT).pack(anchor="w", padx=16, pady=(14, 10))
-
-        config = tk.Frame(card, bg=_CARD_BG)
-        config.pack(fill="x", padx=16)
-        rows = [
-            ("Result Type", _method_label(self._result.method)),
-            ("Decision-Makers", str(self._result.decision_makers)),
-            ("Policies", str(self._result.n)),
-            ("Density", f"{self._insights['graph']['density']:.3f}"),
-            ("Agreement", f"{self._insights['agreement']['average_agreement']:.3f}"),
-        ]
-        for label, value in rows:
-            line = tk.Frame(config, bg=_CARD_BG)
-            line.pack(fill="x", pady=2)
-            tk.Label(line, text=label, font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=_CARD_BG, fg=COLOR_TEXT_LIGHT).pack(side="left")
-            tk.Label(line, text=value, font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg=_CARD_BG, fg=COLOR_ACCENT).pack(side="right")
-
-        tk.Frame(card, bg=COLOR_BORDER, height=1).pack(fill="x", padx=16, pady=12)
-        self._compact_group_block(card, "Effect Group (Dependent Factors)", self._insights["dependents"], _NEG).pack(fill="x", padx=16, pady=(0, 14))
+    def _system_health_card(self, parent: tk.Frame) -> tk.Frame:
+        card, body = self._card(parent, _SURFACE)
+        tk.Label(body, text="System Health", font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg=_SURFACE, fg=COLOR_TEXT_LIGHT).pack(anchor="w", padx=16, pady=(14, 2))
+        tk.Label(body, text=f"{self._health['score']}", font=(FONT_FAMILY, FONT_SIZE_HEADER + 18, "bold"), bg=_SURFACE, fg=COLOR_ACCENT).pack(anchor="w", padx=16)
+        for label, value, color in [
+            ("Synergy", self._health["synergy"], _DRIVER),
+            ("Conflict", self._health["conflict"], _NEG),
+            ("Uncertainty", self._health["uncertainty"], _MID),
+        ]:
+            row = tk.Frame(body, bg=_SURFACE)
+            row.pack(fill="x", padx=16, pady=4)
+            tk.Label(row, text=label, font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=_SURFACE, fg=COLOR_TEXT_LIGHT, width=11, anchor="w").pack(side="left")
+            bar = tk.Frame(row, bg=_HEALTH_BAR_BG, height=8)
+            bar.pack(side="left", fill="x", expand=True, padx=(6, 8))
+            bar.pack_propagate(False)
+            tk.Frame(bar, bg=color, height=8).place(relx=0, rely=0, relheight=1, relwidth=max(0.03, min(1.0, value / 100)))
+            tk.Label(row, text=f"{value}", font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg=_SURFACE, fg=color, width=4, anchor="e").pack(side="left")
         return card
 
-    def _group_ranking_panel(self, parent: tk.Frame) -> tk.Frame:
-        card = tk.Frame(parent, bg=_CARD_BG, highlightbackground=_CARD_BORDER, highlightthickness=1)
-        self._compact_group_block(card, "Cause Group (Driving Factors)", self._insights["drivers"], _POS).pack(fill="x", padx=16, pady=(14, 14))
-        tk.Frame(card, bg=COLOR_BORDER, height=1).pack(fill="x", padx=16, pady=(0, 12))
-        self._prominence_strip_block(card).pack(fill="x", padx=16, pady=(0, 14))
+    def _top_driver_card(self, parent: tk.Frame) -> tk.Frame:
+        row = self._insights["top_driver"]
+        return self._metric_signal_card(parent, row["code"] if row else "N/A", "Top Driver", f"{row['net']:+.2f} ↑" if row else "N/A", _DRIVER, _SOFT_GREEN)
+
+    def _top_dependent_card(self, parent: tk.Frame) -> tk.Frame:
+        row = self._insights["top_dependent"]
+        return self._metric_signal_card(parent, row["code"] if row else "N/A", "Most Dependent", f"{row['net']:+.2f} ↓" if row else "N/A", _DEPENDENT, _SOFT_ORANGE)
+
+    def _strongest_link_card(self, parent: tk.Frame) -> tk.Frame:
+        graph = self._insights["graph"]
+        pair = self._format_pair(graph["strongest_pos_pair"])
+        value = f"{graph['strongest_pos']:+.2f} Reinforcing" if graph["strongest_pos_pair"] else "No strong link"
+        return self._signal_card(parent, "Strongest Link", pair, value, _LINK_COLOR, _SOFT_BLUE, "Strongest relation")
+
+    def _most_contested_card(self, parent: tk.Frame) -> tk.Frame:
+        contested = self._insights["agreement"]["contested"][0] if self._insights["agreement"]["contested"] else None
+        main = contested["pair"].replace("->", "↔") if contested else "No contested link"
+        sub = f"Agreement: {contested['agreement_ratio']:.2f}" if contested else "Stable"
+        caption = "⚠ High disagreement" if contested and contested["agreement_ratio"] < 0.5 else "Moderate disagreement"
+        return self._signal_card(parent, "Most Contested", main, sub, _NEG, _SOFT_RED, caption)
+
+    def _agreement_score_card(self, parent: tk.Frame) -> tk.Frame:
+        score = self._insights["agreement"]["average_agreement"]
+        if score >= 0.75:
+            label = "Strong consensus"
+        elif score >= 0.5:
+            label = "Moderate consensus"
+        else:
+            label = "Low consensus"
+        return self._metric_signal_card(parent, f"{score:.2f}", "Agreement Level", label, _AGREEMENT_ACCENT, _SOFT_PURPLE)
+
+    def _analysis_config_card(self, parent: tk.Frame) -> tk.Frame:
+        card, body = self._card(parent, _CARD_BG)
+        tk.Label(body, text="Analysis Config", font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"), bg=_CARD_BG, fg=COLOR_TEXT).pack(anchor="w", padx=18, pady=(14, 10))
+        wrap = _WrapFrame(body, bg=_CARD_BG, gap=8, row_gap=10)
+        wrap.pack(fill="x", padx=18, pady=(0, 18))
+        tags = [
+            f"Method: {_method_label(self._result.method)}",
+            f"Policies: {self._result.n}",
+            f"DMs: {self._result.decision_makers}",
+            f"Density: {self._insights['graph']['density']:.2f}",
+            f"Agreement: {self._insights['agreement']['average_agreement']:.2f}",
+        ]
+        for text in tags:
+            pill = tk.Label(wrap, text=text, font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg=_SURFACE, fg=_CONFIG_PILL_FG, padx=12, pady=7)
+            wrap.add(pill)
         return card
 
     def _compact_group_block(self, parent: tk.Frame, title: str, rows: List[dict], accent: str) -> tk.Frame:
@@ -380,7 +797,7 @@ class ResultsInsightsTab(tk.Frame):
                 wrap,
                 text=row["code"],
                 font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"),
-                bg=accent, fg="#ffffff",
+                bg=accent, fg=_ON_ACCENT_TEXT,
                 padx=10, pady=6,
             )
             wrap.add(chip)
@@ -395,7 +812,7 @@ class ResultsInsightsTab(tk.Frame):
             line = tk.Frame(frame, bg=_CARD_BG)
             line.pack(fill="x", pady=5)
             tk.Label(line, text=row["code"], width=5, anchor="w", font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg=_CARD_BG, fg=COLOR_TEXT).pack(side="left")
-            bar_host = tk.Frame(line, bg="#e7eef0", height=8)
+            bar_host = tk.Frame(line, bg=_PROMINENCE_BAR_BG, height=8)
             bar_host.pack(side="left", fill="x", expand=True, padx=8)
             bar_host.pack_propagate(False)
             tk.Frame(bar_host, bg=_TEAL_BAR, height=8).place(relx=0, rely=0, relheight=1, relwidth=max(0.04, row["prominence"] / max_value))
@@ -404,30 +821,17 @@ class ResultsInsightsTab(tk.Frame):
         return frame
 
     def _mini_stat_card(self, parent: tk.Frame, title: str, value: str, caption: str) -> tk.Frame:
-        card = tk.Frame(parent, bg=_SOFT_BG, highlightbackground="#eef0f2", highlightthickness=1)
+        card = tk.Frame(parent, bg=_SOFT_BG, highlightbackground=_SOFT_BORDER, highlightthickness=1)
         tk.Label(card, text=title, font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=_SOFT_BG, fg=COLOR_TEXT_LIGHT, anchor="w").pack(fill="x", padx=12, pady=(12, 6))
         tk.Label(card, text=value, font=(FONT_FAMILY, FONT_SIZE_HEADER + 5, "bold"), bg=_SOFT_BG, fg=COLOR_ACCENT, anchor="w").pack(fill="x", padx=12)
         tk.Label(card, text=caption, font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=_SOFT_BG, fg=COLOR_TEXT_LIGHT, wraplength=220, justify="left", anchor="w").pack(fill="x", padx=12, pady=(8, 12))
         return card
 
-    def _build_analysis_grid(self, parent: tk.Frame):
-        row = tk.Frame(parent, bg=COLOR_BG)
-        row.pack(fill="x", padx=16, pady=8)
-        row.grid_columnconfigure(0, weight=3, uniform="analysis")
-        row.grid_columnconfigure(1, weight=2, uniform="analysis")
+    def _build_analysis_grid(self, parent: tk.Frame, row: int):
+        pass
 
-        self._scatter_card(row).grid(row=0, column=0, padx=6, sticky="nsew")
-        self._relations_card(row).grid(row=0, column=1, padx=6, sticky="nsew")
-
-    def _build_bottom_grid(self, parent: tk.Frame):
-        row = tk.Frame(parent, bg=COLOR_BG)
-        row.pack(fill="x", padx=16, pady=(8, 16))
-        for col in range(3):
-            row.grid_columnconfigure(col, weight=1, uniform="bottom")
-
-        self._configuration_card(row).grid(row=0, column=0, padx=6, sticky="nsew")
-        self._ranking_card(row).grid(row=0, column=1, padx=6, sticky="nsew")
-        self._agreement_card(row).grid(row=0, column=2, padx=6, sticky="nsew")
+    def _build_heatmap_section(self, parent: tk.Frame, row: int):
+        pass
 
     def _metric_card(self, parent: tk.Frame, title: str, main: str, sub: str) -> tk.Frame:
         card = tk.Frame(parent, bg=_CARD_BG, highlightbackground=_CARD_BORDER, highlightthickness=1)
@@ -441,11 +845,11 @@ class ResultsInsightsTab(tk.Frame):
         tk.Label(card, text="Cause-Effect Positioning", font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"), bg=_CARD_BG, fg=COLOR_TEXT).pack(anchor="w", padx=14, pady=(12, 4))
         tk.Label(
             card,
-            text="X-axis shows net influence. Y-axis shows prominence. The dashed guides separate high and low prominence as well as driver and dependent zones.",
+            text="X-axis shows net influence. Y-axis shows prominence. Drivers sit on the right, dependents on the left, and higher positions indicate stronger system visibility.",
             font=(FONT_FAMILY, FONT_SIZE_SMALL),
-            bg=_CARD_BG, fg=COLOR_TEXT_LIGHT, wraplength=620, justify="left",
+            bg=_CARD_BG, fg=COLOR_TEXT_LIGHT, wraplength=980, justify="left",
         ).pack(anchor="w", padx=14, pady=(0, 10))
-        canvas = tk.Canvas(card, bg=_SCATTER_BG, width=620, height=320, highlightthickness=1, highlightbackground="#e2e6ea")
+        canvas = tk.Canvas(card, bg=_SCATTER_BG, width=980, height=260, highlightthickness=1, highlightbackground=_SCATTER_BORDER)
         canvas.pack(fill="x", padx=14, pady=(0, 12))
         self._draw_scatter(canvas)
         return card
@@ -476,20 +880,20 @@ class ResultsInsightsTab(tk.Frame):
         def sy(value):
             return h - m - (value - min_prom) / (max_prom - min_prom) * (h - 2 * m)
 
-        canvas.create_line(m, h - m, w - m, h - m, fill="#90a0ad")
-        canvas.create_line(m, m, m, h - m, fill="#90a0ad")
-        canvas.create_line(sx(0.0), m, sx(0.0), h - m, fill="#d4dbe1", dash=(4, 4))
-        canvas.create_line(m, sy(self._insights["quadrant_threshold"]), w - m, sy(self._insights["quadrant_threshold"]), fill="#d4dbe1", dash=(4, 4))
-        canvas.create_text(w - m - 56, m + 8, text="Drivers", anchor="nw", fill="#9aa6b2", font=(FONT_FAMILY, FONT_SIZE_SMALL))
-        canvas.create_text(m + 8, m + 8, text="Dependents", anchor="nw", fill="#9aa6b2", font=(FONT_FAMILY, FONT_SIZE_SMALL))
-        canvas.create_text(w - m - 62, h - m - 20, text="Strategic", anchor="nw", fill="#9aa6b2", font=(FONT_FAMILY, FONT_SIZE_SMALL))
-        canvas.create_text(m + 8, h - m - 20, text="Vulnerable", anchor="nw", fill="#9aa6b2", font=(FONT_FAMILY, FONT_SIZE_SMALL))
+        canvas.create_line(m, h - m, w - m, h - m, fill=_SCATTER_AXIS)
+        canvas.create_line(m, m, m, h - m, fill=_SCATTER_AXIS)
+        canvas.create_line(sx(0.0), m, sx(0.0), h - m, fill=_SCATTER_GUIDE, dash=(4, 4))
+        canvas.create_line(m, sy(self._insights["quadrant_threshold"]), w - m, sy(self._insights["quadrant_threshold"]), fill=_SCATTER_GUIDE, dash=(4, 4))
+        canvas.create_text(w - m - 56, m + 8, text="Drivers", anchor="nw", fill=_SCATTER_LABEL, font=(FONT_FAMILY, FONT_SIZE_SMALL))
+        canvas.create_text(m + 8, m + 8, text="Dependents", anchor="nw", fill=_SCATTER_LABEL, font=(FONT_FAMILY, FONT_SIZE_SMALL))
+        canvas.create_text(w - m - 62, h - m - 20, text="Strategic", anchor="nw", fill=_SCATTER_LABEL, font=(FONT_FAMILY, FONT_SIZE_SMALL))
+        canvas.create_text(m + 8, h - m - 20, text="Vulnerable", anchor="nw", fill=_SCATTER_LABEL, font=(FONT_FAMILY, FONT_SIZE_SMALL))
 
         for row in rows:
             x = sx(row["net"])
             y = sy(row["prominence"])
-            color = _POS if row["net"] > 0.05 else _NEG if row["net"] < -0.05 else _MID
-            canvas.create_oval(x - 8, y - 8, x + 8, y + 8, fill=color, outline="#ffffff", width=1.5)
+            color = _role_for_row(row)[1]
+            canvas.create_oval(x - 8, y - 8, x + 8, y + 8, fill=color, outline=_CANVAS_LIGHT_TEXT, width=1.5)
             canvas.create_text(x + 11, y, text=row["code"], anchor="w", fill=COLOR_TEXT, font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"))
 
         canvas.create_text(w / 2, h - 12, text="Net influence", fill=COLOR_TEXT_LIGHT, font=(FONT_FAMILY, FONT_SIZE_SMALL))
@@ -501,6 +905,50 @@ class ResultsInsightsTab(tk.Frame):
         self._relation_list(card, "Strong Consensus Links", self._insights["agreement"]["strong_consensus"], _POS).pack(fill="x", padx=14, pady=(0, 10))
         self._relation_list(card, "Most Contested Links", self._insights["agreement"]["contested"], _NEG).pack(fill="x", padx=14, pady=(0, 12))
         return card
+
+    def _agreement_heatmap_card(self, parent: tk.Frame) -> tk.Frame:
+        card = tk.Frame(parent, bg=_CARD_BG, highlightbackground=_CARD_BORDER, highlightthickness=1)
+        tk.Label(card, text="Conflict and Consensus Heatmap", font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"), bg=_CARD_BG, fg=COLOR_TEXT).pack(anchor="w", padx=14, pady=(12, 4))
+        tk.Label(card, text="Dark cells indicate strong agreement. Lighter cells flag contested policy relationships.", font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=_CARD_BG, fg=COLOR_TEXT_LIGHT, wraplength=980, justify="left").pack(anchor="w", padx=14, pady=(0, 10))
+        canvas = tk.Canvas(card, bg=_HEATMAP_BG, width=980, height=190, highlightthickness=1, highlightbackground=_SCATTER_BORDER)
+        canvas.pack(fill="x", padx=14, pady=(0, 12))
+        self._draw_agreement_heatmap(canvas)
+        return card
+
+    def _draw_agreement_heatmap(self, canvas: tk.Canvas):
+        n = self._result.n
+        if n <= 0:
+            return
+        w = int(canvas.cget("width"))
+        h = int(canvas.cget("height"))
+        label_w = 54
+        label_h = 24
+        cell = min((w - label_w - 16) / max(1, n), (h - label_h - 16) / max(1, n))
+        x0 = label_w
+        y0 = label_h
+        agreement_map = {(row["i"], row["j"]): row["agreement_ratio"] for row in self._insights["agreement"]["rows"]}
+
+        for idx, code in enumerate(self._result.codes):
+            cx = x0 + idx * cell + cell / 2
+            cy = y0 + idx * cell + cell / 2
+            canvas.create_text(cx, 12, text=code, fill=COLOR_TEXT_LIGHT, font=(FONT_FAMILY, FONT_SIZE_SMALL))
+            canvas.create_text(18, cy, text=code, fill=COLOR_TEXT_LIGHT, font=(FONT_FAMILY, FONT_SIZE_SMALL))
+
+        for i in range(n):
+            for j in range(n):
+                x1 = x0 + j * cell
+                y1 = y0 + i * cell
+                x2 = x1 + cell
+                y2 = y1 + cell
+                if i == j:
+                    fill = _HEATMAP_DIAGONAL
+                    label = "—"
+                else:
+                    ratio = agreement_map.get((i, j), 0.0)
+                    fill = _hex_interp(_HEAT_LOW, _HEAT_HIGH, ratio)
+                    label = f"{ratio:.2f}"
+                canvas.create_rectangle(x1, y1, x2, y2, fill=fill, outline=_CANVAS_LIGHT_TEXT, width=1)
+                canvas.create_text((x1 + x2) / 2, (y1 + y2) / 2, text=label, fill=_CANVAS_LIGHT_TEXT if i != j and agreement_map.get((i, j), 0.0) > 0.58 else COLOR_TEXT, font=(FONT_FAMILY, 9, "bold" if i != j else "normal"))
 
     def _relation_list(self, parent: tk.Frame, title: str, rows: List[dict], accent: str) -> tk.Frame:
         frame = tk.Frame(parent, bg=_CARD_BG)
@@ -516,7 +964,7 @@ class ResultsInsightsTab(tk.Frame):
     def _configuration_card(self, parent: tk.Frame) -> tk.Frame:
         graph = self._insights["graph"]
         card = tk.Frame(parent, bg=_CARD_BG, highlightbackground=_CARD_BORDER, highlightthickness=1)
-        tk.Label(card, text="Analysis Configuration", font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"), bg=_CARD_BG, fg=COLOR_TEXT).pack(anchor="w", padx=14, pady=(12, 10))
+        tk.Label(card, text="System Overview", font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"), bg=_CARD_BG, fg=COLOR_TEXT).pack(anchor="w", padx=14, pady=(12, 10))
 
         items = [
             ("Method", _method_label(self._result.method)),
@@ -537,40 +985,45 @@ class ResultsInsightsTab(tk.Frame):
             tk.Label(line, text=value, font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg=_CARD_BG, fg=COLOR_ACCENT).pack(side="right")
         return card
 
-    def _ranking_card(self, parent: tk.Frame) -> tk.Frame:
+    def _ranking_card(self, parent: tk.Frame, compact: bool = False) -> tk.Frame:
         rows = self._insights["top_prominence_rows"]
         max_value = max((row["prominence"] for row in rows), default=1.0) or 1.0
 
-        card = tk.Frame(parent, bg=_CARD_BG, highlightbackground=_CARD_BORDER, highlightthickness=1)
-        tk.Label(card, text="Prominence and Net Influence", font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"), bg=_CARD_BG, fg=COLOR_TEXT).pack(anchor="w", padx=14, pady=(12, 4))
-        tk.Label(card, text="Top policies by total influence load, with signed driver or dependency balance.", font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=_CARD_BG, fg=COLOR_TEXT_LIGHT, wraplength=360, justify="left").pack(anchor="w", padx=14, pady=(0, 12))
-        for row in rows:
-            self._ranking_row(card, row, max_value).pack(fill="x", padx=14, pady=5)
+        card, body = self._card(parent, _CARD_BG)
+        tk.Label(body, text="Prominence Ranking", font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"), bg=_CARD_BG, fg=COLOR_TEXT).pack(anchor="w", padx=18, pady=(14, 6))
+        tk.Label(body, text="Top 4 policies by prominence.", font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=_CARD_BG, fg=COLOR_TEXT_LIGHT).pack(anchor="w", padx=18, pady=(0, 10))
+        for row in rows[:4]:
+            self._ranking_row(body, row, max_value, compact=compact).pack(fill="x", padx=18, pady=4)
         return card
 
-    def _ranking_row(self, parent: tk.Frame, row: dict, max_value: float) -> tk.Frame:
+    def _ranking_row(self, parent: tk.Frame, row: dict, max_value: float, compact: bool = False) -> tk.Frame:
         outer = tk.Frame(parent, bg=_CARD_BG)
-        tk.Label(outer, text=row["code"], width=6, anchor="w", font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg=_CARD_BG, fg=COLOR_ACCENT).pack(side="left")
-        bar_host = tk.Frame(outer, bg="#eef2f4", height=12)
+        role_label, color, arrow = _role_for_row(row)
+        tk.Label(outer, text=f"{arrow} {row['code']}", width=7, anchor="w", font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg=_CARD_BG, fg=color).pack(side="left")
+        bar_h = 6 if compact else 8
+        bar_host = tk.Frame(outer, bg=_RANKING_BAR_BG, height=bar_h)
         bar_host.pack(side="left", fill="x", expand=True, padx=10)
         bar_host.pack_propagate(False)
-        fill = tk.Frame(bar_host, bg=COLOR_ACCENT, height=12)
+        fill = tk.Frame(bar_host, bg=color, height=bar_h)
         fill.place(relx=0, rely=0, relheight=1, relwidth=max(0.03, row["prominence"] / max_value))
-        metrics = f"P {row['prominence']:.2f}   N {row['net']:+.2f}"
-        tk.Label(outer, text=metrics, width=18, anchor="e", font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=_CARD_BG, fg=COLOR_TEXT_LIGHT).pack(side="right")
+        metrics = f"P {row['prominence']:.2f}"
+        tk.Label(outer, text=metrics, width=9, anchor="e", font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=_CARD_BG, fg=COLOR_TEXT_LIGHT).pack(side="right")
         return outer
 
-    def _agreement_card(self, parent: tk.Frame) -> tk.Frame:
-        card = tk.Frame(parent, bg=_CARD_BG, highlightbackground=_CARD_BORDER, highlightthickness=1)
-        tk.Label(card, text="Agreement and Sensitivity", font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"), bg=_CARD_BG, fg=COLOR_TEXT).pack(anchor="w", padx=14, pady=(12, 6))
-        tk.Label(card, text="Lowest agreement relations identify where the aggregate outcome is less stable across decision-makers.", font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=_CARD_BG, fg=COLOR_TEXT_LIGHT, wraplength=360, justify="left").pack(anchor="w", padx=14, pady=(0, 10))
+    def _metric_signal_card(self, parent: tk.Frame, hero: str, label: str, value: str, color: str, bg: str) -> tk.Frame:
+        card, body = self._card(parent, bg)
+        tk.Label(body, text=hero, font=(FONT_FAMILY, FONT_SIZE_HEADER + 6, "bold"), bg=bg, fg=COLOR_TEXT).pack(anchor="w", padx=16, pady=(16, 4))
+        tk.Label(body, text=label, font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg=bg, fg=COLOR_TEXT_LIGHT).pack(anchor="w", padx=16)
+        tk.Label(body, text=value, font=(FONT_FAMILY, FONT_SIZE_HEADER + 2, "bold"), bg=bg, fg=color).pack(anchor="w", padx=16, pady=(10, 16))
+        return card
 
-        for row in self._insights["agreement"]["contested"][:4]:
-            pill = tk.Frame(card, bg="#f7f8fa")
-            pill.pack(fill="x", padx=14, pady=4)
-            tone = _NEG if row["agreement_ratio"] < 0.6 else _MID
-            tk.Label(pill, text=row["pair"], font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg="#f7f8fa", fg=COLOR_TEXT).pack(anchor="w", padx=10, pady=(8, 0))
-            tk.Label(pill, text=f"Agreement {row['agreement_ratio']:.2f}   Spread {row['spread']:.2f}   Aggregate {row['score']:+.2f}", font=(FONT_FAMILY, FONT_SIZE_SMALL), bg="#f7f8fa", fg=tone).pack(anchor="w", padx=10, pady=(2, 8))
+    def _signal_card(self, parent: tk.Frame, title: str, main: str, sub: str, color: str, bg: str, caption: str) -> tk.Frame:
+        card, body = self._card(parent, bg)
+        wrap = 240
+        tk.Label(body, text=title, font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg=bg, fg=color).pack(anchor="w", padx=16, pady=(16, 6))
+        tk.Label(body, text=main, font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"), bg=bg, fg=COLOR_TEXT, justify="left", wraplength=wrap).pack(anchor="w", padx=16)
+        tk.Label(body, text=sub, font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"), bg=bg, fg=color, justify="left", wraplength=wrap).pack(anchor="w", padx=16, pady=(8, 2))
+        tk.Label(body, text=caption, font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=bg, fg=COLOR_TEXT_LIGHT).pack(anchor="w", padx=16, pady=(0, 16))
         return card
 
     def _format_policy(self, row: dict) -> str:
