@@ -454,9 +454,38 @@ class PolicyCoherenceApp:
         )
         self._sidebar_proj_lbl.pack(fill="x", padx=16, pady=(12, 10))
 
-        # ── Project list (shared, content differs by state) ────────────
-        self._sidebar_proj_list = tk.Frame(sidebar, bg="#fafbfc")
-        self._sidebar_proj_list.pack(fill="x")
+        # ── Project list — scrollable container ───────────────────────
+        _proj_scroll_outer = tk.Frame(sidebar, bg="#fafbfc")
+        _proj_scroll_outer.pack(fill="both", expand=True)
+
+        _proj_vbar = tk.Scrollbar(_proj_scroll_outer, orient="vertical", width=5)
+        _proj_vbar.pack(side="right", fill="y")
+
+        _proj_canvas = tk.Canvas(_proj_scroll_outer, bg="#fafbfc",
+                                 highlightthickness=0,
+                                 yscrollcommand=_proj_vbar.set)
+        _proj_canvas.pack(side="left", fill="both", expand=True)
+        _proj_vbar.configure(command=_proj_canvas.yview)
+
+        _proj_inner = tk.Frame(_proj_canvas, bg="#fafbfc")
+        _proj_win   = _proj_canvas.create_window((0, 0), window=_proj_inner,
+                                                  anchor="nw")
+
+        _proj_canvas.bind("<Configure>",
+            lambda e: _proj_canvas.itemconfig(_proj_win, width=e.width))
+        _proj_inner.bind("<Configure>",
+            lambda e: _proj_canvas.configure(
+                scrollregion=_proj_canvas.bbox("all")))
+
+        _proj_canvas.bind("<MouseWheel>",
+            lambda e: _proj_canvas.yview_scroll(-int(e.delta / 120), "units"))
+        _proj_canvas.bind("<Button-4>",
+            lambda e: _proj_canvas.yview_scroll(-1, "units"))
+        _proj_canvas.bind("<Button-5>",
+            lambda e: _proj_canvas.yview_scroll( 1, "units"))
+
+        self._sidebar_proj_list   = _proj_inner
+        self._sidebar_proj_canvas = _proj_canvas
 
         # Shared New Project button constants (used by both collapsed + expanded)
         _NP_BG     = "#eaeef4"
@@ -1356,15 +1385,6 @@ class PolicyCoherenceApp:
         switcher.pack_propagate(False)
         tk.Frame(outer, bg="#e8eaed", height=1).pack(fill="x")
 
-        # Custom tab label strips (left of switcher; pill toggle uses place so no conflict)
-        dm_tab_bar = tk.Frame(switcher, bg=SW_BG)
-        dm_tab_bar.pack(side="left", fill="y")
-        an_tab_bar = tk.Frame(switcher, bg=SW_BG)   # packed only when analysis is active
-        proj._dm_tab_bar     = dm_tab_bar
-        proj._an_tab_bar     = an_tab_bar
-        proj._dm_tab_entries = []   # [(nb_tab_widget, label, underline, container)]
-        proj._an_tab_entries = []   # [(tab_id_str,   label, underline, container)]
-
         TRACK_BG  = "#a6bcd3"
         THUMB_BG  = "#e8eef4"
         ACT_FG    = "#30455c"
@@ -1374,6 +1394,29 @@ class PolicyCoherenceApp:
         ICON_SZ   = 16
         SEG_W     = ICON_SZ + 28          # icon + 14px padding each side
         PILL_W    = SEG_W * 2
+
+        # Custom tab label strips — dm_tab_bar is horizontally scrollable
+        # Reserve right space so tabs don't slide under the pill toggle
+        tk.Frame(switcher, width=PILL_W + 24, bg=SW_BG).pack(side="right")
+
+        _dm_scroll_c = tk.Canvas(switcher, bg=SW_BG, highlightthickness=0)
+        _dm_scroll_c.pack(side="left", fill="both", expand=True)
+        dm_tab_bar  = tk.Frame(_dm_scroll_c, bg=SW_BG)
+        _dm_bar_win = _dm_scroll_c.create_window((0, 0), window=dm_tab_bar, anchor="nw")
+
+        _dm_scroll_c.bind("<Configure>",
+            lambda e: _dm_scroll_c.itemconfig(_dm_bar_win, height=e.height))
+        dm_tab_bar.bind("<Configure>",
+            lambda e: _dm_scroll_c.configure(scrollregion=_dm_scroll_c.bbox("all")))
+        _dm_scroll_c.bind("<MouseWheel>",
+            lambda e: _dm_scroll_c.xview_scroll(-int(e.delta / 120), "units"))
+
+        an_tab_bar = tk.Frame(switcher, bg=SW_BG)   # packed only when analysis is active
+        proj._dm_tab_bar     = dm_tab_bar
+        proj._dm_scroll_c    = _dm_scroll_c
+        proj._an_tab_bar     = an_tab_bar
+        proj._dm_tab_entries = []   # [(nb_tab_widget, label, underline, container)]
+        proj._an_tab_entries = []   # [(tab_id_str,   label, underline, container)]
 
         toggle_c = tk.Canvas(switcher, width=PILL_W, height=PILL_H,
                              bg=SW_BG, highlightthickness=0, bd=0, cursor=CURSOR_HAND)
@@ -1691,7 +1734,7 @@ class PolicyCoherenceApp:
             is_open = self._sidebar_open_states.get(proj.name, False)
 
             row = tk.Frame(self._sidebar_proj_list, bg="#fafbfc", cursor=CURSOR_HAND)
-            row.pack(fill="x", padx=20, pady=1)
+            row.pack(fill="x", padx=20, pady=(12, 0))
 
             chevron = self._make_chevron(row, "down" if is_open else "right")
             chevron.grid(row=0, column=0, padx=(0, 4), pady=(3, 0), sticky="n")
@@ -1736,68 +1779,71 @@ class PolicyCoherenceApp:
             plus_icon = self._make_plus(dm_row, bg=_NORMAL_BG)
             icon_win = [dm_row.create_window(0, 15, anchor="e", window=plus_icon)]
 
-            def _dm_rebuild_rr(color):
-                for item in _dm_bg_items:
-                    try: dm_row.delete(item)
+            def _dm_rebuild_rr(color, _cv=dm_row, _bi=_dm_bg_items, _lw=lbl_win,
+                               _iw=icon_win, _lbl=dm_lbl, _pi=plus_icon):
+                for item in _bi:
+                    try: _cv.delete(item)
                     except tk.TclError: pass
-                _dm_bg_items.clear()
-                W = dm_row.winfo_width()
+                _bi.clear()
+                W = _cv.winfo_width()
                 if W < 2:
                     return
                 H = 30; r = _DM_RR; d = r * 2
                 x1, y1, x2, y2 = 1, 1, W-1, H-1
                 kw = dict(fill=color, outline=color)
-                _dm_bg_items.extend([
-                    dm_row.create_arc(x1,    y1,    x1+d, y1+d, start=90,  extent=90, **kw),
-                    dm_row.create_arc(x2-d,  y1,    x2,   y1+d, start=0,   extent=90, **kw),
-                    dm_row.create_arc(x1,    y2-d,  x1+d, y2,   start=180, extent=90, **kw),
-                    dm_row.create_arc(x2-d,  y2-d,  x2,   y2,   start=270, extent=90, **kw),
-                    dm_row.create_rectangle(x1+r, y1,   x2-r, y2,   **kw),
-                    dm_row.create_rectangle(x1,   y1+r, x2,   y2-r, **kw),
+                _bi.extend([
+                    _cv.create_arc(x1,    y1,    x1+d, y1+d, start=90,  extent=90, **kw),
+                    _cv.create_arc(x2-d,  y1,    x2,   y1+d, start=0,   extent=90, **kw),
+                    _cv.create_arc(x1,    y2-d,  x1+d, y2,   start=180, extent=90, **kw),
+                    _cv.create_arc(x2-d,  y2-d,  x2,   y2,   start=270, extent=90, **kw),
+                    _cv.create_rectangle(x1+r, y1,   x2-r, y2,   **kw),
+                    _cv.create_rectangle(x1,   y1+r, x2,   y2-r, **kw),
                 ])
-                dm_row.tag_raise(lbl_win)
-                dm_row.tag_raise(icon_win[0])
-                dm_row.coords(icon_win[0], W - 12, 15)
-                try: dm_lbl.config(bg=color); plus_icon.config(bg=color)
+                _cv.tag_raise(_lw)
+                _cv.tag_raise(_iw[0])
+                _cv.coords(_iw[0], W - 12, 15)
+                try: _lbl.config(bg=color); _pi.config(bg=color)
                 except tk.TclError: pass
 
-            def _dm_update_color(color):
-                for item in _dm_bg_items:
-                    try: dm_row.itemconfig(item, fill=color, outline=color)
+            def _dm_update_color(color, _cv=dm_row, _bi=_dm_bg_items,
+                                 _lbl=dm_lbl, _pi=plus_icon):
+                for item in _bi:
+                    try: _cv.itemconfig(item, fill=color, outline=color)
                     except tk.TclError: pass
-                try: dm_lbl.config(bg=color); plus_icon.config(bg=color)
+                try: _lbl.config(bg=color); _pi.config(bg=color)
                 except tk.TclError: pass
 
-            def _dm_btn_animate(target):
-                if _dm_btn_anim[0]:
-                    dm_row.after_cancel(_dm_btn_anim[0])
-                    _dm_btn_anim[0] = None
+            def _dm_btn_animate(target, _cv=dm_row, _t=_dm_btn_t,
+                                _anim=_dm_btn_anim, _upd=_dm_update_color):
+                if _anim[0]:
+                    _cv.after_cancel(_anim[0])
+                    _anim[0] = None
                 def tick():
-                    diff = target - _dm_btn_t[0]
+                    diff = target - _t[0]
                     if abs(diff) < 0.02:
-                        _dm_btn_t[0] = target
-                        _dm_update_color(_hex_interp(_NORMAL_BG, _HOVER_BG, target))
-                        _dm_btn_anim[0] = None
+                        _t[0] = target
+                        _upd(_hex_interp(_NORMAL_BG, _HOVER_BG, target))
+                        _anim[0] = None
                         return
-                    _dm_btn_t[0] += diff * 0.3
-                    _dm_update_color(_hex_interp(_NORMAL_BG, _HOVER_BG, _dm_btn_t[0]))
-                    _dm_btn_anim[0] = dm_row.after(16, tick)
+                    _t[0] += diff * 0.3
+                    _upd(_hex_interp(_NORMAL_BG, _HOVER_BG, _t[0]))
+                    _anim[0] = _cv.after(16, tick)
                 tick()
 
-            def _hover_in(e):
-                _dm_btn_animate(1.0)
+            def _hover_in(e, animate=_dm_btn_animate):
+                animate(1.0)
 
-            def _hover_out(e):
-                _dm_btn_animate(0.0)
+            def _hover_out(e, animate=_dm_btn_animate):
+                animate(0.0)
 
-            dm_row.bind("<Configure>", lambda e: _dm_rebuild_rr(
-                _hex_interp(_NORMAL_BG, _HOVER_BG, _dm_btn_t[0])))
-            dm_row.after(50, lambda: _dm_rebuild_rr(_NORMAL_BG))
+            dm_row.bind("<Configure>", lambda e, rb=_dm_rebuild_rr, t=_dm_btn_t: rb(
+                _hex_interp(_NORMAL_BG, _HOVER_BG, t[0])))
+            dm_row.after(50, lambda rb=_dm_rebuild_rr: rb(_NORMAL_BG))
 
             for w in (dm_wrap, dm_row, dm_lbl, plus_icon):
                 w.bind("<Enter>", _hover_in)
                 w.bind("<Leave>", _hover_out)
-                w.bind("<Button-1>", lambda e: self._add_matrix())
+                w.bind("<Button-1>", lambda e, p=proj: self._add_matrix(p))
 
             # DM list
             dm_list_frame = tk.Frame(content, bg="#fafbfc")
@@ -1913,6 +1959,9 @@ class PolicyCoherenceApp:
                     w.bind("<Leave>", _dm_hover_out)
                     w.bind("<Button-1>", _dm_click)
 
+            # Bottom spacer for the project block
+            tk.Frame(content, bg="#fafbfc", height=10).pack(fill="x")
+
             def _toggle(event, cv=chevron, pname=proj.name, ct=content, rw=row):
                 self._sidebar_open_states[pname] = not self._sidebar_open_states.get(pname, False)
                 opened = self._sidebar_open_states[pname]
@@ -1932,10 +1981,28 @@ class PolicyCoherenceApp:
             if is_open:
                 content.pack(fill="x", after=row)
 
+            def _navigate(e, p=proj):
+                self._proj_nb.select(p.frame)
+
             chevron.bind("<Button-1>", _toggle)
-            row.bind("<Button-1>", _toggle)
-            name_lbl.bind("<Button-1>", _toggle)
-            folder.bind("<Button-1>", _toggle)
+            row.bind("<Button-1>",      _toggle)
+            name_lbl.bind("<Button-1>", _navigate)
+            folder.bind("<Button-1>",   _navigate)
+
+        # Bind mousewheel on all sidebar list widgets so scrolling works everywhere
+        def _bind_scroll_recursive(w):
+            c = getattr(self, "_sidebar_proj_canvas", None)
+            if not c:
+                return
+            w.bind("<MouseWheel>",
+                   lambda e, _c=c: _c.yview_scroll(-int(e.delta / 120), "units"), add="+")
+            w.bind("<Button-4>",
+                   lambda e, _c=c: _c.yview_scroll(-1, "units"), add="+")
+            w.bind("<Button-5>",
+                   lambda e, _c=c: _c.yview_scroll( 1, "units"), add="+")
+            for ch in w.winfo_children():
+                _bind_scroll_recursive(ch)
+        self.after_idle(lambda: _bind_scroll_recursive(self._sidebar_proj_list))
 
     def _current_project(self) -> Optional[Project]:
         """Return the currently selected project, or None."""
@@ -1998,8 +2065,9 @@ class PolicyCoherenceApp:
     # Decision-maker tab management (operates on current project)
     # ==================================================================
 
-    def _add_matrix(self):
-        proj = self._current_project()
+    def _add_matrix(self, proj=None):
+        if proj is None:
+            proj = self._current_project()
         if not proj:
             messagebox.showinfo("No Project",
                                 "Create a project first.", parent=self.root)
@@ -2024,6 +2092,7 @@ class PolicyCoherenceApp:
         matrix = make_empty_matrix(dm_name, policies)
         proj.matrices.append(matrix)
         self._create_dm_tab(proj, matrix)
+        self._proj_nb.select(proj.frame)
         self._refresh_sidebar_projects()
         self._set_status(f'"{dm_name}" added to project "{proj.name}".')
         self._update_topbar()
@@ -2307,6 +2376,14 @@ class PolicyCoherenceApp:
 
         container.bind("<Button-1>", _select)
         lbl.bind("<Button-1>", _select)
+
+        # Forward mousewheel to the horizontal scroll canvas
+        _sc = getattr(proj, "_dm_scroll_c", None)
+        if _sc:
+            def _hscroll(e, c=_sc):
+                c.xview_scroll(-int(e.delta / 120), "units")
+            for w in (container, lbl, ul):
+                w.bind("<MouseWheel>", _hscroll, add="+")
 
         proj._dm_tab_entries.append((nb_tab, lbl, ul, container))
         self._refresh_dm_underlines(proj)
