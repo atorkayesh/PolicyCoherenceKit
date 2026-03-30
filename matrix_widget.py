@@ -17,6 +17,12 @@ from constants import (
     COLOR_BORDER,
     MATRIX_PADX,
 )
+from theme import (
+    MATRIX_SCROLLBAR_THUMB,
+    MATRIX_SCROLLBAR_THUMB_HOVER,
+    MATRIX_SCROLLBAR_TROUGH,
+    MATRIX_SCROLLBAR_W,
+)
 
 # ---------------------------------------------------------------------------
 # Canvas cell pixel dimensions
@@ -62,10 +68,10 @@ def _round_rect(canvas, x1, y1, x2, y2, r, **kwargs):
 class _PillScrollbar(tk.Canvas):
     """Canvas scrollbar with fully-rounded (pill) thumb ends."""
 
-    _THICK     = 5     # track thickness in pixels
-    _TROUGH    = "#eaeef4"
-    _THUMB     = "#d0dbe7"
-    _THUMB_HOV = "#b8c8d8"
+    _THICK     = MATRIX_SCROLLBAR_W
+    _TROUGH    = MATRIX_SCROLLBAR_TROUGH
+    _THUMB     = MATRIX_SCROLLBAR_THUMB
+    _THUMB_HOV = MATRIX_SCROLLBAR_THUMB_HOVER
     _MIN_THUMB = 28    # minimum thumb length in pixels
 
     def __init__(self, parent, orient: str = "vertical", command=None, **kwargs):

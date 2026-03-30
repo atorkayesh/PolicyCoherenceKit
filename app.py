@@ -321,7 +321,7 @@ class PolicyCoherenceApp:
         self._build_topbar()
         self._build_project_notebook()
         self._build_statusbar()
-        self._proj_nb.bind("<<NotebookTabChanged>>", lambda e: self._update_topbar())
+        self._proj_nb.bind("<<NotebookTabChanged>>", self._on_project_tab_changed)
         self._update_topbar()
 
     def _build_sidebar(self, parent):
@@ -943,6 +943,31 @@ class PolicyCoherenceApp:
         self._stats_policies_lbl.config(text=pol_text)
         self._stats_pipe_lbl.config(text="  |  ")
         self._stats_cells_lbl.config(text=f"{n_cells} cells to fill")
+
+    def _on_project_tab_changed(self, _event=None):
+        proj = self._current_project()
+        if proj is None:
+            self._update_topbar()
+            return
+        self._update_topbar()
+        if getattr(proj, "_in_analysis_view", False):
+            self._refresh_an_underlines(proj)
+            return
+        self._refresh_dm_underlines(proj)
+        self._ensure_current_dm_widget(proj)
+
+    def _select_project(self, proj: Project):
+        if proj is None:
+            return
+        self._proj_nb.select(proj.frame)
+        self.root.update_idletasks()
+        self._update_topbar()
+        if getattr(proj, "_in_analysis_view", False):
+            self._refresh_an_underlines(proj)
+            return
+        self._refresh_dm_underlines(proj)
+        self._ensure_current_dm_widget(proj)
+        proj.frame.update_idletasks()
 
     def _build_project_notebook(self):
         self._proj_nb_container = tk.Frame(self._content, bg=COLOR_BG)
@@ -1785,9 +1810,9 @@ class PolicyCoherenceApp:
         if not getattr(self, "_sidebar_expanded", True):
             for proj in self.projects:
                 abbrev = proj.name[:2].upper()
-                _BG    = "#426387"
-                _FG    = "#f5f7fa"
-                _R     = 6
+                _BG    = "#eaeef4"
+                _FG    = "#30455c"
+                _R     = 4
                 _PAD   = 10
                 _f     = tkFont.Font(family=FONT_FAMILY, size=12, weight="bold")
                 _tw    = _f.measure(abbrev)
@@ -1811,7 +1836,7 @@ class PolicyCoherenceApp:
                 bc.create_rectangle(x1, y1+r, x2, y2-r, fill=_BG, outline=_BG)
                 bc.create_text(bw // 2, bh // 2, text=abbrev,
                                fill=_FG, font=_f, anchor="center")
-                bc.bind("<Button-1>", lambda e, p=proj: self._proj_nb.select(p.frame))
+                bc.bind("<Button-1>", lambda e=None, p=proj: self._select_project(p))
             return
 
         # ── Expanded view ──────────────────────────────────────────────
@@ -2047,7 +2072,7 @@ class PolicyCoherenceApp:
                     animate(0.0)
 
                 def _dm_click(e, p=proj, m=matrix):
-                    self._proj_nb.select(p.frame)
+                    self._select_project(p)
                     if hasattr(m, "_tab"):
                         p.notebook.select(m._tab)
 
@@ -2070,8 +2095,8 @@ class PolicyCoherenceApp:
             if is_open:
                 content.pack(fill="x", after=row)
 
-            def _navigate(e, p=proj):
-                self._proj_nb.select(p.frame)
+            def _navigate(e=None, p=proj):
+                self._select_project(p)
 
             chevron.bind("<Button-1>", _toggle)
             name_lbl.bind("<Button-1>", _navigate)

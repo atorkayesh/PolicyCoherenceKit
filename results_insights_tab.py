@@ -264,9 +264,6 @@ class ResultsInsightsTab(tk.Frame):
         self._build()
 
     def _build(self):
-        self._build_info_bar()
-        tk.Frame(self, bg=COLOR_BORDER, height=1).pack(fill="x", pady=4)
-
         canvas = tk.Canvas(self, bg=COLOR_BG, highlightthickness=0)
         scroll = tk.Scrollbar(self, orient="vertical", command=canvas.yview)
         canvas.configure(yscrollcommand=scroll.set)
