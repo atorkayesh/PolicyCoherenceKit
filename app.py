@@ -463,7 +463,8 @@ class PolicyCoherenceApp:
 
         _proj_canvas = tk.Canvas(_proj_scroll_outer, bg="#fafbfc",
                                  highlightthickness=0,
-                                 yscrollcommand=_proj_vbar.set)
+                                 yscrollcommand=_proj_vbar.set,
+                                 yscrollincrement=20)
         _proj_canvas.pack(side="left", fill="both", expand=True)
         _proj_vbar.configure(command=_proj_canvas.yview)
 
@@ -478,7 +479,7 @@ class PolicyCoherenceApp:
                 scrollregion=_proj_canvas.bbox("all")))
 
         _proj_canvas.bind("<MouseWheel>",
-            lambda e: _proj_canvas.yview_scroll(-int(e.delta / 120), "units"))
+            lambda e: _proj_canvas.yview_scroll(-1 if e.delta > 0 else 1, "units"))
         _proj_canvas.bind("<Button-4>",
             lambda e: _proj_canvas.yview_scroll(-1, "units"))
         _proj_canvas.bind("<Button-5>",
@@ -1995,14 +1996,14 @@ class PolicyCoherenceApp:
             if not c:
                 return
             w.bind("<MouseWheel>",
-                   lambda e, _c=c: _c.yview_scroll(-int(e.delta / 120), "units"), add="+")
+                   lambda e, _c=c: _c.yview_scroll(-1 if e.delta > 0 else 1, "units"))
             w.bind("<Button-4>",
-                   lambda e, _c=c: _c.yview_scroll(-1, "units"), add="+")
+                   lambda e, _c=c: _c.yview_scroll(-1, "units"))
             w.bind("<Button-5>",
-                   lambda e, _c=c: _c.yview_scroll( 1, "units"), add="+")
+                   lambda e, _c=c: _c.yview_scroll( 1, "units"))
             for ch in w.winfo_children():
                 _bind_scroll_recursive(ch)
-        self.after_idle(lambda: _bind_scroll_recursive(self._sidebar_proj_list))
+        self.root.after_idle(lambda: _bind_scroll_recursive(self._sidebar_proj_list))
 
     def _current_project(self) -> Optional[Project]:
         """Return the currently selected project, or None."""
