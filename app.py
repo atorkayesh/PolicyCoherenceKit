@@ -7,6 +7,7 @@
 import io
 import math
 import sys
+from pathlib import Path
 import ctypes, ctypes.util
 import tkinter as tk
 
@@ -35,7 +36,7 @@ from dataclasses import dataclass, field
 
 from models import PolicyMatrix, make_empty_matrix
 from matrix_widget import MatrixWidget
-from dialogs import NewMatrixDialog, _SimpleInputDialog, style_button
+from dialogs import NewMatrixDialog, ProjectSetupDialog, _SimpleInputDialog, style_button
 from aggregator import (
     check_completeness,
     aggregate_average, aggregate_majority, aggregate_weighted, resolve_ties,
@@ -50,6 +51,7 @@ from range_of_influence_tab import RangeOfInfluenceTab
 from pca_tab import PCATab
 from network_tab import NetworkTab
 from llm_tab import LLMInterpretationTab
+from results_insights_tab import ResultsInsightsTab
 from importer import import_matrices_from_excel
 from constants import (
     APP_TITLE, WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT,
@@ -463,7 +465,8 @@ class PolicyCoherenceApp:
 
         _proj_canvas = tk.Canvas(_proj_scroll_outer, bg="#fafbfc",
                                  highlightthickness=0,
-                                 yscrollcommand=_proj_vbar.set)
+                                 yscrollcommand=_proj_vbar.set,
+                                 yscrollincrement=20)
         _proj_canvas.pack(side="left", fill="both", expand=True)
         _proj_vbar.configure(command=_proj_canvas.yview)
 
@@ -478,7 +481,7 @@ class PolicyCoherenceApp:
                 scrollregion=_proj_canvas.bbox("all")))
 
         _proj_canvas.bind("<MouseWheel>",
-            lambda e: _proj_canvas.yview_scroll(-int(e.delta / 120), "units"))
+            lambda e: _proj_canvas.yview_scroll(-1 if e.delta > 0 else 1, "units"))
         _proj_canvas.bind("<Button-4>",
             lambda e: _proj_canvas.yview_scroll(-1, "units"))
         _proj_canvas.bind("<Button-5>",
@@ -1360,10 +1363,30 @@ class PolicyCoherenceApp:
 
     def _new_project(self):
         existing = [p.name for p in self.projects]
-        dlg = _ProjectNameDialog(self.root, existing_names=existing)
+        dlg = ProjectSetupDialog(
+            self.root,
+            title="Create Project",
+            include_project_name=True,
+            existing_project_names=existing,
+        )
         self.root.wait_window(dlg)
         if dlg.result:
-            self._add_project(dlg.result)
+            data = dlg.result
+            if data.get("action") == "import_excel":
+                self._import_excel_new_project()
+                return
+            proj = self._add_project(data["project_name"])
+            for dm_name in data["decision_makers"]:
+                matrix = make_empty_matrix(dm_name, data["policies"])
+                proj.matrices.append(matrix)
+                self._create_dm_tab(proj, matrix)
+            self._proj_nb.select(proj.frame)
+            self._refresh_sidebar_projects()
+            self._set_status(
+                f'Project "{proj.name}" created with {len(data["decision_makers"])} decision-maker'
+                f'{"s" if len(data["decision_makers"]) != 1 else ""}.'
+            )
+            self._update_topbar()
 
     def _add_project(self, name: str):
         """Create a new Project and its top-level notebook tab."""
@@ -1399,7 +1422,8 @@ class PolicyCoherenceApp:
         # Reserve right space so tabs don't slide under the pill toggle
         tk.Frame(switcher, width=PILL_W + 24, bg=SW_BG).pack(side="right")
 
-        _dm_scroll_c = tk.Canvas(switcher, bg=SW_BG, highlightthickness=0)
+        _dm_scroll_c = tk.Canvas(switcher, bg=SW_BG, highlightthickness=0,
+                                 xscrollincrement=40)
         _dm_scroll_c.pack(side="left", fill="both", expand=True)
         dm_tab_bar  = tk.Frame(_dm_scroll_c, bg=SW_BG)
         _dm_bar_win = _dm_scroll_c.create_window((0, 0), window=dm_tab_bar, anchor="nw")
@@ -1407,9 +1431,80 @@ class PolicyCoherenceApp:
         _dm_scroll_c.bind("<Configure>",
             lambda e: _dm_scroll_c.itemconfig(_dm_bar_win, height=e.height))
         dm_tab_bar.bind("<Configure>",
-            lambda e: _dm_scroll_c.configure(scrollregion=_dm_scroll_c.bbox("all")))
-        _dm_scroll_c.bind("<MouseWheel>",
-            lambda e: _dm_scroll_c.xview_scroll(-int(e.delta / 120), "units"))
+            lambda e: _dm_scroll_c.configure(scrollregion=(0, 0, e.width, e.height)))
+        _scroll_fn = lambda e, c=_dm_scroll_c: c.xview_scroll(-1 if e.delta > 0 else 1, "units")
+        _dm_scroll_c.bind("<MouseWheel>", _scroll_fn)
+        dm_tab_bar.bind("<MouseWheel>", _scroll_fn)
+
+        # ── Drag-to-scroll with momentum on the tab bar ───────────────
+        _dm_drag = {"x": 0, "dragging": False, "vx": 0.0,
+                    "history": [], "anim": [None]}
+
+        def _dm_drag_start(e, d=_dm_drag, c=_dm_scroll_c):
+            if d["anim"][0]:
+                c.after_cancel(d["anim"][0])
+                d["anim"][0] = None
+            d["x"]       = e.x_root
+            d["vx"]      = 0.0
+            d["history"] = [(e.time, e.x_root)]
+            d["dragging"] = False
+
+        def _dm_drag_motion(e, c=_dm_scroll_c, d=_dm_drag):
+            dx = d["x"] - e.x_root
+            d["x"] = e.x_root
+
+            # Keep a 80 ms position history for stable velocity estimation
+            d["history"].append((e.time, e.x_root))
+            d["history"] = [(t, x) for t, x in d["history"]
+                            if e.time - t <= 80]
+            if len(d["history"]) >= 2:
+                t0, x0 = d["history"][0]
+                t1, x1 = d["history"][-1]
+                dt = max(1, t1 - t0)
+                d["vx"] = (x0 - x1) / dt     # px / ms, positive = scroll right
+
+            if abs(dx) > 1:
+                d["dragging"] = True
+            if not d["dragging"]:
+                return
+            x1v, x2v = c.xview()
+            span = x2v - x1v
+            if span >= 1.0:
+                return
+            cw = c.winfo_width()
+            if cw > 0:
+                c.xview_moveto(max(0.0, min(1.0 - span, x1v + dx * span / cw)))
+
+        def _dm_drag_end(e, c=_dm_scroll_c, d=_dm_drag):
+            vx = [d["vx"]]
+
+            def _coast():
+                if abs(vx[0]) < 0.08:         # stop when imperceptibly slow
+                    d["anim"][0] = None
+                    d["dragging"] = False
+                    return
+                x1, x2 = c.xview()
+                span = x2 - x1
+                if span >= 1.0:
+                    d["anim"][0] = None
+                    d["dragging"] = False
+                    return
+                cw = c.winfo_width()
+                if cw > 0:
+                    px = vx[0] * 16           # pixels this frame at 60 fps
+                    c.xview_moveto(max(0.0, min(1.0 - span, x1 + px * span / cw)))
+                vx[0] *= 0.92                 # gentle friction — feels like glass
+                d["anim"][0] = c.after(16, _coast)
+
+            if abs(d["vx"]) > 0.08:
+                d["anim"][0] = c.after(16, _coast)
+            else:
+                d["dragging"] = False
+
+        for _w in (_dm_scroll_c, dm_tab_bar):
+            _w.bind("<Button-1>",        _dm_drag_start)
+            _w.bind("<B1-Motion>",       _dm_drag_motion)
+            _w.bind("<ButtonRelease-1>", _dm_drag_end)
 
         an_tab_bar = tk.Frame(switcher, bg=SW_BG)   # packed only when analysis is active
         proj._dm_tab_bar     = dm_tab_bar
@@ -1417,6 +1512,9 @@ class PolicyCoherenceApp:
         proj._an_tab_bar     = an_tab_bar
         proj._dm_tab_entries = []   # [(nb_tab_widget, label, underline, container)]
         proj._an_tab_entries = []   # [(tab_id_str,   label, underline, container)]
+        proj._dm_drag        = _dm_drag
+        proj._dm_drag_start  = _dm_drag_start
+        proj._dm_drag_motion = _dm_drag_motion
 
         toggle_c = tk.Canvas(switcher, width=PILL_W, height=PILL_H,
                              bg=SW_BG, highlightthickness=0, bd=0, cursor=CURSOR_HAND)
@@ -1591,6 +1689,7 @@ class PolicyCoherenceApp:
         self._refresh_sidebar_projects()
         self._set_status(f'Project "{name}" created.')
         self._update_topbar()
+        return proj
 
     # ------------------------------------------------------------------
     # Sidebar project list helpers
@@ -1733,13 +1832,15 @@ class PolicyCoherenceApp:
         for proj in self.projects:
             is_open = self._sidebar_open_states.get(proj.name, False)
 
-            row = tk.Frame(self._sidebar_proj_list, bg="#fafbfc", cursor=CURSOR_HAND)
+            row = tk.Frame(self._sidebar_proj_list, bg="#fafbfc")
             row.pack(fill="x", padx=20, pady=(12, 0))
 
             chevron = self._make_chevron(row, "down" if is_open else "right")
+            chevron.config(cursor=CURSOR_HAND)
             chevron.grid(row=0, column=0, padx=(0, 4), pady=(3, 0), sticky="n")
 
             folder = self._make_folder(row)
+            folder.config(cursor=CURSOR_HAND)
             folder.grid(row=0, column=1, padx=(0, 6), pady=(3, 0), sticky="n")
 
             name_lbl = tk.Label(
@@ -1747,7 +1848,7 @@ class PolicyCoherenceApp:
                 font=(FONT_FAMILY, 14),
                 bg="#fafbfc", fg="#2c3b4e", anchor="nw",
                 justify="left", wraplength=236,
-                pady=0,
+                pady=0, cursor=CURSOR_HAND,
             )
             name_lbl.grid(row=0, column=2, sticky="nw")
             row.grid_columnconfigure(2, weight=1)
@@ -1962,21 +2063,9 @@ class PolicyCoherenceApp:
             # Bottom spacer for the project block
             tk.Frame(content, bg="#fafbfc", height=10).pack(fill="x")
 
-            def _toggle(event, cv=chevron, pname=proj.name, ct=content, rw=row):
+            def _toggle(event, pname=proj.name):
                 self._sidebar_open_states[pname] = not self._sidebar_open_states.get(pname, False)
-                opened = self._sidebar_open_states[pname]
-                cv.delete("all")
-                s = 16 / 24.0
-                if opened:
-                    pts = [6*s, 9*s, 12*s, 15*s, 18*s, 9*s]
-                else:
-                    pts = [9*s, 18*s, 15*s, 12*s, 9*s, 6*s]
-                cv.create_line(*pts, fill="#a3a3a3", width=1.35,
-                               capstyle="round", joinstyle="round")
-                if opened:
-                    ct.pack(fill="x", after=rw)
-                else:
-                    ct.pack_forget()
+                self._refresh_sidebar_projects()
 
             if is_open:
                 content.pack(fill="x", after=row)
@@ -1985,7 +2074,6 @@ class PolicyCoherenceApp:
                 self._proj_nb.select(p.frame)
 
             chevron.bind("<Button-1>", _toggle)
-            row.bind("<Button-1>",      _toggle)
             name_lbl.bind("<Button-1>", _navigate)
             folder.bind("<Button-1>",   _navigate)
 
@@ -1995,14 +2083,14 @@ class PolicyCoherenceApp:
             if not c:
                 return
             w.bind("<MouseWheel>",
-                   lambda e, _c=c: _c.yview_scroll(-int(e.delta / 120), "units"), add="+")
+                   lambda e, _c=c: _c.yview_scroll(-1 if e.delta > 0 else 1, "units"))
             w.bind("<Button-4>",
-                   lambda e, _c=c: _c.yview_scroll(-1, "units"), add="+")
+                   lambda e, _c=c: _c.yview_scroll(-1, "units"))
             w.bind("<Button-5>",
-                   lambda e, _c=c: _c.yview_scroll( 1, "units"), add="+")
+                   lambda e, _c=c: _c.yview_scroll( 1, "units"))
             for ch in w.winfo_children():
                 _bind_scroll_recursive(ch)
-        self.after_idle(lambda: _bind_scroll_recursive(self._sidebar_proj_list))
+        self.root.after_idle(lambda: _bind_scroll_recursive(self._sidebar_proj_list))
 
     def _current_project(self) -> Optional[Project]:
         """Return the currently selected project, or None."""
@@ -2073,28 +2161,34 @@ class PolicyCoherenceApp:
                                 "Create a project first.", parent=self.root)
             return
 
-        if proj.matrices:
-            # Reuse existing policy list
-            dlg = _SimpleInputDialog(self.root, "Add Decision-Maker",
-                                     "Decision-Maker Name:")
-            self.root.wait_window(dlg)
-            if not dlg.result:
-                return
-            dm_name  = dlg.result
-            policies = proj.matrices[0].policies
-        else:
-            dlg = NewMatrixDialog(self.root)
-            self.root.wait_window(dlg)
-            if dlg.result is None:
-                return
-            dm_name, policies = dlg.result
+        existing_dm_names = [m.decision_maker for m in proj.matrices]
+        dlg = ProjectSetupDialog(
+            self.root,
+            title="Add Decision-Makers",
+            include_project_name=False,
+            existing_dm_names=existing_dm_names,
+            fixed_policies=proj.matrices[0].policies if proj.matrices else None,
+        )
+        self.root.wait_window(dlg)
+        if dlg.result is None:
+            return
 
-        matrix = make_empty_matrix(dm_name, policies)
-        proj.matrices.append(matrix)
-        self._create_dm_tab(proj, matrix)
+        data = dlg.result
+        if data.get("action") == "import_excel":
+            self._import_excel_into_project(proj)
+            return
+        policies = proj.matrices[0].policies if proj.matrices else data["policies"]
+
+        for dm_name in data["decision_makers"]:
+            matrix = make_empty_matrix(dm_name, policies)
+            proj.matrices.append(matrix)
+            self._create_dm_tab(proj, matrix)
         self._proj_nb.select(proj.frame)
         self._refresh_sidebar_projects()
-        self._set_status(f'"{dm_name}" added to project "{proj.name}".')
+        self._set_status(
+            f'Added {len(data["decision_makers"])} decision-maker'
+            f'{"s" if len(data["decision_makers"]) != 1 else ""} to project "{proj.name}".'
+        )
         self._update_topbar()
 
     def _create_dm_tab(self, proj: Project, matrix: PolicyMatrix):
@@ -2303,6 +2397,7 @@ class PolicyCoherenceApp:
         proj.agg_tab_ids.clear()
 
         tabs = [
+            (f"  Results Insights ({method_label})  ",  ResultsInsightsTab),
             (f"  Aggregated ({method_label})  ",         AggregationTab),
             (f"  Coherence Scores ({method_label})  ",   CoherenceScoresTab),
             (f"  Range of Influence ({method_label})  ", RangeOfInfluenceTab),
@@ -2362,7 +2457,7 @@ class PolicyCoherenceApp:
 
         lbl = tk.Label(container, text=matrix.decision_maker,
                        bg=self._TAB_BG, fg=self._TAB_INACTIVE_FG,
-                       padx=self._TAB_PADX,
+                       padx=self._TAB_PADX, wraplength=0,
                        font=(FONT_FAMILY, self._TAB_TEXT_SIZE, "normal"))
         lbl.pack(side="top", fill="both", expand=True)
 
@@ -2371,19 +2466,30 @@ class PolicyCoherenceApp:
         ul.pack_propagate(False)
         self._bind_ul_to_text(lbl, ul)
 
-        def _select(e, t=nb_tab):
-            proj.notebook.select(t)
+        # Select on release so drag-scroll doesn't accidentally switch tabs
+        _ds          = getattr(proj, "_dm_drag",        None)
+        _drag_start  = getattr(proj, "_dm_drag_start",  None)
+        _drag_motion = getattr(proj, "_dm_drag_motion", None)
 
-        container.bind("<Button-1>", _select)
-        lbl.bind("<Button-1>", _select)
+        def _on_release(e, t=nb_tab, d=_ds):
+            was_drag = d.get("dragging", False) if d else False
+            if d:
+                d["dragging"] = False
+            if not was_drag:
+                proj.notebook.select(t)
+
+        for w in (container, lbl):
+            if _drag_start:  w.bind("<Button-1>",        _drag_start)
+            if _drag_motion: w.bind("<B1-Motion>",        _drag_motion, add="+")
+            w.bind("<ButtonRelease-1>", _on_release)
 
         # Forward mousewheel to the horizontal scroll canvas
         _sc = getattr(proj, "_dm_scroll_c", None)
         if _sc:
             def _hscroll(e, c=_sc):
-                c.xview_scroll(-int(e.delta / 120), "units")
+                c.xview_scroll(-1 if e.delta > 0 else 1, "units")
             for w in (container, lbl, ul):
-                w.bind("<MouseWheel>", _hscroll, add="+")
+                w.bind("<MouseWheel>", _hscroll)
 
         proj._dm_tab_entries.append((nb_tab, lbl, ul, container))
         self._refresh_dm_underlines(proj)
@@ -2460,9 +2566,9 @@ class PolicyCoherenceApp:
         if not proj.agg_tab_ids:
             return
         proj._matrix_frame.pack_forget()
-        proj._dm_tab_bar.pack_forget()
+        proj._dm_scroll_c.pack_forget()
         proj._analysis_frame.pack(fill="both", expand=True)
-        proj._an_tab_bar.pack(side="left", fill="y")
+        proj._an_tab_bar.pack(side="left", fill="both", expand=True)
         proj._in_analysis_view = True
         proj._set_nav_active(True)
         self._refresh_an_underlines(proj)
@@ -2472,7 +2578,7 @@ class PolicyCoherenceApp:
         proj._analysis_frame.pack_forget()
         proj._an_tab_bar.pack_forget()
         proj._matrix_frame.pack(fill="both", expand=True)
-        proj._dm_tab_bar.pack(side="left", fill="y")
+        proj._dm_scroll_c.pack(side="left", fill="both", expand=True)
         proj._in_analysis_view = False
         proj._set_nav_active(False)
         self._refresh_dm_underlines(proj)
@@ -2497,19 +2603,38 @@ class PolicyCoherenceApp:
             messagebox.showinfo("No Project", "Create a project first.",
                                 parent=self.root)
             return
+        self._import_excel_into_project(proj)
 
-        path = filedialog.askopenfilename(
+    def _ask_excel_path(self):
+        return filedialog.askopenfilename(
             parent=self.root,
             title="Import matrices from Excel workbook",
             filetypes=[("Excel Workbook", "*.xlsx *.xls")],
         )
+
+    def _load_import_result(self, path):
+        try:
+            return import_matrices_from_excel(path)
+        except (ValueError, ImportError) as exc:
+            messagebox.showerror("Import Error", str(exc), parent=self.root)
+            return None
+
+    def _unique_project_name(self, base_name: str) -> str:
+        existing = {p.name for p in self.projects}
+        if base_name not in existing:
+            return base_name
+        i = 2
+        while f"{base_name} {i}" in existing:
+            i += 1
+        return f"{base_name} {i}"
+
+    def _import_excel_into_project(self, proj: Project):
+        path = self._ask_excel_path()
         if not path:
             return
 
-        try:
-            result = import_matrices_from_excel(path)
-        except (ValueError, ImportError) as exc:
-            messagebox.showerror("Import Error", str(exc), parent=self.root)
+        result = self._load_import_result(path)
+        if result is None:
             return
 
         if not result.matrices:
@@ -2552,6 +2677,43 @@ class PolicyCoherenceApp:
                                 parent=self.root)
 
         self._set_status(f"Imported {added} matrix/matrices from: {path}")
+        self._update_topbar()
+
+    def _import_excel_new_project(self):
+        path = self._ask_excel_path()
+        if not path:
+            return
+
+        result = self._load_import_result(path)
+        if result is None:
+            return
+
+        if not result.matrices:
+            messagebox.showwarning("Nothing Imported",
+                                   "No valid matrices were found in the workbook.",
+                                   parent=self.root)
+            return
+
+        project_name = self._unique_project_name(Path(path).stem)
+        proj = self._add_project(project_name)
+        for matrix in result.matrices:
+            proj.matrices.append(matrix)
+            self._create_dm_tab(proj, matrix)
+
+        if result.warnings:
+            msg = (str(len(result.matrices)) + " matrix/matrices imported.\n\n"
+                   "The following sheets have blank cells:\n\n"
+                   + "\n".join(result.warnings))
+            messagebox.showwarning("Import Complete with Warnings",
+                                   msg, parent=self.root)
+        else:
+            messagebox.showinfo("Import Complete",
+                                str(len(result.matrices)) + " matrix/matrices imported successfully.",
+                                parent=self.root)
+
+        self._proj_nb.select(proj.frame)
+        self._refresh_sidebar_projects()
+        self._set_status(f'Project "{proj.name}" created from import: {path}')
         self._update_topbar()
 
     # ==================================================================
