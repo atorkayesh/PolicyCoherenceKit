@@ -6,7 +6,9 @@
 # =============================================================================
 
 import math
+import sys
 import tkinter as tk
+import tkinter.font as tkFont
 from tkinter import ttk, messagebox, filedialog
 from typing import List, Optional, Tuple
 
@@ -17,6 +19,91 @@ from constants import (
     COLOR_TEXT_LIGHT, COLOR_BUTTON, COLOR_BUTTON_FG, COLOR_BORDER,
     CURSOR_HAND,
 )
+from theme import (
+    MODAL_ACTION_BG,
+    MODAL_ACTION_BORDER,
+    MODAL_ACTION_FG,
+    MODAL_ACTION_GAP,
+    MODAL_ACTION_HEIGHT,
+    MODAL_ACTION_HOVER_BG,
+    MODAL_ACTION_ICON_SIZE,
+    MODAL_ACTION_IMPORT_TEXT,
+    MODAL_ACTION_PADX,
+    MODAL_ACTION_RADIUS,
+    MODAL_ACTION_TEXT_SIZE,
+    MODAL_ADD_BTN_BG,
+    MODAL_ADD_BTN_BORDER,
+    MODAL_ADD_BTN_HOVER_BG,
+    MODAL_ADD_BTN_ICON_COLOR,
+    MODAL_ADD_BTN_ICON_SIZE,
+    MODAL_ADD_BTN_RADIUS,
+    MODAL_ADD_BTN_SIZE,
+    MODAL_ADD_BTN_STROKE,
+    MODAL_ADD_BTN_TEXT,
+    MODAL_ADD_BTN_TEXT_SIZE,
+    MODAL_BG,
+    MODAL_BORDER,
+    MODAL_CLOSE_CANVAS_SIZE,
+    MODAL_CLOSE_ICON_COLOR,
+    MODAL_CLOSE_HOVER_BG,
+    MODAL_CLOSE_HOVER_RADIUS,
+    MODAL_CLOSE_ICON_SIZE,
+    MODAL_CLOSE_STROKE,
+    MODAL_DIVIDER_COLOR,
+    MODAL_DM_HINT,
+    MODAL_DM_PLACEHOLDER,
+    MODAL_FIELD_BG,
+    MODAL_FIELD_BORDER,
+    MODAL_FIELD_HEIGHT,
+    MODAL_FIELD_LABEL_COLOR,
+    MODAL_FIELD_LABEL_SIZE,
+    MODAL_FIELD_PLACEHOLDER,
+    MODAL_FIELD_PLACEHOLDER_COLOR,
+    MODAL_FIELD_PLACEHOLDER_SIZE,
+    MODAL_FIELD_RADIUS,
+    MODAL_FIELD_TEXT_SIZE,
+    MODAL_POLICY_HINT,
+    MODAL_POLICY_PLACEHOLDER,
+    MODAL_PROJECT_HINT,
+    MODAL_RADIUS,
+    MODAL_SECTION_ROW_GAP,
+    MODAL_SECTION_HINT_COLOR,
+    MODAL_SECTION_HINT_SIZE,
+    MODAL_SECTION_TITLE_COLOR,
+    MODAL_SECTION_TITLE_SIZE,
+    MODAL_SUBTITLE_COLOR,
+    MODAL_SUBTITLE_SIZE,
+    MODAL_TITLE_COLOR,
+    MODAL_TITLE_SIZE,
+)
+
+
+def _create_rounded_rect(canvas, x1, y1, x2, y2, r,
+                          fill="", outline="black", width=1, tags=()):
+    """Draw a filled, outlined rounded rectangle on a Canvas."""
+    canvas.create_arc(x1, y1, x1+2*r, y1+2*r, start=90, extent=90,
+                      style="pieslice", fill=fill, outline=fill, tags=tags)
+    canvas.create_arc(x2-2*r, y1, x2, y1+2*r, start=0, extent=90,
+                      style="pieslice", fill=fill, outline=fill, tags=tags)
+    canvas.create_arc(x2-2*r, y2-2*r, x2, y2, start=270, extent=90,
+                      style="pieslice", fill=fill, outline=fill, tags=tags)
+    canvas.create_arc(x1, y2-2*r, x1+2*r, y2, start=180, extent=90,
+                      style="pieslice", fill=fill, outline=fill, tags=tags)
+    canvas.create_rectangle(x1+r, y1, x2-r, y2, fill=fill, outline=fill, tags=tags)
+    canvas.create_rectangle(x1, y1+r, x2, y2-r, fill=fill, outline=fill, tags=tags)
+    if outline and width > 0:
+        canvas.create_arc(x1, y1, x1+2*r, y1+2*r, start=90, extent=90,
+                          style="arc", outline=outline, width=width, tags=tags)
+        canvas.create_arc(x2-2*r, y1, x2, y1+2*r, start=0, extent=90,
+                          style="arc", outline=outline, width=width, tags=tags)
+        canvas.create_arc(x2-2*r, y2-2*r, x2, y2, start=270, extent=90,
+                          style="arc", outline=outline, width=width, tags=tags)
+        canvas.create_arc(x1, y2-2*r, x1+2*r, y2, start=180, extent=90,
+                          style="arc", outline=outline, width=width, tags=tags)
+        canvas.create_line(x1+r, y1, x2-r, y1, fill=outline, width=width, tags=tags)
+        canvas.create_line(x2, y1+r, x2, y2-r, fill=outline, width=width, tags=tags)
+        canvas.create_line(x2-r, y2, x1+r, y2, fill=outline, width=width, tags=tags)
+        canvas.create_line(x1, y2-r, x1, y1+r, fill=outline, width=width, tags=tags)
 
 
 # =============================================================================
@@ -36,6 +123,26 @@ def style_button(btn: tk.Button, danger: bool = False):
         font=(FONT_FAMILY, FONT_SIZE_NORMAL),
         cursor=CURSOR_HAND,
     )
+
+
+def _hex_interp(c1, c2, t):
+    """Interpolate between two hex colours. t=0 -> c1, t=1 -> c2."""
+    t = max(0.0, min(1.0, t))
+    r = int(int(c1[1:3], 16) + (int(c2[1:3], 16) - int(c1[1:3], 16)) * t)
+    g = int(int(c1[3:5], 16) + (int(c2[3:5], 16) - int(c1[3:5], 16)) * t)
+    b = int(int(c1[5:7], 16) + (int(c2[5:7], 16) - int(c1[5:7], 16)) * t)
+    return f"#{r:02x}{g:02x}{b:02x}"
+
+
+def _rrect_pts(x1, y1, x2, y2, r, steps=10):
+    """Return polygon points for a rounded rectangle."""
+    pts = []
+    for cx, cy, a0 in [(x2-r, y1+r, -90), (x2-r, y2-r, 0),
+                       (x1+r, y2-r, 90), (x1+r, y1+r, 180)]:
+        for i in range(steps + 1):
+            a = math.radians(a0 + 90 * i / steps)
+            pts += [cx + r * math.cos(a), cy + r * math.sin(a)]
+    return pts
 
 
 # =============================================================================
@@ -60,11 +167,10 @@ class ProjectSetupDialog(tk.Toplevel):
     ):
         super().__init__(parent)
         self._parent = parent
+        self._transparent_key = "#00ff01"
 
-        self.configure(bg=COLOR_BG)
-        self.resizable(False, False)
-        self.transient(parent)
-        self.overrideredirect(True)
+        self._configure_modal_window()
+
         self.grab_set()
 
         self._dialog_title = title
@@ -78,53 +184,110 @@ class ProjectSetupDialog(tk.Toplevel):
         self._policy_vars: List[tk.StringVar] = []
         self._first_dm_entry: Optional[tk.Entry] = None
         self._section_entries = {}
+        self._entry_fields = {}
         self.result: Optional[dict] = None
-
+        self._close_btn: Optional[tk.Canvas] = None
+        self._close_anim_id: Optional[str] = None
+        self._close_hover_t = 0.0
+        self._outer_canvas: Optional[tk.Canvas] = None
+        self._shell_frame: Optional[tk.Frame] = None
+        self._shell_window = None
+        self._modal_x: Optional[int] = None
+        self._modal_y: Optional[int] = None
         self._build()
         self._resize_to_content()
 
+    def _configure_modal_window(self):
+        self.resizable(False, False)
+        self.transient(self._parent)
+        self.overrideredirect(True)
+        platform = sys.platform
+        if platform == "darwin":
+            try:
+                self.wm_attributes("-transparent", True)
+                self.configure(bg="systemTransparent")
+            except Exception:
+                self.configure(bg=MODAL_BG)
+            try:
+                self.tk.call(
+                    "::tk::unsupported::MacWindowStyle",
+                    "style",
+                    self._w,
+                    "plain",
+                    "noShadow",
+                )
+            except Exception:
+                pass
+            return
+        self.configure(bg=self._transparent_key)
+        try:
+            self.wm_attributes("-transparentcolor", self._transparent_key)
+        except Exception:
+            pass
+        if platform.startswith("win"):
+            try:
+                self.wm_attributes("-toolwindow", True)
+            except Exception:
+                pass
+        else:
+            try:
+                self.wm_attributes("-type", "splash")
+            except Exception:
+                pass
+
     def _build(self):
-        shell = tk.Frame(
-            self,
-            bg="#ffffff",
-            highlightbackground="#d9d5ce",
-            highlightthickness=1,
-        )
-        shell.pack(fill="both", expand=True, padx=10, pady=10)
+        r = MODAL_RADIUS
 
-        header = tk.Frame(shell, bg="#ffffff", height=48)
-        header.pack(fill="x")
-        header.pack_propagate(False)
+        outer = tk.Canvas(self, highlightthickness=0, bd=0)
+        try:
+            outer.configure(bg="systemTransparent" if sys.platform == "darwin" else self._transparent_key)
+        except Exception:
+            outer.configure(bg=self._transparent_key)
+        outer.pack(fill="both", expand=True)
+        self._outer_canvas = outer
 
-        tk.Label(
-            header,
-            text=self._dialog_title,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"),
-            bg="#ffffff", fg=COLOR_TEXT,
-        ).pack(side="top", pady=(12, 0))
+        def _draw_bg(event=None):
+            outer.delete("modal_bg")
+            if self._shell_frame is None or self._shell_window is None:
+                return
+            shell_w = outer.winfo_width()
+            shell_h = outer.winfo_height()
+            if shell_w < 4 or shell_h < 4:
+                return
+            _create_rounded_rect(
+                outer, 0, 0, shell_w - 1, shell_h - 1, r,
+                fill=MODAL_BG, outline=MODAL_BORDER, width=1, tags="modal_bg",
+            )
+            outer.tag_lower("modal_bg")
 
-        close_btn = tk.Canvas(header, width=24, height=24, bg="#ffffff",
-                              highlightthickness=0, cursor=CURSOR_HAND)
-        close_btn.place(relx=1.0, x=-18, y=12, anchor="ne")
-        self._draw_close_icon(close_btn)
-        close_btn.bind("<Button-1>", lambda e: self._close())
+        shell = tk.Frame(outer, bg=MODAL_BG)
+        self._shell_frame = shell
+        self._shell_window = outer.create_window(r, r, window=shell, anchor="nw")
+
+        def _on_resize(event):
+            outer.itemconfigure(
+                self._shell_window,
+                width=max(1, event.width - 2 * r),
+                height=max(1, event.height - 2 * r),
+            )
+            _draw_bg()
+
+        outer.bind("<Configure>", _on_resize)
 
         self._drag_origin = None
-        for widget in (header,):
+        for widget in (shell,):
             widget.bind("<ButtonPress-1>", self._start_drag)
             widget.bind("<B1-Motion>", self._on_drag)
 
-        tk.Frame(shell, bg=COLOR_BORDER, height=1).pack(fill="x")
-
-        canvas_wrap = tk.Frame(shell, bg=COLOR_BG)
+        canvas_wrap = tk.Frame(shell, bg=MODAL_BG)
         canvas_wrap.pack(fill="both", expand=True)
 
-        self._canvas = tk.Canvas(canvas_wrap, bg=COLOR_BG, highlightthickness=0)
+        self._canvas = tk.Canvas(canvas_wrap, bg=MODAL_BG, highlightthickness=0)
         self._scrollbar = ttk.Scrollbar(canvas_wrap, orient="vertical", command=self._canvas.yview)
         self._canvas.configure(yscrollcommand=self._scrollbar.set)
         self._canvas.pack(side="left", fill="both", expand=True)
 
-        self._content = tk.Frame(self._canvas, bg=COLOR_BG)
+        self._content = tk.Frame(self._canvas, bg=MODAL_BG)
         self._canvas_window = self._canvas.create_window((0, 0), window=self._content, anchor="nw")
         self._content.bind("<Configure>", lambda e: self._canvas.configure(scrollregion=self._canvas.bbox("all")))
         self._canvas.bind("<Configure>", self._on_canvas_configure)
@@ -140,57 +303,65 @@ class ProjectSetupDialog(tk.Toplevel):
             else "Add one or more decision-makers to the current project."
         )
 
+        hero = tk.Frame(root, bg=MODAL_BG)
+        hero.pack(fill="x", padx=24, pady=(24, 10))
+
+        hero_top = tk.Frame(hero, bg=MODAL_BG)
+        hero_top.pack(fill="x")
+
+        hero_text = tk.Frame(hero_top, bg=MODAL_BG)
+        hero_text.pack(side="left", fill="x", expand=True)
+
         tk.Label(
-            root,
+            hero_text,
             text=title_text,
-            font=(FONT_FAMILY, FONT_SIZE_TITLE, "bold"),
-            bg=COLOR_BG, fg=COLOR_ACCENT,
-        ).pack(anchor="w", padx=24, pady=(20, 2))
+            font=(FONT_FAMILY, MODAL_TITLE_SIZE, "normal"),
+            bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
+        ).pack(anchor="w")
 
         tk.Label(
-            root,
+            hero_text,
             text=subtitle,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "italic"),
-            bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
-        ).pack(anchor="w", padx=24, pady=(0, 8))
+            font=(FONT_FAMILY, MODAL_SUBTITLE_SIZE, "normal"),
+            bg=MODAL_BG, fg=MODAL_SUBTITLE_COLOR,
+        ).pack(anchor="w", pady=(4, 0))
 
-        import_top = tk.Button(
-            root,
-            text="Import Excel",
-            command=self._on_import_excel,
-        )
-        style_button(import_top)
-        import_top.pack(anchor="w", padx=24, pady=(0, 10))
+        close_btn = tk.Canvas(hero_top, width=MODAL_CLOSE_CANVAS_SIZE, height=MODAL_CLOSE_CANVAS_SIZE, bg=MODAL_BG,
+                              highlightthickness=0, cursor=CURSOR_HAND)
+        close_btn.pack(side="right", anchor="n", padx=(16, 0), pady=(2, 0))
+        self._close_btn = close_btn
+        self._draw_close_icon(close_btn)
+        close_btn.bind("<Button-1>", lambda e: self._close())
+        close_btn.bind("<Enter>", lambda e: self._animate_close_hover(True))
+        close_btn.bind("<Leave>", lambda e: self._animate_close_hover(False))
 
-        ttk.Separator(root).pack(fill="x", padx=24, pady=4)
+        self._build_import_excel_button(hero).pack(anchor="w", pady=(12, 0))
+
+        tk.Frame(root, bg=MODAL_DIVIDER_COLOR, height=1).pack(fill="x", padx=24, pady=4)
 
         if self._include_project_name:
             self._build_project_name_section()
 
         self._dm_entries_host = self._build_dynamic_section(
-            title="Decision-Maker Names",
-            hint="Add one or more decision-makers. Default: 2 inputs.",
-            add_cmd=lambda: self._add_line(self._dm_entries_host, self._dm_vars),
+            title="Add decision-maker names",
+            hint=MODAL_DM_HINT,
+            add_cmd=lambda: self._add_line(self._dm_entries_host, self._dm_vars, placeholder=MODAL_DM_PLACEHOLDER),
         )
         for _ in range(2):
-            self._add_line(self._dm_entries_host, self._dm_vars)
-
-        ttk.Separator(root).pack(fill="x", padx=24, pady=8)
+            self._add_line(self._dm_entries_host, self._dm_vars, placeholder=MODAL_DM_PLACEHOLDER)
 
         if self._fixed_policies:
             self._build_fixed_policy_section()
         else:
             self._policy_entries_host = self._build_dynamic_section(
-                title="Policy Names",
-                hint="Add at least 2 policies. Default: 2 inputs.",
-                add_cmd=lambda: self._add_line(self._policy_entries_host, self._policy_vars),
+                title="Add policy names",
+                hint=MODAL_POLICY_HINT,
+                add_cmd=lambda: self._add_line(self._policy_entries_host, self._policy_vars, placeholder=MODAL_POLICY_PLACEHOLDER),
             )
             for _ in range(2):
-                self._add_line(self._policy_entries_host, self._policy_vars)
+                self._add_line(self._policy_entries_host, self._policy_vars, placeholder=MODAL_POLICY_PLACEHOLDER)
 
-        ttk.Separator(root).pack(fill="x", padx=24, pady=8)
-
-        btn_row = tk.Frame(root, bg=COLOR_BG)
+        btn_row = tk.Frame(root, bg=MODAL_BG)
         btn_row.pack(anchor="e", padx=24, pady=(4, 20))
 
         cancel_btn = tk.Button(btn_row, text="Cancel", command=self._close)
@@ -216,86 +387,285 @@ class ProjectSetupDialog(tk.Toplevel):
         elif self._first_dm_entry is not None:
             self._first_dm_entry.focus_set()
 
+    def _build_import_excel_button(self, parent: tk.Misc) -> tk.Canvas:
+        ex_bg = MODAL_ACTION_BG
+        ex_hover = MODAL_ACTION_HOVER_BG
+        ex_border = MODAL_ACTION_BORDER
+        ex_fg = MODAL_ACTION_FG
+        ex_h = MODAL_ACTION_HEIGHT
+        ex_r = MODAL_ACTION_RADIUS
+        ex_icon = MODAL_ACTION_ICON_SIZE
+        ex_gap = MODAL_ACTION_GAP
+        ex_padx = MODAL_ACTION_PADX
+        ex_font = tkFont.Font(family=FONT_FAMILY, size=MODAL_ACTION_TEXT_SIZE)
+        label = MODAL_ACTION_IMPORT_TEXT
+        tw = ex_font.measure(label)
+        width = ex_padx + ex_icon + ex_gap + tw + ex_padx
+        t = [0.0]
+        anim = [None]
+
+        canvas = tk.Canvas(
+            parent,
+            width=width + 2,
+            height=ex_h + 2,
+            bg=MODAL_BG,
+            highlightthickness=0,
+            cursor=CURSOR_HAND,
+        )
+
+        def draw_file_icon(cnv, ox, oy, fg):
+            s = ex_icon / 24.0
+            lw = 1.35
+            kw = dict(fill=fg, width=lw, capstyle="round", joinstyle="round")
+            doc = [
+                6*s+ox, 22*s+oy, 4*s+ox, 20*s+oy,
+                4*s+ox, 4*s+oy, 6*s+ox, 2*s+oy,
+                14*s+ox, 2*s+oy, 15.704*s+ox, 2.706*s+oy,
+                19.292*s+ox, 6.294*s+oy, 20*s+ox, 8*s+oy,
+                20*s+ox, 20*s+oy, 18*s+ox, 22*s+oy,
+                6*s+ox, 22*s+oy,
+            ]
+            cnv.create_line(*doc, **kw)
+            cnv.create_line(14*s+ox, 2*s+oy, 14*s+ox, 7*s+oy, 20*s+ox, 7*s+oy, **kw)
+            cnv.create_line(12*s+ox, 12*s+oy, 12*s+ox, 18*s+oy, **kw)
+            cnv.create_line(9*s+ox, 15*s+oy, 12*s+ox, 18*s+oy, 15*s+ox, 15*s+oy, **kw)
+
+        def draw(bg):
+            canvas.delete("all")
+            pts = _rrect_pts(1, 1, width + 1, ex_h + 1, ex_r)
+            canvas.create_polygon(*pts, fill=bg, outline=ex_border, width=1)
+            cx = 1 + width // 2
+            cy = 1 + ex_h // 2
+            ix = cx - (ex_icon + ex_gap + tw) // 2
+            iy = cy - ex_icon // 2
+            draw_file_icon(canvas, ix, iy, ex_fg)
+            canvas.create_text(ix + ex_icon + ex_gap, cy,
+                               text=label, fill=ex_fg, anchor="w", font=ex_font)
+
+        def animate(target):
+            if anim[0]:
+                canvas.after_cancel(anim[0])
+                anim[0] = None
+
+            def tick():
+                diff = target - t[0]
+                if abs(diff) < 0.02:
+                    t[0] = target
+                    draw(_hex_interp(ex_bg, ex_hover, target))
+                    anim[0] = None
+                    return
+                t[0] += diff * 0.3
+                draw(_hex_interp(ex_bg, ex_hover, t[0]))
+                anim[0] = canvas.after(16, tick)
+
+            tick()
+
+        def poll():
+            try:
+                mx = canvas.winfo_pointerx()
+                my = canvas.winfo_pointery()
+                bx = canvas.winfo_rootx()
+                by = canvas.winfo_rooty()
+                over = bx <= mx <= bx + width and by <= my <= by + ex_h
+                target = 1.0 if over else 0.0
+                if abs(t[0] - target) > 0.01 and anim[0] is None:
+                    animate(target)
+            except tk.TclError:
+                return
+            canvas.after(30, poll)
+
+        draw(ex_bg)
+        canvas.bind("<Button-1>", lambda e: self._on_import_excel())
+        canvas.after(100, poll)
+        return canvas
+
+    def _build_add_button(self, parent: tk.Misc, command) -> tk.Canvas:
+        size = MODAL_ADD_BTN_SIZE
+        radius = MODAL_ADD_BTN_RADIUS
+        t = [0.0]
+        anim = [None]
+        canvas = tk.Canvas(
+            parent,
+            width=size + 2,
+            height=size + 2,
+            bg=MODAL_BG,
+            highlightthickness=0,
+            bd=0,
+            cursor=CURSOR_HAND,
+        )
+
+        def draw(bg):
+            canvas.delete("all")
+            pts = _rrect_pts(1, 1, size + 1, size + 1, radius)
+            canvas.create_polygon(*pts, fill=bg, outline=MODAL_ADD_BTN_BORDER, width=1)
+            font = tkFont.Font(family=FONT_FAMILY, size=MODAL_ADD_BTN_TEXT_SIZE)
+            text_w = font.measure(MODAL_ADD_BTN_TEXT)
+            group_w = MODAL_ADD_BTN_ICON_SIZE + 6 + text_w
+            cx = 1 + size / 2
+            cy = 1 + size / 2
+            half = MODAL_ADD_BTN_ICON_SIZE / 2
+            lw = MODAL_ADD_BTN_STROKE
+            ix = cx - group_w / 2 + half
+            canvas.create_line(ix - half, cy, ix + half, cy,
+                               fill=MODAL_ADD_BTN_ICON_COLOR, width=lw, capstyle="round")
+            canvas.create_line(ix, cy - half, ix, cy + half,
+                               fill=MODAL_ADD_BTN_ICON_COLOR, width=lw, capstyle="round")
+            canvas.create_text(ix + half + 6, cy, text=MODAL_ADD_BTN_TEXT,
+                               fill=MODAL_ADD_BTN_ICON_COLOR, anchor="w", font=font)
+
+        def animate(target):
+            if anim[0]:
+                canvas.after_cancel(anim[0])
+                anim[0] = None
+
+            def tick():
+                diff = target - t[0]
+                if abs(diff) < 0.02:
+                    t[0] = target
+                    draw(_hex_interp(MODAL_ADD_BTN_BG, MODAL_ADD_BTN_HOVER_BG, target))
+                    anim[0] = None
+                    return
+                t[0] += diff * 0.3
+                draw(_hex_interp(MODAL_ADD_BTN_BG, MODAL_ADD_BTN_HOVER_BG, t[0]))
+                anim[0] = canvas.after(16, tick)
+
+            tick()
+
+        def poll():
+            try:
+                mx = canvas.winfo_pointerx()
+                my = canvas.winfo_pointery()
+                bx = canvas.winfo_rootx()
+                by = canvas.winfo_rooty()
+                over = bx <= mx <= bx + size and by <= my <= by + size
+                target = 1.0 if over else 0.0
+                if abs(t[0] - target) > 0.01 and anim[0] is None:
+                    animate(target)
+            except tk.TclError:
+                return
+            canvas.after(30, poll)
+
+        draw(MODAL_ADD_BTN_BG)
+        canvas.bind("<Button-1>", lambda e: command())
+        canvas.after(100, poll)
+        return canvas
+
     def _build_project_name_section(self):
         tk.Label(
             self._content,
             text="Project Name",
-            font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
-            bg=COLOR_BG, fg=COLOR_TEXT,
+            font=(FONT_FAMILY, MODAL_FIELD_LABEL_SIZE, "normal"),
+            bg=MODAL_BG, fg=MODAL_FIELD_LABEL_COLOR,
         ).pack(anchor="w", padx=24, pady=(10, 2))
 
-        self._project_entry = tk.Entry(
+        tk.Label(
             self._content,
-            textvariable=self._project_var,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-            bg="#ffffff", fg=COLOR_TEXT,
-            insertbackground=COLOR_ACCENT,
-            relief="solid", bd=1,
-            width=42,
+            text=MODAL_PROJECT_HINT,
+            font=(FONT_FAMILY, MODAL_SECTION_HINT_SIZE, "normal"),
+            bg=MODAL_BG, fg=MODAL_SECTION_HINT_COLOR,
+        ).pack(anchor="w", padx=24, pady=(0, MODAL_SECTION_ROW_GAP))
+
+        field_wrap, entry = self._create_rounded_entry(self._content, self._project_var, MODAL_FIELD_PLACEHOLDER)
+        field_wrap.pack(fill="x", padx=24, pady=(0, 14))
+        self._project_entry = entry
+        self._set_placeholder(entry, MODAL_FIELD_PLACEHOLDER)
+        self._pack_section_divider(self._content)
+
+    def _pack_section_divider(self, parent: tk.Misc):
+        tk.Frame(parent, bg=MODAL_DIVIDER_COLOR, height=1).pack(fill="x", padx=24, pady=(0, 8))
+
+    def _create_rounded_entry(self, parent: tk.Misc, var: tk.StringVar, placeholder: str, state: str = "normal"):
+        field_wrap = tk.Canvas(
+            parent,
+            height=MODAL_FIELD_HEIGHT + 2,
+            bg=MODAL_BG,
+            highlightthickness=0,
+            bd=0,
         )
-        self._project_entry.pack(anchor="w", padx=24, pady=(0, 14))
+        entry = tk.Entry(
+            field_wrap,
+            textvariable=var,
+            font=(FONT_FAMILY, MODAL_FIELD_TEXT_SIZE, "normal"),
+            bg=MODAL_FIELD_BG,
+            fg=COLOR_TEXT,
+            insertbackground=COLOR_ACCENT,
+            relief="flat",
+            bd=0,
+            highlightthickness=0,
+            state=state,
+        )
+        entry_window = field_wrap.create_window(14, (MODAL_FIELD_HEIGHT + 2) // 2, window=entry, anchor="w")
+
+        def _resize_field(event):
+            field_wrap.delete("field_bg")
+            width = max(2, event.width)
+            pts = _rrect_pts(1, 1, width - 1, MODAL_FIELD_HEIGHT + 1, MODAL_FIELD_RADIUS)
+            field_wrap.create_polygon(*pts, fill=MODAL_FIELD_BG, outline=MODAL_FIELD_BORDER, width=1, tags="field_bg")
+            field_wrap.tag_lower("field_bg")
+            field_wrap.coords(entry_window, 14, (MODAL_FIELD_HEIGHT + 2) // 2)
+            field_wrap.itemconfigure(entry_window, width=max(1, width - 28))
+
+        field_wrap.bind("<Configure>", _resize_field)
+        self._entry_fields[entry] = {"var": var, "placeholder": placeholder, "active": False, "state": state}
+        if state == "normal":
+            self._set_placeholder(entry, placeholder)
+            entry.bind("<FocusIn>", lambda e, ent=entry: self._on_entry_focus_in(ent))
+            entry.bind("<FocusOut>", lambda e, ent=entry: self._on_entry_focus_out(ent))
+        return field_wrap, entry
 
     def _build_dynamic_section(self, title: str, hint: str, add_cmd):
-        wrap = tk.Frame(self._content, bg=COLOR_BG)
-        wrap.pack(fill="x", padx=24, pady=(8, 0))
+        wrap = tk.Frame(self._content, bg=MODAL_BG)
+        wrap.pack(fill="x", padx=24, pady=(6, 0))
 
-        head = tk.Frame(wrap, bg=COLOR_BG)
+        head = tk.Frame(wrap, bg=MODAL_BG)
         head.pack(fill="x")
         tk.Label(
             head,
             text=title,
-            font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
-            bg=COLOR_BG, fg=COLOR_TEXT,
+            font=(FONT_FAMILY, MODAL_SECTION_TITLE_SIZE, "normal"),
+            bg=MODAL_BG, fg=MODAL_SECTION_TITLE_COLOR,
         ).pack(side="left")
 
-        add_btn = tk.Button(
-            head,
-            text="+",
-            command=add_cmd,
-            font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
-            bg=COLOR_PANEL, fg=COLOR_ACCENT,
-            activebackground=COLOR_PANEL,
-            relief="flat", padx=10, pady=1,
-            cursor=CURSOR_HAND,
-        )
-        add_btn.pack(side="right")
+        self._build_add_button(head, add_cmd).pack(side="right")
 
         tk.Label(
             wrap,
             text=hint,
-            font=(FONT_FAMILY, FONT_SIZE_SMALL),
-            bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
-        ).pack(anchor="w", pady=(2, 8))
+            font=(FONT_FAMILY, MODAL_SECTION_HINT_SIZE, "normal"),
+            bg=MODAL_BG, fg=MODAL_SECTION_HINT_COLOR,
+        ).pack(anchor="w", pady=(2, MODAL_SECTION_ROW_GAP))
 
-        host = tk.Frame(wrap, bg=COLOR_BG)
+        host = tk.Frame(wrap, bg=MODAL_BG)
         host.pack(fill="x")
         self._section_entries[host] = []
+        self._pack_section_divider(wrap)
         return host
 
     def _build_fixed_policy_section(self):
-        wrap = tk.Frame(self._content, bg=COLOR_BG)
+        wrap = tk.Frame(self._content, bg=MODAL_BG)
         wrap.pack(fill="x", padx=24, pady=(8, 0))
 
         tk.Label(
             wrap,
-            text="Policy Names",
-            font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
-            bg=COLOR_BG, fg=COLOR_TEXT,
+            text="Add policy names",
+            font=(FONT_FAMILY, MODAL_SECTION_TITLE_SIZE, "normal"),
+            bg=MODAL_BG, fg=MODAL_SECTION_TITLE_COLOR,
         ).pack(anchor="w")
         tk.Label(
             wrap,
             text="Policies are inherited from the current project.",
-            font=(FONT_FAMILY, FONT_SIZE_SMALL),
-            bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
+            font=(FONT_FAMILY, MODAL_SECTION_HINT_SIZE, "normal"),
+            bg=MODAL_BG, fg=MODAL_SECTION_HINT_COLOR,
         ).pack(anchor="w", pady=(2, 8))
 
-        host = tk.Frame(wrap, bg=COLOR_BG)
+        host = tk.Frame(wrap, bg=MODAL_BG)
         host.pack(fill="x")
         self._section_entries[host] = []
         for policy in self._fixed_policies:
             var = tk.StringVar(value=policy)
             self._policy_vars.append(var)
             self._add_line(host, self._policy_vars, default=policy, state="disabled", append_var=False)
+        self._pack_section_divider(wrap)
 
     def _add_line(
         self,
@@ -304,22 +674,13 @@ class ProjectSetupDialog(tk.Toplevel):
         default: str = "",
         state: str = "normal",
         append_var: bool = True,
+        placeholder: str = "",
     ):
         var = tk.StringVar(value=default)
         if append_var:
             vars_list.append(var)
-        entry = tk.Entry(
-            parent,
-            textvariable=var,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-            bg="#ffffff" if state == "normal" else "#f4f6f8",
-            fg=COLOR_TEXT,
-            insertbackground=COLOR_ACCENT,
-            relief="solid", bd=1,
-            width=32,
-            state=state,
-        )
-        self._section_entries[parent].append(entry)
+        field_wrap, entry = self._create_rounded_entry(parent, var, placeholder, state=state)
+        self._section_entries[parent].append(field_wrap)
         self._relayout_section(parent)
         if state == "normal" and self._first_dm_entry is None:
             self._first_dm_entry = entry
@@ -350,9 +711,12 @@ class ProjectSetupDialog(tk.Toplevel):
             entry.grid(row=row, column=col, padx=4, pady=4, sticky="ew")
 
     def _on_ok(self):
-        project_name = self._project_var.get().strip() if self._include_project_name else None
-        dm_names = [var.get().strip() for var in self._dm_vars if var.get().strip()]
-        policies = self._fixed_policies or [var.get().strip() for var in self._policy_vars if var.get().strip()]
+        project_name = self._get_project_name() if self._include_project_name else None
+        dm_names = [self._value_from_var(var) for var in self._dm_vars]
+        dm_names = [name for name in dm_names if name]
+        policies = self._fixed_policies or [self._value_from_var(var) for var in self._policy_vars]
+        if not self._fixed_policies:
+            policies = [name for name in policies if name]
 
         if self._include_project_name:
             if not project_name:
@@ -405,38 +769,125 @@ class ProjectSetupDialog(tk.Toplevel):
 
     def _resize_to_content(self):
         self.update_idletasks()
-        req_w = self.winfo_reqwidth()
-        req_h = self.winfo_reqheight()
-        sw = self.winfo_screenwidth()
-        sh = self.winfo_screenheight()
-        width = min(max(860, req_w + 40), sw - 80)
-        height = min(max(620, req_h + 20), 720, sh - 80)
-        x = (sw - width) // 2
-        y = max(40, (sh - height) // 2)
-        self.geometry(f"{width}x{height}+{x}+{y}")
+        if self._shell_frame is not None:
+            parent = self._parent
+            parent.update_idletasks()
+            req_w = self._shell_frame.winfo_reqwidth() + 2 * MODAL_RADIUS
+            req_h = self._shell_frame.winfo_reqheight() + 2 * MODAL_RADIUS
+            parent_w = max(1, parent.winfo_width())
+            parent_h = max(1, parent.winfo_height())
+            modal_w = min(max(860, req_w + 40), max(320, parent_w - 80))
+            modal_h = min(max(620, req_h + 20), 720, max(240, parent_h - 80))
+            if self._modal_x is None:
+                self._modal_x = parent.winfo_rootx() + max(24, (parent_w - modal_w) // 2)
+            if self._modal_y is None:
+                self._modal_y = parent.winfo_rooty() + max(24, (parent_h - modal_h) // 2)
+            max_x = parent.winfo_rootx() + max(24, parent_w - modal_w - 24)
+            max_y = parent.winfo_rooty() + max(24, parent_h - modal_h - 24)
+            min_x = parent.winfo_rootx() + 24
+            min_y = parent.winfo_rooty() + 24
+            self._modal_x = min(max(min_x, self._modal_x), max_x)
+            self._modal_y = min(max(min_y, self._modal_y), max_y)
+            self.geometry(f"{modal_w}x{modal_h}+{self._modal_x}+{self._modal_y}")
         self.lift()
         self.after_idle(self._update_scrollbar_visibility)
 
     def _draw_close_icon(self, canvas: tk.Canvas):
         canvas.delete("all")
-        s = 1.0
-        ox = oy = 0
-        stroke = "#a3a3a3"
-        lw = 1.5
-        canvas.create_rectangle(0, 0, 24, 24, fill="#eaeef4", outline="")
-        canvas.create_line(18*s+ox, 6*s+oy, 6*s+ox, 18*s+oy, fill=stroke, width=lw, capstyle="round")
-        canvas.create_line(6*s+ox, 6*s+oy, 18*s+ox, 18*s+oy, fill=stroke, width=lw, capstyle="round")
+        size = MODAL_CLOSE_CANVAS_SIZE
+        cx = size / 2
+        cy = size / 2
+        fill = _hex_interp(MODAL_BG, MODAL_CLOSE_HOVER_BG, self._close_hover_t)
+        r = MODAL_CLOSE_HOVER_RADIUS
+        canvas.create_oval(cx - r, cy - r, cx + r, cy + r, fill=fill, outline=fill, width=0)
+        half = MODAL_CLOSE_ICON_SIZE / 2
+        stroke = MODAL_CLOSE_ICON_COLOR
+        lw = MODAL_CLOSE_STROKE
+        canvas.create_line(cx + half, cy - half, cx - half, cy + half, fill=stroke, width=lw, capstyle="round")
+        canvas.create_line(cx - half, cy - half, cx + half, cy + half, fill=stroke, width=lw, capstyle="round")
+
+    def _animate_close_hover(self, entering: bool):
+        """Animate the close button background on hover/leave."""
+        if self._close_anim_id is not None:
+            try:
+                self.after_cancel(self._close_anim_id)
+            except Exception:
+                pass
+            self._close_anim_id = None
+        start = self._close_hover_t
+        target = 1.0 if entering else 0.0
+        self._run_close_anim(start, target, step=0, total=8)
+
+    def _run_close_anim(self, start_t: float, target_t: float, step: int, total: int):
+        if self._close_btn is None:
+            return
+        self._close_hover_t = start_t + (target_t - start_t) * (step / total)
+        try:
+            self._draw_close_icon(self._close_btn)
+        except Exception:
+            return
+        if step < total:
+            self._close_anim_id = self.after(
+                20, lambda: self._run_close_anim(start_t, target_t, step + 1, total)
+            )
+
+    def _get_project_name(self) -> str:
+        return self._entry_value(self._project_entry)
+
+    def _set_placeholder(self, entry: tk.Entry, placeholder: str):
+        meta = self._entry_fields[entry]
+        meta["active"] = True
+        meta["var"].set(placeholder)
+        entry.configure(
+            fg=MODAL_FIELD_PLACEHOLDER_COLOR,
+            font=(FONT_FAMILY, MODAL_FIELD_PLACEHOLDER_SIZE, "normal"),
+        )
+
+    def _clear_placeholder(self, entry: tk.Entry):
+        meta = self._entry_fields[entry]
+        if not meta["active"]:
+            return
+        meta["active"] = False
+        meta["var"].set("")
+        entry.configure(
+            fg=COLOR_TEXT,
+            font=(FONT_FAMILY, MODAL_FIELD_TEXT_SIZE, "normal"),
+        )
+
+    def _on_entry_focus_in(self, entry: tk.Entry):
+        meta = self._entry_fields[entry]
+        if meta["active"]:
+            self._clear_placeholder(entry)
+
+    def _on_entry_focus_out(self, entry: tk.Entry):
+        meta = self._entry_fields[entry]
+        if not meta["var"].get().strip():
+            self._set_placeholder(entry, meta["placeholder"])
+
+    def _entry_value(self, entry: tk.Entry) -> str:
+        meta = self._entry_fields.get(entry)
+        if meta and meta["active"]:
+            return ""
+        return entry.get().strip()
+
+    def _value_from_var(self, var: tk.StringVar) -> str:
+        for entry, meta in self._entry_fields.items():
+            if meta["var"] is var:
+                return self._entry_value(entry)
+        return var.get().strip()
 
     def _start_drag(self, event):
         self._drag_origin = (event.x_root, event.y_root, self.winfo_x(), self.winfo_y())
 
     def _on_drag(self, event):
-        if not self._drag_origin:
+        if not self._drag_origin or self._shell_frame is None:
             return
-        start_x, start_y, win_x, win_y = self._drag_origin
+        start_x, start_y, modal_x, modal_y = self._drag_origin
         dx = event.x_root - start_x
         dy = event.y_root - start_y
-        self.geometry(f"+{win_x + dx}+{win_y + dy}")
+        self._modal_x = modal_x + dx
+        self._modal_y = modal_y + dy
+        self._resize_to_content()
 
     def _on_canvas_configure(self, event):
         self._canvas.itemconfigure(self._canvas_window, width=event.width)
