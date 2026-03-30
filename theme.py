@@ -54,7 +54,64 @@ RADIUS_NEW_PROJECT_BTN  = 5     # "New Project" canvas button
 RADIUS_TOOLBAR_BTN      = 4     # Export / Import / Aggregate toolbar buttons
 RADIUS_PROJECT_HEADER   = 0     # Project header bar (flat, full-width)
 RADIUS_DM_ROW           = 4     # Decision-maker hover rows
-RADIUS_DIALOG           = 6     # Modal dialogs (e.g. New Project name dialog)
+RADIUS_DIALOG           = 8     # Modal dialogs (e.g. New Project name dialog)
+
+# ── Modal dialog ───────────────────────────────────────────────────────────────
+MODAL_BG                 = "#eaeef4"   # modal background
+MODAL_BORDER             = "#d0dbe7"   # modal border / outline
+MODAL_RADIUS             = 11          # corner radius (px)
+MODAL_TITLE_COLOR        = "#1f2937"
+MODAL_TITLE_SIZE         = 22
+MODAL_SUBTITLE_COLOR     = "#a3a3a3"
+MODAL_SUBTITLE_SIZE      = 10
+MODAL_CLOSE_ICON_COLOR   = "#a3a3a3"
+MODAL_CLOSE_HOVER_BG     = "#dfe5ec"
+MODAL_CLOSE_CANVAS_SIZE  = 32
+MODAL_CLOSE_ICON_SIZE    = 10
+MODAL_CLOSE_STROKE       = 1.4
+MODAL_CLOSE_HOVER_RADIUS = 11
+MODAL_DIVIDER_COLOR      = "#d3d3d3"
+MODAL_SECTION_TITLE_COLOR = "#2c3b4e"
+MODAL_SECTION_TITLE_SIZE  = 11
+MODAL_SECTION_HINT_COLOR  = "#a3a3a3"
+MODAL_SECTION_HINT_SIZE   = 10
+MODAL_SECTION_ROW_GAP     = 4
+MODAL_ADD_BTN_BG          = "#f5f7fa"
+MODAL_ADD_BTN_HOVER_BG    = "#fafafa"
+MODAL_ADD_BTN_ICON_COLOR  = "#30455c"
+MODAL_ADD_BTN_BORDER      = "#e6e6e6"
+MODAL_ADD_BTN_SIZE        = 58
+MODAL_ADD_BTN_RADIUS      = 6
+MODAL_ADD_BTN_ICON_SIZE   = 11
+MODAL_ADD_BTN_STROKE      = 2
+MODAL_ADD_BTN_TEXT        = "Add"
+MODAL_ADD_BTN_TEXT_SIZE   = 10
+MODAL_ACTION_BG          = "#ffffff"
+MODAL_ACTION_HOVER_BG    = "#f3f4f6"
+MODAL_ACTION_BORDER      = "#eaeef4"
+MODAL_ACTION_FG          = "#2c3b4e"
+MODAL_ACTION_HEIGHT      = 33
+MODAL_ACTION_RADIUS      = 5
+MODAL_ACTION_ICON_SIZE   = 14
+MODAL_ACTION_GAP         = 7
+MODAL_ACTION_PADX        = 24
+MODAL_ACTION_TEXT_SIZE   = 11
+MODAL_ACTION_IMPORT_TEXT = "Import from excel"
+MODAL_FIELD_LABEL_COLOR  = "#2c3b4e"
+MODAL_FIELD_LABEL_SIZE   = 11
+MODAL_FIELD_BG           = "#ffffff"
+MODAL_FIELD_BORDER       = "#e6e6e6"
+MODAL_FIELD_HEIGHT       = 35
+MODAL_FIELD_RADIUS       = 4
+MODAL_FIELD_TEXT_SIZE    = 11
+MODAL_FIELD_PLACEHOLDER  = "e.g. EU Clean Mobility Policy Coherence Assessment"
+MODAL_FIELD_PLACEHOLDER_COLOR = "#d3d3d3"
+MODAL_FIELD_PLACEHOLDER_SIZE  = 10
+MODAL_PROJECT_HINT       = "Use a clear descriptive title for this project."
+MODAL_DM_HINT            = "Add one or more decision-maker names."
+MODAL_POLICY_HINT        = "Add at least 2 policy names."
+MODAL_DM_PLACEHOLDER     = "e.g. Expert A"
+MODAL_POLICY_PLACEHOLDER = "e.g. Policy 1"
 
 # ── Sidebar: collapsed state ──────────────────────────────────────────────────
 SIDEBAR_EXPANDED_WIDTH    = 320          # px
@@ -291,6 +348,3 @@ LOGO_BADGE_RADIUS  = 5           # px — corner radius
 LOGO_ICON_SIZE     = 17          # px — icon drawing area inside badge
 LOGO_ICON_PAD      = 9           # px — padding around icon
 # Icon: Lucide waypoints (4 circles at N/S/E/W connected by lines)
-
-
-
