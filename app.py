@@ -1531,15 +1531,96 @@ class PolicyCoherenceApp:
             _w.bind("<B1-Motion>",       _dm_drag_motion)
             _w.bind("<ButtonRelease-1>", _dm_drag_end)
 
-        an_tab_bar = tk.Frame(switcher, bg=SW_BG)   # packed only when analysis is active
+        _an_scroll_c = tk.Canvas(switcher, bg=SW_BG, highlightthickness=0,
+                                 xscrollincrement=40)
+        an_tab_bar  = tk.Frame(_an_scroll_c, bg=SW_BG)
+        _an_bar_win = _an_scroll_c.create_window((0, 0), window=an_tab_bar, anchor="nw")
+
+        _an_scroll_c.bind("<Configure>",
+            lambda e: _an_scroll_c.itemconfig(_an_bar_win, height=e.height))
+        an_tab_bar.bind("<Configure>",
+            lambda e: _an_scroll_c.configure(scrollregion=(0, 0, e.width, e.height)))
+        _an_scroll_fn = lambda e, c=_an_scroll_c: c.xview_scroll(-1 if e.delta > 0 else 1, "units")
+        _an_scroll_c.bind("<MouseWheel>", _an_scroll_fn)
+        an_tab_bar.bind("<MouseWheel>", _an_scroll_fn)
+
+        _an_drag = {"x": 0, "dragging": False, "vx": 0.0,
+                    "history": [], "anim": [None]}
+
+        def _an_drag_start(e, d=_an_drag, c=_an_scroll_c):
+            if d["anim"][0]:
+                c.after_cancel(d["anim"][0])
+                d["anim"][0] = None
+            d["x"] = e.x_root
+            d["vx"] = 0.0
+            d["history"] = [(e.time, e.x_root)]
+            d["dragging"] = False
+
+        def _an_drag_motion(e, c=_an_scroll_c, d=_an_drag):
+            dx = d["x"] - e.x_root
+            d["x"] = e.x_root
+            d["history"].append((e.time, e.x_root))
+            d["history"] = [(t, x) for t, x in d["history"] if e.time - t <= 80]
+            if len(d["history"]) >= 2:
+                t0, x0 = d["history"][0]
+                t1, x1 = d["history"][-1]
+                dt = max(1, t1 - t0)
+                d["vx"] = (x0 - x1) / dt
+            if abs(dx) > 1:
+                d["dragging"] = True
+            if not d["dragging"]:
+                return
+            x1v, x2v = c.xview()
+            span = x2v - x1v
+            if span >= 1.0:
+                return
+            cw = c.winfo_width()
+            if cw > 0:
+                c.xview_moveto(max(0.0, min(1.0 - span, x1v + dx * span / cw)))
+
+        def _an_drag_end(e, c=_an_scroll_c, d=_an_drag):
+            vx = [d["vx"]]
+
+            def _coast():
+                if abs(vx[0]) < 0.08:
+                    d["anim"][0] = None
+                    d["dragging"] = False
+                    return
+                x1, x2 = c.xview()
+                span = x2 - x1
+                if span >= 1.0:
+                    d["anim"][0] = None
+                    d["dragging"] = False
+                    return
+                cw = c.winfo_width()
+                if cw > 0:
+                    px = vx[0] * 16
+                    c.xview_moveto(max(0.0, min(1.0 - span, x1 + px * span / cw)))
+                vx[0] *= 0.92
+                d["anim"][0] = c.after(16, _coast)
+
+            if abs(d["vx"]) > 0.08:
+                d["anim"][0] = c.after(16, _coast)
+            else:
+                d["dragging"] = False
+
+        for _w in (_an_scroll_c, an_tab_bar):
+            _w.bind("<Button-1>", _an_drag_start)
+            _w.bind("<B1-Motion>", _an_drag_motion)
+            _w.bind("<ButtonRelease-1>", _an_drag_end)
+
         proj._dm_tab_bar     = dm_tab_bar
         proj._dm_scroll_c    = _dm_scroll_c
+        proj._an_scroll_c    = _an_scroll_c
         proj._an_tab_bar     = an_tab_bar
         proj._dm_tab_entries = []   # [(nb_tab_widget, label, underline, container)]
         proj._an_tab_entries = []   # [(tab_id_str,   label, underline, container)]
         proj._dm_drag        = _dm_drag
         proj._dm_drag_start  = _dm_drag_start
         proj._dm_drag_motion = _dm_drag_motion
+        proj._an_drag        = _an_drag
+        proj._an_drag_start  = _an_drag_start
+        proj._an_drag_motion = _an_drag_motion
 
         toggle_c = tk.Canvas(switcher, width=PILL_W, height=PILL_H,
                              bg=SW_BG, highlightthickness=0, bd=0, cursor=CURSOR_HAND)
@@ -1813,13 +1894,9 @@ class PolicyCoherenceApp:
                 _BG    = "#eaeef4"
                 _FG    = "#30455c"
                 _R     = 4
-                _PAD   = 10
                 _f     = tkFont.Font(family=FONT_FAMILY, size=12, weight="bold")
-                _tw    = _f.measure(abbrev)
-                _lh    = _f.metrics("linespace")
-                _side  = max(_tw + _PAD * 2, _lh + _PAD * 2)
-                bw = _side
-                bh = _side
+                bw = 35
+                bh = 35
                 wrap = tk.Frame(self._sidebar_proj_list, bg="#fafbfc")
                 wrap.pack(fill="x", pady=4)
                 bc = tk.Canvas(wrap, width=bw, height=bh,
@@ -2563,11 +2640,30 @@ class PolicyCoherenceApp:
             ul.pack_propagate(False)
             self._bind_ul_to_text(lbl, ul)
 
-            def _select(e, tid=tab_id):
-                proj._analysis_nb.select(tid)
+            _ds = getattr(proj, "_an_drag", None)
+            _drag_start = getattr(proj, "_an_drag_start", None)
+            _drag_motion = getattr(proj, "_an_drag_motion", None)
 
-            container.bind("<Button-1>", _select)
-            lbl.bind("<Button-1>", _select)
+            def _on_release(e, tid=tab_id, d=_ds):
+                was_drag = d.get("dragging", False) if d else False
+                if d:
+                    d["dragging"] = False
+                if not was_drag:
+                    proj._analysis_nb.select(tid)
+
+            for w in (container, lbl):
+                if _drag_start:
+                    w.bind("<Button-1>", _drag_start)
+                if _drag_motion:
+                    w.bind("<B1-Motion>", _drag_motion, add="+")
+                w.bind("<ButtonRelease-1>", _on_release)
+
+            _sc = getattr(proj, "_an_scroll_c", None)
+            if _sc:
+                def _hscroll(e, c=_sc):
+                    c.xview_scroll(-1 if e.delta > 0 else 1, "units")
+                for w in (container, lbl, ul):
+                    w.bind("<MouseWheel>", _hscroll)
 
             proj._an_tab_entries.append((tab_id, lbl, ul, container))
 
@@ -2593,7 +2689,7 @@ class PolicyCoherenceApp:
         proj._matrix_frame.pack_forget()
         proj._dm_scroll_c.pack_forget()
         proj._analysis_frame.pack(fill="both", expand=True)
-        proj._an_tab_bar.pack(side="left", fill="both", expand=True)
+        proj._an_scroll_c.pack(side="left", fill="both", expand=True)
         proj._in_analysis_view = True
         proj._set_nav_active(True)
         self._refresh_an_underlines(proj)
@@ -2601,7 +2697,7 @@ class PolicyCoherenceApp:
 
     def _show_matrix_view(self, proj: Project):
         proj._analysis_frame.pack_forget()
-        proj._an_tab_bar.pack_forget()
+        proj._an_scroll_c.pack_forget()
         proj._matrix_frame.pack(fill="both", expand=True)
         proj._dm_scroll_c.pack(side="left", fill="both", expand=True)
         proj._in_analysis_view = False
