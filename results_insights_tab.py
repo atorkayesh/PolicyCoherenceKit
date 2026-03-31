@@ -594,14 +594,9 @@ class ResultsInsightsTab(tk.Frame):
         return card, card.body
 
     def _build_key_insight(self, parent: tk.Frame, row: int):
-        section = tk.Frame(parent, bg=COLOR_BG)
-        section.grid(row=row, column=0, columnspan=3, sticky="nsew")
         gap = _CARD_GAP // 2
-        section.grid_columnconfigure(0, weight=1, uniform="key-insight")
-        section.grid_columnconfigure(1, weight=1, uniform="key-insight")
-        section.grid_rowconfigure(0, weight=1)
-        self._key_insight_main_card(section).grid(row=0, column=0, sticky="nsew", padx=gap, pady=gap)
-        self._key_insight_stats_card(section).grid(row=0, column=1, sticky="nsew", padx=gap, pady=gap)
+        self._key_insight_main_card(parent).grid(row=row, column=0, columnspan=2, sticky="nsew", padx=gap, pady=gap)
+        self._key_insight_stats_card(parent).grid(row=row, column=2, sticky="nsew", padx=gap, pady=gap)
 
     def _build_primary_signal_row(self, parent: tk.Frame, row: int):
         gap = _CARD_GAP // 2
