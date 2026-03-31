@@ -2051,7 +2051,7 @@ class PolicyCoherenceApp:
             for w in (dm_wrap, dm_row, dm_lbl, plus_icon):
                 w.bind("<Enter>", _hover_in)
                 w.bind("<Leave>", _hover_out)
-                w.bind("<Button-1>", lambda e, p=proj: self._add_matrix(p))
+                w.bind("<Button-1>", lambda e=None, p=proj: self._add_matrix(p))
 
             # DM list
             dm_list_frame = tk.Frame(content, bg="#fafbfc")
@@ -2170,7 +2170,7 @@ class PolicyCoherenceApp:
             # Bottom spacer for the project block
             tk.Frame(content, bg="#fafbfc", height=10).pack(fill="x")
 
-            def _toggle(event, pname=proj.name):
+            def _toggle(event=None, pname=proj.name):
                 self._sidebar_open_states[pname] = not self._sidebar_open_states.get(pname, False)
                 self._refresh_sidebar_projects()
 
@@ -2190,11 +2190,11 @@ class PolicyCoherenceApp:
             if not c:
                 return
             w.bind("<MouseWheel>",
-                   lambda e, _c=c: _c.yview_scroll(-1 if e.delta > 0 else 1, "units"))
+                   lambda e=None, _c=c: _c.yview_scroll(-1 if getattr(e, "delta", 0) > 0 else 1, "units"))
             w.bind("<Button-4>",
-                   lambda e, _c=c: _c.yview_scroll(-1, "units"))
+                   lambda e=None, _c=c: _c.yview_scroll(-1, "units"))
             w.bind("<Button-5>",
-                   lambda e, _c=c: _c.yview_scroll( 1, "units"))
+                   lambda e=None, _c=c: _c.yview_scroll( 1, "units"))
             for ch in w.winfo_children():
                 _bind_scroll_recursive(ch)
         self.root.after_idle(lambda: _bind_scroll_recursive(self._sidebar_proj_list))

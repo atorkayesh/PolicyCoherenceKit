@@ -177,7 +177,8 @@ class _RoundedCard(tk.Canvas):
         # beyond the available analysis viewport.
         if not self._initial_height_locked:
             req_h = self._body.winfo_reqheight() + (_CARD_INSET * 2)
-            self.configure(height=req_h)
+            current_h = int(self.cget("height")) if str(self.cget("height")).isdigit() else 0
+            self.configure(height=max(req_h, current_h))
             self._initial_height_locked = True
         self._redraw()
 
@@ -377,19 +378,27 @@ def _build_story_banner(result: AggregationResult, insights: Dict[str, object]) 
     if not top_driver:
         return "The current result set is too sparse to describe a clear system story."
     link_text, score = _strongest_link(result, top_driver["index"])
+    stable_phrase = "stable" if insights["agreement"]["average_agreement"] >= 0.75 else "not yet fully stable"
     if contested:
         return (
-            f"{top_driver['code']} is the main driver shaping the system, with the clearest pull through {link_text}. "
-            f"That said, {contested['pair']} remains contested across decision-makers."
+            f"{top_driver['code']} emerges as the principal driver shaping the system, exerting its strongest influence "
+            f"through the {'reinforcing' if score > 0 else 'constraining'} relationship {link_text}, which indicates a "
+            f"{stable_phrase} and structurally significant interaction. In contrast, the linkage "
+            f"{contested['pair']} remains contested across decision-makers, reflecting a lack of consensus and "
+            f"highlighting an area of uncertainty within the system."
         )
     if abs(score) > 0:
         return (
-            f"{top_driver['code']} is the main driver shaping the system, and its strongest visible effect is {link_text}. "
-            f"Overall agreement is {insights['agreement']['average_agreement']:.2f}, so the pattern is relatively stable."
+            f"{top_driver['code']} emerges as the principal driver shaping the system, exerting its strongest influence "
+            f"through the {'reinforcing' if score > 0 else 'constraining'} relationship {link_text}, which indicates a "
+            f"{stable_phrase} and structurally significant interaction. At the same time, the broader pattern shows "
+            f"an average agreement level of {insights['agreement']['average_agreement']:.2f}, suggesting that the "
+            f"dominant structure is interpretable with reasonable confidence."
         )
     return (
-        f"{top_driver['code']} has the strongest net influence in the system, but no single outgoing relation dominates yet. "
-        f"The structure is still diffuse and should be interpreted with care."
+        f"{top_driver['code']} emerges as the principal driver shaping the system, but no single outgoing relationship "
+        f"yet dominates strongly enough to define the structure on its own. This suggests the system remains diffuse, "
+        f"with influence spread across multiple pathways that should be interpreted with care."
     )
 
 
@@ -568,16 +577,18 @@ class ResultsInsightsTab(tk.Frame):
         title_gap = _BANNER_TITLE_GAP
         text_gap = _BANNER_TEXT_GAP
         supporting_gap = _BANNER_SUPPORTING_BOTTOM
+        top = tk.Frame(body, bg=_BANNER_LEFT_BG)
+        top.pack(fill="x", anchor="n")
         tk.Label(
-            body,
+            top,
             text="Key Insights",
             font=(FONT_FAMILY, _BANNER_TITLE_SIZE, "normal"),
             bg=_BANNER_LEFT_BG,
             fg=_BANNER_TITLE_COLOR,
         ).pack(anchor="w", padx=pad_x, pady=(pad_y, title_gap))
         story = tk.Text(
-            body,
-            height=4,
+            top,
+            height=6,
             wrap="word",
             bg=_BANNER_LEFT_BG,
             fg=_BANNER_TEXT_COLOR,
@@ -615,8 +626,10 @@ class ResultsInsightsTab(tk.Frame):
         interpretation = _build_supporting_interpretation(self._insights)
         prefix = "Interpretation:"
         detail = interpretation[len(prefix):].lstrip() if interpretation.startswith(prefix) else interpretation
-        supporting = tk.Frame(body, bg=_BANNER_LEFT_BG)
-        supporting.pack(anchor="w", fill="x", padx=pad_x, pady=(0, supporting_gap))
+        bottom = tk.Frame(body, bg=_BANNER_LEFT_BG)
+        bottom.pack(fill="x", side="bottom")
+        supporting = tk.Frame(bottom, bg=_BANNER_LEFT_BG)
+        supporting.pack(anchor="w", fill="x", padx=pad_x, pady=(0, 8))
         tk.Label(
             supporting,
             text=prefix,
@@ -634,8 +647,9 @@ class ResultsInsightsTab(tk.Frame):
             justify="left",
         ).pack(side="left")
 
-        tags = tk.Frame(body, bg=_BANNER_LEFT_BG)
-        tags.pack(fill="x", padx=pad_x, pady=(0, supporting_gap))
+        tags = tk.Frame(bottom, bg=_BANNER_LEFT_BG)
+        tags.pack(fill="x", padx=pad_x, pady=(0, pad_y))
+        tags.grid_rowconfigure(0, minsize=_BANNER_TAG_HEIGHT)
         for col in range(3):
             tags.grid_columnconfigure(col, weight=1, uniform="insight-tags")
         tag_items = [
@@ -656,70 +670,72 @@ class ResultsInsightsTab(tk.Frame):
             ),
         ]
         for idx, (text, bg, fg) in enumerate(tag_items):
-            tag = _RoundedCard(tags, bg=bg, radius=_BANNER_TAG_RADIUS)
-            tag.configure(height=_BANNER_TAG_HEIGHT)
+            tag = tk.Frame(tags, bg=bg, highlightthickness=0, bd=0, height=_BANNER_TAG_HEIGHT)
+            tag.grid_propagate(False)
             row = 0
             col = idx
             colspan = 1
-            tag.grid(row=row, column=col, columnspan=colspan, sticky="ew", padx=4, pady=4)
+            tag.grid(row=row, column=col, columnspan=colspan, sticky="nsew", padx=4, pady=(0, 4))
             tk.Label(
-                tag.body,
+                tag,
                 text=text,
                 font=(FONT_FAMILY, _BANNER_TAG_TEXT_SIZE, "normal"),
                 bg=bg,
                 fg=fg,
                 wraplength=180,
                 justify="center",
-            ).pack(expand=True, fill="both")
+            ).pack(expand=True, fill="both", padx=10)
         return card
 
     def _key_insight_stats_card(self, parent: tk.Frame) -> tk.Frame:
         card = _RoundedCard(parent, bg=_BANNER_RIGHT_BG, radius=_CARD_RADIUS, border=_BANNER_RIGHT_BG, border_width=1)
         body = card.body
+        pad_x = _BANNER_OUTER_PADX
+        pad_y = _BANNER_OUTER_PADY
+        title_gap = _BANNER_TITLE_GAP
+        row_gap = 16
+        value_width = 160
+
+        tk.Label(
+            body,
+            text="Analysis Overview",
+            font=(FONT_FAMILY, _BANNER_TITLE_SIZE, "normal"),
+            bg=_BANNER_RIGHT_BG,
+            fg=_BANNER_TITLE_COLOR,
+        ).pack(anchor="w", padx=pad_x, pady=(pad_y, title_gap))
 
         stats = [
-            ("Method", _method_label(self._result.method), _BANNER_METHOD_BG, _BANNER_METHOD_FG),
-            ("Policies", str(self._result.n), _BANNER_POLICIES_BG, _BANNER_POLICIES_FG),
-            ("Decision-makers", str(self._result.decision_makers), _BANNER_DMS_BG, _BANNER_DMS_FG),
+            (str(self._result.n), "Policies", "#1D4ED8", "#475569"),
+            (str(self._result.decision_makers), "Decision-makers", "#0F766E", "#475569"),
+            (_method_label(self._result.method), "Method", "#7C3AED", "#475569"),
+            (f"{self._insights['agreement']['average_agreement']:.2f}", "Agreement", "#059669", "#475569"),
         ]
-        agreement = self._insights["agreement"]["average_agreement"]
-        if agreement >= 0.75:
-            agreement_text = f"{agreement:.2f} / High"
-        elif agreement >= 0.5:
-            agreement_text = f"{agreement:.2f} / Moderate"
-        else:
-            agreement_text = f"{agreement:.2f} / Low"
-        stats.append(("Agreement", agreement_text, _BANNER_RIGHT_BG, COLOR_ACCENT))
-        for idx, (label, value, bg, fg) in enumerate(stats):
-            stat = _RoundedCard(body, bg=bg, radius=_BANNER_META_RADIUS)
-            stat.configure(height=_BANNER_META_HEIGHT + _BANNER_STAT_HEIGHT_DELTA)
-            stat.pack(
+        for idx, (value, label, value_fg, label_fg) in enumerate(stats):
+            row = tk.Frame(body, bg=_BANNER_RIGHT_BG)
+            row.pack(
+                anchor="w",
                 fill="x",
-                padx=_BANNER_STATS_PADX,
-                pady=(
-                    _BANNER_STATS_TOP if idx == 0 else 0,
-                    _BANNER_STATS_GAP if idx < len(stats) - 1 else _BANNER_STATS_BOTTOM,
-                ),
+                padx=pad_x,
+                pady=(0, row_gap if idx < len(stats) - 1 else pad_y),
             )
-            inner = stat.body
+            row.grid_columnconfigure(0, minsize=value_width)
+            row.grid_columnconfigure(1, weight=1)
             tk.Label(
-                inner,
-                text=label,
-                font=(FONT_FAMILY, FONT_SIZE_SMALL, "normal"),
-                bg=bg,
-                fg=fg,
-                anchor="w",
-            ).pack(fill="x", padx=16, pady=(10, 2))
-            tk.Label(
-                inner,
+                row,
                 text=value,
-                font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"),
-                bg=bg,
-                fg=fg,
+                font=(FONT_FAMILY, 30, "bold"),
+                bg=_BANNER_RIGHT_BG,
+                fg=value_fg,
                 anchor="w",
-                wraplength=220,
-                justify="left",
-            ).pack(fill="x", padx=16, pady=(0, 10))
+            ).grid(row=0, column=0, sticky="w")
+            tk.Label(
+                row,
+                text=label,
+                font=(FONT_FAMILY, 10, "normal"),
+                bg=_BANNER_RIGHT_BG,
+                fg=label_fg,
+                anchor="w",
+            ).grid(row=0, column=1, sticky="w")
         return card
 
     def _system_health_card(self, parent: tk.Frame) -> tk.Frame:
