@@ -161,6 +161,7 @@ class _RoundedCard(tk.Canvas):
         self._radius = radius
         self._border = border or bg
         self._border_width = border_width
+        self._initial_height_locked = False
         self._body = tk.Frame(self, bg=bg, bd=0, highlightthickness=0)
         self._window = self.create_window(0, 0, window=self._body, anchor="nw")
         self.bind("<Configure>", self._redraw)
@@ -171,11 +172,13 @@ class _RoundedCard(tk.Canvas):
         return self._body
 
     def _sync_body(self, _event=None):
-        req_h = self._body.winfo_reqheight() + (_CARD_INSET * 2)
-        current_req_h = int(self.cget("height")) if str(self.cget("height")).isdigit() else 0
-        target_h = max(req_h, current_req_h)
-        if self.winfo_height() <= 1 or self.winfo_height() < target_h:
-            self.configure(height=target_h)
+        # Lock the canvas height from the initial content request, then let the
+        # parent grid own later sizing so cards cannot keep pushing the page
+        # beyond the available analysis viewport.
+        if not self._initial_height_locked:
+            req_h = self._body.winfo_reqheight() + (_CARD_INSET * 2)
+            self.configure(height=req_h)
+            self._initial_height_locked = True
         self._redraw()
 
     def _redraw(self, _event=None):
@@ -491,13 +494,16 @@ class ResultsInsightsTab(tk.Frame):
     def _build(self):
         for child in self.winfo_children():
             child.destroy()
-        shell = tk.Frame(self, bg=COLOR_BG)
-        shell.pack(fill="both", expand=True, padx=24, pady=24)
+        page = tk.Frame(self, bg=COLOR_BG)
+        page.pack(fill="both", expand=True, padx=24, pady=(24, 0))
+
+        shell = tk.Frame(page, bg=COLOR_BG)
+        shell.pack(fill="both", expand=True, pady=(0, 12))
         for col in range(3):
             shell.grid_columnconfigure(col, weight=1, uniform="insights")
-        shell.grid_rowconfigure(0, weight=3)
-        shell.grid_rowconfigure(1, weight=2)
-        shell.grid_rowconfigure(2, weight=1, minsize=150)
+        shell.grid_rowconfigure(0, weight=2, uniform="insight-rows")
+        shell.grid_rowconfigure(1, weight=1, uniform="insight-rows")
+        shell.grid_rowconfigure(2, weight=1, uniform="insight-rows")
 
         self._build_key_insight(shell, row=0)
         self._build_primary_signal_row(shell, row=1)
