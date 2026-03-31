@@ -75,8 +75,55 @@ from theme import (
     RESULTS_BANNER_POLICIES_FG as _BANNER_POLICIES_FG,
     RESULTS_BANNER_DMS_BG as _BANNER_DMS_BG,
     RESULTS_BANNER_DMS_FG as _BANNER_DMS_FG,
+    RESULTS_HEALTH_TITLE_COLOR as _HEALTH_TITLE_COLOR,
+    RESULTS_HEALTH_TITLE_SIZE as _HEALTH_TITLE_SIZE,
+    RESULTS_HEALTH_VALUE_COLOR as _HEALTH_VALUE_COLOR,
+    RESULTS_HEALTH_VALUE_SIZE as _HEALTH_VALUE_SIZE,
+    RESULTS_HEALTH_LABEL_COLOR as _HEALTH_LABEL_COLOR,
     RESULTS_HEALTH_BAR_BG as _HEALTH_BAR_BG,
+    RESULTS_HEALTH_BAR_HEIGHT as _HEALTH_BAR_HEIGHT,
+    RESULTS_HEALTH_SYNERGY as _HEALTH_SYNERGY,
+    RESULTS_HEALTH_CONFLICT as _HEALTH_CONFLICT,
+    RESULTS_HEALTH_UNCERTAINTY as _HEALTH_UNCERTAINTY,
+    RESULTS_TOP_DRIVER_TITLE_COLOR as _TOP_DRIVER_TITLE_COLOR,
+    RESULTS_TOP_DRIVER_TITLE_SIZE as _TOP_DRIVER_TITLE_SIZE,
+    RESULTS_TOP_DRIVER_SUBTITLE_COLOR as _TOP_DRIVER_SUBTITLE_COLOR,
+    RESULTS_TOP_DRIVER_SUBTITLE_SIZE as _TOP_DRIVER_SUBTITLE_SIZE,
+    RESULTS_TOP_DRIVER_SUBTITLE_GAP as _TOP_DRIVER_SUBTITLE_GAP,
+    RESULTS_TOP_DRIVER_VALUE_COLOR as _TOP_DRIVER_VALUE_COLOR,
+    RESULTS_TOP_DRIVER_VALUE_SIZE as _TOP_DRIVER_VALUE_SIZE,
+    RESULTS_TOP_DEPENDENT_TITLE_COLOR as _TOP_DEPENDENT_TITLE_COLOR,
+    RESULTS_TOP_DEPENDENT_TITLE_SIZE as _TOP_DEPENDENT_TITLE_SIZE,
+    RESULTS_TOP_DEPENDENT_SUBTITLE_COLOR as _TOP_DEPENDENT_SUBTITLE_COLOR,
+    RESULTS_TOP_DEPENDENT_SUBTITLE_SIZE as _TOP_DEPENDENT_SUBTITLE_SIZE,
+    RESULTS_TOP_DEPENDENT_SUBTITLE_GAP as _TOP_DEPENDENT_SUBTITLE_GAP,
+    RESULTS_TOP_DEPENDENT_VALUE_COLOR as _TOP_DEPENDENT_VALUE_COLOR,
+    RESULTS_TOP_DEPENDENT_VALUE_SIZE as _TOP_DEPENDENT_VALUE_SIZE,
     RESULTS_LINK_COLOR as _LINK_COLOR,
+    RESULTS_STRONGEST_LINK_TITLE_COLOR as _STRONGEST_LINK_TITLE_COLOR,
+    RESULTS_STRONGEST_LINK_TITLE_SIZE as _STRONGEST_LINK_TITLE_SIZE,
+    RESULTS_STRONGEST_LINK_MAIN_COLOR as _STRONGEST_LINK_MAIN_COLOR,
+    RESULTS_STRONGEST_LINK_MAIN_SIZE as _STRONGEST_LINK_MAIN_SIZE,
+    RESULTS_STRONGEST_LINK_VALUE_COLOR as _STRONGEST_LINK_VALUE_COLOR,
+    RESULTS_STRONGEST_LINK_VALUE_SIZE as _STRONGEST_LINK_VALUE_SIZE,
+    RESULTS_STRONGEST_LINK_TEXT_COLOR as _STRONGEST_LINK_TEXT_COLOR,
+    RESULTS_STRONGEST_LINK_TEXT_SIZE as _STRONGEST_LINK_TEXT_SIZE,
+    RESULTS_CONTESTED_TITLE_COLOR as _CONTESTED_TITLE_COLOR,
+    RESULTS_CONTESTED_TITLE_SIZE as _CONTESTED_TITLE_SIZE,
+    RESULTS_CONTESTED_MAIN_COLOR as _CONTESTED_MAIN_COLOR,
+    RESULTS_CONTESTED_MAIN_SIZE as _CONTESTED_MAIN_SIZE,
+    RESULTS_CONTESTED_VALUE_COLOR as _CONTESTED_VALUE_COLOR,
+    RESULTS_CONTESTED_VALUE_SIZE as _CONTESTED_VALUE_SIZE,
+    RESULTS_CONTESTED_TEXT_COLOR as _CONTESTED_TEXT_COLOR,
+    RESULTS_CONTESTED_TEXT_SIZE as _CONTESTED_TEXT_SIZE,
+    RESULTS_CONFLICT_RATIO_TITLE_COLOR as _CONFLICT_RATIO_TITLE_COLOR,
+    RESULTS_CONFLICT_RATIO_TITLE_SIZE as _CONFLICT_RATIO_TITLE_SIZE,
+    RESULTS_CONFLICT_RATIO_MAIN_COLOR as _CONFLICT_RATIO_MAIN_COLOR,
+    RESULTS_CONFLICT_RATIO_MAIN_SIZE as _CONFLICT_RATIO_MAIN_SIZE,
+    RESULTS_CONFLICT_RATIO_VALUE_COLOR as _CONFLICT_RATIO_VALUE_COLOR,
+    RESULTS_CONFLICT_RATIO_VALUE_SIZE as _CONFLICT_RATIO_VALUE_SIZE,
+    RESULTS_CONFLICT_RATIO_TEXT_COLOR as _CONFLICT_RATIO_TEXT_COLOR,
+    RESULTS_CONFLICT_RATIO_TEXT_SIZE as _CONFLICT_RATIO_TEXT_SIZE,
     RESULTS_AGREEMENT_ACCENT as _AGREEMENT_ACCENT,
     RESULTS_CONFIG_PILL_FG as _CONFIG_PILL_FG,
     RESULTS_PROMINENCE_BAR_BG as _PROMINENCE_BAR_BG,
@@ -547,14 +594,9 @@ class ResultsInsightsTab(tk.Frame):
         return card, card.body
 
     def _build_key_insight(self, parent: tk.Frame, row: int):
-        section = tk.Frame(parent, bg=COLOR_BG)
-        section.grid(row=row, column=0, columnspan=3, sticky="nsew")
         gap = _CARD_GAP // 2
-        section.grid_columnconfigure(0, weight=1, uniform="key-insight")
-        section.grid_columnconfigure(1, weight=1, uniform="key-insight")
-        section.grid_rowconfigure(0, weight=1)
-        self._key_insight_main_card(section).grid(row=0, column=0, sticky="nsew", padx=gap, pady=gap)
-        self._key_insight_stats_card(section).grid(row=0, column=1, sticky="nsew", padx=gap, pady=gap)
+        self._key_insight_main_card(parent).grid(row=row, column=0, columnspan=2, sticky="nsew", padx=gap, pady=gap)
+        self._key_insight_stats_card(parent).grid(row=row, column=2, sticky="nsew", padx=gap, pady=gap)
 
     def _build_primary_signal_row(self, parent: tk.Frame, row: int):
         gap = _CARD_GAP // 2
@@ -566,7 +608,7 @@ class ResultsInsightsTab(tk.Frame):
         gap = _CARD_GAP // 2
         self._strongest_link_card(parent).grid(row=row, column=0, sticky="nsew", padx=gap, pady=gap)
         self._most_contested_card(parent).grid(row=row, column=1, sticky="nsew", padx=gap, pady=gap)
-        self._agreement_score_card(parent).grid(row=row, column=2, sticky="nsew", padx=gap, pady=gap)
+        self._conflict_ratio_card(parent).grid(row=row, column=2, sticky="nsew", padx=gap, pady=gap)
 
     def _key_insight_main_card(self, parent: tk.Frame) -> tk.Frame:
         card = _RoundedCard(parent, bg=_BANNER_LEFT_BG, radius=_CARD_RADIUS, border=_BANNER_LEFT_BG, border_width=1)
@@ -740,53 +782,176 @@ class ResultsInsightsTab(tk.Frame):
 
     def _system_health_card(self, parent: tk.Frame) -> tk.Frame:
         card, body = self._card(parent, _SURFACE)
-        tk.Label(body, text="System Health", font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg=_SURFACE, fg=COLOR_TEXT_LIGHT).pack(anchor="w", padx=16, pady=(14, 2))
-        tk.Label(body, text=f"{self._health['score']}", font=(FONT_FAMILY, FONT_SIZE_HEADER + 18, "bold"), bg=_SURFACE, fg=COLOR_ACCENT).pack(anchor="w", padx=16)
+        tk.Label(body, text="System Health", font=(FONT_FAMILY, _HEALTH_TITLE_SIZE, "normal"), bg=_SURFACE, fg=_HEALTH_TITLE_COLOR).pack(anchor="w", padx=16, pady=(14, 2))
+        tk.Label(body, text=f"{self._health['score']}", font=(FONT_FAMILY, _HEALTH_VALUE_SIZE, "bold"), bg=_SURFACE, fg=_HEALTH_VALUE_COLOR).pack(anchor="w", padx=16, pady=(0, 6))
         for label, value, color in [
-            ("Synergy", self._health["synergy"], _DRIVER),
-            ("Conflict", self._health["conflict"], _NEG),
-            ("Uncertainty", self._health["uncertainty"], _MID),
+            ("Synergy", self._health["synergy"], _HEALTH_SYNERGY),
+            ("Conflict", self._health["conflict"], _HEALTH_CONFLICT),
+            ("Uncertainty", self._health["uncertainty"], _HEALTH_UNCERTAINTY),
         ]:
             row = tk.Frame(body, bg=_SURFACE)
             row.pack(fill="x", padx=16, pady=4)
-            tk.Label(row, text=label, font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=_SURFACE, fg=COLOR_TEXT_LIGHT, width=11, anchor="w").pack(side="left")
-            bar = tk.Frame(row, bg=_HEALTH_BAR_BG, height=8)
+            tk.Label(row, text=label, font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=_SURFACE, fg=_HEALTH_LABEL_COLOR, width=11, anchor="w").pack(side="left")
+            bar = tk.Canvas(row, bg=_SURFACE, height=_HEALTH_BAR_HEIGHT, highlightthickness=0, bd=0)
             bar.pack(side="left", fill="x", expand=True, padx=(6, 8))
-            bar.pack_propagate(False)
-            tk.Frame(bar, bg=color, height=8).place(relx=0, rely=0, relheight=1, relwidth=max(0.03, min(1.0, value / 100)))
+            bar.bind(
+                "<Configure>",
+                lambda e, c=bar, v=value, fg=color: self._draw_health_bar(
+                    c,
+                    max(0.03, min(1.0, v / 100)),
+                    fg,
+                    _HEALTH_BAR_BG,
+                ),
+            )
             tk.Label(row, text=f"{value}", font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg=_SURFACE, fg=color, width=4, anchor="e").pack(side="left")
         return card
 
+    def _draw_health_bar(self, canvas: tk.Canvas, ratio: float, fill: str, bg: str):
+        canvas.delete("all")
+        width = canvas.winfo_width()
+        height = canvas.winfo_height()
+        if width <= 1 or height <= 1:
+            return
+        radius = height / 2
+        canvas.create_rectangle(radius, 0, width - radius, height, fill=bg, outline=bg)
+        canvas.create_oval(0, 0, radius * 2, height, fill=bg, outline=bg)
+        canvas.create_oval(width - radius * 2, 0, width, height, fill=bg, outline=bg)
+        fill_width = max(height, width * ratio)
+        if fill_width <= radius * 2:
+            canvas.create_oval(0, 0, fill_width, height, fill=fill, outline=fill)
+            return
+        canvas.create_rectangle(radius, 0, max(radius, fill_width - radius), height, fill=fill, outline=fill)
+        canvas.create_oval(0, 0, radius * 2, height, fill=fill, outline=fill)
+        canvas.create_oval(max(0, fill_width - radius * 2), 0, fill_width, height, fill=fill, outline=fill)
+
     def _top_driver_card(self, parent: tk.Frame) -> tk.Frame:
         row = self._insights["top_driver"]
-        return self._metric_signal_card(parent, row["code"] if row else "N/A", "Top Driver", f"{row['net']:+.2f} ↑" if row else "N/A", _DRIVER, _SOFT_GREEN)
+        card, body = self._card(parent, _SOFT_GREEN)
+        hero = row["code"] if row else "N/A"
+        value = f"{row['net']:+.2f} ↑" if row else "N/A"
+        tk.Label(
+            body,
+            text=hero,
+            font=(FONT_FAMILY, _TOP_DRIVER_TITLE_SIZE, "normal"),
+            bg=_SOFT_GREEN,
+            fg=_TOP_DRIVER_TITLE_COLOR,
+        ).pack(anchor="w", padx=16, pady=(16, _TOP_DRIVER_SUBTITLE_GAP))
+        tk.Label(
+            body,
+            text="Top Driver",
+            font=(FONT_FAMILY, _TOP_DRIVER_SUBTITLE_SIZE, "normal"),
+            bg=_SOFT_GREEN,
+            fg=_TOP_DRIVER_SUBTITLE_COLOR,
+        ).pack(anchor="w", padx=16)
+        tk.Label(
+            body,
+            text=value,
+            font=(FONT_FAMILY, _TOP_DRIVER_VALUE_SIZE, "bold"),
+            bg=_SOFT_GREEN,
+            fg=_TOP_DRIVER_VALUE_COLOR,
+        ).pack(anchor="w", padx=16, pady=(10, 16))
+        return card
 
     def _top_dependent_card(self, parent: tk.Frame) -> tk.Frame:
         row = self._insights["top_dependent"]
-        return self._metric_signal_card(parent, row["code"] if row else "N/A", "Most Dependent", f"{row['net']:+.2f} ↓" if row else "N/A", _DEPENDENT, _SOFT_ORANGE)
+        card, body = self._card(parent, _SOFT_ORANGE)
+        hero = row["code"] if row else "N/A"
+        value = f"{row['net']:+.2f} ↓" if row else "N/A"
+        tk.Label(
+            body,
+            text=hero,
+            font=(FONT_FAMILY, _TOP_DEPENDENT_TITLE_SIZE, "normal"),
+            bg=_SOFT_ORANGE,
+            fg=_TOP_DEPENDENT_TITLE_COLOR,
+        ).pack(anchor="w", padx=16, pady=(16, _TOP_DEPENDENT_SUBTITLE_GAP))
+        tk.Label(
+            body,
+            text="Most Dependent",
+            font=(FONT_FAMILY, _TOP_DEPENDENT_SUBTITLE_SIZE, "normal"),
+            bg=_SOFT_ORANGE,
+            fg=_TOP_DEPENDENT_SUBTITLE_COLOR,
+        ).pack(anchor="w", padx=16)
+        tk.Label(
+            body,
+            text=value,
+            font=(FONT_FAMILY, _TOP_DEPENDENT_VALUE_SIZE, "bold"),
+            bg=_SOFT_ORANGE,
+            fg=_TOP_DEPENDENT_VALUE_COLOR,
+        ).pack(anchor="w", padx=16, pady=(10, 16))
+        return card
 
     def _strongest_link_card(self, parent: tk.Frame) -> tk.Frame:
         graph = self._insights["graph"]
         pair = self._format_pair(graph["strongest_pos_pair"])
         value = f"{graph['strongest_pos']:+.2f} Reinforcing" if graph["strongest_pos_pair"] else "No strong link"
-        return self._signal_card(parent, "Strongest Link", pair, value, _LINK_COLOR, _SOFT_BLUE, "Strongest relation")
+        return self._signal_card(
+            parent,
+            "Strongest Link",
+            pair,
+            value,
+            _LINK_COLOR,
+            _SOFT_BLUE,
+            "Strongest relation",
+            title_font=(FONT_FAMILY, _STRONGEST_LINK_TITLE_SIZE, "normal"),
+            title_fg=_STRONGEST_LINK_TITLE_COLOR,
+            main_font=(FONT_FAMILY, _STRONGEST_LINK_MAIN_SIZE, "bold"),
+            main_fg=_STRONGEST_LINK_MAIN_COLOR,
+            sub_font=(FONT_FAMILY, _STRONGEST_LINK_VALUE_SIZE, "bold"),
+            sub_fg=_STRONGEST_LINK_VALUE_COLOR,
+            caption_font=(FONT_FAMILY, _STRONGEST_LINK_TEXT_SIZE, "normal"),
+            caption_fg=_STRONGEST_LINK_TEXT_COLOR,
+        )
 
     def _most_contested_card(self, parent: tk.Frame) -> tk.Frame:
         contested = self._insights["agreement"]["contested"][0] if self._insights["agreement"]["contested"] else None
         main = contested["pair"].replace("->", "↔") if contested else "No contested link"
         sub = f"Agreement: {contested['agreement_ratio']:.2f}" if contested else "Stable"
         caption = "⚠ High disagreement" if contested and contested["agreement_ratio"] < 0.5 else "Moderate disagreement"
-        return self._signal_card(parent, "Most Contested", main, sub, _NEG, _SOFT_RED, caption)
+        return self._signal_card(
+            parent,
+            "Most Contested",
+            main,
+            sub,
+            _NEG,
+            _SOFT_RED,
+            caption,
+            title_font=(FONT_FAMILY, _CONTESTED_TITLE_SIZE, "normal"),
+            title_fg=_CONTESTED_TITLE_COLOR,
+            main_font=(FONT_FAMILY, _CONTESTED_MAIN_SIZE, "bold"),
+            main_fg=_CONTESTED_MAIN_COLOR,
+            sub_font=(FONT_FAMILY, _CONTESTED_VALUE_SIZE, "bold"),
+            sub_fg=_CONTESTED_VALUE_COLOR,
+            caption_font=(FONT_FAMILY, _CONTESTED_TEXT_SIZE, "normal"),
+            caption_fg=_CONTESTED_TEXT_COLOR,
+        )
 
-    def _agreement_score_card(self, parent: tk.Frame) -> tk.Frame:
-        score = self._insights["agreement"]["average_agreement"]
-        if score >= 0.75:
-            label = "Strong consensus"
-        elif score >= 0.5:
-            label = "Moderate consensus"
+    def _conflict_ratio_card(self, parent: tk.Frame) -> tk.Frame:
+        graph = self._insights["graph"]
+        active_edges = graph["positive_edges"] + graph["negative_edges"]
+        ratio = (graph["negative_edges"] / active_edges) if active_edges else 0.0
+        if ratio <= 0.2:
+            caption = "Low systemic conflict"
+        elif ratio <= 0.4:
+            caption = "Moderate conflict pressure"
         else:
-            label = "Low consensus"
-        return self._metric_signal_card(parent, f"{score:.2f}", "Agreement Level", label, _AGREEMENT_ACCENT, _SOFT_PURPLE)
+            caption = "High conflict pressure"
+        return self._signal_card(
+            parent,
+            "Conflict Ratio",
+            f"{ratio * 100:.0f}%",
+            f"{graph['negative_edges']} of {active_edges} active links",
+            _NEG,
+            _SOFT_RED,
+            caption,
+            title_font=(FONT_FAMILY, _CONFLICT_RATIO_TITLE_SIZE, "normal"),
+            title_fg=_CONFLICT_RATIO_TITLE_COLOR,
+            main_font=(FONT_FAMILY, _CONFLICT_RATIO_MAIN_SIZE, "bold"),
+            main_fg=_CONFLICT_RATIO_MAIN_COLOR,
+            sub_font=(FONT_FAMILY, _CONFLICT_RATIO_VALUE_SIZE, "bold"),
+            sub_fg=_CONFLICT_RATIO_VALUE_COLOR,
+            caption_font=(FONT_FAMILY, _CONFLICT_RATIO_TEXT_SIZE, "normal"),
+            caption_fg=_CONFLICT_RATIO_TEXT_COLOR,
+        )
 
     def _analysis_config_card(self, parent: tk.Frame) -> tk.Frame:
         card, body = self._card(parent, _CARD_BG)
@@ -1039,13 +1204,58 @@ class ResultsInsightsTab(tk.Frame):
         tk.Label(body, text=value, font=(FONT_FAMILY, FONT_SIZE_HEADER + 2, "bold"), bg=bg, fg=color).pack(anchor="w", padx=16, pady=(10, 16))
         return card
 
-    def _signal_card(self, parent: tk.Frame, title: str, main: str, sub: str, color: str, bg: str, caption: str) -> tk.Frame:
+    def _signal_card(
+        self,
+        parent: tk.Frame,
+        title: str,
+        main: str,
+        sub: str,
+        color: str,
+        bg: str,
+        caption: str,
+        title_font=None,
+        title_fg=None,
+        main_font=None,
+        main_fg=None,
+        sub_font=None,
+        sub_fg=None,
+        caption_font=None,
+        caption_fg=None,
+    ) -> tk.Frame:
         card, body = self._card(parent, bg)
         wrap = 240
-        tk.Label(body, text=title, font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"), bg=bg, fg=color).pack(anchor="w", padx=16, pady=(16, 6))
-        tk.Label(body, text=main, font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"), bg=bg, fg=COLOR_TEXT, justify="left", wraplength=wrap).pack(anchor="w", padx=16)
-        tk.Label(body, text=sub, font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"), bg=bg, fg=color, justify="left", wraplength=wrap).pack(anchor="w", padx=16, pady=(8, 2))
-        tk.Label(body, text=caption, font=(FONT_FAMILY, FONT_SIZE_SMALL), bg=bg, fg=COLOR_TEXT_LIGHT).pack(anchor="w", padx=16, pady=(0, 16))
+        tk.Label(
+            body,
+            text=title,
+            font=title_font or (FONT_FAMILY, FONT_SIZE_SMALL, "bold"),
+            bg=bg,
+            fg=title_fg or color,
+        ).pack(anchor="w", padx=16, pady=(16, 6))
+        tk.Label(
+            body,
+            text=main,
+            font=main_font or (FONT_FAMILY, FONT_SIZE_NORMAL, "bold"),
+            bg=bg,
+            fg=main_fg or COLOR_TEXT,
+            justify="left",
+            wraplength=wrap,
+        ).pack(anchor="w", padx=16)
+        tk.Label(
+            body,
+            text=sub,
+            font=sub_font or (FONT_FAMILY, FONT_SIZE_NORMAL, "bold"),
+            bg=bg,
+            fg=sub_fg or color,
+            justify="left",
+            wraplength=wrap,
+        ).pack(anchor="w", padx=16, pady=(8, 2))
+        tk.Label(
+            body,
+            text=caption,
+            font=caption_font or (FONT_FAMILY, FONT_SIZE_SMALL),
+            bg=bg,
+            fg=caption_fg or COLOR_TEXT_LIGHT,
+        ).pack(anchor="w", padx=16, pady=(0, 16))
         return card
 
     def _format_policy(self, row: dict) -> str:

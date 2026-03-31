@@ -16,26 +16,62 @@
 
 import math
 import tkinter as tk
-from tkinter import ttk
+import tkinter.font as tkfont
 from typing import List, Tuple
 
 from aggregator import AggregationResult
+from aggregation_tab import _PillScrollbar
 from constants import (
     FONT_FAMILY, FONT_SIZE_SMALL, FONT_SIZE_NORMAL,
-    FONT_SIZE_HEADER,
+    FONT_SIZE_HEADER, FONT_SIZE_PAGE_TITLE,
     COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_ACCENT2,
-    COLOR_TEXT, COLOR_TEXT_LIGHT, COLOR_BORDER,
+    COLOR_TEXT, COLOR_TEXT_LIGHT, COLOR_BORDER, COLOR_PAGE_TITLE,
+)
+from theme import (
+    COHERENCE_SCORES_TABLE_PADX,
+    COHERENCE_SCORES_TABLE_PADY_BOTTOM,
+    COHERENCE_SCORES_TABLE_SCROLL_GAP,
+    COHERENCE_SCORES_SCROLL_STEP,
+    COHERENCE_SCORES_SCROLL_DECAY,
+    COHERENCE_SCORES_SCROLL_CUTOFF,
+    COHERENCE_SCORES_SCROLL_FRAME_MS,
+    COHERENCE_SCORES_POLICY_COL_MIN,
+    COHERENCE_SCORES_WOI_COL_MIN,
+    COHERENCE_SCORES_FULL_NAME_COL_MIN,
+    COHERENCE_SCORES_TABLE_CELL_GAP,
+    COHERENCE_SCORES_TABLE_HEADER_BG,
+    COHERENCE_SCORES_TABLE_HEADER_FG,
+    COHERENCE_SCORES_TABLE_HEADER_PADY,
+    COHERENCE_SCORES_TABLE_HEADER_SIZE,
+    COHERENCE_SCORES_TABLE_ROW_EVEN_BG,
+    COHERENCE_SCORES_TABLE_ROW_ODD_BG,
+    COHERENCE_SCORES_TABLE_BODY_FG,
+    COHERENCE_SCORES_TABLE_POLICY_FG,
+    COHERENCE_SCORES_TABLE_BODY_PADY,
+    COHERENCE_SCORES_TABLE_BORDER,
 )
 
 # Category colours
 _CAT_COLORS = {
-    "Low":          ("#d9d9d9", "#555555"),
-    "Low2Medium":   ("#a8d5b5", "#2d2d2d"),
-    "Medium2High":  ("#4caf7d", "#ffffff"),
-    "High":         ("#1a6e3c", "#ffffff"),
+    "Low":          ("#a3a3a3", "#ffffff"),
+    "Low2Medium":   ("#a7f3d0", "#2d2d2d"),
+    "Medium2High":  ("#34d399", "#ffffff"),
+    "High":         ("#059669", "#ffffff"),
 }
 
 _CATEGORIES = ["Low", "Low2Medium", "Medium2High", "High"]
+
+
+def _round_rect(canvas, x1, y1, x2, y2, r, **kwargs):
+    points = [
+        x1 + r, y1, x2 - r, y1,
+        x2, y1, x2, y1 + r,
+        x2, y2 - r, x2, y2,
+        x2 - r, y2, x1 + r, y2,
+        x1, y2, x1, y2 - r,
+        x1, y1 + r, x1, y1,
+    ]
+    return canvas.create_polygon(points, smooth=True, **kwargs)
 
 
 # =============================================================================
@@ -117,22 +153,26 @@ class RangeOfInfluenceTab(tk.Frame):
         super().__init__(parent, bg=COLOR_BG, **kwargs)
         self._result = result
         self._rows   = compute_entropy(result)
+        self._scroll_canvas = None
+        self._scroll_vy = 0.0
+        self._scroll_anim = None
         self._build()
 
     # ------------------------------------------------------------------
 
     def _build(self):
         self._build_info_bar()
-        tk.Frame(self, bg=COLOR_BORDER, height=1).pack(fill="x", pady=4)
         self._build_legend()
-        tk.Frame(self, bg=COLOR_BORDER, height=1).pack(fill="x", pady=2)
+        tk.Frame(self, bg=COLOR_BORDER, height=1).pack(fill="x", pady=4)
         self._build_table()
 
     # ------------------------------------------------------------------
 
     def _build_info_bar(self):
-        bar = tk.Frame(self, bg=COLOR_PANEL, pady=8)
+        bar = tk.Frame(self, bg=COLOR_BG, pady=8)
         bar.pack(fill="x")
+        content = tk.Frame(bar, bg=COLOR_BG)
+        content.pack(anchor="w", padx=16)
 
         method_label = {
             "average":  "Average",
@@ -141,46 +181,45 @@ class RangeOfInfluenceTab(tk.Frame):
         }.get(self._result.method, self._result.method.title())
 
         tk.Label(
-            bar,
+            content,
             text=f"Range of Influence  —  {method_label}",
-            font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
-            bg=COLOR_PANEL, fg=COLOR_ACCENT,
-        ).pack(side="left", padx=16)
+            font=(FONT_FAMILY, FONT_SIZE_PAGE_TITLE, "normal"),
+            bg=COLOR_BG, fg=COLOR_PAGE_TITLE,
+        ).pack(side="left")
 
-        n    = self._result.n
         hmax = self._rows[0]["hmax"] if self._rows else 0.0
         tk.Label(
-            bar,
-            text=f"{n} policies  |  max entropy = {hmax:.4f}",
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "italic"),
-            bg=COLOR_PANEL, fg=COLOR_TEXT_LIGHT,
-        ).pack(side="left", padx=6)
+            content,
+            text=f"max entropy = {hmax:.4f}",
+            font=(FONT_FAMILY, 11, "italic"),
+            bg=COLOR_BG, fg="#a3a3a3",
+        ).pack(side="left", padx=(18, 0))
 
     # ------------------------------------------------------------------
 
     def _build_legend(self):
         leg = tk.Frame(self, bg=COLOR_BG)
-        leg.pack(fill="x", padx=16, pady=6)
+        leg.pack(fill="x", padx=16, pady=(10, 12))
 
         tk.Label(
             leg,
             text="Entropy measures how evenly a policy distributes its "
                  "outgoing influence. High = spread across many policies. "
                  "Low = concentrated on few.",
-            font=(FONT_FAMILY, FONT_SIZE_SMALL, "italic"),
-            bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
+            font=(FONT_FAMILY, 11, "italic"),
+            bg=COLOR_BG, fg="#a3a3a3",
             wraplength=800, justify="left",
-        ).pack(anchor="w", pady=(0, 6))
+        ).pack(anchor="w", pady=(4, 14))
 
         cat_row = tk.Frame(leg, bg=COLOR_BG)
-        cat_row.pack(anchor="w")
+        cat_row.pack(fill="x")
 
         tk.Label(
             cat_row,
             text="Categories:",
-            font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"),
-            bg=COLOR_BG, fg=COLOR_TEXT,
-        ).pack(side="left", padx=(0, 10))
+            font=(FONT_FAMILY, FONT_SIZE_SMALL, "normal"),
+            bg=COLOR_BG, fg="#2c3b4e",
+        ).grid(row=0, column=0, sticky="w", padx=(0, 16))
 
         thresholds = [
             ("Low",         "H < 25% of max"),
@@ -188,106 +227,219 @@ class RangeOfInfluenceTab(tk.Frame):
             ("Medium2High", "50% ≤ H < 75% of max"),
             ("High",        "H ≥ 75% of max"),
         ]
-        for cat, desc in thresholds:
+        cat_row.grid_columnconfigure(0, weight=0)
+        for idx, (cat, desc) in enumerate(thresholds, start=1):
+            cat_row.grid_columnconfigure(idx, weight=1, uniform="entropy-cats")
+            item = tk.Frame(cat_row, bg=COLOR_BG)
+            item.grid(row=0, column=idx, sticky="ew", padx=(0, 12 if idx < len(thresholds) else 0))
+
             bg, fg = _CAT_COLORS[cat]
+            self._build_category_badge(item, cat, bg, fg).pack(side="left", padx=(0, 8))
             tk.Label(
-                cat_row,
-                text=f"  {cat}  ",
-                font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"),
-                bg=bg, fg=fg,
-                padx=6, pady=3, relief="flat",
-            ).pack(side="left", padx=2)
-            tk.Label(
-                cat_row,
+                item,
                 text=desc,
-                font=(FONT_FAMILY, FONT_SIZE_SMALL),
-                bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
-            ).pack(side="left", padx=(2, 12))
+                font=(FONT_FAMILY, 10),
+                bg=COLOR_BG, fg="#a3a3a3",
+            ).pack(side="left")
+
+    def _build_category_badge(self, parent: tk.Misc, text: str, bg: str, fg: str) -> tk.Canvas:
+        font = tkfont.Font(family=FONT_FAMILY, size=FONT_SIZE_SMALL, weight="bold")
+        pad_x = 12
+        width = font.measure(text) + (pad_x * 2)
+        height = 25
+        radius = 3
+
+        badge = tk.Canvas(
+            parent,
+            width=width,
+            height=height,
+            bg=COLOR_BG,
+            highlightthickness=0,
+            bd=0,
+        )
+        _round_rect(badge, 0, 0, width, height, radius, fill=bg, outline=bg)
+        badge.create_text(
+            width / 2,
+            height / 2,
+            text=text,
+            fill=fg,
+            font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"),
+        )
+        return badge
 
     # ------------------------------------------------------------------
 
     def _build_table(self):
-        canvas   = tk.Canvas(self, bg=COLOR_BG, highlightthickness=0)
-        v_scroll = ttk.Scrollbar(self, orient="vertical",   command=canvas.yview)
-        h_scroll = ttk.Scrollbar(self, orient="horizontal", command=canvas.xview)
-        canvas.configure(yscrollcommand=v_scroll.set, xscrollcommand=h_scroll.set)
+        shell = tk.Frame(self, bg=COLOR_BG)
+        shell.pack(fill="both", expand=True, padx=COHERENCE_SCORES_TABLE_PADX, pady=(8, COHERENCE_SCORES_TABLE_PADY_BOTTOM))
 
-        v_scroll.pack(side="right",  fill="y")
-        h_scroll.pack(side="bottom", fill="x")
-        canvas.pack(side="left", fill="both", expand=True)
+        canvas = tk.Canvas(shell, bg=COLOR_BG, highlightthickness=0)
+        self._scroll_canvas = canvas
+        v_scroll = _PillScrollbar(shell, orient="vertical", command=canvas.yview)
+        canvas.configure(yscrollcommand=v_scroll.set)
+
+        shell.grid_rowconfigure(0, weight=1)
+        shell.grid_columnconfigure(0, weight=1)
+
+        canvas.grid(row=0, column=0, sticky="nsew")
+        v_scroll.grid(row=0, column=1, sticky="ns", padx=(COHERENCE_SCORES_TABLE_SCROLL_GAP, 0))
 
         inner = tk.Frame(canvas, bg=COLOR_BG)
-        canvas.create_window((0, 0), window=inner, anchor="nw")
+        window_id = canvas.create_window((0, 0), window=inner, anchor="nw")
         inner.bind(
             "<Configure>",
             lambda e: canvas.configure(scrollregion=canvas.bbox("all")),
         )
-        canvas.bind_all("<MouseWheel>",
-            lambda e: canvas.yview_scroll(int(-1 * (e.delta / 120)), "units"))
-        canvas.bind_all("<Button-4>", lambda e: canvas.yview_scroll(-1, "units"))
-        canvas.bind_all("<Button-5>", lambda e: canvas.yview_scroll( 1, "units"))
+        canvas.bind(
+            "<Configure>",
+            lambda e: canvas.itemconfigure(window_id, width=max(e.width, inner.winfo_reqwidth())),
+        )
 
         self._draw_table(inner)
+        self._bind_scroll_targets(canvas, inner)
+
+    def _bind_scroll_targets(self, canvas: tk.Canvas, inner: tk.Frame):
+        def _wheel(event):
+            if getattr(event, "state", 0) & 0x1:
+                return
+            delta = getattr(event, "delta", 0)
+            if delta == 0:
+                return
+            units = delta if abs(delta) < 40 else delta / 120.0
+            self._queue_scroll(-units * COHERENCE_SCORES_SCROLL_STEP)
+            return "break"
+
+        def _wheel_up(_event):
+            self._queue_scroll(-COHERENCE_SCORES_SCROLL_STEP)
+            return "break"
+
+        def _wheel_down(_event):
+            self._queue_scroll(COHERENCE_SCORES_SCROLL_STEP)
+            return "break"
+
+        def _bind_widget_tree(widget):
+            widget.bind("<MouseWheel>", _wheel)
+            widget.bind("<Button-4>", _wheel_up)
+            widget.bind("<Button-5>", _wheel_down)
+            for child in widget.winfo_children():
+                _bind_widget_tree(child)
+
+        _bind_widget_tree(canvas)
+        _bind_widget_tree(inner)
+
+    def _queue_scroll(self, delta: float):
+        if not self._scroll_canvas:
+            return
+        self._scroll_vy += delta
+        if self._scroll_anim is None:
+            self._scroll_tick()
+
+    def _scroll_tick(self):
+        canvas = self._scroll_canvas
+        if canvas is None:
+            self._scroll_anim = None
+            return
+        self._scroll_vy *= COHERENCE_SCORES_SCROLL_DECAY
+        if abs(self._scroll_vy) < COHERENCE_SCORES_SCROLL_CUTOFF:
+            self._scroll_vy = 0.0
+            self._scroll_anim = None
+            return
+        y1, y2 = canvas.yview()
+        span = y2 - y1
+        if span >= 1.0:
+            self._scroll_vy = 0.0
+            self._scroll_anim = None
+            return
+        next_y = max(0.0, min(1.0 - span, y1 + self._scroll_vy))
+        if abs(next_y - y1) < 1e-6:
+            self._scroll_vy = 0.0
+            self._scroll_anim = None
+            return
+        canvas.yview_moveto(next_y)
+        self._scroll_anim = canvas.after(COHERENCE_SCORES_SCROLL_FRAME_MS, self._scroll_tick)
 
     # ------------------------------------------------------------------
 
     def _draw_table(self, frame: tk.Frame):
-        pad        = 2
-        col_widths = [6, 12, 18, 20]
-
-        # ---- Header row ----
-        headers = [
-            ("Policy",    "Policy code",                          "Policy"),
-            ("Entropy",   "Shannon entropy H (base 2)\n"
-                          "0 = fully concentrated\n"
-                          "log2(n-1) = perfectly distributed",    "Entropy"),
-            ("Category",  "Influence distribution category\n"
-                          "based on fraction of max entropy",     "Category"),
-            ("Full Policy Name", "Full policy name",              "Full Policy Name"),
+        pad = COHERENCE_SCORES_TABLE_CELL_GAP
+        col_widths = [10, 10, 14]
+        col_weights = [1, 1, 1, 4]
+        col_mins = [
+            COHERENCE_SCORES_POLICY_COL_MIN,
+            COHERENCE_SCORES_WOI_COL_MIN,
+            COHERENCE_SCORES_WOI_COL_MIN,
+            COHERENCE_SCORES_FULL_NAME_COL_MIN,
         ]
 
-        for col, (hdr, tip, _) in enumerate(headers):
+        for col, (weight, minsize) in enumerate(zip(col_weights, col_mins)):
+            frame.grid_columnconfigure(col, weight=weight, minsize=minsize)
+
+        headers = [
+            ("Policy", "Policy code"),
+            ("Entropy", "Shannon entropy H (base 2)\n0 = fully concentrated\nlog2(n-1) = perfectly distributed"),
+            ("Category", "Influence distribution category\nbased on fraction of max entropy"),
+        ]
+
+        for col, ((hdr, tip), width) in enumerate(zip(headers, col_widths)):
             lbl = tk.Label(
                 frame,
                 text=hdr,
-                width=col_widths[col] if col < len(col_widths) else 20,
-                font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
-                bg=COLOR_ACCENT, fg="#ffffff",
-                relief="flat", padx=8, pady=8,
+                font=(FONT_FAMILY, COHERENCE_SCORES_TABLE_HEADER_SIZE, "bold"),
+                bg=COHERENCE_SCORES_TABLE_HEADER_BG, fg=COHERENCE_SCORES_TABLE_HEADER_FG,
+                relief="flat", bd=0, padx=8, pady=COHERENCE_SCORES_TABLE_HEADER_PADY,
                 anchor="center",
+                highlightthickness=1,
+                highlightbackground=COHERENCE_SCORES_TABLE_BORDER,
+                highlightcolor=COHERENCE_SCORES_TABLE_BORDER,
             )
+            lbl.configure(width=width)
             lbl.grid(row=0, column=col, padx=pad, pady=(8, pad), sticky="nsew")
             _Tooltip(lbl, tip)
 
-        # ---- Data rows ----
-        for r, row in enumerate(self._rows):
-            bg_row = "#ffffff" if r % 2 == 0 else "#f4f1ec"
+        tk.Label(
+            frame,
+            text="Full Policy Name",
+            font=(FONT_FAMILY, COHERENCE_SCORES_TABLE_HEADER_SIZE, "bold"),
+            bg=COHERENCE_SCORES_TABLE_HEADER_BG, fg=COHERENCE_SCORES_TABLE_HEADER_FG,
+            relief="flat", bd=0, padx=12, pady=COHERENCE_SCORES_TABLE_HEADER_PADY,
+            anchor="w",
+            highlightthickness=1,
+            highlightbackground=COHERENCE_SCORES_TABLE_BORDER,
+            highlightcolor=COHERENCE_SCORES_TABLE_BORDER,
+        ).grid(row=0, column=3, padx=pad, pady=(8, pad), sticky="nsew")
 
-            # Policy code
+        for r, row in enumerate(self._rows):
+            bg_row = COHERENCE_SCORES_TABLE_ROW_EVEN_BG if r % 2 == 0 else COHERENCE_SCORES_TABLE_ROW_ODD_BG
+            frame.grid_rowconfigure(r + 1, weight=0)
+
             tk.Label(
                 frame,
                 text=row["code"],
                 width=col_widths[0],
                 font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"),
-                bg=bg_row, fg=COLOR_TEXT,
-                relief="groove", borderwidth=1,
-                padx=8, pady=7,
+                bg=bg_row, fg=COHERENCE_SCORES_TABLE_POLICY_FG,
+                relief="flat", bd=0,
+                padx=8, pady=COHERENCE_SCORES_TABLE_BODY_PADY,
                 anchor="center",
+                highlightthickness=1,
+                highlightbackground=COHERENCE_SCORES_TABLE_BORDER,
+                highlightcolor=COHERENCE_SCORES_TABLE_BORDER,
             ).grid(row=r + 1, column=0, padx=pad, pady=pad, sticky="nsew")
 
-            # Entropy value
             tk.Label(
                 frame,
                 text=f"{row['entropy']:.4f}",
                 width=col_widths[1],
                 font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-                bg=bg_row, fg=COLOR_TEXT,
-                relief="groove", borderwidth=1,
-                padx=8, pady=7,
+                bg=bg_row, fg=COHERENCE_SCORES_TABLE_BODY_FG,
+                relief="flat", bd=0,
+                padx=8, pady=COHERENCE_SCORES_TABLE_BODY_PADY,
                 anchor="center",
+                highlightthickness=1,
+                highlightbackground=COHERENCE_SCORES_TABLE_BORDER,
+                highlightcolor=COHERENCE_SCORES_TABLE_BORDER,
             ).grid(row=r + 1, column=1, padx=pad, pady=pad, sticky="nsew")
 
-            # Category
             cat_bg, cat_fg = _CAT_COLORS[row["category"]]
             tk.Label(
                 frame,
@@ -295,20 +447,25 @@ class RangeOfInfluenceTab(tk.Frame):
                 width=col_widths[2],
                 font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"),
                 bg=cat_bg, fg=cat_fg,
-                relief="groove", borderwidth=1,
-                padx=8, pady=7,
+                relief="flat", bd=0,
+                padx=8, pady=COHERENCE_SCORES_TABLE_BODY_PADY,
                 anchor="center",
+                highlightthickness=1,
+                highlightbackground=COHERENCE_SCORES_TABLE_BORDER,
+                highlightcolor=COHERENCE_SCORES_TABLE_BORDER,
             ).grid(row=r + 1, column=2, padx=pad, pady=pad, sticky="nsew")
 
-            # Full policy name
             tk.Label(
                 frame,
                 text=row["policy"],
                 font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-                bg=bg_row, fg=COLOR_TEXT,
-                relief="groove", borderwidth=1,
-                padx=12, pady=7,
+                bg=bg_row, fg=COHERENCE_SCORES_TABLE_BODY_FG,
+                relief="flat", bd=0,
+                padx=14, pady=COHERENCE_SCORES_TABLE_BODY_PADY,
                 anchor="w",
+                highlightthickness=1,
+                highlightbackground=COHERENCE_SCORES_TABLE_BORDER,
+                highlightcolor=COHERENCE_SCORES_TABLE_BORDER,
             ).grid(row=r + 1, column=3, padx=pad, pady=pad, sticky="nsew")
 
 
