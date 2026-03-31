@@ -63,6 +63,7 @@ FONT_SIZE_SMALL  = 9
 FONT_SIZE_NORMAL = 10
 FONT_SIZE_HEADER = 11
 FONT_SIZE_TITLE  = 14
+FONT_SIZE_PAGE_TITLE = 30
 
 # -----------------------------------------------------------------------------
 # Matrix cell dimensions (in Tk character units)
@@ -78,6 +79,7 @@ COLOR_BG         = "#ffffff"   # white -- main background
 COLOR_PANEL      = "#eae7e0"   # slightly darker -- toolbar / info bars
 COLOR_ACCENT     = "#2c4a6e"   # deep navy -- headers, buttons, active tabs
 COLOR_ACCENT2    = "#5a7fa8"   # lighter navy -- secondary actions
+COLOR_PAGE_TITLE = "#37506d"   # large page titles
 COLOR_TEXT       = "#1e1e1e"   # near-black -- body text
 COLOR_TEXT_LIGHT = "#666666"   # muted -- hints, labels, subtitles
 COLOR_BORDER     = "#c8c4bc"   # dividers and separators

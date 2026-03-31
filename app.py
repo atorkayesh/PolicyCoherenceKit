@@ -84,6 +84,50 @@ def _rrect_pts(x1, y1, x2, y2, r, steps=10):
     return pts
 
 
+def _scroll_canvas_x_by_pixels(canvas, dx_px):
+    """Move a horizontally scrollable canvas by a pixel delta."""
+    x1, x2 = canvas.xview()
+    span = x2 - x1
+    if span >= 1.0:
+        return False
+    cw = canvas.winfo_width()
+    if cw <= 0:
+        return False
+    next_x = max(0.0, min(1.0 - span, x1 + dx_px * span / cw))
+    if abs(next_x - x1) < 1e-6:
+        return False
+    canvas.xview_moveto(next_x)
+    return True
+
+
+def _animate_canvas_x_scroll(canvas, state, delta_px, duration=180):
+    """Animate horizontal canvas scrolling with eased motion."""
+    if not delta_px:
+        return
+    if state["anim"][0]:
+        canvas.after_cancel(state["anim"][0])
+        state["anim"][0] = None
+
+    steps = max(8, int(duration / 16))
+    remaining = [float(delta_px)]
+    frame = [0]
+
+    def _tick():
+        if frame[0] >= steps:
+            state["anim"][0] = None
+            return
+        frame[0] += 1
+        portion = 1.0 / (steps - frame[0] + 1)
+        move_px = remaining[0] * portion
+        remaining[0] -= move_px
+        if _scroll_canvas_x_by_pixels(canvas, move_px):
+            state["anim"][0] = canvas.after(16, _tick)
+        else:
+            state["anim"][0] = None
+
+    state["anim"][0] = canvas.after(16, _tick)
+
+
 # =============================================================================
 # Project data container
 # =============================================================================
@@ -1461,13 +1505,28 @@ class PolicyCoherenceApp:
             lambda e: _dm_scroll_c.itemconfig(_dm_bar_win, height=e.height))
         dm_tab_bar.bind("<Configure>",
             lambda e: _dm_scroll_c.configure(scrollregion=(0, 0, e.width, e.height)))
-        _scroll_fn = lambda e, c=_dm_scroll_c: c.xview_scroll(-1 if e.delta > 0 else 1, "units")
+        def _scroll_fn(e, c=_dm_scroll_c, d=None):
+            raw = getattr(e, "delta", 0)
+            if not raw:
+                return
+            steps = raw if sys.platform == "darwin" else raw / 120.0
+            _animate_canvas_x_scroll(c, d, -steps * 140, duration=220)
         _dm_scroll_c.bind("<MouseWheel>", _scroll_fn)
         dm_tab_bar.bind("<MouseWheel>", _scroll_fn)
 
         # ── Drag-to-scroll with momentum on the tab bar ───────────────
         _dm_drag = {"x": 0, "dragging": False, "vx": 0.0,
                     "history": [], "anim": [None]}
+        _scroll_fn = lambda e, c=_dm_scroll_c, d=_dm_drag: (
+            _animate_canvas_x_scroll(
+                c, d,
+                -(getattr(e, "delta", 0) if sys.platform == "darwin"
+                  else getattr(e, "delta", 0) / 120.0) * 140,
+                duration=220,
+            ) if getattr(e, "delta", 0) else None
+        )
+        _dm_scroll_c.bind("<MouseWheel>", _scroll_fn)
+        dm_tab_bar.bind("<MouseWheel>", _scroll_fn)
 
         def _dm_drag_start(e, d=_dm_drag, c=_dm_scroll_c):
             if d["anim"][0]:
@@ -1485,7 +1544,7 @@ class PolicyCoherenceApp:
             # Keep a 80 ms position history for stable velocity estimation
             d["history"].append((e.time, e.x_root))
             d["history"] = [(t, x) for t, x in d["history"]
-                            if e.time - t <= 80]
+                            if e.time - t <= 120]
             if len(d["history"]) >= 2:
                 t0, x0 = d["history"][0]
                 t1, x1 = d["history"][-1]
@@ -1496,36 +1555,24 @@ class PolicyCoherenceApp:
                 d["dragging"] = True
             if not d["dragging"]:
                 return
-            x1v, x2v = c.xview()
-            span = x2v - x1v
-            if span >= 1.0:
-                return
-            cw = c.winfo_width()
-            if cw > 0:
-                c.xview_moveto(max(0.0, min(1.0 - span, x1v + dx * span / cw)))
+            _scroll_canvas_x_by_pixels(c, dx)
 
         def _dm_drag_end(e, c=_dm_scroll_c, d=_dm_drag):
             vx = [d["vx"]]
 
             def _coast():
-                if abs(vx[0]) < 0.08:         # stop when imperceptibly slow
+                if abs(vx[0]) < 0.03:
                     d["anim"][0] = None
                     d["dragging"] = False
                     return
-                x1, x2 = c.xview()
-                span = x2 - x1
-                if span >= 1.0:
+                if not _scroll_canvas_x_by_pixels(c, vx[0] * 16):
                     d["anim"][0] = None
                     d["dragging"] = False
                     return
-                cw = c.winfo_width()
-                if cw > 0:
-                    px = vx[0] * 16           # pixels this frame at 60 fps
-                    c.xview_moveto(max(0.0, min(1.0 - span, x1 + px * span / cw)))
-                vx[0] *= 0.92                 # gentle friction — feels like glass
+                vx[0] *= 0.95
                 d["anim"][0] = c.after(16, _coast)
 
-            if abs(d["vx"]) > 0.08:
+            if abs(d["vx"]) > 0.03:
                 d["anim"][0] = c.after(16, _coast)
             else:
                 d["dragging"] = False
@@ -1544,12 +1591,29 @@ class PolicyCoherenceApp:
             lambda e: _an_scroll_c.itemconfig(_an_bar_win, height=e.height))
         an_tab_bar.bind("<Configure>",
             lambda e: _an_scroll_c.configure(scrollregion=(0, 0, e.width, e.height)))
-        _an_scroll_fn = lambda e, c=_an_scroll_c: c.xview_scroll(-1 if e.delta > 0 else 1, "units")
+        _an_scroll_fn = lambda e, c=_an_scroll_c, d=None: (
+            _animate_canvas_x_scroll(
+                c, d,
+                -(getattr(e, "delta", 0) if sys.platform == "darwin"
+                  else getattr(e, "delta", 0) / 120.0) * 140,
+                duration=220,
+            ) if getattr(e, "delta", 0) else None
+        )
         _an_scroll_c.bind("<MouseWheel>", _an_scroll_fn)
         an_tab_bar.bind("<MouseWheel>", _an_scroll_fn)
 
         _an_drag = {"x": 0, "dragging": False, "vx": 0.0,
                     "history": [], "anim": [None]}
+        _an_scroll_fn = lambda e, c=_an_scroll_c, d=_an_drag: (
+            _animate_canvas_x_scroll(
+                c, d,
+                -(getattr(e, "delta", 0) if sys.platform == "darwin"
+                  else getattr(e, "delta", 0) / 120.0) * 140,
+                duration=220,
+            ) if getattr(e, "delta", 0) else None
+        )
+        _an_scroll_c.bind("<MouseWheel>", _an_scroll_fn)
+        an_tab_bar.bind("<MouseWheel>", _an_scroll_fn)
 
         def _an_drag_start(e, d=_an_drag, c=_an_scroll_c):
             if d["anim"][0]:
@@ -1564,7 +1628,7 @@ class PolicyCoherenceApp:
             dx = d["x"] - e.x_root
             d["x"] = e.x_root
             d["history"].append((e.time, e.x_root))
-            d["history"] = [(t, x) for t, x in d["history"] if e.time - t <= 80]
+            d["history"] = [(t, x) for t, x in d["history"] if e.time - t <= 120]
             if len(d["history"]) >= 2:
                 t0, x0 = d["history"][0]
                 t1, x1 = d["history"][-1]
@@ -1574,36 +1638,24 @@ class PolicyCoherenceApp:
                 d["dragging"] = True
             if not d["dragging"]:
                 return
-            x1v, x2v = c.xview()
-            span = x2v - x1v
-            if span >= 1.0:
-                return
-            cw = c.winfo_width()
-            if cw > 0:
-                c.xview_moveto(max(0.0, min(1.0 - span, x1v + dx * span / cw)))
+            _scroll_canvas_x_by_pixels(c, dx)
 
         def _an_drag_end(e, c=_an_scroll_c, d=_an_drag):
             vx = [d["vx"]]
 
             def _coast():
-                if abs(vx[0]) < 0.08:
+                if abs(vx[0]) < 0.03:
                     d["anim"][0] = None
                     d["dragging"] = False
                     return
-                x1, x2 = c.xview()
-                span = x2 - x1
-                if span >= 1.0:
+                if not _scroll_canvas_x_by_pixels(c, vx[0] * 16):
                     d["anim"][0] = None
                     d["dragging"] = False
                     return
-                cw = c.winfo_width()
-                if cw > 0:
-                    px = vx[0] * 16
-                    c.xview_moveto(max(0.0, min(1.0 - span, x1 + px * span / cw)))
-                vx[0] *= 0.92
+                vx[0] *= 0.95
                 d["anim"][0] = c.after(16, _coast)
 
-            if abs(d["vx"]) > 0.08:
+            if abs(d["vx"]) > 0.03:
                 d["anim"][0] = c.after(16, _coast)
             else:
                 d["dragging"] = False
@@ -2592,9 +2644,14 @@ class PolicyCoherenceApp:
 
         # Forward mousewheel to the horizontal scroll canvas
         _sc = getattr(proj, "_dm_scroll_c", None)
+        _ds = getattr(proj, "_dm_drag", None)
         if _sc:
             def _hscroll(e, c=_sc):
-                c.xview_scroll(-1 if e.delta > 0 else 1, "units")
+                raw = getattr(e, "delta", 0)
+                if not raw:
+                    return
+                steps = raw if sys.platform == "darwin" else raw / 120.0
+                _animate_canvas_x_scroll(c, _ds, -steps * 140, duration=220)
             for w in (container, lbl, ul):
                 w.bind("<MouseWheel>", _hscroll)
 
@@ -2664,9 +2721,14 @@ class PolicyCoherenceApp:
                 w.bind("<ButtonRelease-1>", _on_release)
 
             _sc = getattr(proj, "_an_scroll_c", None)
+            _ds = getattr(proj, "_an_drag", None)
             if _sc:
                 def _hscroll(e, c=_sc):
-                    c.xview_scroll(-1 if e.delta > 0 else 1, "units")
+                    raw = getattr(e, "delta", 0)
+                    if not raw:
+                        return
+                    steps = raw if sys.platform == "darwin" else raw / 120.0
+                    _animate_canvas_x_scroll(c, _ds, -steps * 140, duration=220)
                 for w in (container, lbl, ul):
                     w.bind("<MouseWheel>", _hscroll)
 
