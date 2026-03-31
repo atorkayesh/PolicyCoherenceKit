@@ -49,6 +49,7 @@ from theme import (
     COHERENCE_SCORES_TABLE_POLICY_FG,
     COHERENCE_SCORES_TABLE_BODY_PADY,
     COHERENCE_SCORES_TABLE_BORDER,
+    TOPBAR_DIVIDER_COLOR,
 )
 
 # Category colours
@@ -163,7 +164,7 @@ class RangeOfInfluenceTab(tk.Frame):
     def _build(self):
         self._build_info_bar()
         self._build_legend()
-        tk.Frame(self, bg=COLOR_BORDER, height=1).pack(fill="x", pady=4)
+        tk.Frame(self, bg=TOPBAR_DIVIDER_COLOR, height=1).pack(fill="x", pady=4)
         self._build_table()
 
     # ------------------------------------------------------------------
@@ -199,7 +200,7 @@ class RangeOfInfluenceTab(tk.Frame):
 
     def _build_legend(self):
         leg = tk.Frame(self, bg=COLOR_BG)
-        leg.pack(fill="x", padx=16, pady=(10, 12))
+        leg.pack(fill="x", padx=16, pady=(10, 0))
 
         tk.Label(
             leg,
@@ -212,7 +213,7 @@ class RangeOfInfluenceTab(tk.Frame):
         ).pack(anchor="w", pady=(4, 14))
 
         cat_row = tk.Frame(leg, bg=COLOR_BG)
-        cat_row.pack(fill="x")
+        cat_row.pack(fill="x", pady=(0, 4))
 
         tk.Label(
             cat_row,
@@ -271,7 +272,7 @@ class RangeOfInfluenceTab(tk.Frame):
 
     def _build_table(self):
         shell = tk.Frame(self, bg=COLOR_BG)
-        shell.pack(fill="both", expand=True, padx=COHERENCE_SCORES_TABLE_PADX, pady=(8, COHERENCE_SCORES_TABLE_PADY_BOTTOM))
+        shell.pack(fill="both", expand=True, padx=COHERENCE_SCORES_TABLE_PADX, pady=(0, COHERENCE_SCORES_TABLE_PADY_BOTTOM))
 
         canvas = tk.Canvas(shell, bg=COLOR_BG, highlightthickness=0)
         self._scroll_canvas = canvas

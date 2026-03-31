@@ -11,6 +11,7 @@
 
 import math
 import tkinter as tk
+import tkinter.font as tkFont
 from tkinter import ttk
 from typing import List, Tuple, Optional
 
@@ -18,10 +19,21 @@ from aggregator import AggregationResult
 from range_of_influence_tab import compute_entropy, _CAT_COLORS
 from constants import (
     FONT_FAMILY, FONT_SIZE_SMALL, FONT_SIZE_NORMAL,
-    FONT_SIZE_HEADER,
+    FONT_SIZE_HEADER, FONT_SIZE_PAGE_TITLE,
     COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_ACCENT2,
-    COLOR_TEXT, COLOR_TEXT_LIGHT, COLOR_BORDER,
+    COLOR_TEXT, COLOR_TEXT_LIGHT, COLOR_BORDER, COLOR_PAGE_TITLE,
     CURSOR_HAND,
+)
+from theme import (
+    TOPBAR_EXCEL_BG,
+    TOPBAR_EXCEL_HOVER_BG,
+    TOPBAR_EXCEL_BORDER,
+    TOPBAR_EXCEL_FG,
+    TOPBAR_EXCEL_HEIGHT,
+    TOPBAR_EXCEL_RADIUS,
+    TOPBAR_EXCEL_ICON_SIZE,
+    TOPBAR_EXCEL_ICON_GAP,
+    TOPBAR_EXCEL_PADX,
 )
 
 # Default point colour (single-colour mode)
@@ -30,6 +42,20 @@ _POINT_RADIUS  = 16
 _CANVAS_W      = 680
 _CANVAS_H      = 520
 _MARGIN        = 60
+
+
+def _rrect_pts(x1, y1, x2, y2, r, steps=10):
+    pts = []
+    for cx, cy, a0 in [
+        (x2 - r, y1 + r, -90),
+        (x2 - r, y2 - r, 0),
+        (x1 + r, y2 - r, 90),
+        (x1 + r, y1 + r, 180),
+    ]:
+        for i in range(steps + 1):
+            a = math.radians(a0 + 90 * i / steps)
+            pts += [cx + r * math.cos(a), cy + r * math.sin(a)]
+    return pts
 
 
 # =============================================================================
@@ -127,7 +153,6 @@ class PCATab(tk.Frame):
 
     def _build(self):
         self._build_info_bar()
-        tk.Frame(self, bg=COLOR_BORDER, height=1).pack(fill="x", pady=4)
 
         if not self._valid:
             msg = self._error or "PCA requires at least 3 policies."
@@ -140,13 +165,19 @@ class PCATab(tk.Frame):
 
         self._build_controls()
         self._build_canvas()
+        self._build_hover_hint()
         self._build_legend_bar()
 
     # ------------------------------------------------------------------
 
     def _build_info_bar(self):
-        bar = tk.Frame(self, bg=COLOR_PANEL, pady=8)
+        bar = tk.Frame(self, bg=COLOR_BG, pady=8)
         bar.pack(fill="x")
+        bar.grid_columnconfigure(0, weight=1)
+        bar.grid_columnconfigure(1, weight=0)
+
+        content = tk.Frame(bar, bg=COLOR_BG)
+        content.grid(row=0, column=0, sticky="w", padx=16)
 
         method_label = {
             "average":  "Average",
@@ -155,21 +186,101 @@ class PCATab(tk.Frame):
         }.get(self._result.method, self._result.method.title())
 
         tk.Label(
-            bar,
-            text=f"PCA — Policy Influence Space  ({method_label})",
-            font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
-            bg=COLOR_PANEL, fg=COLOR_ACCENT,
-        ).pack(side="left", padx=16)
+            content,
+            text=f"PCA  —  {method_label}",
+            font=(FONT_FAMILY, FONT_SIZE_PAGE_TITLE, "normal"),
+            bg=COLOR_BG, fg=COLOR_PAGE_TITLE,
+        ).pack(side="left")
 
         if self._valid:
             pct1, pct2 = self._explained
             tk.Label(
-                bar,
+                content,
                 text=(f"PC1: {pct1}%   PC2: {pct2}%   "
                       f"Total explained: {round(pct1+pct2,1)}%"),
-                font=(FONT_FAMILY, FONT_SIZE_NORMAL, "italic"),
-                bg=COLOR_PANEL, fg=COLOR_TEXT_LIGHT,
-            ).pack(side="left", padx=6)
+                font=(FONT_FAMILY, 11, "italic"),
+                bg=COLOR_BG, fg="#a3a3a3",
+            ).pack(side="left", padx=(18, 0))
+
+    def _build_save_button(self, parent: tk.Misc):
+        label = "Save as PNG"
+        btn_font = tkFont.Font(family=FONT_FAMILY, size=11)
+        text_w = btn_font.measure(label)
+        btn_w = TOPBAR_EXCEL_PADX + TOPBAR_EXCEL_ICON_SIZE + TOPBAR_EXCEL_ICON_GAP + text_w + TOPBAR_EXCEL_PADX
+
+        btn = tk.Canvas(
+            parent,
+            width=btn_w + 2,
+            height=TOPBAR_EXCEL_HEIGHT + 2,
+            bg=COLOR_BG,
+            highlightthickness=0,
+            cursor=CURSOR_HAND,
+        )
+        btn.grid(row=0, column=1, sticky="e", padx=16)
+
+        hover = {"value": 0.0, "job": None}
+
+        def _draw(color: str):
+            btn.delete("all")
+            pts = _rrect_pts(1, 1, btn_w + 1, TOPBAR_EXCEL_HEIGHT + 1, TOPBAR_EXCEL_RADIUS)
+            btn.create_polygon(*pts, fill=color, outline=TOPBAR_EXCEL_BORDER, width=1)
+            cy = 1 + TOPBAR_EXCEL_HEIGHT // 2
+            content_w = TOPBAR_EXCEL_ICON_SIZE + TOPBAR_EXCEL_ICON_GAP + text_w
+            ix = 1 + (btn_w - content_w) // 2
+            iy = 1 + (TOPBAR_EXCEL_HEIGHT - TOPBAR_EXCEL_ICON_SIZE) // 2
+            self._draw_image_down_icon(btn, ix, iy, TOPBAR_EXCEL_FG)
+            btn.create_text(
+                ix + TOPBAR_EXCEL_ICON_SIZE + TOPBAR_EXCEL_ICON_GAP,
+                cy,
+                text=label,
+                fill=TOPBAR_EXCEL_FG,
+                anchor="w",
+                font=btn_font,
+            )
+
+        def _animate(target: float):
+            if hover["job"]:
+                btn.after_cancel(hover["job"])
+                hover["job"] = None
+
+            def _tick():
+                diff = target - hover["value"]
+                if abs(diff) < 0.02:
+                    hover["value"] = target
+                    _draw(TOPBAR_EXCEL_HOVER_BG if target else TOPBAR_EXCEL_BG)
+                    hover["job"] = None
+                    return
+                hover["value"] += diff * 0.3
+                mix = TOPBAR_EXCEL_HOVER_BG if hover["value"] >= 0.5 else TOPBAR_EXCEL_BG
+                _draw(mix)
+                hover["job"] = btn.after(16, _tick)
+
+            _tick()
+
+        btn.bind("<Enter>", lambda _e: _animate(1.0))
+        btn.bind("<Leave>", lambda _e: _animate(0.0))
+        btn.bind("<Button-1>", lambda _e: self._save_canvas())
+        _draw(TOPBAR_EXCEL_BG)
+
+    def _draw_image_down_icon(self, canvas: tk.Canvas, ox: int, oy: int, fg: str):
+        s = TOPBAR_EXCEL_ICON_SIZE / 24.0
+        lw = 1.35
+        kw = dict(fill=fg, width=lw, capstyle="round", joinstyle="round")
+        canvas.create_line(
+            10.3*s+ox, 21*s+oy, 5*s+ox, 21*s+oy,
+            3*s+ox, 19*s+oy, 3*s+ox, 5*s+oy,
+            5*s+ox, 3*s+oy, 19*s+ox, 3*s+oy,
+            21*s+ox, 5*s+oy, 21*s+ox, 15*s+oy,
+            **kw,
+        )
+        canvas.create_line(
+            21*s+ox, 15*s+oy, 17.9*s+ox, 11.9*s+oy,
+            15.086*s+ox, 11.914*s+oy, 6*s+ox, 21*s+oy,
+            **kw,
+        )
+        canvas.create_line(17*s+ox, 16.5*s+oy, 17*s+ox, 22*s+oy, **kw)
+        canvas.create_line(14*s+ox, 19*s+oy, 17*s+ox, 22*s+oy, 20*s+ox, 19*s+oy, **kw)
+        canvas.create_oval(7*s+ox, 7*s+oy, 11*s+ox, 11*s+oy, outline=fg, width=lw)
 
     # ------------------------------------------------------------------
 
@@ -180,8 +291,8 @@ class PCATab(tk.Frame):
         tk.Label(
             ctrl,
             text="Colour by entropy category:",
-            font=(FONT_FAMILY, FONT_SIZE_SMALL),
-            bg=COLOR_BG, fg=COLOR_TEXT,
+            font=(FONT_FAMILY, 10, "normal"),
+            bg=COLOR_BG, fg="#a3a3a3",
         ).pack(side="left", padx=(0, 6))
 
         cb = tk.Checkbutton(
@@ -209,16 +320,15 @@ class PCATab(tk.Frame):
         self._canvas.pack(fill="both", expand=True)
         self._canvas.bind("<Configure>", lambda e: self._redraw_debounced())
 
-        # Save button
-        save_row = tk.Frame(self, bg=COLOR_BG)
-        save_row.pack(anchor="e", padx=16, pady=(2, 6))
-        tk.Button(
-            save_row, text="Save as PNG",
-            command=self._save_canvas,
-            font=(FONT_FAMILY, FONT_SIZE_SMALL),
-            bg=COLOR_PANEL, fg=COLOR_ACCENT,
-            relief="flat", padx=8, pady=3, cursor=CURSOR_HAND,
-        ).pack(side="right")
+    def _build_hover_hint(self):
+        self._hover_hint = tk.Label(
+            self,
+            text="Hover over a point to see the full policy name.",
+            font=(FONT_FAMILY, FONT_SIZE_SMALL, "italic"),
+            bg=COLOR_BG,
+            fg="#a3a3a3",
+        )
+        self._hover_hint.pack(anchor="w", padx=16, pady=(0, 8))
 
     # ------------------------------------------------------------------
 
@@ -264,6 +374,8 @@ class PCATab(tk.Frame):
     def _build_legend_bar(self):
         self._legend_frame = tk.Frame(self, bg=COLOR_BG)
         self._legend_frame.pack(fill="x", padx=16, pady=(0, 8))
+        self._legend_frame.grid_columnconfigure(0, weight=1)
+        self._legend_frame.grid_columnconfigure(1, weight=0)
         self._update_legend()
 
     # ------------------------------------------------------------------
@@ -273,27 +385,27 @@ class PCATab(tk.Frame):
             w.destroy()
 
         if self._colour_mode.get():
+            left = tk.Frame(self._legend_frame, bg=COLOR_BG)
+            left.grid(row=0, column=0, sticky="ew")
+
             tk.Label(
-                self._legend_frame,
+                left,
                 text="Entropy categories:",
-                font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"),
-                bg=COLOR_BG, fg=COLOR_TEXT,
-            ).pack(side="left", padx=(0, 10))
+                font=(FONT_FAMILY, 10, "normal"),
+                bg=COLOR_BG, fg="#a3a3a3",
+            ).pack(side="left", padx=(0, 16))
             for cat, (bg, fg) in _CAT_COLORS.items():
+                item = tk.Frame(left, bg=COLOR_BG)
+                item.pack(side="left", padx=(0, 8))
                 tk.Label(
-                    self._legend_frame,
+                    item,
                     text=f"  {cat}  ",
                     font=(FONT_FAMILY, FONT_SIZE_SMALL),
                     bg=bg, fg=fg,
                     padx=6, pady=2, relief="flat",
-                ).pack(side="left", padx=2)
-        else:
-            tk.Label(
-                self._legend_frame,
-                text="Hover over a point to see the full policy name.",
-                font=(FONT_FAMILY, FONT_SIZE_SMALL, "italic"),
-                bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
-            ).pack(side="left")
+                ).pack(side="left")
+
+        self._build_save_button(self._legend_frame)
 
     # ------------------------------------------------------------------
 

@@ -755,13 +755,12 @@ class ResultsInsightsTab(tk.Frame):
         for idx, (value, label, value_fg, label_fg) in enumerate(stats):
             row = tk.Frame(body, bg=_BANNER_RIGHT_BG)
             row.pack(
-                anchor="w",
                 fill="x",
                 padx=pad_x,
                 pady=(0, row_gap if idx < len(stats) - 1 else pad_y),
             )
             row.grid_columnconfigure(0, minsize=value_width)
-            row.grid_columnconfigure(1, weight=1)
+            row.grid_columnconfigure(1, weight=1, minsize=96)
             tk.Label(
                 row,
                 text=value,
@@ -776,8 +775,9 @@ class ResultsInsightsTab(tk.Frame):
                 font=(FONT_FAMILY, 10, "normal"),
                 bg=_BANNER_RIGHT_BG,
                 fg=label_fg,
-                anchor="w",
-            ).grid(row=0, column=1, sticky="w")
+                anchor="e",
+                justify="right",
+            ).grid(row=0, column=1, sticky="e")
         return card
 
     def _system_health_card(self, parent: tk.Frame) -> tk.Frame:

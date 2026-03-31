@@ -195,6 +195,7 @@ class Project:
     matrices:    List[PolicyMatrix] = field(default_factory=list)
     agg_results: List[AggregationResult] = field(default_factory=list)
     agg_tab_ids: List[str] = field(default_factory=list)   # inner notebook tab ids
+    analysis_tab_meta: dict = field(default_factory=dict, repr=False)
     notebook:    Optional[ttk.Notebook] = field(default=None, repr=False)
     frame:       Optional[tk.Frame]     = field(default=None, repr=False)
 
@@ -1844,7 +1845,8 @@ class PolicyCoherenceApp:
         analysis_nb.pack(fill="both", expand=True)
         proj._analysis_nb = analysis_nb
         analysis_nb.bind("<<NotebookTabChanged>>",
-                         lambda e, p=proj: (self._update_analysis_breadcrumb(p),
+                         lambda e, p=proj: (self._ensure_selected_analysis_tab_loaded(p),
+                                            self._update_analysis_breadcrumb(p),
                                             self._refresh_an_underlines(p)))
 
         self.projects.append(proj)
@@ -1952,8 +1954,8 @@ class PolicyCoherenceApp:
                 _FG    = "#30455c"
                 _R     = 4
                 _f     = tkFont.Font(family=FONT_FAMILY, size=12, weight="bold")
-                bw = 35
-                bh = 35
+                bw = 37
+                bh = 37
                 wrap = tk.Frame(self._sidebar_proj_list, bg="#fafbfc")
                 wrap.pack(fill="x", pady=4)
                 bc = tk.Canvas(wrap, width=bw, height=bh,
@@ -2436,6 +2438,7 @@ class PolicyCoherenceApp:
                 proj._analysis_nb.forget(idx)
                 if tab_id in proj.agg_tab_ids:
                     proj.agg_tab_ids.remove(tab_id)
+                proj.analysis_tab_meta.pop(tab_id, None)
                 for i, (tid, _, _, cont) in enumerate(proj._an_tab_entries):
                     if str(tid) == str(tab_id):
                         cont.destroy()
@@ -2554,6 +2557,7 @@ class PolicyCoherenceApp:
             except tk.TclError:
                 pass
         proj.agg_tab_ids.clear()
+        proj.analysis_tab_meta.clear()
 
         tabs = [
             (f"  Results Insights ({method_label})  ",  ResultsInsightsTab),
@@ -2565,18 +2569,50 @@ class PolicyCoherenceApp:
             (f"  LLM Interpretation ({method_label})  ", LLMInterpretationTab),
         ]
 
-        first = True
+        first_tab_id = None
         for title, TabClass in tabs:
-            widget = TabClass(proj._analysis_nb, result)
-            proj._analysis_nb.add(widget, text=title)
+            host = tk.Frame(proj._analysis_nb, bg=COLOR_BG)
+            proj._analysis_nb.add(host, text=title)
             tab_id = proj._analysis_nb.tabs()[-1]
             proj.agg_tab_ids.append(tab_id)
-            if first:
-                proj._analysis_nb.select(widget)
-                first = False
+            proj.analysis_tab_meta[tab_id] = {
+                "host": host,
+                "tab_class": TabClass,
+                "result": result,
+                "loaded": False,
+            }
+            if first_tab_id is None:
+                first_tab_id = tab_id
+
+        if first_tab_id is not None:
+            self._ensure_analysis_tab_loaded(proj, first_tab_id)
+            proj._analysis_nb.select(first_tab_id)
 
         self._build_analysis_breadcrumb(proj)
         self._show_analysis_view(proj)
+
+    def _ensure_selected_analysis_tab_loaded(self, proj: Project):
+        try:
+            tab_id = proj._analysis_nb.select()
+        except (tk.TclError, AttributeError):
+            return
+        if tab_id:
+            self._ensure_analysis_tab_loaded(proj, tab_id)
+
+    def _ensure_analysis_tab_loaded(self, proj: Project, tab_id: str):
+        meta = proj.analysis_tab_meta.get(tab_id)
+        if not meta or meta.get("loaded"):
+            return
+
+        host = meta["host"]
+        tab_class = meta["tab_class"]
+        result = meta["result"]
+
+        widget = tab_class(host, result)
+        widget.pack(fill="both", expand=True)
+
+        meta["widget"] = widget
+        meta["loaded"] = True
 
     # ==================================================================
     # Analysis view navigation
