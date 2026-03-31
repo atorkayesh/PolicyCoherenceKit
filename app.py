@@ -319,8 +319,8 @@ class PolicyCoherenceApp:
         self._content.pack(side="left", fill="both", expand=True)
 
         self._build_topbar()
-        self._build_project_notebook()
         self._build_statusbar()
+        self._build_project_notebook()
         self._proj_nb.bind("<<NotebookTabChanged>>", self._on_project_tab_changed)
         self._update_topbar()
 
@@ -971,7 +971,10 @@ class PolicyCoherenceApp:
 
     def _build_project_notebook(self):
         self._proj_nb_container = tk.Frame(self._content, bg=COLOR_BG)
-        self._proj_nb_container.pack(fill="both", expand=True)
+        pack_kwargs = dict(fill="both", expand=True)
+        if hasattr(self, "_statusbar"):
+            pack_kwargs["before"] = self._statusbar
+        self._proj_nb_container.pack(**pack_kwargs)
         self._proj_nb = ttk.Notebook(self._proj_nb_container, style="Headless.TNotebook")
         self._proj_nb.pack(fill="both", expand=True)
 
@@ -1381,6 +1384,7 @@ class PolicyCoherenceApp:
                  font=tkFont.Font(family=FONT_FAMILY, size=10, weight="normal"),
                  bg="#ffffff", fg="#a6bcd3",
                  anchor="w", padx=12).pack(fill="both", expand=True)
+        self._statusbar = bar
 
     # ==================================================================
     # Project management
@@ -1774,6 +1778,7 @@ class PolicyCoherenceApp:
 
         # ── Analysis view (hidden until Run Analysis) ─────────────────────
         analysis_frame = tk.Frame(outer, bg=COLOR_BG)
+        analysis_frame.pack_propagate(False)
         proj._analysis_frame  = analysis_frame
         proj._in_analysis_view = False
 
@@ -2039,7 +2044,7 @@ class PolicyCoherenceApp:
             def _hover_out(e, animate=_dm_btn_animate):
                 animate(0.0)
 
-            dm_row.bind("<Configure>", lambda e, rb=_dm_rebuild_rr, t=_dm_btn_t: rb(
+            dm_row.bind("<Configure>", lambda e=None, rb=_dm_rebuild_rr, t=_dm_btn_t: rb(
                 _hex_interp(_NORMAL_BG, _HOVER_BG, t[0])))
             dm_row.after(50, lambda rb=_dm_rebuild_rr: rb(_NORMAL_BG))
 
@@ -2153,7 +2158,7 @@ class PolicyCoherenceApp:
                     if hasattr(m, "_tab"):
                         p.notebook.select(m._tab)
 
-                dm_item.bind("<Configure>", lambda e, rb=_item_rebuild_rr, t=_item_t:
+                dm_item.bind("<Configure>", lambda e=None, rb=_item_rebuild_rr, t=_item_t:
                              rb(_hex_interp(_NORMAL_BG, _DM_ITEM_HOVER, t[0])))
                 dm_item.after(50, lambda rb=_item_rebuild_rr: rb(_NORMAL_BG))
 
