@@ -316,7 +316,7 @@ class AggregationTab(tk.Frame):
             return
         canvas.delete("all")
 
-        label_text = "Aggregated ratings:"
+        label_text = "Aggregated score scale:"
         label_y = _LEGEND_H // 2
         temp = canvas.create_text(0, -1000, text=label_text, font=(FONT_FAMILY, 9, "italic"))
         label_box = canvas.bbox(temp)
@@ -420,7 +420,8 @@ class AggregationTab(tk.Frame):
             for j in range(self._n):
                 score = self._result.scores.get((i, j), 0.0)
                 bucket = 0 if i == j else _score_bucket(score)
-                label = _SCORE_TO_RATING[bucket]
+                label = f"{float(score or 0.0):.2f}"
+                rating = _SCORE_TO_RATING[bucket]
                 bg, fg = _SCORE_COLORS[bucket]
 
                 x1 = self._ox + j * (_CELL_W + _GAP)
@@ -441,10 +442,11 @@ class AggregationTab(tk.Frame):
                 if i != j:
                     tip = (
                         f"{self._result.codes[i]} -> {self._result.codes[j]}\n"
-                        f"{label} ({score:.2f})"
+                        f"Score: {float(score or 0.0):.2f}\n"
+                        f"Colour band: {rating}"
                     )
                 else:
-                    tip = f"{self._result.codes[i]} -> {self._result.codes[j]}\nNeutral (diagonal)"
+                    tip = f"{self._result.codes[i]} -> {self._result.codes[j]}\nScore: 0.00 (diagonal)"
                 canvas.tag_bind(
                     tag,
                     "<Enter>",

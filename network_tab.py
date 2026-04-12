@@ -85,6 +85,40 @@ def _thickness(score: float) -> float:
     return 1.0
 
 
+def _clamp(value: float, low: float, high: float) -> float:
+    return max(low, min(high, value))
+
+
+def _normalize_positions(raw: Dict[int, Tuple[float, float]], width: int, height: int, margin: int) -> Dict[int, Tuple[float, float]]:
+    if not raw:
+        return {}
+
+    xs = [pt[0] for pt in raw.values()]
+    ys = [pt[1] for pt in raw.values()]
+    min_x, max_x = min(xs), max(xs)
+    min_y, max_y = min(ys), max(ys)
+
+    if math.isclose(min_x, max_x):
+        min_x -= 1.0
+        max_x += 1.0
+    if math.isclose(min_y, max_y):
+        min_y -= 1.0
+        max_y += 1.0
+
+    span_x = max_x - min_x
+    span_y = max_y - min_y
+    usable_w = max(1.0, width - 2 * margin)
+    usable_h = max(1.0, height - 2 * margin)
+
+    return {
+        node: (
+            margin + ((x - min_x) / span_x) * usable_w,
+            margin + ((y - min_y) / span_y) * usable_h,
+        )
+        for node, (x, y) in raw.items()
+    }
+
+
 # =============================================================================
 # Graph / centrality helpers  (pure Python, no networkx)
 # Optimized with heapq priority queue and Brandes algorithm
@@ -657,6 +691,206 @@ class NetworkTab(tk.Frame):
 
     # ------------------------------------------------------------------
 
+    def _layout_edges_for_nodes(self, node_ids: List[int], edges: List[Tuple[int, int, float]]) -> List[Tuple[int, int, float]]:
+        node_set = set(node_ids)
+        return [(i, j, score) for (i, j, score) in edges if i in node_set and j in node_set]
+
+    def _circular_layout_positions(self, node_ids: List[int], width: int, height: int) -> Dict[int, Tuple[float, float]]:
+        if not node_ids:
+            return {}
+        cx, cy = width / 2, height / 2
+        if len(node_ids) == 1:
+            return {node_ids[0]: (cx, cy)}
+        radius = max(40, min(width, height) / 2 - _MARGIN)
+        count = len(node_ids)
+        positions = {}
+        for idx, node in enumerate(node_ids):
+            angle = 2 * math.pi * idx / count - math.pi / 2
+            positions[node] = (
+                cx + radius * math.cos(angle),
+                cy + radius * math.sin(angle),
+            )
+        return positions
+
+    def _undirected_strengths(self, node_ids: List[int], edges: List[Tuple[int, int, float]]) -> Tuple[Dict[Tuple[int, int], float], Dict[int, List[Tuple[int, float]]]]:
+        node_set = set(node_ids)
+        pair_strengths: Dict[Tuple[int, int], float] = {}
+        adjacency: Dict[int, List[Tuple[int, float]]] = {node: [] for node in node_ids}
+
+        for i, j, score in edges:
+            if i not in node_set or j not in node_set or i == j:
+                continue
+            key = (min(i, j), max(i, j))
+            pair_strengths[key] = pair_strengths.get(key, 0.0) + abs(score)
+
+        for (i, j), strength in pair_strengths.items():
+            adjacency[i].append((j, strength))
+            adjacency[j].append((i, strength))
+
+        return pair_strengths, adjacency
+
+    def _force_directed_layout_positions(self, node_ids: List[int], edges: List[Tuple[int, int, float]], width: int, height: int) -> Dict[int, Tuple[float, float]]:
+        count = len(node_ids)
+        if count <= 1:
+            return self._circular_layout_positions(node_ids, width, height)
+
+        circular = self._circular_layout_positions(node_ids, width, height)
+        cx, cy = width / 2, height / 2
+        raw = {
+            node: (
+                (pos[0] - cx) / max(1.0, width / 2 - _MARGIN),
+                (pos[1] - cy) / max(1.0, height / 2 - _MARGIN),
+            )
+            for node, pos in circular.items()
+        }
+        pair_strengths, _ = self._undirected_strengths(node_ids, edges)
+        k = math.sqrt(4.0 / count)
+        iterations = 90
+
+        for step in range(iterations):
+            disp = {node: [0.0, 0.0] for node in node_ids}
+
+            for idx, node_a in enumerate(node_ids):
+                x1, y1 = raw[node_a]
+                for node_b in node_ids[idx + 1:]:
+                    x2, y2 = raw[node_b]
+                    dx = x1 - x2
+                    dy = y1 - y2
+                    dist = math.hypot(dx, dy) or 0.001
+                    force = (k * k) / dist
+                    rx = dx / dist * force
+                    ry = dy / dist * force
+                    disp[node_a][0] += rx
+                    disp[node_a][1] += ry
+                    disp[node_b][0] -= rx
+                    disp[node_b][1] -= ry
+
+            for (a, b), strength in pair_strengths.items():
+                x1, y1 = raw[a]
+                x2, y2 = raw[b]
+                dx = x2 - x1
+                dy = y2 - y1
+                dist = math.hypot(dx, dy) or 0.001
+                force = (dist * dist / k) * (0.55 + min(strength, 6.0) / 6.0)
+                ax = dx / dist * force
+                ay = dy / dist * force
+                disp[a][0] += ax
+                disp[a][1] += ay
+                disp[b][0] -= ax
+                disp[b][1] -= ay
+
+            temperature = 0.12 * (1 - step / iterations) + 0.01
+            for node in node_ids:
+                dx, dy = disp[node]
+                length = math.hypot(dx, dy)
+                if length > 0:
+                    scale = min(temperature, length) / length
+                    dx *= scale
+                    dy *= scale
+                raw[node] = (
+                    _clamp(raw[node][0] + dx, -1.2, 1.2),
+                    _clamp(raw[node][1] + dy, -1.2, 1.2),
+                )
+
+        return _normalize_positions(raw, width, height, _MARGIN)
+
+    def _spectral_layout_positions(self, node_ids: List[int], edges: List[Tuple[int, int, float]], width: int, height: int) -> Dict[int, Tuple[float, float]]:
+        if len(node_ids) <= 2:
+            return self._circular_layout_positions(node_ids, width, height)
+
+        try:
+            import numpy as np
+        except ImportError:
+            return self._circular_layout_positions(node_ids, width, height)
+
+        pair_strengths, adjacency = self._undirected_strengths(node_ids, edges)
+        if not pair_strengths:
+            return self._circular_layout_positions(node_ids, width, height)
+
+        index = {node: idx for idx, node in enumerate(node_ids)}
+        size = len(node_ids)
+        adj = np.zeros((size, size), dtype=float)
+        for (a, b), strength in pair_strengths.items():
+            ia = index[a]
+            ib = index[b]
+            adj[ia, ib] = strength
+            adj[ib, ia] = strength
+
+        deg = np.diag(adj.sum(axis=1))
+        lap = deg - adj
+        eigvals, eigvecs = np.linalg.eigh(lap)
+        order = np.argsort(eigvals)
+        nontrivial = [idx for idx in order if eigvals[idx] > 1e-9]
+        if not nontrivial:
+            return self._circular_layout_positions(node_ids, width, height)
+
+        x_vec = eigvecs[:, nontrivial[0]]
+        y_vec = eigvecs[:, nontrivial[1]] if len(nontrivial) > 1 else np.zeros(size)
+
+        raw = {}
+        for node in node_ids:
+            idx = index[node]
+            degree_bias = len(adjacency[node]) * 0.02
+            raw[node] = (float(x_vec[idx]), float(y_vec[idx] + degree_bias))
+        return _normalize_positions(raw, width, height, _MARGIN)
+
+    def _shell_layout_positions(self, node_ids: List[int], edges: List[Tuple[int, int, float]], width: int, height: int) -> Dict[int, Tuple[float, float]]:
+        if not node_ids:
+            return {}
+
+        centrality_by_code = {row["code"]: row["betweenness"] for row in self._centrality}
+        ranked = sorted(
+            node_ids,
+            key=lambda idx: (centrality_by_code.get(self._result.codes[idx], 0.0), self._result.codes[idx]),
+            reverse=True,
+        )
+
+        count = len(ranked)
+        if count <= 3:
+            shells = [ranked]
+        else:
+            inner_n = max(1, round(count * 0.2))
+            middle_n = max(1, round(count * 0.3))
+            outer_start = min(count, inner_n + middle_n)
+            shells = [
+                ranked[:inner_n],
+                ranked[inner_n:outer_start],
+                ranked[outer_start:],
+            ]
+            shells = [shell for shell in shells if shell]
+
+        cx, cy = width / 2, height / 2
+        max_radius = max(40, min(width, height) / 2 - _MARGIN)
+        shell_radii = [0.28, 0.58, 0.88]
+        positions: Dict[int, Tuple[float, float]] = {}
+
+        for shell_idx, shell_nodes in enumerate(shells):
+            radius = max_radius * shell_radii[min(shell_idx, len(shell_radii) - 1)]
+            if len(shell_nodes) == 1:
+                positions[shell_nodes[0]] = (cx, cy) if shell_idx == 0 else (cx, cy - radius)
+                continue
+            angle_offset = shell_idx * (math.pi / max(3, len(shell_nodes) * 2))
+            for idx, node in enumerate(shell_nodes):
+                angle = 2 * math.pi * idx / len(shell_nodes) - math.pi / 2 + angle_offset
+                positions[node] = (
+                    cx + radius * math.cos(angle),
+                    cy + radius * math.sin(angle),
+                )
+        return positions
+
+    def _compute_layout_positions(self, node_ids: List[int], edges: List[Tuple[int, int, float]], width: int, height: int) -> Dict[int, Tuple[float, float]]:
+        layout = self._layout_var.get()
+        ordered_nodes = list(node_ids)
+        if layout == "Force-Directed":
+            return self._force_directed_layout_positions(ordered_nodes, edges, width, height)
+        if layout == "Spectral":
+            return self._spectral_layout_positions(ordered_nodes, edges, width, height)
+        if layout == "Shell":
+            return self._shell_layout_positions(ordered_nodes, edges, width, height)
+        return self._circular_layout_positions(ordered_nodes, width, height)
+
+    # ------------------------------------------------------------------
+
     def _redraw_network(self):
         canvas = self._canvas
         canvas.delete("all")
@@ -670,17 +904,9 @@ class NetworkTab(tk.Frame):
         policies = self._result.policies
         edges    = self._graph["edges"]
         weights  = self._graph["weights"]
-
-        # Circular layout
-        cx, cy = w / 2, h / 2
-        r_layout = min(w, h) / 2 - _MARGIN
-
-        angles = [2 * math.pi * i / n - math.pi / 2 for i in range(n)]
-        node_pos = [
-            (cx + r_layout * math.cos(a),
-             cy + r_layout * math.sin(a))
-            for a in angles
-        ]
+        node_ids = list(range(n))
+        positions = self._compute_layout_positions(node_ids, edges, w, h)
+        node_pos = [positions[i] for i in node_ids]
 
         # Determine isolated nodes
         connected = set()
@@ -838,20 +1064,9 @@ class NetworkTab(tk.Frame):
             if j != ego_idx: neighbour_set.add(j)
         neighbours = sorted(neighbour_set)
 
-        # ---- Node positions ----
-        cx, cy    = w / 2, h / 2
-        r_layout  = min(w, h) / 2 - _MARGIN
-        m_nb      = len(neighbours)
-
-        node_pos  = {}  # idx -> (x, y)
-        node_pos[ego_idx] = (cx, cy)
-
-        for k, nb in enumerate(neighbours):
-            angle = 2 * math.pi * k / m_nb - math.pi / 2 if m_nb > 1 else 0
-            node_pos[nb] = (
-                cx + r_layout * math.cos(angle),
-                cy + r_layout * math.sin(angle),
-            )
+        layout_nodes = [ego_idx] + neighbours
+        cx, cy = w / 2, h / 2
+        node_pos = self._compute_layout_positions(layout_nodes, ego_edges, w, h)
 
         # ---- Canvas title ----
         canvas.create_text(

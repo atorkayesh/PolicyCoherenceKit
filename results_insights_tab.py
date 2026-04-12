@@ -263,6 +263,24 @@ def _method_label(method: str) -> str:
     }.get(method, method.title())
 
 
+def _policy_label(code: str, policy: str) -> str:
+    return f"{policy} ({code})"
+
+
+def _policy_label_from_result(result: AggregationResult, index: int) -> str:
+    return _policy_label(result.codes[index], result.policies[index])
+
+
+def _policy_label_from_row(row: Optional[dict]) -> str:
+    if not row:
+        return "N/A"
+    return _policy_label(row["code"], row["policy"])
+
+
+def _pair_label(result: AggregationResult, i: int, j: int, arrow: str = "->") -> str:
+    return f"{_policy_label_from_result(result, i)} {arrow} {_policy_label_from_result(result, j)}"
+
+
 def _build_graph_stats(result: AggregationResult) -> Dict[str, object]:
     n = result.n
     pos = neg = zero = 0
@@ -306,6 +324,68 @@ def _build_graph_stats(result: AggregationResult) -> Dict[str, object]:
     }
 
 
+def _rank_values(values: List[float]) -> List[float]:
+    indexed = sorted(enumerate(values), key=lambda item: item[1])
+    ranks = [0.0] * len(values)
+    i = 0
+    while i < len(indexed):
+        j = i + 1
+        while j < len(indexed) and indexed[j][1] == indexed[i][1]:
+            j += 1
+        avg_rank = (i + 1 + j) / 2.0
+        for k in range(i, j):
+            ranks[indexed[k][0]] = avg_rank
+        i = j
+    return ranks
+
+
+def _pearson_corr(xs: List[float], ys: List[float]) -> float:
+    n = len(xs)
+    if n == 0 or n != len(ys):
+        return 0.0
+    mean_x = sum(xs) / n
+    mean_y = sum(ys) / n
+    num = sum((x - mean_x) * (y - mean_y) for x, y in zip(xs, ys))
+    den_x = math.sqrt(sum((x - mean_x) ** 2 for x in xs))
+    den_y = math.sqrt(sum((y - mean_y) ** 2 for y in ys))
+    if den_x == 0 or den_y == 0:
+        return 1.0
+    return max(-1.0, min(1.0, num / (den_x * den_y)))
+
+
+def _average_dm_spearman_agreement(result: AggregationResult) -> Tuple[float, float]:
+    dm_count = max(result.decision_makers, len(result.decision_maker_names))
+    if dm_count <= 1:
+        return 1.0, 1.0
+
+    dm_vectors = [[] for _ in range(dm_count)]
+    for i in range(result.n):
+        for j in range(result.n):
+            if i == j:
+                continue
+            values = [float(v) for v in result.source_scores.get((i, j), [])]
+            if len(values) != dm_count:
+                continue
+            for dm_idx, value in enumerate(values):
+                dm_vectors[dm_idx].append(value)
+
+    if not dm_vectors or not dm_vectors[0]:
+        return 1.0, 1.0
+
+    ranked_vectors = [_rank_values(vector) for vector in dm_vectors]
+    pairwise = []
+    for i in range(dm_count):
+        for j in range(i + 1, dm_count):
+            pairwise.append(_pearson_corr(ranked_vectors[i], ranked_vectors[j]))
+
+    if not pairwise:
+        return 1.0, 1.0
+
+    avg_corr = sum(pairwise) / len(pairwise)
+    scaled = (avg_corr + 1.0) / 2.0
+    return round(avg_corr, 3), round(scaled, 3)
+
+
 def _agreement_stats(result: AggregationResult) -> Dict[str, object]:
     rows = []
     dm_count = max(1, result.decision_makers or len(result.decision_maker_names) or 1)
@@ -322,7 +402,7 @@ def _agreement_stats(result: AggregationResult) -> Dict[str, object]:
             rows.append({
                 "i": i,
                 "j": j,
-                "pair": f"{result.codes[i]} -> {result.codes[j]}",
+                "pair": _pair_label(result, i, j),
                 "score": result.scores.get((i, j), 0.0) or 0.0,
                 "agreement_ratio": agreement_ratio,
                 "spread": spread,
@@ -336,15 +416,14 @@ def _agreement_stats(result: AggregationResult) -> Dict[str, object]:
         [row for row in rows if abs(row["score"]) > 0.0],
         key=lambda row: (-row["agreement_ratio"], -abs(row["score"]))
     )[:5]
-    average_agreement = round(
-        sum(row["agreement_ratio"] for row in rows) / len(rows), 3
-    ) if rows else 1.0
+    average_corr, average_agreement = _average_dm_spearman_agreement(result)
 
     return {
         "rows": rows,
         "contested": contested,
         "strong_consensus": consensus,
         "average_agreement": average_agreement,
+        "average_correlation": average_corr,
     }
 
 
@@ -370,17 +449,17 @@ def _build_narrative(result: AggregationResult, insights: Dict[str, object]) -> 
     lines = []
     if top_driver:
         lines.append(
-            f"{top_driver['code']} emerges as the strongest net driver ({top_driver['net']:+.2f}), "
-            f"suggesting a comparatively high outward effect on the policy system."
+            f"{_policy_label_from_row(top_driver)} has the highest weighted outgoing coherence score "
+            f"of {top_driver['woi']:+.2f}, suggesting the strongest outward influence on the policy system."
         )
     if top_dependent:
         lines.append(
-            f"{top_dependent['code']} is the most structurally dependent policy ({top_dependent['net']:+.2f}), "
-            f"receiving substantially more influence than it exerts."
+            f"{_policy_label_from_row(top_dependent)} has the highest weighted incoming coherence score "
+            f"of {top_dependent['wii']:+.2f}, indicating that it receives the strongest aggregate influence."
         )
     if top_prominent:
         lines.append(
-            f"{top_prominent['code']} shows the highest overall prominence ({top_prominent['prominence']:.2f}), "
+            f"{_policy_label_from_row(top_prominent)} shows the highest overall prominence ({top_prominent['prominence']:.2f}), "
             f"making it a central policy for interpretation and intervention sequencing."
         )
     lines.append(
@@ -416,7 +495,7 @@ def _strongest_link(result: AggregationResult, row_index: int) -> Tuple[str, flo
         return "No strong outgoing link", 0.0
     _, j = best_pair
     tone = "Reinforcing" if best_score > 0 else "Constraining"
-    return f"{result.codes[row_index]} -> {result.codes[j]} ({best_score:+.2f} {tone})", best_score
+    return f"{_pair_label(result, row_index, j)} ({best_score:+.2f} {tone})", best_score
 
 
 def _build_story_banner(result: AggregationResult, insights: Dict[str, object]) -> str:
@@ -428,7 +507,8 @@ def _build_story_banner(result: AggregationResult, insights: Dict[str, object]) 
     stable_phrase = "stable" if insights["agreement"]["average_agreement"] >= 0.75 else "not yet fully stable"
     if contested:
         return (
-            f"{top_driver['code']} emerges as the principal driver shaping the system, exerting its strongest influence "
+            f"{_policy_label_from_row(top_driver)} emerges as the top driving policy in the system, with the highest weighted outgoing coherence score "
+            f"of {top_driver['woi']:+.2f} and its strongest influence "
             f"through the {'reinforcing' if score > 0 else 'constraining'} relationship {link_text}, which indicates a "
             f"{stable_phrase} and structurally significant interaction. In contrast, the linkage "
             f"{contested['pair']} remains contested across decision-makers, reflecting a lack of consensus and "
@@ -436,31 +516,49 @@ def _build_story_banner(result: AggregationResult, insights: Dict[str, object]) 
         )
     if abs(score) > 0:
         return (
-            f"{top_driver['code']} emerges as the principal driver shaping the system, exerting its strongest influence "
+            f"{_policy_label_from_row(top_driver)} emerges as the top driving policy in the system, with the highest weighted outgoing coherence score "
+            f"of {top_driver['woi']:+.2f} and its strongest influence "
             f"through the {'reinforcing' if score > 0 else 'constraining'} relationship {link_text}, which indicates a "
             f"{stable_phrase} and structurally significant interaction. At the same time, the broader pattern shows "
             f"an average agreement level of {insights['agreement']['average_agreement']:.2f}, suggesting that the "
             f"dominant structure is interpretable with reasonable confidence."
         )
     return (
-        f"{top_driver['code']} emerges as the principal driver shaping the system, but no single outgoing relationship "
+        f"{_policy_label_from_row(top_driver)} emerges as the top driving policy in the system based on its weighted outgoing coherence score "
+        f"of {top_driver['woi']:+.2f}, but no single outgoing relationship "
         f"yet dominates strongly enough to define the structure on its own. This suggests the system remains diffuse, "
         f"with influence spread across multiple pathways that should be interpreted with care."
     )
 
 
 def _build_system_health(insights: Dict[str, object], result: AggregationResult) -> Dict[str, int]:
-    graph = insights["graph"]
     max_edges = max(1, result.n * (result.n - 1))
-    synergy = round((graph["positive_edges"] / max_edges) * 100)
-    conflict = round((graph["negative_edges"] / max_edges) * 100)
-    uncertainty = round((1 - insights["agreement"]["average_agreement"]) * 100)
-    score = max(0, min(100, 50 + synergy - conflict - round(uncertainty * 0.7)))
+    max_strength = max_edges * 3
+    positive_strength = 0.0
+    negative_strength = 0.0
+    neutral_count = 0
+
+    for i in range(result.n):
+        for j in range(result.n):
+            if i == j:
+                continue
+            score = result.scores.get((i, j), 0.0) or 0.0
+            if score > 0:
+                positive_strength += score
+            elif score < 0:
+                negative_strength += abs(score)
+            else:
+                neutral_count += 1
+
+    synergy = round((positive_strength / max_strength) * 100)
+    conflict = round((negative_strength / max_strength) * 100)
+    neutral_uncertain = round((neutral_count / max_edges) * 100)
+    score = max(0, min(100, 50 + synergy - conflict - round(neutral_uncertain * 0.35)))
     return {
         "score": score,
         "synergy": synergy,
         "conflict": conflict,
-        "uncertainty": uncertainty,
+        "neutral_uncertain": neutral_uncertain,
     }
 
 
@@ -523,13 +621,13 @@ def compute_insights(result: AggregationResult) -> Dict[str, object]:
         "drivers": drivers,
         "dependents": dependents,
         "balanced": balanced,
-        "top_driver": max(enriched, key=lambda row: row["net"], default=None),
-        "top_dependent": min(enriched, key=lambda row: row["net"], default=None),
+        "top_driver": max(enriched, key=lambda row: (row["woi"], row["prominence"], row["net"]), default=None),
+        "top_dependent": max(enriched, key=lambda row: (row["wii"], row["prominence"], -row["net"]), default=None),
         "top_prominent": max(enriched, key=lambda row: row["prominence"], default=None),
         "top_broker": max(enriched, key=lambda row: row["betweenness"], default=None),
         "top_prominence_rows": sorted(enriched, key=lambda row: row["prominence"], reverse=True)[:5],
-        "top_driver_rows": sorted(enriched, key=lambda row: row["net"], reverse=True)[:5],
-        "top_dependent_rows": sorted(enriched, key=lambda row: row["net"])[:5],
+        "top_driver_rows": sorted(enriched, key=lambda row: (row["woi"], row["prominence"], row["net"]), reverse=True)[:5],
+        "top_dependent_rows": sorted(enriched, key=lambda row: (row["wii"], row["prominence"], -row["net"]), reverse=True)[:5],
         "graph": graph_stats,
         "agreement": agreement,
         "quadrant_threshold": threshold,
@@ -642,7 +740,7 @@ class ResultsInsightsTab(tk.Frame):
         story.pack(fill="x", padx=pad_x, pady=(0, text_gap))
         story.insert("1.0", self._story)
         story_text = self._story
-        relation_pattern = r"P\d+\s*->\s*P\d+(?:\s*\([^)]+\))?"
+        relation_pattern = r".+?\(P\d+\)\s*->\s*.+?\(P\d+\)(?:\s*\([^)]+\))?"
         relation_ranges = []
         for match in re.finditer(relation_pattern, story_text):
             relation_ranges.append((match.start(), match.end()))
@@ -656,12 +754,12 @@ class ResultsInsightsTab(tk.Frame):
             story.tag_configure(
                 tag,
                 foreground=policy_colors.get(code, _BANNER_EMPH_COLOR),
-                font=(FONT_FAMILY, _BANNER_TEXT_SIZE, "bold"),
+                font=(FONT_FAMILY, _BANNER_TEXT_SIZE, "normal"),
             )
         story.tag_configure(
             "relation",
             foreground=_BANNER_RELATION_COLOR,
-            font=(FONT_FAMILY, _BANNER_TEXT_SIZE, "bold"),
+            font=(FONT_FAMILY, _BANNER_TEXT_SIZE, "normal"),
         )
         story.configure(state="disabled")
 
@@ -696,7 +794,7 @@ class ResultsInsightsTab(tk.Frame):
             tags.grid_columnconfigure(col, weight=1, uniform="insight-tags")
         tag_items = [
             (
-                f"Top Driver: {self._insights['top_driver']['code'] if self._insights['top_driver'] else 'N/A'}",
+                f"Top Driving Policy: {self._format_policy(self._insights['top_driver'])}",
                 _BANNER_TAG_TOP_DRIVER_BG,
                 _BANNER_TAG_TOP_DRIVER_FG,
             ),
@@ -749,7 +847,7 @@ class ResultsInsightsTab(tk.Frame):
         stats = [
             (str(self._result.n), "Policies", "#1D4ED8", "#475569"),
             (str(self._result.decision_makers), "Decision-makers", "#0F766E", "#475569"),
-            (_method_label(self._result.method), "Method", "#7C3AED", "#475569"),
+            (_method_label(self._result.method), "Aggregation method", "#7C3AED", "#475569"),
             (f"{self._insights['agreement']['average_agreement']:.2f}", "Agreement", "#059669", "#475569"),
         ]
         for idx, (value, label, value_fg, label_fg) in enumerate(stats):
@@ -782,12 +880,12 @@ class ResultsInsightsTab(tk.Frame):
 
     def _system_health_card(self, parent: tk.Frame) -> tk.Frame:
         card, body = self._card(parent, _SURFACE)
+        neutral_color = "#2563EB"
         tk.Label(body, text="System Health", font=(FONT_FAMILY, _HEALTH_TITLE_SIZE, "normal"), bg=_SURFACE, fg=_HEALTH_TITLE_COLOR).pack(anchor="w", padx=16, pady=(14, 2))
-        tk.Label(body, text=f"{self._health['score']}", font=(FONT_FAMILY, _HEALTH_VALUE_SIZE, "bold"), bg=_SURFACE, fg=_HEALTH_VALUE_COLOR).pack(anchor="w", padx=16, pady=(0, 6))
         for label, value, color in [
             ("Synergy", self._health["synergy"], _HEALTH_SYNERGY),
             ("Conflict", self._health["conflict"], _HEALTH_CONFLICT),
-            ("Uncertainty", self._health["uncertainty"], _HEALTH_UNCERTAINTY),
+            ("Neutral/Uncertain", self._health["neutral_uncertain"], neutral_color),
         ]:
             row = tk.Frame(body, bg=_SURFACE)
             row.pack(fill="x", padx=16, pady=4)
@@ -827,18 +925,20 @@ class ResultsInsightsTab(tk.Frame):
     def _top_driver_card(self, parent: tk.Frame) -> tk.Frame:
         row = self._insights["top_driver"]
         card, body = self._card(parent, _SOFT_GREEN)
-        hero = row["code"] if row else "N/A"
-        value = f"{row['net']:+.2f} ↑" if row else "N/A"
+        hero = self._format_policy(row)
+        value = f"{row['woi']:+.2f} WOI" if row else "N/A"
         tk.Label(
             body,
             text=hero,
             font=(FONT_FAMILY, _TOP_DRIVER_TITLE_SIZE, "normal"),
             bg=_SOFT_GREEN,
             fg=_TOP_DRIVER_TITLE_COLOR,
+            wraplength=250,
+            justify="left",
         ).pack(anchor="w", padx=16, pady=(16, _TOP_DRIVER_SUBTITLE_GAP))
         tk.Label(
             body,
-            text="Top Driver",
+            text="Top Driving Policy",
             font=(FONT_FAMILY, _TOP_DRIVER_SUBTITLE_SIZE, "normal"),
             bg=_SOFT_GREEN,
             fg=_TOP_DRIVER_SUBTITLE_COLOR,
@@ -855,18 +955,20 @@ class ResultsInsightsTab(tk.Frame):
     def _top_dependent_card(self, parent: tk.Frame) -> tk.Frame:
         row = self._insights["top_dependent"]
         card, body = self._card(parent, _SOFT_ORANGE)
-        hero = row["code"] if row else "N/A"
-        value = f"{row['net']:+.2f} ↓" if row else "N/A"
+        hero = self._format_policy(row)
+        value = f"{row['wii']:+.2f} WII" if row else "N/A"
         tk.Label(
             body,
             text=hero,
             font=(FONT_FAMILY, _TOP_DEPENDENT_TITLE_SIZE, "normal"),
             bg=_SOFT_ORANGE,
             fg=_TOP_DEPENDENT_TITLE_COLOR,
+            wraplength=250,
+            justify="left",
         ).pack(anchor="w", padx=16, pady=(16, _TOP_DEPENDENT_SUBTITLE_GAP))
         tk.Label(
             body,
-            text="Most Dependent",
+            text="Top Influenced Policy",
             font=(FONT_FAMILY, _TOP_DEPENDENT_SUBTITLE_SIZE, "normal"),
             bg=_SOFT_ORANGE,
             fg=_TOP_DEPENDENT_SUBTITLE_COLOR,
@@ -1259,9 +1361,7 @@ class ResultsInsightsTab(tk.Frame):
         return card
 
     def _format_policy(self, row: dict) -> str:
-        if not row:
-            return "N/A"
-        return f"{row['code']}  {row['policy']}"
+        return _policy_label_from_row(row)
 
     def _format_metric(self, row: dict, key: str) -> str:
         if not row:
@@ -1276,7 +1376,7 @@ class ResultsInsightsTab(tk.Frame):
         if not pair:
             return "No non-zero relation"
         i, j = pair
-        return f"{self._result.codes[i]} -> {self._result.codes[j]}"
+        return _pair_label(self._result, i, j)
 
     def _value_text(self, row: Optional[dict], key: str) -> str:
         if not row:

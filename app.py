@@ -8,26 +8,7 @@ import io
 import math
 import sys
 from pathlib import Path
-import ctypes, ctypes.util
 import tkinter as tk
-
-def _preload_cairo():
-    name = ctypes.util.find_library("cairo")
-    if name:
-        try: ctypes.CDLL(name); return
-        except OSError: pass
-    fallbacks = (
-        ["/opt/homebrew/lib/libcairo.2.dylib", "/usr/local/lib/libcairo.2.dylib"]
-        if sys.platform == "darwin" else
-        ["libcairo-2.dll"] if sys.platform == "win32" else
-        ["libcairo.so.2"]
-    )
-    for p in fallbacks:
-        try: ctypes.CDLL(p); return
-        except OSError: pass
-
-_preload_cairo()
-import cairosvg
 from PIL import Image, ImageDraw, ImageTk
 from tkinter import ttk, messagebox, filedialog
 import tkinter.font as tkFont
