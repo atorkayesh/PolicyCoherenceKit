@@ -116,7 +116,7 @@ MODAL_DM_PLACEHOLDER     = "e.g. Expert A"
 MODAL_POLICY_PLACEHOLDER = "e.g. Policy 1"
 
 # ── Sidebar: collapsed state ──────────────────────────────────────────────────
-SIDEBAR_EXPANDED_WIDTH    = 320          # px
+SIDEBAR_EXPANDED_WIDTH    = 380          # px
 SIDEBAR_COLLAPSED_WIDTH   = 80           # px
 
 # PCK badge (shown in header when sidebar is collapsed)
@@ -187,9 +187,8 @@ TOPBAR_EXCEL_RADIUS      = 5           # px
 TOPBAR_EXCEL_ICON_SIZE   = 14          # px (Lucide file-up/file-down, 24×24 viewBox)
 TOPBAR_EXCEL_ICON_STROKE = 1.35
 TOPBAR_EXCEL_ICON_GAP    = 7           # px — gap between icon and label
-TOPBAR_EXCEL_PADX        = 16          # px — left/right inner padding
+TOPBAR_EXCEL_PADX        = 20          # px — left/right inner padding
 TOPBAR_EXCEL_TEXT_SIZE   = 11          # pt
-TOPBAR_EXCEL_PADX        = 20          # px — increased for wider buttons (was 16)
 # Export icon: Lucide file-up   — arrow pointing up inside document
 # Import icon: Lucide file-down — arrow pointing down inside document
 
