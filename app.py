@@ -353,7 +353,7 @@ class PolicyCoherenceApp:
     def _build_sidebar(self, parent):
         self._sidebar_open_states = {}
         self._sidebar_expanded    = True
-        _EXP_W = 320
+        _EXP_W = 380
         _COL_W = 80
 
         sidebar = tk.Frame(parent, bg="#fafbfc", width=_EXP_W)
@@ -367,13 +367,15 @@ class PolicyCoherenceApp:
         self._sidebar_col_w = _COL_W
 
         # ── Expanded header ────────────────────────────────────────────
-        hdr_exp = tk.Frame(sidebar, bg="#fafbfc", height=90, cursor=CURSOR_HAND)
+        # Windows needs more height due to larger font rendering
+        _hdr_height = 130 if sys.platform == "win32" else 90
+        hdr_exp = tk.Frame(sidebar, bg="#fafbfc", height=_hdr_height, cursor=CURSOR_HAND)
         hdr_exp.pack(fill="x")
         hdr_exp.pack_propagate(False)
         self._sidebar_hdr_exp = hdr_exp
 
         hdr_row = tk.Frame(hdr_exp, bg="#fafbfc", cursor=CURSOR_HAND)
-        hdr_row.place(relx=0, rely=0.5, anchor="w", x=20)
+        hdr_row.place(relx=0, rely=0.5, anchor="w", x=28)
 
         # Waypoints icon with badge
         _LOGO_ICON   = 17           # icon drawing area (px, within badge)
@@ -416,19 +418,23 @@ class PolicyCoherenceApp:
         text_col = tk.Frame(hdr_row, bg="#fafbfc", cursor=CURSOR_HAND)
         text_col.pack(side="left")
 
+        # Windows needs smaller fonts due to different rendering
+        _title_size = 17 if sys.platform == "win32" else 20
+        _slogan_size = 9 if sys.platform == "win32" else 10
+
         _title_lbl = tk.Label(
             text_col, text="Policy Coherence Kit",
-            font=(FONT_FAMILY, 20, "bold"),
+            font=(FONT_FAMILY, _title_size, "bold"),
             bg="#fafbfc", fg="#1f2937", justify="left", cursor=CURSOR_HAND,
         )
-        _title_lbl.pack(anchor="w")
+        _title_lbl.pack(anchor="w", pady=(0, 6))
 
         _slogan_lbl = tk.Label(
             text_col,
             text="Evaluate interactions between policies using multiple decision-makers",
-            font=(FONT_FAMILY, 10),
+            font=(FONT_FAMILY, _slogan_size),
             bg="#fafbfc", fg="#a3a3a3", justify="left",
-            wraplength=220, cursor=CURSOR_HAND,
+            wraplength=280, cursor=CURSOR_HAND,
         )
         _slogan_lbl.pack(anchor="w")
 
@@ -436,7 +442,7 @@ class PolicyCoherenceApp:
             _w.bind("<Button-1>", lambda e: self._toggle_sidebar())
 
         # ── Collapsed header ───────────────────────────────────────────
-        hdr_col = tk.Frame(sidebar, bg="#fafbfc", height=90, cursor=CURSOR_HAND)
+        hdr_col = tk.Frame(sidebar, bg="#fafbfc", height=_hdr_height, cursor=CURSOR_HAND)
         hdr_col.pack_propagate(False)
         self._sidebar_hdr_col = hdr_col
 
@@ -1958,14 +1964,15 @@ class PolicyCoherenceApp:
 
         # ── Expanded view ──────────────────────────────────────────────
         if not self.projects:
+            # Center the empty state message horizontally with top padding
             tk.Label(
                 self._sidebar_proj_list,
                 text="No projects available.\nCreate a new project to begin assessing interactions between policies across decision-makers.",
                 font=(FONT_FAMILY, 11),
                 bg="#fafbfc", fg="#a3a3a3",
-                justify="left", anchor="w",
-                wraplength=270,
-            ).pack(anchor="w", padx=20, pady=(4, 0))
+                justify="center", anchor="center",
+                wraplength=300,
+            ).pack(anchor="center", padx=20, pady=(80, 0))
             return
 
         _HOVER_BG  = "#ebebeb"

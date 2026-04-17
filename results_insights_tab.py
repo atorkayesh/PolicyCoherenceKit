@@ -5,6 +5,7 @@
 
 import math
 import re
+import sys
 import tkinter as tk
 from collections import Counter
 from typing import Dict, List, Optional, Tuple
@@ -147,6 +148,37 @@ from theme import (
     RESULTS_NEGATIVE as _NEG,
     RESULTS_MID as _MID,
 )
+
+# Windows-specific adjustments for text sizes and tag heights
+_STATS_VALUE_SIZE = 30
+_STATS_LABEL_SIZE = 10
+if sys.platform == "win32":
+    _BANNER_TITLE_SIZE = 24          # was 30
+    _BANNER_TEXT_SIZE = 12           # was 15
+    _BANNER_TAG_HEIGHT = 44          # was 35
+    _BANNER_TAG_TEXT_SIZE = 9        # was 10
+    _TOP_DRIVER_TITLE_SIZE = 20      # was 22
+    _TOP_DRIVER_SUBTITLE_SIZE = 9    # was 11
+    _TOP_DRIVER_VALUE_SIZE = 26      # was 32
+    _TOP_DEPENDENT_TITLE_SIZE = 20   # was 22
+    _TOP_DEPENDENT_SUBTITLE_SIZE = 9 # was 11
+    _TOP_DEPENDENT_VALUE_SIZE = 26   # was 32
+    _STRONGEST_LINK_TITLE_SIZE = 10  # was 12
+    _STRONGEST_LINK_MAIN_SIZE = 16   # was 18
+    _STRONGEST_LINK_VALUE_SIZE = 14  # was 16
+    _STRONGEST_LINK_TEXT_SIZE = 9    # was 10
+    _CONTESTED_TITLE_SIZE = 10       # was 12
+    _CONTESTED_MAIN_SIZE = 16        # was 18
+    _CONTESTED_VALUE_SIZE = 14       # was 16
+    _CONTESTED_TEXT_SIZE = 9         # was 10
+    _CONFLICT_RATIO_TITLE_SIZE = 10  # was 12
+    _CONFLICT_RATIO_MAIN_SIZE = 16   # was 18
+    _CONFLICT_RATIO_VALUE_SIZE = 14  # was 16
+    _CONFLICT_RATIO_TEXT_SIZE = 9    # was 10
+    _HEALTH_TITLE_SIZE = 10          # was 12
+    _HEALTH_VALUE_SIZE = 16          # was 20
+    _STATS_VALUE_SIZE = 22           # was 30
+    _STATS_LABEL_SIZE = 9            # was 10
 
 
 class _WrapFrame(tk.Frame):
@@ -862,7 +894,7 @@ class ResultsInsightsTab(tk.Frame):
             tk.Label(
                 row,
                 text=value,
-                font=(FONT_FAMILY, 30, "bold"),
+                font=(FONT_FAMILY, _STATS_VALUE_SIZE, "bold"),
                 bg=_BANNER_RIGHT_BG,
                 fg=value_fg,
                 anchor="w",
@@ -870,7 +902,7 @@ class ResultsInsightsTab(tk.Frame):
             tk.Label(
                 row,
                 text=label,
-                font=(FONT_FAMILY, 10, "normal"),
+                font=(FONT_FAMILY, _STATS_LABEL_SIZE, "normal"),
                 bg=_BANNER_RIGHT_BG,
                 fg=label_fg,
                 anchor="e",
