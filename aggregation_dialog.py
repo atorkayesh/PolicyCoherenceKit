@@ -17,98 +17,26 @@ from typing import List, Optional
 
 from aggregator import TiedCell
 from constants import (
-    COHERENCE_RATINGS, RATING_SCORES,
+    RATING_SCORES,
     FONT_FAMILY, FONT_SIZE_SMALL, FONT_SIZE_NORMAL,
-    FONT_SIZE_HEADER, FONT_SIZE_TITLE,
-    COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_ACCENT2,
-    COLOR_TEXT, COLOR_TEXT_LIGHT, COLOR_BORDER,
-    COLOR_BUTTON, COLOR_BUTTON_FG,
+    FONT_SIZE_HEADER,
+    COLOR_ACCENT,
+    COLOR_TEXT,
+    COLOR_BUTTON,
     CURSOR_HAND,
 )
-import tkinter.font as tkFont
-from dialogs import style_button, _create_rounded_rect, _hex_interp, _rrect_pts
+from dialogs import (
+    _create_rounded_rect,
+    _make_canvas_button,
+    _make_modal_close_btn,
+    _modal_divider,
+)
 from theme import (
     MODAL_BG, MODAL_BORDER, MODAL_TITLE_COLOR, MODAL_TITLE_SIZE,
-    MODAL_SUBTITLE_COLOR, MODAL_SUBTITLE_SIZE, MODAL_DIVIDER_COLOR,
-    MODAL_CLOSE_CANVAS_SIZE, MODAL_CLOSE_ICON_COLOR, MODAL_CLOSE_HOVER_BG,
-    MODAL_CLOSE_HOVER_RADIUS, MODAL_CLOSE_ICON_SIZE, MODAL_CLOSE_STROKE,
-    MODAL_SECTION_TITLE_COLOR, MODAL_ADD_BTN_BG,
+    MODAL_SUBTITLE_COLOR, MODAL_SUBTITLE_SIZE,
+    MODAL_SECTION_TITLE_COLOR,
     MODAL_FIELD_BG, MODAL_FIELD_BORDER,
 )
-
-
-# =============================================================================
-# Canvas button helper  (mirrors NewMatrixDialog._build_footer_button)
-# =============================================================================
-
-def _make_canvas_button(
-    parent: tk.Misc,
-    label: str,
-    command,
-    *,
-    bg: str,
-    hover_bg: str,
-    fg: str,
-    height: int = 33,
-    radius: int = 5,
-    padx: int = 18,
-    text_size: int = 11,
-    modal_bg: str = "#eaeef4",
-    border: Optional[str] = None,
-) -> tk.Canvas:
-    font   = tkFont.Font(family=FONT_FAMILY, size=text_size)
-    width  = padx + font.measure(label) + padx
-    t      = [0.0]
-    anim   = [None]
-
-    canvas = tk.Canvas(
-        parent,
-        width=width + 2, height=height + 2,
-        bg=modal_bg, highlightthickness=0, bd=0, cursor=CURSOR_HAND,
-    )
-
-    def draw(fill_color):
-        canvas.delete("all")
-        pts = _rrect_pts(1, 1, width + 1, height + 1, radius)
-        outline = border if border is not None else fill_color
-        outline_w = 1 if border is not None else 0
-        canvas.create_polygon(*pts, fill=fill_color, outline=outline, width=outline_w)
-        canvas.create_text(1 + width / 2, 1 + height / 2, text=label, fill=fg, font=font)
-
-    def animate(target):
-        if anim[0]:
-            canvas.after_cancel(anim[0])
-            anim[0] = None
-
-        def tick():
-            diff = target - t[0]
-            if abs(diff) < 0.02:
-                t[0] = target
-                draw(_hex_interp(bg, hover_bg, target))
-                anim[0] = None
-                return
-            t[0] += diff * 0.3
-            draw(_hex_interp(bg, hover_bg, t[0]))
-            anim[0] = canvas.after(16, tick)
-
-        tick()
-
-    def poll():
-        try:
-            mx, my = canvas.winfo_pointerx(), canvas.winfo_pointery()
-            bx, by = canvas.winfo_rootx(), canvas.winfo_rooty()
-            over = bx <= mx <= bx + width and by <= my <= by + height
-            target = 1.0 if over else 0.0
-            if abs(t[0] - target) > 0.01 and anim[0] is None:
-                animate(target)
-        except tk.TclError:
-            return
-        canvas.after(30, poll)
-
-    draw(bg)
-    canvas.bind("<Button-1>", lambda _e: command())
-    canvas.after(100, poll)
-    return canvas
 
 
 # =============================================================================
@@ -166,7 +94,6 @@ class AggregationMethodDialog(tk.Toplevel):
     def _build(self):
         W, PX = self._W, self._PADX
 
-        # ── Header row ────────────────────────────────────────────────
         hdr = tk.Frame(self, bg=MODAL_BG)
         hdr.pack(fill="x", padx=PX, pady=(20, 0))
 
@@ -177,18 +104,8 @@ class AggregationMethodDialog(tk.Toplevel):
             bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
         ).pack(side="left")
 
-        close_cv = tk.Canvas(
-            hdr,
-            width=MODAL_CLOSE_CANVAS_SIZE, height=MODAL_CLOSE_CANVAS_SIZE,
-            bg=MODAL_BG, highlightthickness=0, cursor=CURSOR_HAND,
-        )
-        close_cv.pack(side="right")
-        self._draw_close_icon(close_cv)
-        close_cv.bind("<Button-1>", lambda _e: self.destroy())
-        close_cv.bind("<Enter>",    lambda _e: self._close_hover(close_cv, True))
-        close_cv.bind("<Leave>",    lambda _e: self._close_hover(close_cv, False))
+        _make_modal_close_btn(hdr, self.destroy).pack(side="right")
 
-        # ── Subtitle ──────────────────────────────────────────────────
         n = len(self._decision_makers)
         dm_word = "decision-maker" if n == 1 else "decision-makers"
         tk.Label(
@@ -200,9 +117,8 @@ class AggregationMethodDialog(tk.Toplevel):
             justify="left",
         ).pack(anchor="w", padx=PX, pady=(4, 12))
 
-        self._divider()
+        _modal_divider(self, PX)
 
-        # ── Option cards ──────────────────────────────────────────────
         cards_frame = tk.Frame(self, bg=MODAL_BG)
         cards_frame.pack(fill="x", padx=PX, pady=(12, 8))
 
@@ -219,9 +135,8 @@ class AggregationMethodDialog(tk.Toplevel):
             cv.bind("<Enter>",    lambda _e, v=value: self._card_hover(v, True))
             cv.bind("<Leave>",    lambda _e, v=value: self._card_hover(v, False))
 
-        self._divider()
+        _modal_divider(self, PX)
 
-        # ── Button row ────────────────────────────────────────────────
         btn_row = tk.Frame(self, bg=MODAL_BG)
         btn_row.pack(anchor="e", padx=PX, pady=(10, 20))
 
@@ -245,13 +160,6 @@ class AggregationMethodDialog(tk.Toplevel):
 
         self.bind("<Return>", lambda _e: self._on_ok())
         self.bind("<Escape>", lambda _e: self.destroy())
-
-    # ── drawing helpers ───────────────────────────────────────────────
-
-    def _divider(self):
-        cv = tk.Canvas(self, height=1, bg=MODAL_BG, highlightthickness=0)
-        cv.pack(fill="x", padx=self._PADX)
-        cv.create_line(0, 0, self._W - self._PADX * 2, 0, fill=MODAL_DIVIDER_COLOR)
 
     def _draw_card(self, value: str, hovered: bool = False):
         cv   = self._card_cvs[value]
@@ -314,24 +222,6 @@ class AggregationMethodDialog(tk.Toplevel):
         if value != self._selected:
             self._draw_card(value, hovered=entering)
 
-    def _draw_close_icon(self, cv: tk.Canvas):
-        S  = MODAL_CLOSE_CANVAS_SIZE
-        IS = MODAL_CLOSE_ICON_SIZE
-        cx = cy = S // 2
-        d  = IS // 2
-        cv.create_line(cx - d, cy - d, cx + d, cy + d,
-                       fill=MODAL_CLOSE_ICON_COLOR, width=MODAL_CLOSE_STROKE, capstyle="round")
-        cv.create_line(cx + d, cy - d, cx - d, cy + d,
-                       fill=MODAL_CLOSE_ICON_COLOR, width=MODAL_CLOSE_STROKE, capstyle="round")
-
-    def _close_hover(self, cv: tk.Canvas, entering: bool):
-        S = MODAL_CLOSE_CANVAS_SIZE
-        cv.delete("all")
-        if entering:
-            _create_rounded_rect(cv, 0, 0, S, S, MODAL_CLOSE_HOVER_RADIUS,
-                                  fill=MODAL_CLOSE_HOVER_BG, outline="")
-        self._draw_close_icon(cv)
-
     def _on_ok(self):
         self.result = self._selected
         self.destroy()
@@ -379,7 +269,6 @@ class WeightDialog(tk.Toplevel):
     def _build(self):
         W, PX = self._W, self._PADX
 
-        # ── Header row ────────────────────────────────────────────────
         hdr = tk.Frame(self, bg=MODAL_BG)
         hdr.pack(fill="x", padx=PX, pady=(20, 0))
 
@@ -390,18 +279,8 @@ class WeightDialog(tk.Toplevel):
             bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
         ).pack(side="left")
 
-        close_cv = tk.Canvas(
-            hdr,
-            width=MODAL_CLOSE_CANVAS_SIZE, height=MODAL_CLOSE_CANVAS_SIZE,
-            bg=MODAL_BG, highlightthickness=0, cursor=CURSOR_HAND,
-        )
-        close_cv.pack(side="right")
-        self._draw_close_icon(close_cv)
-        close_cv.bind("<Button-1>", lambda _e: self.destroy())
-        close_cv.bind("<Enter>",    lambda _e: self._close_hover(close_cv, True))
-        close_cv.bind("<Leave>",    lambda _e: self._close_hover(close_cv, False))
+        _make_modal_close_btn(hdr, self.destroy).pack(side="right")
 
-        # ── Subtitle ──────────────────────────────────────────────────
         tk.Label(
             self,
             text="Enter a value between 0.0 and 1.0 for each decision-maker. Weights must sum to exactly 1.0.",
@@ -411,9 +290,8 @@ class WeightDialog(tk.Toplevel):
             justify="left",
         ).pack(anchor="w", padx=PX, pady=(4, 12))
 
-        self._divider()
+        _modal_divider(self, PX)
 
-        # ── DM weight rows ────────────────────────────────────────────
         grid = tk.Frame(self, bg=MODAL_BG)
         grid.pack(fill="x", padx=PX, pady=(12, 4))
         grid.columnconfigure(0, weight=1)
@@ -445,7 +323,6 @@ class WeightDialog(tk.Toplevel):
             self._vars.append(var)
             self._entries.append(entry)
 
-        # ── Live sum label ────────────────────────────────────────────
         self._sum_var = tk.StringVar(value="Sum: —")
         self._sum_label = tk.Label(
             self,
@@ -458,9 +335,8 @@ class WeightDialog(tk.Toplevel):
         for var in self._vars:
             var.trace_add("write", self._update_sum)
 
-        self._divider()
+        _modal_divider(self, PX)
 
-        # ── Button row ────────────────────────────────────────────────
         btn_row = tk.Frame(self, bg=MODAL_BG)
         btn_row.pack(anchor="e", padx=PX, pady=(10, 20))
 
@@ -487,31 +363,6 @@ class WeightDialog(tk.Toplevel):
 
         if self._entries:
             self._entries[0].focus_set()
-
-    # ------------------------------------------------------------------
-
-    def _divider(self):
-        cv = tk.Canvas(self, height=1, bg=MODAL_BG, highlightthickness=0)
-        cv.pack(fill="x", padx=self._PADX)
-        cv.create_line(0, 0, self._W - self._PADX * 2, 0, fill=MODAL_DIVIDER_COLOR)
-
-    def _draw_close_icon(self, cv: tk.Canvas):
-        S  = MODAL_CLOSE_CANVAS_SIZE
-        IS = MODAL_CLOSE_ICON_SIZE
-        cx = cy = S // 2
-        d  = IS // 2
-        cv.create_line(cx - d, cy - d, cx + d, cy + d,
-                       fill=MODAL_CLOSE_ICON_COLOR, width=MODAL_CLOSE_STROKE, capstyle="round")
-        cv.create_line(cx + d, cy - d, cx - d, cy + d,
-                       fill=MODAL_CLOSE_ICON_COLOR, width=MODAL_CLOSE_STROKE, capstyle="round")
-
-    def _close_hover(self, cv: tk.Canvas, entering: bool):
-        S = MODAL_CLOSE_CANVAS_SIZE
-        cv.delete("all")
-        if entering:
-            _create_rounded_rect(cv, 0, 0, S, S, MODAL_CLOSE_HOVER_RADIUS,
-                                  fill=MODAL_CLOSE_HOVER_BG, outline="")
-        self._draw_close_icon(cv)
 
     def _update_sum(self, *_):
         try:
@@ -591,10 +442,14 @@ class TieResolutionDialog(tk.Toplevel):
     .result : None | List[TiedCell]  (each with .chosen set)
     """
 
+    _W    = 500
+    _HMAX = 620
+    _PADX = 24
+
     def __init__(self, parent: tk.Misc, ties: List[TiedCell]):
         super().__init__(parent)
         self.title("Resolve Majority Ties")
-        self.configure(bg=COLOR_BG)
+        self.configure(bg=MODAL_BG)
         self.resizable(False, True)
         self.grab_set()
 
@@ -608,12 +463,18 @@ class TieResolutionDialog(tk.Toplevel):
     # ------------------------------------------------------------------
 
     def _build(self):
+        W, PX = self._W, self._PADX
+
+        hdr = tk.Frame(self, bg=MODAL_BG)
+        hdr.pack(fill="x", padx=PX, pady=(20, 0))
+
         tk.Label(
-            self,
+            hdr,
             text="Resolve Majority Ties",
-            font=(FONT_FAMILY, FONT_SIZE_TITLE, "bold"),
-            bg=COLOR_BG, fg=COLOR_ACCENT,
-        ).pack(anchor="w", padx=24, pady=(20, 4))
+            font=(FONT_FAMILY, MODAL_TITLE_SIZE, "bold"),
+            bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
+        ).pack(side="left")
+        _make_modal_close_btn(hdr, self.destroy).pack(side="right")
 
         tk.Label(
             self,
@@ -621,84 +482,103 @@ class TieResolutionDialog(tk.Toplevel):
                 f"{len(self._ties)} cell(s) ended in a tie. "
                 "Please select the rating for each one."
             ),
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "italic"),
-            bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
-            wraplength=400,
-        ).pack(anchor="w", padx=24, pady=(0, 10))
+            font=(FONT_FAMILY, MODAL_SUBTITLE_SIZE),
+            bg=MODAL_BG, fg=MODAL_SUBTITLE_COLOR,
+            wraplength=W - PX * 2,
+            justify="left",
+        ).pack(anchor="w", padx=PX, pady=(6, 10))
 
-        ttk.Separator(self).pack(fill="x", padx=24, pady=4)
+        _modal_divider(self, PX)
 
         # Scrollable area for ties
-        outer = tk.Frame(self, bg=COLOR_BG)
-        outer.pack(fill="both", expand=True, padx=24, pady=8)
+        outer = tk.Frame(self, bg=MODAL_BG)
+        outer.pack(fill="both", expand=True, padx=PX, pady=(12, 8))
 
-        canvas = tk.Canvas(outer, bg=COLOR_BG, highlightthickness=0)
+        canvas = tk.Canvas(outer, bg=MODAL_BG, highlightthickness=0, width=W - PX * 2)
         sb = ttk.Scrollbar(outer, orient="vertical", command=canvas.yview)
         canvas.configure(yscrollcommand=sb.set)
         sb.pack(side="right", fill="y")
         canvas.pack(side="left", fill="both", expand=True)
 
-        inner = tk.Frame(canvas, bg=COLOR_BG)
-        canvas.create_window((0, 0), window=inner, anchor="nw")
+        inner = tk.Frame(canvas, bg=MODAL_BG)
+        inner_window = canvas.create_window((0, 0), window=inner, anchor="nw")
         inner.bind(
             "<Configure>",
             lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
         )
+        canvas.bind(
+            "<Configure>",
+            lambda e: canvas.itemconfigure(inner_window, width=e.width)
+        )
 
         for idx, tie in enumerate(self._ties):
-            row_frame = tk.Frame(inner, bg=COLOR_PANEL, pady=8)
-            row_frame.pack(fill="x", pady=4, padx=4)
+            row_frame = tk.Frame(
+                inner,
+                bg="#ffffff",
+                highlightthickness=1,
+                highlightbackground=MODAL_BORDER,
+                highlightcolor=MODAL_BORDER,
+                bd=0,
+            )
+            row_frame.pack(fill="x", pady=(0 if idx == 0 else 8, 0))
 
-            # Cell label
             tk.Label(
                 row_frame,
-                text=f"  {tie.code_r}  ->  {tie.code_c}",
+                text=f"{tie.code_r} -> {tie.code_c}",
                 font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
-                bg=COLOR_PANEL, fg=COLOR_ACCENT,
-            ).pack(anchor="w", padx=12)
+                bg="#ffffff", fg=MODAL_TITLE_COLOR,
+            ).pack(anchor="w", padx=14, pady=(12, 0))
 
-            # Tied options label
             tied_str = "  |  ".join(
                 f"{lbl} ({RATING_SCORES[lbl]:+d})"
                 for lbl in tie.tied_labels
             )
             tk.Label(
                 row_frame,
-                text=f"Tied:  {tied_str}",
-                font=(FONT_FAMILY, FONT_SIZE_SMALL, "italic"),
-                bg=COLOR_PANEL, fg=COLOR_TEXT_LIGHT,
-            ).pack(anchor="w", padx=12)
+                text=f"Tied options: {tied_str}",
+                font=(FONT_FAMILY, FONT_SIZE_SMALL),
+                bg="#ffffff", fg=MODAL_SUBTITLE_COLOR,
+                justify="left", wraplength=W - PX * 2 - 40,
+            ).pack(anchor="w", padx=14, pady=(4, 8))
 
-            # Dropdown for selection (only tied labels as options)
+            field_row = tk.Frame(row_frame, bg="#ffffff")
+            field_row.pack(fill="x", padx=14, pady=(0, 12))
+            tk.Label(
+                field_row,
+                text="Selected rating",
+                font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"),
+                bg="#ffffff", fg=MODAL_SECTION_TITLE_COLOR,
+            ).pack(anchor="w")
+
             var = tk.StringVar(value="")
             combo = ttk.Combobox(
-                row_frame,
+                field_row,
                 textvariable=var,
                 values=tie.tied_labels,
                 state="readonly",
-                width=20,
+                width=28,
                 font=(FONT_FAMILY, FONT_SIZE_NORMAL),
             )
-            combo.pack(anchor="w", padx=12, pady=(6, 4))
+            combo.pack(anchor="w", pady=(6, 0))
             self._vars.append(var)
 
-        ttk.Separator(self).pack(fill="x", padx=24, pady=(8, 4))
+        _modal_divider(self, PX)
 
-        # Buttons
-        btn_row = tk.Frame(self, bg=COLOR_BG)
-        btn_row.pack(anchor="e", padx=24, pady=(4, 20))
+        btn_row = tk.Frame(self, bg=MODAL_BG)
+        btn_row.pack(anchor="e", padx=PX, pady=(10, 20))
 
-        cancel = tk.Button(btn_row, text="Cancel", command=self.destroy)
-        cancel.config(
-            bg=COLOR_PANEL, fg=COLOR_TEXT, relief="flat",
-            padx=12, pady=5,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor=CURSOR_HAND,
-        )
-        cancel.pack(side="left", padx=(0, 8))
-
-        ok = tk.Button(btn_row, text="Confirm", command=self._on_ok)
-        style_button(ok)
-        ok.pack(side="left")
+        _make_canvas_button(
+            btn_row, "Cancel", self.destroy,
+            bg="#f5f7fa", hover_bg="#eaeef4", fg=MODAL_SECTION_TITLE_COLOR,
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG, border="#e6e6e6",
+        ).pack(side="left", padx=(0, 8))
+        _make_canvas_button(
+            btn_row, "Confirm", self._on_ok,
+            bg=COLOR_BUTTON, hover_bg="#1a3550", fg="#ffffff",
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG,
+        ).pack(side="left")
 
         self.bind("<Return>", lambda e: self._on_ok())
         self.bind("<Escape>", lambda e: self.destroy())
@@ -723,7 +603,7 @@ class TieResolutionDialog(tk.Toplevel):
 
     def _center(self):
         self.update_idletasks()
-        w = max(self.winfo_reqwidth(), 460)
-        h = min(self.winfo_reqheight(), 600)
+        w = max(self.winfo_reqwidth(), self._W)
+        h = min(self.winfo_reqheight(), self._HMAX)
         sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
         self.geometry(f"{w}x{h}+{(sw-w)//2}+{(sh-h)//2}")

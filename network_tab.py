@@ -979,9 +979,11 @@ class NetworkTab(tk.Frame):
         canvas = tk.Canvas(shell, bg=COLOR_BG, highlightthickness=0)
         self._report_canvas = canvas
         v_scroll = _PillScrollbar(shell, orient="vertical", command=canvas.yview)
-        canvas.configure(yscrollcommand=v_scroll.set)
+        h_scroll = _PillScrollbar(shell, orient="horizontal", command=canvas.xview)
+        canvas.configure(yscrollcommand=v_scroll.set, xscrollcommand=h_scroll.set)
         canvas.grid(row=0, column=0, sticky="nsew")
         v_scroll.grid(row=0, column=1, sticky="ns", padx=(COHERENCE_SCORES_TABLE_SCROLL_GAP, 0))
+        h_scroll.grid(row=1, column=0, sticky="ew", pady=(COHERENCE_SCORES_TABLE_SCROLL_GAP, 0))
 
         canvas.bind("<Configure>", lambda _e: self._draw_report())
         self._bind_report_scroll(canvas)
@@ -991,6 +993,15 @@ class NetworkTab(tk.Frame):
 
     def _bind_report_scroll(self, canvas: tk.Canvas):
         def _wheel(event):
+            if event.state & 0x0001:
+                delta = getattr(event, "delta", 0)
+                if delta == 0:
+                    return "break"
+                units = delta if abs(delta) < 40 else delta / 120.0
+                amount = max(1, int(abs(units)))
+                canvas.xview_scroll(-amount if units > 0 else amount, "units")
+                return "break"
+
             delta = getattr(event, "delta", 0)
             if delta == 0:
                 return

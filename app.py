@@ -36,7 +36,13 @@ from dataclasses import dataclass, field
 
 from models import PolicyMatrix, make_empty_matrix
 from matrix_widget import MatrixWidget
-from dialogs import NewMatrixDialog, ProjectSetupDialog, _SimpleInputDialog, style_button
+from dialogs import (NewMatrixDialog, ProjectSetupDialog, _SimpleInputDialog,
+                     _make_canvas_button, _make_modal_close_btn, _modal_divider)
+from theme import (
+    MODAL_BG, MODAL_TITLE_COLOR, MODAL_TITLE_SIZE,
+    MODAL_SUBTITLE_COLOR, MODAL_SUBTITLE_SIZE,
+    MODAL_FIELD_BG, MODAL_FIELD_BORDER, MODAL_SECTION_TITLE_COLOR,
+)
 from aggregator import (
     check_completeness,
     aggregate_average, aggregate_majority, aggregate_weighted, resolve_ties,
@@ -207,52 +213,80 @@ class Project:
 class _ProjectNameDialog(tk.Toplevel):
     """Simple modal to collect a project name."""
 
+    _PADX = 24
+
     def __init__(self, parent, title="New Project", existing_names=None):
         super().__init__(parent)
         self.transient(parent)
         self.title(title)
-        self.configure(bg=COLOR_BG)
+        self.configure(bg=MODAL_BG)
         self.resizable(False, False)
         self.grab_set()
-        self._existing = existing_names or []
+        self._existing   = existing_names or []
+        self._title_text = title
         self.result: Optional[str] = None
         self._build()
-        self.update_idletasks()
-        sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
-        w, h   = self.winfo_reqwidth(), self.winfo_reqheight()
-        self.geometry(f"{w}x{h}+{(sw-w)//2}+{(sh-h)//2}")
 
     def _build(self):
+        PX = self._PADX
+
+        # Header
+        hdr = tk.Frame(self, bg=MODAL_BG)
+        hdr.pack(fill="x", padx=PX, pady=(20, 0))
         tk.Label(
-            self, text="Project Name",
-            font=(FONT_FAMILY, FONT_SIZE_TITLE, "bold"),
-            bg=COLOR_BG, fg=COLOR_ACCENT,
-        ).pack(anchor="w", padx=24, pady=(20, 4))
+            hdr, text=self._title_text,
+            font=(FONT_FAMILY, MODAL_TITLE_SIZE, "bold"),
+            bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
+        ).pack(side="left")
+        _make_modal_close_btn(hdr, self.destroy).pack(side="right")
+
         tk.Label(
-            self,
-            text="Give this project a unique name.",
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "italic"),
-            bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
-        ).pack(anchor="w", padx=24, pady=(0, 10))
-        ttk.Separator(self).pack(fill="x", padx=24, pady=4)
+            self, text="Give this project a unique name.",
+            font=(FONT_FAMILY, MODAL_SUBTITLE_SIZE),
+            bg=MODAL_BG, fg=MODAL_SUBTITLE_COLOR,
+        ).pack(anchor="w", padx=PX, pady=(6, 10))
+
+        _modal_divider(self, PX)
+
         self._var = tk.StringVar()
         self._entry = tk.Entry(
             self, textvariable=self._var,
             font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-            bg="#fafbfc", fg=COLOR_TEXT,
+            bg=MODAL_FIELD_BG, fg=COLOR_TEXT,
             insertbackground=COLOR_ACCENT,
-            relief="solid", bd=1, width=36,
+            relief="solid", bd=1,
+            highlightthickness=1,
+            highlightbackground=MODAL_FIELD_BORDER,
+            highlightcolor=COLOR_ACCENT,
+            width=36,
         )
-        self._entry.pack(padx=24, pady=(8, 16))
+        self._entry.pack(padx=PX, pady=(14, 16))
         self._entry.focus_set()
-        ttk.Separator(self).pack(fill="x", padx=24, pady=4)
-        btn_row = tk.Frame(self, bg=COLOR_BG)
-        btn_row.pack(anchor="e", padx=24, pady=(6, 18))
-        ok = tk.Button(btn_row, text="Create Project", command=self._on_ok)
-        style_button(ok)
-        ok.pack()
+
+        _modal_divider(self, PX)
+
+        btn_row = tk.Frame(self, bg=MODAL_BG)
+        btn_row.pack(anchor="e", padx=PX, pady=(10, 20))
+        _make_canvas_button(
+            btn_row, "Cancel", self.destroy,
+            bg="#f5f7fa", hover_bg="#eaeef4", fg=MODAL_SECTION_TITLE_COLOR,
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG, border="#e6e6e6",
+        ).pack(side="left", padx=(0, 8))
+        _make_canvas_button(
+            btn_row, "Create Project", self._on_ok,
+            bg=COLOR_BUTTON, hover_bg="#1a3550", fg="#ffffff",
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG,
+        ).pack(side="left")
+
         self.bind("<Return>", lambda e: self._on_ok())
         self.bind("<Escape>", lambda e: self.destroy())
+
+        self.update_idletasks()
+        w, h = self.winfo_reqwidth(), self.winfo_reqheight()
+        sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
+        self.geometry(f"{w}x{h}+{(sw-w)//2}+{(sh-h)//2}")
 
     def _on_ok(self):
         name = self._var.get().strip()
@@ -1496,6 +1530,38 @@ class PolicyCoherenceApp:
         # Reserve right space so tabs don't slide under the pill toggle
         tk.Frame(switcher, width=PILL_W + 24, bg=SW_BG).pack(side="right")
 
+        # Analysis tab nav buttons (< and >); hidden until analysis view is active
+        _NAV_SZ = 28
+        _NAV_IDLE   = "#a3a3a3"
+        _NAV_HOVER  = "#30455c"
+        _NAV_DIM    = "#d8d8d8"
+
+        def _make_an_nav(direction):
+            cv = tk.Canvas(switcher, width=_NAV_SZ, height=_NAV_SZ,
+                           bg=SW_BG, highlightthickness=0, cursor=CURSOR_HAND)
+            _sc = _NAV_SZ / 24.0
+            if direction == "left":
+                _pts = [15*_sc, 18*_sc, 9*_sc, 12*_sc, 15*_sc, 6*_sc]
+            else:
+                _pts = [9*_sc, 18*_sc, 15*_sc, 12*_sc, 9*_sc, 6*_sc]
+
+            def draw(color):
+                cv.delete("all")
+                cv.create_line(*_pts, fill=color, width=1.5,
+                               capstyle="round", joinstyle="round")
+
+            draw(_NAV_IDLE)
+            cv._nav_draw   = draw
+            cv._nav_idle   = _NAV_IDLE
+            cv._nav_hover  = _NAV_HOVER
+            cv._nav_active = True
+            cv.bind("<Enter>", lambda _e: draw(_NAV_HOVER) if cv._nav_active else None)
+            cv.bind("<Leave>", lambda _e: draw(cv._nav_idle) if cv._nav_active else None)
+            return cv
+
+        _an_prev_btn = _make_an_nav("left")
+        _an_next_btn = _make_an_nav("right")
+
         _dm_scroll_c = tk.Canvas(switcher, bg=SW_BG, highlightthickness=0,
                                  xscrollincrement=40)
         _dm_scroll_c.pack(side="left", fill="both", expand=True)
@@ -1672,6 +1738,8 @@ class PolicyCoherenceApp:
         proj._an_tab_bar     = an_tab_bar
         proj._dm_tab_entries = []   # [(nb_tab_widget, label, underline, container)]
         proj._an_tab_entries = []   # [(tab_id_str,   label, underline, container)]
+        proj._an_prev_btn    = _an_prev_btn
+        proj._an_next_btn    = _an_next_btn
         proj._dm_drag        = _dm_drag
         proj._dm_drag_start  = _dm_drag_start
         proj._dm_drag_motion = _dm_drag_motion
@@ -2770,7 +2838,31 @@ class PolicyCoherenceApp:
 
             proj._an_tab_entries.append((tab_id, lbl, ul, container))
 
+        # Wire nav buttons for this project
+        prev_btn = getattr(proj, "_an_prev_btn", None)
+        next_btn = getattr(proj, "_an_next_btn", None)
+        if prev_btn:
+            prev_btn.unbind("<Button-1>")
+            prev_btn.bind("<Button-1>", lambda _e, p=proj: self._an_step_tab(p, -1))
+        if next_btn:
+            next_btn.unbind("<Button-1>")
+            next_btn.bind("<Button-1>", lambda _e, p=proj: self._an_step_tab(p, +1))
+
         self._refresh_an_underlines(proj)
+
+    def _an_step_tab(self, proj, delta: int):
+        """Scroll the analysis tab bar left (-1) or right (+1) by one tab-width."""
+        try:
+            canvas = proj._an_scroll_c
+            bar    = proj._an_tab_bar
+            # Ensure scrollregion reflects actual content width
+            bw = bar.winfo_reqwidth()
+            bh = bar.winfo_reqheight()
+            if bw > 0:
+                canvas.configure(scrollregion=(0, 0, bw, bh))
+            _scroll_canvas_x_by_pixels(canvas, delta * 160)
+        except AttributeError:
+            pass
 
     def _refresh_an_underlines(self, proj):
         """Update active/inactive styling on all analysis tab labels."""
@@ -2792,6 +2884,9 @@ class PolicyCoherenceApp:
         proj._matrix_frame.pack_forget()
         proj._dm_scroll_c.pack_forget()
         proj._analysis_frame.pack(fill="both", expand=True)
+        # Right-side items must be packed before left-side expand items
+        proj._an_next_btn.pack(side="right", padx=(0, 12))
+        proj._an_prev_btn.pack(side="left", padx=(4, 0))
         proj._an_scroll_c.pack(side="left", fill="both", expand=True)
         proj._in_analysis_view = True
         proj._set_nav_active(True)
@@ -2801,6 +2896,8 @@ class PolicyCoherenceApp:
     def _show_matrix_view(self, proj: Project):
         proj._analysis_frame.pack_forget()
         proj._an_scroll_c.pack_forget()
+        proj._an_prev_btn.pack_forget()
+        proj._an_next_btn.pack_forget()
         proj._matrix_frame.pack(fill="both", expand=True)
         proj._dm_scroll_c.pack(side="left", fill="both", expand=True)
         proj._in_analysis_view = False
