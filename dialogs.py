@@ -164,6 +164,115 @@ def _rrect_pts(x1, y1, x2, y2, r, steps=10):
 
 
 # =============================================================================
+# Shared modal UI helpers
+# =============================================================================
+
+def _make_canvas_button(
+    parent: tk.Misc,
+    label: str,
+    command,
+    *,
+    bg: str,
+    hover_bg: str,
+    fg: str,
+    height: int = 33,
+    radius: int = 5,
+    padx: int = 18,
+    text_size: int = 11,
+    modal_bg: str = "#eaeef4",
+    border=None,
+) -> tk.Canvas:
+    font   = tkFont.Font(family=FONT_FAMILY, size=text_size)
+    width  = padx + font.measure(label) + padx
+    t      = [0.0]
+    anim   = [None]
+
+    canvas = tk.Canvas(
+        parent, width=width + 2, height=height + 2,
+        bg=modal_bg, highlightthickness=0, bd=0, cursor=CURSOR_HAND,
+    )
+
+    def draw(fill_color):
+        canvas.delete("all")
+        pts = _rrect_pts(1, 1, width + 1, height + 1, radius)
+        outline  = border if border is not None else fill_color
+        outline_w = 1 if border is not None else 0
+        canvas.create_polygon(*pts, fill=fill_color, outline=outline, width=outline_w)
+        canvas.create_text(1 + width / 2, 1 + height / 2, text=label, fill=fg, font=font)
+
+    def animate(target):
+        if anim[0]:
+            canvas.after_cancel(anim[0])
+            anim[0] = None
+        def tick():
+            diff = target - t[0]
+            if abs(diff) < 0.02:
+                t[0] = target
+                draw(_hex_interp(bg, hover_bg, target))
+                anim[0] = None
+                return
+            t[0] += diff * 0.3
+            draw(_hex_interp(bg, hover_bg, t[0]))
+            anim[0] = canvas.after(16, tick)
+        tick()
+
+    def poll():
+        try:
+            mx, my = canvas.winfo_pointerx(), canvas.winfo_pointery()
+            bx, by = canvas.winfo_rootx(), canvas.winfo_rooty()
+            over = bx <= mx <= bx + width and by <= my <= by + height
+            target = 1.0 if over else 0.0
+            if abs(t[0] - target) > 0.01 and anim[0] is None:
+                animate(target)
+        except tk.TclError:
+            return
+        canvas.after(30, poll)
+
+    draw(bg)
+    canvas.bind("<Button-1>", lambda _e: command())
+    canvas.after(100, poll)
+    return canvas
+
+
+def _draw_modal_close_icon(cv: tk.Canvas):
+    S  = MODAL_CLOSE_CANVAS_SIZE
+    IS = MODAL_CLOSE_ICON_SIZE
+    cx = cy = S // 2
+    d  = IS // 2
+    cv.create_line(cx - d, cy - d, cx + d, cy + d,
+                   fill=MODAL_CLOSE_ICON_COLOR, width=MODAL_CLOSE_STROKE, capstyle="round")
+    cv.create_line(cx + d, cy - d, cx - d, cy + d,
+                   fill=MODAL_CLOSE_ICON_COLOR, width=MODAL_CLOSE_STROKE, capstyle="round")
+
+
+def _modal_close_hover(cv: tk.Canvas, entering: bool, bg: str):
+    cv.delete("all")
+    if entering:
+        _create_rounded_rect(cv, 0, 0, MODAL_CLOSE_CANVAS_SIZE, MODAL_CLOSE_CANVAS_SIZE,
+                             MODAL_CLOSE_HOVER_RADIUS, fill=MODAL_CLOSE_HOVER_BG, outline="")
+    _draw_modal_close_icon(cv)
+
+
+def _make_modal_close_btn(parent: tk.Misc, on_close, bg: str = None) -> tk.Canvas:
+    bg = bg or MODAL_BG
+    cv = tk.Canvas(parent, width=MODAL_CLOSE_CANVAS_SIZE, height=MODAL_CLOSE_CANVAS_SIZE,
+                   bg=bg, highlightthickness=0, cursor=CURSOR_HAND)
+    _draw_modal_close_icon(cv)
+    cv.bind("<Button-1>", lambda _e: on_close())
+    cv.bind("<Enter>",    lambda _e: _modal_close_hover(cv, True, bg))
+    cv.bind("<Leave>",    lambda _e: _modal_close_hover(cv, False, bg))
+    return cv
+
+
+def _modal_divider(parent: tk.Misc, padx: int = 24, bg: str = None):
+    bg = bg or MODAL_BG
+    cv = tk.Canvas(parent, height=1, bg=bg, highlightthickness=0)
+    cv.pack(fill="x", padx=padx)
+    cv.create_line(0, 0, 2000, 0, fill=MODAL_DIVIDER_COLOR)
+    return cv
+
+
+# =============================================================================
 # ProjectSetupDialog
 # =============================================================================
 
@@ -1162,12 +1271,14 @@ class NewMatrixDialog(tk.Toplevel):
       (str, List[str])      -> (decision_maker_name, [policy_name, ...])
     """
 
+    _PADX = 24
+
     def __init__(self, parent: tk.Misc):
         super().__init__(parent)
         self.title("Add Decision-Maker Matrix")
-        self.configure(bg=COLOR_BG)
+        self.configure(bg=MODAL_BG)
         self.resizable(True, True)
-        self.grab_set()          # modal -- block the parent window
+        self.grab_set()
 
         self.result: Optional[Tuple[str, List[str]]] = None
 
@@ -1179,62 +1290,69 @@ class NewMatrixDialog(tk.Toplevel):
     # ------------------------------------------------------------------
 
     def _build(self):
-        # ---- Title --------------------------------------------------
+        PX = self._PADX
+
+        # Header
+        hdr = tk.Frame(self, bg=MODAL_BG)
+        hdr.pack(fill="x", padx=PX, pady=(20, 0))
         tk.Label(
-            self,
-            text="New Policy Coherence Matrix",
-            font=(FONT_FAMILY, FONT_SIZE_TITLE, "bold"),
-            bg=COLOR_BG, fg=COLOR_ACCENT,
-        ).pack(anchor="w", padx=24, pady=(20, 2))
+            hdr, text="New Policy Coherence Matrix",
+            font=(FONT_FAMILY, MODAL_TITLE_SIZE, "bold"),
+            bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
+        ).pack(side="left")
+        _make_modal_close_btn(hdr, self.destroy).pack(side="right")
 
         tk.Label(
             self,
             text="Enter the decision-maker and the policies to include in the matrix.",
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "italic"),
-            bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
-        ).pack(anchor="w", padx=24, pady=(0, 8))
+            font=(FONT_FAMILY, MODAL_SUBTITLE_SIZE),
+            bg=MODAL_BG, fg=MODAL_SUBTITLE_COLOR,
+            wraplength=460, justify="left",
+        ).pack(anchor="w", padx=PX, pady=(4, 10))
 
-        ttk.Separator(self).pack(fill="x", padx=24, pady=4)
+        _modal_divider(self, PX)
 
-        # ---- Decision-maker name ------------------------------------
+        # Decision-maker name
         tk.Label(
-            self,
-            text="Decision-Maker Name",
+            self, text="Decision-Maker Name",
             font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
-            bg=COLOR_BG, fg=COLOR_TEXT,
-        ).pack(anchor="w", padx=24, pady=(10, 2))
+            bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
+        ).pack(anchor="w", padx=PX, pady=(12, 4))
 
         self._dm_var = tk.StringVar()
         self._dm_entry = tk.Entry(
-            self,
-            textvariable=self._dm_var,
+            self, textvariable=self._dm_var,
             font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-            bg="#ffffff", fg=COLOR_TEXT,
+            bg=MODAL_FIELD_BG, fg=COLOR_TEXT,
             insertbackground=COLOR_ACCENT,
             relief="solid", bd=1,
+            highlightthickness=1,
+            highlightbackground=MODAL_FIELD_BORDER,
+            highlightcolor=COLOR_ACCENT,
             width=44,
         )
-        self._dm_entry.pack(anchor="w", padx=24, pady=(0, 14))
+        self._dm_entry.pack(anchor="w", padx=PX, pady=(0, 14))
         self._dm_entry.focus_set()
 
-        # ---- Policy names -------------------------------------------
+        # Policy names
         tk.Label(
-            self,
-            text="Policy Names  (one per line, minimum 2)",
+            self, text="Policy Names  (one per line, minimum 2)",
             font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
-            bg=COLOR_BG, fg=COLOR_TEXT,
-        ).pack(anchor="w", padx=24, pady=(0, 2))
+            bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
+        ).pack(anchor="w", padx=PX, pady=(0, 4))
 
-        # Text area + scrollbar in a sub-frame
-        text_frame = tk.Frame(self, bg=COLOR_BG)
-        text_frame.pack(fill="both", expand=True, padx=24, pady=(0, 4))
+        text_frame = tk.Frame(self, bg=MODAL_BG)
+        text_frame.pack(fill="both", expand=True, padx=PX, pady=(0, 4))
 
         self._policy_text = tk.Text(
             text_frame,
             font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-            bg="#ffffff", fg=COLOR_TEXT,
+            bg=MODAL_FIELD_BG, fg=COLOR_TEXT,
             insertbackground=COLOR_ACCENT,
             relief="solid", bd=1,
+            highlightthickness=1,
+            highlightbackground=MODAL_FIELD_BORDER,
+            highlightcolor=COLOR_ACCENT,
             width=50, height=10,
             wrap="word",
         )
@@ -1243,44 +1361,40 @@ class NewMatrixDialog(tk.Toplevel):
         self._policy_text.pack(side="left", fill="both", expand=True)
         sb.pack(side="right", fill="y")
 
-        # Hint
         tk.Label(
             self,
             text="Policies will be coded automatically: P1, P2, P3 ...",
             font=(FONT_FAMILY, FONT_SIZE_SMALL, "italic"),
-            bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
-        ).pack(anchor="w", padx=24, pady=(0, 6))
+            bg=MODAL_BG, fg=MODAL_SUBTITLE_COLOR,
+        ).pack(anchor="w", padx=PX, pady=(2, 6))
 
-        # ---- Import button ------------------------------------------
-        import_btn = tk.Button(
-            self,
-            text="  Import from XLSX / CSV",
-            command=self._import_file,
-        )
-        style_button(import_btn)
-        import_btn.pack(anchor="w", padx=24, pady=(0, 14))
+        # Import button
+        _make_canvas_button(
+            self, "  Import from XLSX / CSV", self._import_file,
+            bg=COLOR_BUTTON, hover_bg="#1a3550", fg="#ffffff",
+            height=30, radius=5, padx=14, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG,
+        ).pack(anchor="w", padx=PX, pady=(0, 14))
 
-        ttk.Separator(self).pack(fill="x", padx=24, pady=6)
+        _modal_divider(self, PX)
 
-        # ---- OK / Cancel row ----------------------------------------
-        btn_row = tk.Frame(self, bg=COLOR_BG)
-        btn_row.pack(anchor="e", padx=24, pady=(4, 20))
+        # OK / Cancel row
+        btn_row = tk.Frame(self, bg=MODAL_BG)
+        btn_row.pack(anchor="e", padx=PX, pady=(10, 20))
 
-        cancel_btn = tk.Button(btn_row, text="Cancel", command=self.destroy)
-        cancel_btn.config(
-            bg=COLOR_PANEL, fg=COLOR_TEXT,
-            activebackground=COLOR_PANEL,
-            relief="flat", padx=12, pady=5,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-            cursor=CURSOR_HAND,
-        )
-        cancel_btn.pack(side="left", padx=(0, 8))
+        _make_canvas_button(
+            btn_row, "Cancel", self.destroy,
+            bg="#f5f7fa", hover_bg="#eaeef4", fg=MODAL_SECTION_TITLE_COLOR,
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG, border="#e6e6e6",
+        ).pack(side="left", padx=(0, 8))
+        _make_canvas_button(
+            btn_row, "Create Matrix", self._on_ok,
+            bg=COLOR_BUTTON, hover_bg="#1a3550", fg="#ffffff",
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG,
+        ).pack(side="left")
 
-        ok_btn = tk.Button(btn_row, text="Create Matrix", command=self._on_ok)
-        style_button(ok_btn)
-        ok_btn.pack(side="left")
-
-        # Keyboard shortcuts
         self.bind("<Return>", self._on_return)
         self.bind("<Escape>", lambda e: self.destroy())
 
@@ -1384,6 +1498,9 @@ class _SimpleInputDialog(tk.Toplevel):
             ...
     """
 
+    _W    = 380
+    _PADX = 24
+
     def __init__(
         self,
         parent: tk.Misc,
@@ -1393,57 +1510,79 @@ class _SimpleInputDialog(tk.Toplevel):
     ):
         super().__init__(parent)
         self.title(title)
-        self.configure(bg=COLOR_BG)
+        self.configure(bg=MODAL_BG)
         self.resizable(False, False)
         self.grab_set()
 
         self.result: Optional[str] = None
+        self._title_text = title
+        self._label_text = label
+        self._default    = default
 
+        self._build()
+
+    def _build(self):
+        W, PX = self._W, self._PADX
+
+        # Header
+        hdr = tk.Frame(self, bg=MODAL_BG)
+        hdr.pack(fill="x", padx=PX, pady=(20, 0))
         tk.Label(
-            self,
-            text=label,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-            bg=COLOR_BG, fg=COLOR_TEXT,
-        ).pack(anchor="w", padx=20, pady=(16, 4))
+            hdr, text=self._title_text,
+            font=(FONT_FAMILY, MODAL_TITLE_SIZE, "bold"),
+            bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
+        ).pack(side="left")
+        _make_modal_close_btn(hdr, self.destroy).pack(side="right")
 
-        self._var = tk.StringVar(value=default)
+        # Subtitle / field label
+        tk.Label(
+            self, text=self._label_text,
+            font=(FONT_FAMILY, MODAL_SUBTITLE_SIZE),
+            bg=MODAL_BG, fg=MODAL_SUBTITLE_COLOR,
+        ).pack(anchor="w", padx=PX, pady=(10, 4))
+
+        # Entry
+        self._var = tk.StringVar(value=self._default)
         entry = tk.Entry(
-            self,
-            textvariable=self._var,
+            self, textvariable=self._var,
             font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-            bg="#ffffff", fg=COLOR_TEXT,
+            bg=MODAL_FIELD_BG, fg=COLOR_TEXT,
             insertbackground=COLOR_ACCENT,
             relief="solid", bd=1,
+            highlightthickness=1,
+            highlightbackground=MODAL_FIELD_BORDER,
+            highlightcolor=COLOR_ACCENT,
             width=34,
         )
-        entry.pack(anchor="w", padx=20, pady=(0, 14))
+        entry.pack(anchor="w", padx=PX, pady=(0, 16))
         entry.select_range(0, "end")
         entry.focus_set()
 
-        btn_row = tk.Frame(self, bg=COLOR_BG)
-        btn_row.pack(anchor="e", padx=20, pady=(0, 16))
+        _modal_divider(self, PX)
 
-        cancel_btn = tk.Button(btn_row, text="Cancel", command=self.destroy)
-        cancel_btn.config(
-            bg=COLOR_PANEL, fg=COLOR_TEXT,
-            relief="flat", padx=10, pady=4,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-            cursor=CURSOR_HAND,
-        )
-        cancel_btn.pack(side="left", padx=(0, 6))
-
-        ok_btn = tk.Button(btn_row, text="OK", command=self._on_ok)
-        style_button(ok_btn)
-        ok_btn.pack(side="left")
+        # Buttons
+        btn_row = tk.Frame(self, bg=MODAL_BG)
+        btn_row.pack(anchor="e", padx=PX, pady=(10, 20))
+        _make_canvas_button(
+            btn_row, "Cancel", self.destroy,
+            bg="#f5f7fa", hover_bg="#eaeef4", fg=MODAL_SECTION_TITLE_COLOR,
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG, border="#e6e6e6",
+        ).pack(side="left", padx=(0, 8))
+        _make_canvas_button(
+            btn_row, "OK", self._on_ok,
+            bg=COLOR_BUTTON, hover_bg="#1a3550", fg="#ffffff",
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG,
+        ).pack(side="left")
 
         self.bind("<Return>", lambda e: self._on_ok())
         self.bind("<Escape>", lambda e: self.destroy())
 
         self.update_idletasks()
-        w = self.winfo_reqwidth()
+        w = max(self.winfo_reqwidth(), W)
         h = self.winfo_reqheight()
-        sw = self.winfo_screenwidth()
-        sh = self.winfo_screenheight()
+        sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
         self.geometry(f"{w}x{h}+{(sw - w) // 2}+{(sh - h) // 2}")
 
     def _on_ok(self):

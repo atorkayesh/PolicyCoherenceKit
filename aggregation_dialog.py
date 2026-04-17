@@ -17,15 +17,26 @@ from typing import List, Optional
 
 from aggregator import TiedCell
 from constants import (
-    COHERENCE_RATINGS, RATING_SCORES,
+    RATING_SCORES,
     FONT_FAMILY, FONT_SIZE_SMALL, FONT_SIZE_NORMAL,
-    FONT_SIZE_HEADER, FONT_SIZE_TITLE,
-    COLOR_BG, COLOR_PANEL, COLOR_ACCENT, COLOR_ACCENT2,
-    COLOR_TEXT, COLOR_TEXT_LIGHT, COLOR_BORDER,
-    COLOR_BUTTON, COLOR_BUTTON_FG,
+    FONT_SIZE_HEADER,
+    COLOR_ACCENT,
+    COLOR_TEXT,
+    COLOR_BUTTON,
     CURSOR_HAND,
 )
-from dialogs import style_button
+from dialogs import (
+    _create_rounded_rect,
+    _make_canvas_button,
+    _make_modal_close_btn,
+    _modal_divider,
+)
+from theme import (
+    MODAL_BG, MODAL_BORDER, MODAL_TITLE_COLOR, MODAL_TITLE_SIZE,
+    MODAL_SUBTITLE_COLOR, MODAL_SUBTITLE_SIZE,
+    MODAL_SECTION_TITLE_COLOR,
+    MODAL_FIELD_BG, MODAL_FIELD_BORDER,
+)
 
 
 # =============================================================================
@@ -40,115 +51,179 @@ class AggregationMethodDialog(tk.Toplevel):
     .result : None | "average" | "majority" | "weighted"
     """
 
+    _W      = 440
+    _CARD_H = 76
+    _CARD_R = 6
+    _PADX   = 24
+
+    _OPTIONS = [
+        (
+            "average",
+            "Average",
+            "Each decision-maker is weighted equally. Cell score = mean of all scores.",
+        ),
+        (
+            "majority",
+            "Majority Rule",
+            "The most common rating wins. Ties are flagged for manual resolution.",
+        ),
+        (
+            "weighted",
+            "Weighted by Importance",
+            "You assign a weight (0–1) to each DM. Weights must sum to exactly 1.0.",
+        ),
+    ]
+
     def __init__(self, parent: tk.Misc, decision_makers: List[str]):
         super().__init__(parent)
         self.title("Aggregation Method")
-        self.configure(bg=COLOR_BG)
+        self.configure(bg=MODAL_BG)
         self.resizable(False, False)
         self.grab_set()
 
         self.result: Optional[str] = None
         self._decision_makers = decision_makers
+        self._selected = "average"
+        self._card_cvs: dict = {}
+
         self._build()
         self._center()
 
     # ------------------------------------------------------------------
 
     def _build(self):
-        # Title
-        tk.Label(
-            self,
-            text="Choose Aggregation Method",
-            font=(FONT_FAMILY, FONT_SIZE_TITLE, "bold"),
-            bg=COLOR_BG, fg=COLOR_ACCENT,
-        ).pack(anchor="w", padx=24, pady=(20, 4))
+        W, PX = self._W, self._PADX
+
+        hdr = tk.Frame(self, bg=MODAL_BG)
+        hdr.pack(fill="x", padx=PX, pady=(20, 0))
 
         tk.Label(
+            hdr,
+            text="Aggregation Method",
+            font=(FONT_FAMILY, MODAL_TITLE_SIZE, "bold"),
+            bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
+        ).pack(side="left")
+
+        _make_modal_close_btn(hdr, self.destroy).pack(side="right")
+
+        n = len(self._decision_makers)
+        dm_word = "decision-maker" if n == 1 else "decision-makers"
+        tk.Label(
             self,
-            text=(
-                f"{len(self._decision_makers)} decision-makers detected. "
-                "How should their views be combined?"
-            ),
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "italic"),
-            bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
-            wraplength=380,
-        ).pack(anchor="w", padx=24, pady=(0, 10))
+            text=f"{n} {dm_word} detected — choose how to combine their ratings.",
+            font=(FONT_FAMILY, MODAL_SUBTITLE_SIZE),
+            bg=MODAL_BG, fg=MODAL_SUBTITLE_COLOR,
+            wraplength=W - PX * 2,
+            justify="left",
+        ).pack(anchor="w", padx=PX, pady=(4, 12))
 
-        ttk.Separator(self).pack(fill="x", padx=24, pady=4)
+        _modal_divider(self, PX)
 
-        # Radio buttons
-        self._method_var = tk.StringVar(value="average")
+        cards_frame = tk.Frame(self, bg=MODAL_BG)
+        cards_frame.pack(fill="x", padx=PX, pady=(12, 8))
 
-        options = [
-            (
-                "average",
-                "Average",
-                "Each decision-maker is weighted equally.\n"
-                "Cell score = mean of all scores.",
-            ),
-            (
-                "majority",
-                "Majority Rule",
-                "The most common rating wins.\n"
-                "Ties are flagged for manual resolution.",
-            ),
-            (
-                "weighted",
-                "Weighted by Importance",
-                "You assign a weight (0-1) to each decision-maker.\n"
-                "Weights must sum to exactly 1.0.",
-            ),
-        ]
-
-        for value, label, description in options:
-            row = tk.Frame(self, bg=COLOR_BG)
-            row.pack(fill="x", padx=24, pady=4)
-
-            rb = tk.Radiobutton(
-                row,
-                variable=self._method_var,
-                value=value,
-                text=label,
-                font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
-                bg=COLOR_BG, fg=COLOR_TEXT,
-                activebackground=COLOR_BG,
-                selectcolor=COLOR_BG,
-                anchor="w",
+        for value, _label, _desc in self._OPTIONS:
+            cv = tk.Canvas(
+                cards_frame,
+                width=W - PX * 2, height=self._CARD_H,
+                bg=MODAL_BG, highlightthickness=0, cursor=CURSOR_HAND,
             )
-            rb.pack(anchor="w")
+            cv.pack(pady=4)
+            self._card_cvs[value] = cv
+            self._draw_card(value)
+            cv.bind("<Button-1>", lambda _e, v=value: self._select(v))
+            cv.bind("<Enter>",    lambda _e, v=value: self._card_hover(v, True))
+            cv.bind("<Leave>",    lambda _e, v=value: self._card_hover(v, False))
 
-            tk.Label(
-                row,
-                text=description,
-                font=(FONT_FAMILY, FONT_SIZE_SMALL, "italic"),
-                bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
-                justify="left",
-                padx=22,
-            ).pack(anchor="w")
+        _modal_divider(self, PX)
 
-        ttk.Separator(self).pack(fill="x", padx=24, pady=(10, 4))
+        btn_row = tk.Frame(self, bg=MODAL_BG)
+        btn_row.pack(anchor="e", padx=PX, pady=(10, 20))
 
-        # Buttons
-        btn_row = tk.Frame(self, bg=COLOR_BG)
-        btn_row.pack(anchor="e", padx=24, pady=(4, 20))
-
-        cancel = tk.Button(btn_row, text="Cancel", command=self.destroy)
-        cancel.config(
-            bg=COLOR_PANEL, fg=COLOR_TEXT, relief="flat",
-            padx=12, pady=5,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor=CURSOR_HAND,
+        cancel_btn = _make_canvas_button(
+            btn_row, "Cancel", self.destroy,
+            bg="#f5f7fa", hover_bg="#eaeef4",
+            fg=MODAL_SECTION_TITLE_COLOR,
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG, border="#e6e6e6",
         )
-        cancel.pack(side="left", padx=(0, 8))
+        cancel_btn.pack(side="left", padx=(0, 8))
 
-        ok = tk.Button(btn_row, text="Continue", command=self._on_ok)
-        style_button(ok)
-        ok.pack(side="left")
+        ok_btn = _make_canvas_button(
+            btn_row, "Continue", self._on_ok,
+            bg=COLOR_BUTTON, hover_bg="#1a3550",
+            fg="#ffffff",
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG,
+        )
+        ok_btn.pack(side="left")
 
-        self.bind("<Return>", lambda e: self._on_ok())
-        self.bind("<Escape>", lambda e: self.destroy())
+        self.bind("<Return>", lambda _e: self._on_ok())
+        self.bind("<Escape>", lambda _e: self.destroy())
+
+    def _draw_card(self, value: str, hovered: bool = False):
+        cv   = self._card_cvs[value]
+        cv.delete("all")
+        W    = int(cv["width"])
+        H    = int(cv["height"])
+        R    = self._CARD_R
+        sel  = (value == self._selected)
+
+        if sel:
+            bg, border, bw = "#e8eef5", COLOR_ACCENT, 2
+        elif hovered:
+            bg, border, bw = "#f5f7fa", "#b8cad8", 1
+        else:
+            bg, border, bw = "#ffffff", MODAL_BORDER, 1
+
+        _create_rounded_rect(cv, 1, 1, W - 1, H - 1, R,
+                              fill=bg, outline=border, width=bw)
+
+        # Radio dot
+        DOT_X, DOT_Y, DOT_R = 22, H // 2, 7
+        cv.create_oval(
+            DOT_X - DOT_R, DOT_Y - DOT_R, DOT_X + DOT_R, DOT_Y + DOT_R,
+            outline=COLOR_ACCENT if sel else "#b0bfcc",
+            fill="#ffffff", width=1.5,
+        )
+        if sel:
+            INNER = 3
+            cv.create_oval(
+                DOT_X - INNER, DOT_Y - INNER, DOT_X + INNER, DOT_Y + INNER,
+                fill=COLOR_ACCENT, outline="",
+            )
+
+        # Title + description
+        label_map = {v: (lbl, desc) for v, lbl, desc in self._OPTIONS}
+        title, desc = label_map[value]
+        TX = 44
+        cv.create_text(
+            TX, H // 2 - 11,
+            text=title, anchor="w",
+            font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
+            fill=COLOR_ACCENT if sel else MODAL_TITLE_COLOR,
+        )
+        cv.create_text(
+            TX, H // 2 + 11,
+            text=desc, anchor="w",
+            font=(FONT_FAMILY, FONT_SIZE_SMALL),
+            fill=MODAL_SUBTITLE_COLOR,
+            width=W - TX - 16,
+        )
+
+    def _select(self, value: str):
+        old = self._selected
+        self._selected = value
+        if old != value:
+            self._draw_card(old)
+        self._draw_card(value)
+
+    def _card_hover(self, value: str, entering: bool):
+        if value != self._selected:
+            self._draw_card(value, hovered=entering)
 
     def _on_ok(self):
-        self.result = self._method_var.get()
+        self.result = self._selected
         self.destroy()
 
     def _center(self):
@@ -170,10 +245,13 @@ class WeightDialog(tk.Toplevel):
     .result : None | List[float]   (same order as decision_makers)
     """
 
+    _W    = 420
+    _PADX = 24
+
     def __init__(self, parent: tk.Misc, decision_makers: List[str]):
         super().__init__(parent)
         self.title("Decision-Maker Weights")
-        self.configure(bg=COLOR_BG)
+        self.configure(bg=MODAL_BG)
         self.resizable(False, True)
         self.grab_set()
 
@@ -181,6 +259,7 @@ class WeightDialog(tk.Toplevel):
         self._decision_makers = decision_makers
         self._entries: List[tk.Entry] = []
         self._vars:    List[tk.StringVar] = []
+        self._sum_label: Optional[tk.Label] = None
 
         self._build()
         self._center()
@@ -188,106 +267,114 @@ class WeightDialog(tk.Toplevel):
     # ------------------------------------------------------------------
 
     def _build(self):
+        W, PX = self._W, self._PADX
+
+        hdr = tk.Frame(self, bg=MODAL_BG)
+        hdr.pack(fill="x", padx=PX, pady=(20, 0))
+
         tk.Label(
-            self,
-            text="Assign Decision-Maker Weights",
-            font=(FONT_FAMILY, FONT_SIZE_TITLE, "bold"),
-            bg=COLOR_BG, fg=COLOR_ACCENT,
-        ).pack(anchor="w", padx=24, pady=(20, 4))
+            hdr,
+            text="Decision-Maker Weights",
+            font=(FONT_FAMILY, MODAL_TITLE_SIZE, "bold"),
+            bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
+        ).pack(side="left")
+
+        _make_modal_close_btn(hdr, self.destroy).pack(side="right")
 
         tk.Label(
             self,
-            text="Enter a value between 0.0 and 1.0 for each decision-maker.\nAll weights must sum to exactly 1.0.",
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "italic"),
-            bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
+            text="Enter a value between 0.0 and 1.0 for each decision-maker. Weights must sum to exactly 1.0.",
+            font=(FONT_FAMILY, MODAL_SUBTITLE_SIZE),
+            bg=MODAL_BG, fg=MODAL_SUBTITLE_COLOR,
+            wraplength=W - PX * 2,
             justify="left",
-        ).pack(anchor="w", padx=24, pady=(0, 10))
+        ).pack(anchor="w", padx=PX, pady=(4, 12))
 
-        ttk.Separator(self).pack(fill="x", padx=24, pady=4)
+        _modal_divider(self, PX)
 
-        # One row per decision-maker
-        grid = tk.Frame(self, bg=COLOR_BG)
-        grid.pack(fill="x", padx=24, pady=8)
+        grid = tk.Frame(self, bg=MODAL_BG)
+        grid.pack(fill="x", padx=PX, pady=(12, 4))
+        grid.columnconfigure(0, weight=1)
 
         for i, dm in enumerate(self._decision_makers):
             tk.Label(
                 grid,
                 text=dm,
                 font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"),
-                bg=COLOR_BG, fg=COLOR_TEXT,
-                width=28, anchor="w",
-            ).grid(row=i, column=0, pady=4, padx=(0, 12), sticky="w")
+                bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
+                anchor="w",
+            ).grid(row=i, column=0, pady=5, padx=(0, 12), sticky="w")
 
             var = tk.StringVar(value="")
             entry = tk.Entry(
                 grid,
                 textvariable=var,
                 font=(FONT_FAMILY, FONT_SIZE_NORMAL),
-                bg="#ffffff", fg=COLOR_TEXT,
+                bg=MODAL_FIELD_BG, fg=COLOR_TEXT,
                 insertbackground=COLOR_ACCENT,
                 relief="solid", bd=1,
+                highlightthickness=1,
+                highlightbackground=MODAL_FIELD_BORDER,
+                highlightcolor=COLOR_ACCENT,
                 width=8,
                 justify="center",
             )
-            entry.grid(row=i, column=1, pady=4)
+            entry.grid(row=i, column=1, pady=5)
             self._vars.append(var)
             self._entries.append(entry)
 
-        # Live sum display
         self._sum_var = tk.StringVar(value="Sum: —")
-        tk.Label(
+        self._sum_label = tk.Label(
             self,
             textvariable=self._sum_var,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "bold"),
-            bg=COLOR_BG, fg=COLOR_ACCENT2,
-        ).pack(anchor="e", padx=24, pady=(0, 4))
+            font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"),
+            bg=MODAL_BG, fg=MODAL_SUBTITLE_COLOR,
+        )
+        self._sum_label.pack(anchor="e", padx=PX, pady=(2, 8))
 
-        # Update sum on every keystroke
         for var in self._vars:
             var.trace_add("write", self._update_sum)
 
-        ttk.Separator(self).pack(fill="x", padx=24, pady=4)
+        _modal_divider(self, PX)
 
-        # Buttons
-        btn_row = tk.Frame(self, bg=COLOR_BG)
-        btn_row.pack(anchor="e", padx=24, pady=(4, 20))
+        btn_row = tk.Frame(self, bg=MODAL_BG)
+        btn_row.pack(anchor="e", padx=PX, pady=(10, 20))
 
-        cancel = tk.Button(btn_row, text="Cancel", command=self.destroy)
-        cancel.config(
-            bg=COLOR_PANEL, fg=COLOR_TEXT, relief="flat",
-            padx=12, pady=5,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor=CURSOR_HAND,
+        cancel_btn = _make_canvas_button(
+            btn_row, "Cancel", self.destroy,
+            bg="#f5f7fa", hover_bg="#eaeef4",
+            fg=MODAL_SECTION_TITLE_COLOR,
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG, border="#e6e6e6",
         )
-        cancel.pack(side="left", padx=(0, 8))
+        cancel_btn.pack(side="left", padx=(0, 8))
 
-        ok = tk.Button(btn_row, text="Aggregate", command=self._on_ok)
-        style_button(ok)
-        ok.pack(side="left")
+        ok_btn = _make_canvas_button(
+            btn_row, "Aggregate", self._on_ok,
+            bg=COLOR_BUTTON, hover_bg="#1a3550",
+            fg="#ffffff",
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG,
+        )
+        ok_btn.pack(side="left")
 
-        self.bind("<Return>", lambda e: self._on_ok())
-        self.bind("<Escape>", lambda e: self.destroy())
+        self.bind("<Return>", lambda _e: self._on_ok())
+        self.bind("<Escape>", lambda _e: self.destroy())
 
-        # Focus first entry
         if self._entries:
             self._entries[0].focus_set()
 
-    # ------------------------------------------------------------------
-
     def _update_sum(self, *_):
-        """Recompute and display the running sum of entered weights."""
         try:
             total = sum(float(v.get()) for v in self._vars if v.get().strip())
             label = f"Sum: {round(total, 4)}"
             color = COLOR_ACCENT if abs(total - 1.0) <= 0.01 else "#b71c1c"
         except ValueError:
             label = "Sum: —"
-            color = COLOR_TEXT_LIGHT
+            color = MODAL_SUBTITLE_COLOR
         self._sum_var.set(label)
-        # Update label colour dynamically
-        for widget in self.pack_slaves():
-            if isinstance(widget, tk.Label) and widget.cget("textvariable") == str(self._sum_var):
-                widget.config(fg=color)
-                break
+        if self._sum_label:
+            self._sum_label.config(fg=color)
 
     def _on_ok(self):
         weights = []
@@ -355,10 +442,14 @@ class TieResolutionDialog(tk.Toplevel):
     .result : None | List[TiedCell]  (each with .chosen set)
     """
 
+    _W    = 500
+    _HMAX = 620
+    _PADX = 24
+
     def __init__(self, parent: tk.Misc, ties: List[TiedCell]):
         super().__init__(parent)
         self.title("Resolve Majority Ties")
-        self.configure(bg=COLOR_BG)
+        self.configure(bg=MODAL_BG)
         self.resizable(False, True)
         self.grab_set()
 
@@ -372,12 +463,18 @@ class TieResolutionDialog(tk.Toplevel):
     # ------------------------------------------------------------------
 
     def _build(self):
+        W, PX = self._W, self._PADX
+
+        hdr = tk.Frame(self, bg=MODAL_BG)
+        hdr.pack(fill="x", padx=PX, pady=(20, 0))
+
         tk.Label(
-            self,
+            hdr,
             text="Resolve Majority Ties",
-            font=(FONT_FAMILY, FONT_SIZE_TITLE, "bold"),
-            bg=COLOR_BG, fg=COLOR_ACCENT,
-        ).pack(anchor="w", padx=24, pady=(20, 4))
+            font=(FONT_FAMILY, MODAL_TITLE_SIZE, "bold"),
+            bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
+        ).pack(side="left")
+        _make_modal_close_btn(hdr, self.destroy).pack(side="right")
 
         tk.Label(
             self,
@@ -385,84 +482,103 @@ class TieResolutionDialog(tk.Toplevel):
                 f"{len(self._ties)} cell(s) ended in a tie. "
                 "Please select the rating for each one."
             ),
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL, "italic"),
-            bg=COLOR_BG, fg=COLOR_TEXT_LIGHT,
-            wraplength=400,
-        ).pack(anchor="w", padx=24, pady=(0, 10))
+            font=(FONT_FAMILY, MODAL_SUBTITLE_SIZE),
+            bg=MODAL_BG, fg=MODAL_SUBTITLE_COLOR,
+            wraplength=W - PX * 2,
+            justify="left",
+        ).pack(anchor="w", padx=PX, pady=(6, 10))
 
-        ttk.Separator(self).pack(fill="x", padx=24, pady=4)
+        _modal_divider(self, PX)
 
         # Scrollable area for ties
-        outer = tk.Frame(self, bg=COLOR_BG)
-        outer.pack(fill="both", expand=True, padx=24, pady=8)
+        outer = tk.Frame(self, bg=MODAL_BG)
+        outer.pack(fill="both", expand=True, padx=PX, pady=(12, 8))
 
-        canvas = tk.Canvas(outer, bg=COLOR_BG, highlightthickness=0)
+        canvas = tk.Canvas(outer, bg=MODAL_BG, highlightthickness=0, width=W - PX * 2)
         sb = ttk.Scrollbar(outer, orient="vertical", command=canvas.yview)
         canvas.configure(yscrollcommand=sb.set)
         sb.pack(side="right", fill="y")
         canvas.pack(side="left", fill="both", expand=True)
 
-        inner = tk.Frame(canvas, bg=COLOR_BG)
-        canvas.create_window((0, 0), window=inner, anchor="nw")
+        inner = tk.Frame(canvas, bg=MODAL_BG)
+        inner_window = canvas.create_window((0, 0), window=inner, anchor="nw")
         inner.bind(
             "<Configure>",
             lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
         )
+        canvas.bind(
+            "<Configure>",
+            lambda e: canvas.itemconfigure(inner_window, width=e.width)
+        )
 
         for idx, tie in enumerate(self._ties):
-            row_frame = tk.Frame(inner, bg=COLOR_PANEL, pady=8)
-            row_frame.pack(fill="x", pady=4, padx=4)
+            row_frame = tk.Frame(
+                inner,
+                bg="#ffffff",
+                highlightthickness=1,
+                highlightbackground=MODAL_BORDER,
+                highlightcolor=MODAL_BORDER,
+                bd=0,
+            )
+            row_frame.pack(fill="x", pady=(0 if idx == 0 else 8, 0))
 
-            # Cell label
             tk.Label(
                 row_frame,
-                text=f"  {tie.code_r}  ->  {tie.code_c}",
+                text=f"{tie.code_r} -> {tie.code_c}",
                 font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
-                bg=COLOR_PANEL, fg=COLOR_ACCENT,
-            ).pack(anchor="w", padx=12)
+                bg="#ffffff", fg=MODAL_TITLE_COLOR,
+            ).pack(anchor="w", padx=14, pady=(12, 0))
 
-            # Tied options label
             tied_str = "  |  ".join(
                 f"{lbl} ({RATING_SCORES[lbl]:+d})"
                 for lbl in tie.tied_labels
             )
             tk.Label(
                 row_frame,
-                text=f"Tied:  {tied_str}",
-                font=(FONT_FAMILY, FONT_SIZE_SMALL, "italic"),
-                bg=COLOR_PANEL, fg=COLOR_TEXT_LIGHT,
-            ).pack(anchor="w", padx=12)
+                text=f"Tied options: {tied_str}",
+                font=(FONT_FAMILY, FONT_SIZE_SMALL),
+                bg="#ffffff", fg=MODAL_SUBTITLE_COLOR,
+                justify="left", wraplength=W - PX * 2 - 40,
+            ).pack(anchor="w", padx=14, pady=(4, 8))
 
-            # Dropdown for selection (only tied labels as options)
+            field_row = tk.Frame(row_frame, bg="#ffffff")
+            field_row.pack(fill="x", padx=14, pady=(0, 12))
+            tk.Label(
+                field_row,
+                text="Selected rating",
+                font=(FONT_FAMILY, FONT_SIZE_SMALL, "bold"),
+                bg="#ffffff", fg=MODAL_SECTION_TITLE_COLOR,
+            ).pack(anchor="w")
+
             var = tk.StringVar(value="")
             combo = ttk.Combobox(
-                row_frame,
+                field_row,
                 textvariable=var,
                 values=tie.tied_labels,
                 state="readonly",
-                width=20,
+                width=28,
                 font=(FONT_FAMILY, FONT_SIZE_NORMAL),
             )
-            combo.pack(anchor="w", padx=12, pady=(6, 4))
+            combo.pack(anchor="w", pady=(6, 0))
             self._vars.append(var)
 
-        ttk.Separator(self).pack(fill="x", padx=24, pady=(8, 4))
+        _modal_divider(self, PX)
 
-        # Buttons
-        btn_row = tk.Frame(self, bg=COLOR_BG)
-        btn_row.pack(anchor="e", padx=24, pady=(4, 20))
+        btn_row = tk.Frame(self, bg=MODAL_BG)
+        btn_row.pack(anchor="e", padx=PX, pady=(10, 20))
 
-        cancel = tk.Button(btn_row, text="Cancel", command=self.destroy)
-        cancel.config(
-            bg=COLOR_PANEL, fg=COLOR_TEXT, relief="flat",
-            padx=12, pady=5,
-            font=(FONT_FAMILY, FONT_SIZE_NORMAL), cursor=CURSOR_HAND,
-        )
-        cancel.pack(side="left", padx=(0, 8))
-
-        ok = tk.Button(btn_row, text="Confirm", command=self._on_ok)
-        style_button(ok)
-        ok.pack(side="left")
+        _make_canvas_button(
+            btn_row, "Cancel", self.destroy,
+            bg="#f5f7fa", hover_bg="#eaeef4", fg=MODAL_SECTION_TITLE_COLOR,
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG, border="#e6e6e6",
+        ).pack(side="left", padx=(0, 8))
+        _make_canvas_button(
+            btn_row, "Confirm", self._on_ok,
+            bg=COLOR_BUTTON, hover_bg="#1a3550", fg="#ffffff",
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG,
+        ).pack(side="left")
 
         self.bind("<Return>", lambda e: self._on_ok())
         self.bind("<Escape>", lambda e: self.destroy())
@@ -487,7 +603,7 @@ class TieResolutionDialog(tk.Toplevel):
 
     def _center(self):
         self.update_idletasks()
-        w = max(self.winfo_reqwidth(), 460)
-        h = min(self.winfo_reqheight(), 600)
+        w = max(self.winfo_reqwidth(), self._W)
+        h = min(self.winfo_reqheight(), self._HMAX)
         sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
         self.geometry(f"{w}x{h}+{(sw-w)//2}+{(sh-h)//2}")
