@@ -594,12 +594,28 @@ class LLMInterpretationTab(tk.Frame):
         )
         text_window = text_shell.create_window((12, 12), window=self._output_text, anchor="nw")
 
+        def _draw_output_shell():
+            width = text_shell.winfo_width()
+            height = text_shell.winfo_height()
+            if width <= 1 or height <= 1:
+                return
+            text_shell.delete("shell_bg")
+            pts = _rrect_pts(1, 1, width - 1, height - 1, 6)
+            bg_id = text_shell.create_polygon(
+                *pts,
+                fill="#ffffff",
+                outline="#e6e6e6",
+                width=1,
+                tags=("shell_bg",),
+            )
+            text_shell.tag_lower(bg_id)
+
         def _resize_output_shell(_event=None):
             width = text_shell.winfo_width()
             height = text_shell.winfo_height()
             if width <= 1 or height <= 1:
                 return
-            self._draw_input_shell(text_shell, width, height, radius=6)
+            _draw_output_shell()
             text_shell.coords(text_window, 12, 12)
             text_shell.itemconfigure(text_window, width=max(1, width - 24), height=max(1, height - 24))
 
