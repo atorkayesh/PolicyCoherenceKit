@@ -2,7 +2,7 @@
 # Policy Coherence Kit -- llm_tab.py
 # LLMInterpretationTab: LLM-powered structured interpretation of analysis.
 #
-# - User selects engine, model, enters API key (never saved)
+# - User selects provider, model, enters API key (never saved)
 # - Clicking "Generate Interpretation" assembles a structured prompt from
 #   all analysis results and calls the selected LLM API
 # - Response is displayed in a structured scrollable text area
@@ -59,51 +59,19 @@ def _rrect_pts(x1, y1, x2, y2, r, steps=10):
 # =============================================================================
 
 ENGINES = {
-    "Groq (Free)": {
+    "Groq": {
         "models": [
             "llama-3.3-70b-versatile",
-            "llama-3.1-8b-instant",
-            "llama3-groq-70b-8192-tool-use-preview",
-            "gemma2-9b-it",
-            "mixtral-8x7b-32768",
         ],
         "base_url": "https://api.groq.com/openai/v1",
         "style": "openai_compat",
     },
     "OpenAI": {
         "models": [
-            "gpt-4o",
             "gpt-4o-mini",
-            "gpt-3.5-turbo",
+            "gpt-4o",
         ],
         "base_url": "https://api.openai.com/v1",
-        "style": "openai_compat",
-    },
-    "Anthropic": {
-        "models": [
-            "claude-3-5-sonnet-20241022",
-            "claude-3-5-haiku-20241022",
-            "claude-3-opus-20240229",
-        ],
-        "base_url": "https://api.anthropic.com",
-        "style": "anthropic",
-    },
-    "Google Gemini": {
-        "models": [
-            "gemini-1.5-flash",
-            "gemini-1.5-pro",
-            "gemini-2.0-flash",
-        ],
-        "base_url": "https://generativelanguage.googleapis.com/v1beta",
-        "style": "gemini",
-    },
-    "Mistral": {
-        "models": [
-            "mistral-small-latest",
-            "mistral-medium-latest",
-            "open-mistral-7b",
-        ],
-        "base_url": "https://api.mistral.ai/v1",
         "style": "openai_compat",
     },
 }
@@ -295,49 +263,6 @@ def _call_openai_compat(base_url: str, api_key: str, model: str,
         raise RuntimeError(f"Unexpected response structure:\n{data}")
 
 
-def _call_anthropic(api_key: str, model: str,
-                     system: str, user: str) -> str:
-    data = _http_post(
-        url="https://api.anthropic.com/v1/messages",
-        payload={
-            "model": model,
-            "max_tokens": 4096,
-            "system": system,
-            "messages": [{"role": "user", "content": user}],
-        },
-        headers={
-            "Content-Type":      "application/json",
-            "x-api-key":         api_key,
-            "anthropic-version": "2023-06-01",
-        },
-    )
-    try:
-        return data["content"][0]["text"]
-    except (KeyError, IndexError, TypeError):
-        raise RuntimeError(f"Unexpected response structure:\n{data}")
-
-
-def _call_gemini(api_key: str, model: str,
-                  system: str, user: str) -> str:
-    combined = f"{system}\n\n{user}"
-    data = _http_post(
-        url=(f"https://generativelanguage.googleapis.com/v1beta/models/"
-             f"{model}:generateContent?key={api_key}"),
-        payload={
-            "contents": [{"parts": [{"text": combined}]}],
-            "generationConfig": {
-                "maxOutputTokens": 4096,
-                "temperature": 0.3,
-            },
-        },
-        headers={"Content-Type": "application/json"},
-    )
-    try:
-        return data["candidates"][0]["content"]["parts"][0]["text"]
-    except (KeyError, IndexError, TypeError):
-        raise RuntimeError(f"Unexpected response structure:\n{data}")
-
-
 def call_llm(engine: str, model: str, api_key: str, prompt: str) -> str:
     """Dispatch to the correct API based on engine."""
     if not api_key.strip():
@@ -347,10 +272,6 @@ def call_llm(engine: str, model: str, api_key: str, prompt: str) -> str:
     if style == "openai_compat":
         return _call_openai_compat(
             cfg["base_url"], api_key, model, SYSTEM_PROMPT, prompt)
-    elif style == "anthropic":
-        return _call_anthropic(api_key, model, SYSTEM_PROMPT, prompt)
-    elif style == "gemini":
-        return _call_gemini(api_key, model, SYSTEM_PROMPT, prompt)
     raise ValueError(f"Unknown engine style: {style}")
 
 

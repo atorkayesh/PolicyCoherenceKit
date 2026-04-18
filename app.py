@@ -2536,9 +2536,9 @@ class PolicyCoherenceApp:
                                 parent=self.root)
             return
 
-        if len(proj.matrices) < 2:
-            messagebox.showwarning("Not Enough Matrices",
-                                   "You need at least 2 decision-maker matrices.",
+        if not proj.matrices:
+            messagebox.showwarning("No Matrices",
+                                   "Add at least 1 decision-maker matrix before running analysis.",
                                    parent=self.root)
             return
 
@@ -2591,9 +2591,10 @@ class PolicyCoherenceApp:
             resolve_ties(result)
 
         self._create_analysis_tabs(proj, result)
+        dm_word = "decision-maker" if n_dms == 1 else "decision-makers"
         self._set_status(
             f'Analysis complete for "{proj.name}"  |  method: {method}  '
-            f'|  {n_dms} decision-makers'
+            f'|  {n_dms} {dm_word}'
         )
 
     def _create_analysis_tabs(self, proj: Project, result: AggregationResult):
