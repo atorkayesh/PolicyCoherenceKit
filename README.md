@@ -131,9 +131,6 @@ The LLM tab supports the following engines:
 |---|---|
 | **Groq** | Free tier available |
 | **OpenAI** | Requires paid API key |
-| **Anthropic** | Requires paid API key |
-| **Google Gemini** | Free tier available |
-| **Mistral** | Free tier available |
 
 > **Privacy:** API keys are used for a single request and cleared from memory immediately. They are never stored to disk.
 
