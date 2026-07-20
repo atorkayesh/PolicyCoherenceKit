@@ -10,7 +10,7 @@ import tkinter as tk
 from collections import Counter
 from typing import Dict, List, Optional, Tuple
 
-from aggregator import AggregationResult
+from aggregator import AggregationResult, aggregation_method_label
 from coherence_scores_tab import compute_scores
 from range_of_influence_tab import compute_entropy
 from network_tab import compute_centrality
@@ -288,11 +288,7 @@ class _RoundedCard(tk.Canvas):
 
 
 def _method_label(method: str) -> str:
-    return {
-        "average": "Average",
-        "majority": "Majority Rule",
-        "weighted": "Weighted",
-    }.get(method, method.title())
+    return aggregation_method_label(method)
 
 
 def _policy_label(code: str, policy: str) -> str:

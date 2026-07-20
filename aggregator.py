@@ -7,8 +7,10 @@
 # check_completeness(matrices)         -> list of (dm_name, [(code_r, code_c), ...])
 # aggregate_average(matrices)          -> AggregationResult
 # aggregate_majority(matrices)         -> AggregationResult  (may contain TiedCell entries)
+# aggregate_median(matrices)           -> AggregationResult  (ordinal median summary)
 # aggregate_weighted(matrices,weights) -> AggregationResult
 # resolve_ties(result)                 -> AggregationResult
+# aggregation_method_label(result)     -> str
 #
 # AggregationResult
 # -----------------
@@ -59,6 +61,10 @@ class AggregationResult:
     decision_makers: number of source matrices
     decision_maker_names: source matrix names in aggregation order
     source_scores: per-cell numeric source ratings for agreement analysis
+    ordinal_cells: ordinal summaries for robust methods
+                  (e.g. median labels; one label for odd counts,
+                   lower/upper labels for even counts)
+    median_even_choice: 'lower' | 'upper' for even-sized median aggregation
 
     Cached analysis results (populated lazily by analysis tabs):
     _cached_scores    : coherence scores (OI, II, WOI, WII)
@@ -75,6 +81,8 @@ class AggregationResult:
     decision_makers: int = 0
     decision_maker_names: List[str] = field(default_factory=list)
     source_scores: Dict[Tuple[int, int], List[float]] = field(default_factory=dict, repr=False)
+    ordinal_cells: Dict[Tuple[int, int], Tuple[str, ...]] = field(default_factory=dict, repr=False)
+    median_even_choice: Optional[str] = field(default=None, repr=False)
     # Cached analysis results (populated lazily)
     _cached_scores:     Optional[List[dict]] = field(default=None, repr=False)
     _cached_entropy:    Optional[List[dict]] = field(default=None, repr=False)
@@ -202,6 +210,66 @@ def aggregate_majority(matrices: List[PolicyMatrix]) -> AggregationResult:
     )
 
 
+def aggregate_median(
+    matrices: List[PolicyMatrix],
+    even_choice: str = "lower",
+) -> AggregationResult:
+    """
+    Ordinal median aggregation over the 7-point rating labels.
+
+    The labels are sorted by their coded ordinal order. For odd numbers of
+    decision-makers, the single middle label is returned. For even numbers,
+    both middle labels are preserved in result.ordinal_cells as
+    (lower_median, upper_median). To keep the existing numeric analysis
+    pipeline working, result.scores stores the selected median score for even
+    cases and the exact middle score for odd cases.
+    """
+    _validate_matrices(matrices)
+    _validate_even_choice(even_choice)
+    n        = len(matrices[0].policies)
+    codes    = matrices[0].codes
+    policies = matrices[0].policies
+    dm_names = [m.decision_maker for m in matrices]
+    scores: Dict[Tuple[int, int], float] = {}
+    source_scores: Dict[Tuple[int, int], List[float]] = {}
+    ordinal_cells: Dict[Tuple[int, int], Tuple[str, ...]] = {}
+
+    for i in range(n):
+        for j in range(n):
+            if i == j:
+                scores[(i, j)] = 0.0
+                source_scores[(i, j)] = [0.0 for _ in matrices]
+                ordinal_cells[(i, j)] = (DIAGONAL_VALUE,)
+                continue
+
+            labels = [m.get_rating(i, j) for m in matrices]
+            ordered = sorted(labels, key=lambda lbl: RATING_SCORES[lbl])
+            source_scores[(i, j)] = [
+                float(RATING_SCORES[label]) for label in labels
+            ]
+
+            mid = len(ordered) // 2
+            if len(ordered) % 2 == 1:
+                median_labels = (ordered[mid],)
+                selected_label = ordered[mid]
+            else:
+                median_labels = (ordered[mid - 1], ordered[mid])
+                selected_label = ordered[mid - 1] if even_choice == "lower" else ordered[mid]
+
+            ordinal_cells[(i, j)] = median_labels
+            scores[(i, j)] = float(RATING_SCORES[selected_label])
+
+    return AggregationResult(
+        scores=scores, ties=[], n=n,
+        codes=codes, policies=policies, method="median",
+        decision_makers=len(matrices),
+        decision_maker_names=dm_names,
+        source_scores=source_scores,
+        ordinal_cells=ordinal_cells,
+        median_even_choice=even_choice if len(matrices) % 2 == 0 else None,
+    )
+
+
 def resolve_ties(result: AggregationResult) -> AggregationResult:
     """
     After the UI has set TiedCell.chosen for every unresolved tie,
@@ -294,3 +362,30 @@ def _validate_weights(weights: List[float], n: int):
         raise ValueError(
             f"Weights sum to {round(total, 4)} — must sum to exactly 1.0."
         )
+def _validate_even_choice(choice: str):
+    """Raise if the median even-case choice is not supported."""
+    if choice not in {"lower", "upper"}:
+        raise ValueError(
+            f'Invalid median choice "{choice}". Expected "lower" or "upper".'
+        )
+
+
+def aggregation_method_label(result_or_method) -> str:
+    """Return a user-facing label for an aggregation method or result."""
+    if isinstance(result_or_method, AggregationResult):
+        result = result_or_method
+        if result.method == "median":
+            if result.median_even_choice == "lower":
+                return "Median (Lower)"
+            if result.median_even_choice == "upper":
+                return "Median (Upper)"
+            return "Median"
+        method = result.method
+    else:
+        method = str(result_or_method)
+    return {
+        "average": "Average",
+        "majority": "Majority Rule",
+        "weighted": "Weighted",
+        "median": "Median",
+    }.get(method, method.title())

@@ -13,7 +13,7 @@
 import tkinter as tk
 from typing import List, Tuple
 
-from aggregator import AggregationResult
+from aggregator import AggregationResult, aggregation_method_label
 from aggregation_tab import _PillScrollbar
 from constants import (
     FONT_FAMILY, FONT_SIZE_SMALL, FONT_SIZE_NORMAL,
@@ -178,11 +178,7 @@ class CoherenceScoresTab(tk.Frame):
         bar = tk.Frame(self, bg=COLOR_BG, pady=8)
         bar.pack(fill="x")
 
-        method_label = {
-            "average":  "Average",
-            "majority": "Majority Rule",
-            "weighted": "Weighted",
-        }.get(self._result.method, self._result.method.title())
+        method_label = aggregation_method_label(self._result)
 
         tk.Label(
             bar,

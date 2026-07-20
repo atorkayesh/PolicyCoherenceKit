@@ -26,11 +26,12 @@ from theme import (
 )
 from aggregator import (
     check_completeness,
-    aggregate_average, aggregate_majority, aggregate_weighted, resolve_ties,
+    aggregation_method_label,
+    aggregate_average, aggregate_majority, aggregate_median, aggregate_weighted, resolve_ties,
     AggregationResult,
 )
 from aggregation_dialog import (
-    AggregationMethodDialog, WeightDialog, TieResolutionDialog,
+    AggregationMethodDialog, MedianChoiceDialog, WeightDialog, TieResolutionDialog,
 )
 from aggregation_tab import AggregationTab
 from coherence_scores_tab import CoherenceScoresTab
@@ -2574,8 +2575,19 @@ class PolicyCoherenceApp:
                 return
             weights = dlg_w.result
 
+        median_choice = "lower"
+        if method == "median" and n_dms % 2 == 0:
+            dlg_m = MedianChoiceDialog(
+                self.root, [m.decision_maker for m in proj.matrices])
+            self.root.wait_window(dlg_m)
+            if dlg_m.result is None:
+                return
+            median_choice = dlg_m.result
+
         if method == "average":
             result = aggregate_average(proj.matrices)
+        elif method == "median":
+            result = aggregate_median(proj.matrices, even_choice=median_choice)
         elif method == "majority":
             result = aggregate_majority(proj.matrices)
         elif method == "weighted":
@@ -2592,18 +2604,15 @@ class PolicyCoherenceApp:
 
         self._create_analysis_tabs(proj, result)
         dm_word = "decision-maker" if n_dms == 1 else "decision-makers"
+        method_label = aggregation_method_label(result)
         self._set_status(
-            f'Analysis complete for "{proj.name}"  |  method: {method}  '
+            f'Analysis complete for "{proj.name}"  |  method: {method_label}  '
             f'|  {n_dms} {dm_word}'
         )
 
     def _create_analysis_tabs(self, proj: Project, result: AggregationResult):
         """Populate the analysis notebook and switch to the analysis view."""
-        method_label = {
-            "average":  "Average",
-            "majority": "Majority",
-            "weighted": "Weighted",
-        }.get(result.method, result.method.title())
+        method_label = aggregation_method_label(result)
 
         proj.agg_results.append(result)
 
@@ -3137,8 +3146,16 @@ def _export_to_excel(matrices, agg_results, path: str):
 
     # Analysis results
     for idx, result in enumerate(agg_results):
-        ml     = {"average":"Avg","majority":"Majority","weighted":"Weighted"
-                  }.get(result.method, result.method.title())
+        ml     = {
+            "average":"Avg",
+            "median":"Median",
+            "majority":"Majority",
+            "weighted":"Weighted",
+        }.get(result.method, result.method.title())
+        if result.method == "median" and getattr(result, "median_even_choice", None) == "lower":
+            ml = "Median (Lower)"
+        elif result.method == "median" and getattr(result, "median_even_choice", None) == "upper":
+            ml = "Median (Upper)"
         suffix = f" {idx+1}" if len(agg_results) > 1 else ""
         pfx    = f"{ml}{suffix}"
         n, codes = result.n, result.codes

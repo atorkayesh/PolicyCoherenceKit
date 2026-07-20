@@ -2,8 +2,9 @@
 # Policy Coherence Kit -- aggregation_dialog.py
 # Dialogs that drive the aggregation workflow:
 #
-#   AggregationMethodDialog  -- choose Average / Majority / Weighted
+#   AggregationMethodDialog  -- choose Average / Median / Majority / Weighted
 #                               (only shown when n_matrices >= 3)
+#   MedianChoiceDialog       -- choose Lower / Upper median for even counts
 #   WeightDialog             -- enter per-DM weights that sum to 1.0
 #   TieResolutionDialog      -- resolve majority ties one by one
 #
@@ -48,7 +49,7 @@ class AggregationMethodDialog(tk.Toplevel):
     Ask the user which aggregation method to use.
     Shown only when there are 3 or more decision-makers.
 
-    .result : None | "average" | "majority" | "weighted"
+    .result : None | "average" | "median" | "majority" | "weighted"
     """
 
     _W      = 440
@@ -61,6 +62,11 @@ class AggregationMethodDialog(tk.Toplevel):
             "average",
             "Average",
             "Each decision-maker is weighted equally. Cell score = mean of all scores.",
+        ),
+        (
+            "median",
+            "Median (Ordinal)",
+            "Uses the ordered middle rating(s) and avoids assuming equal spacing.",
         ),
         (
             "majority",
@@ -194,6 +200,190 @@ class AggregationMethodDialog(tk.Toplevel):
             )
 
         # Title + description
+        label_map = {v: (lbl, desc) for v, lbl, desc in self._OPTIONS}
+        title, desc = label_map[value]
+        TX = 44
+        cv.create_text(
+            TX, H // 2 - 11,
+            text=title, anchor="w",
+            font=(FONT_FAMILY, FONT_SIZE_HEADER, "bold"),
+            fill=COLOR_ACCENT if sel else MODAL_TITLE_COLOR,
+        )
+        cv.create_text(
+            TX, H // 2 + 11,
+            text=desc, anchor="w",
+            font=(FONT_FAMILY, FONT_SIZE_SMALL),
+            fill=MODAL_SUBTITLE_COLOR,
+            width=W - TX - 16,
+        )
+
+    def _select(self, value: str):
+        old = self._selected
+        self._selected = value
+        if old != value:
+            self._draw_card(old)
+        self._draw_card(value)
+
+    def _card_hover(self, value: str, entering: bool):
+        if value != self._selected:
+            self._draw_card(value, hovered=entering)
+
+    def _on_ok(self):
+        self.result = self._selected
+        self.destroy()
+
+    def _center(self):
+        self.update_idletasks()
+        w, h = self.winfo_reqwidth(), self.winfo_reqheight()
+        sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
+        self.geometry(f"{w}x{h}+{(sw-w)//2}+{(sh-h)//2}")
+
+
+# =============================================================================
+# MedianChoiceDialog
+# =============================================================================
+
+class MedianChoiceDialog(tk.Toplevel):
+    """
+    Ask the user to choose how the median should be handled for an even
+    number of decision-makers.
+
+    .result : None | "lower" | "upper"
+    """
+
+    _W      = 440
+    _CARD_H = 76
+    _CARD_R = 6
+    _PADX   = 24
+
+    _OPTIONS = [
+        (
+            "lower",
+            "Lower Median",
+            "Use the lower of the two middle ratings in the ordered scale.",
+        ),
+        (
+            "upper",
+            "Upper Median",
+            "Use the upper of the two middle ratings in the ordered scale.",
+        ),
+    ]
+
+    def __init__(self, parent: tk.Misc, decision_makers: List[str]):
+        super().__init__(parent)
+        self.title("Median Choice")
+        self.configure(bg=MODAL_BG)
+        self.resizable(False, False)
+        self.grab_set()
+
+        self.result: Optional[str] = None
+        self._decision_makers = decision_makers
+        self._selected = "lower"
+        self._card_cvs: dict = {}
+
+        self._build()
+        self._center()
+
+    def _build(self):
+        W, PX = self._W, self._PADX
+
+        hdr = tk.Frame(self, bg=MODAL_BG)
+        hdr.pack(fill="x", padx=PX, pady=(20, 0))
+
+        tk.Label(
+            hdr,
+            text="Median Choice",
+            font=(FONT_FAMILY, MODAL_TITLE_SIZE, "bold"),
+            bg=MODAL_BG, fg=MODAL_TITLE_COLOR,
+        ).pack(side="left")
+
+        _make_modal_close_btn(hdr, self.destroy).pack(side="right")
+
+        n = len(self._decision_makers)
+        dm_word = "decision-maker" if n == 1 else "decision-makers"
+        tk.Label(
+            self,
+            text=(
+                f"{n} {dm_word} detected. "
+                "Choose which median should be used for aggregation."
+            ),
+            font=(FONT_FAMILY, MODAL_SUBTITLE_SIZE),
+            bg=MODAL_BG, fg=MODAL_SUBTITLE_COLOR,
+            wraplength=W - PX * 2,
+            justify="left",
+        ).pack(anchor="w", padx=PX, pady=(4, 12))
+
+        _modal_divider(self, PX)
+
+        cards_frame = tk.Frame(self, bg=MODAL_BG)
+        cards_frame.pack(fill="x", padx=PX, pady=(12, 8))
+
+        for value, _label, _desc in self._OPTIONS:
+            cv = tk.Canvas(
+                cards_frame,
+                width=W - PX * 2, height=self._CARD_H,
+                bg=MODAL_BG, highlightthickness=0, cursor=CURSOR_HAND,
+            )
+            cv.pack(pady=4)
+            self._card_cvs[value] = cv
+            self._draw_card(value)
+            cv.bind("<Button-1>", lambda _e, v=value: self._select(v))
+            cv.bind("<Enter>",    lambda _e, v=value: self._card_hover(v, True))
+            cv.bind("<Leave>",    lambda _e, v=value: self._card_hover(v, False))
+
+        _modal_divider(self, PX)
+
+        btn_row = tk.Frame(self, bg=MODAL_BG)
+        btn_row.pack(anchor="e", padx=PX, pady=(10, 20))
+
+        _make_canvas_button(
+            btn_row, "Cancel", self.destroy,
+            bg="#f5f7fa", hover_bg="#eaeef4",
+            fg=MODAL_SECTION_TITLE_COLOR,
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG, border="#e6e6e6",
+        ).pack(side="left", padx=(0, 8))
+        _make_canvas_button(
+            btn_row, "Continue", self._on_ok,
+            bg=COLOR_BUTTON, hover_bg="#1a3550",
+            fg="#ffffff",
+            height=33, radius=5, padx=18, text_size=FONT_SIZE_NORMAL,
+            modal_bg=MODAL_BG,
+        ).pack(side="left")
+
+        self.bind("<Return>", lambda _e: self._on_ok())
+        self.bind("<Escape>", lambda _e: self.destroy())
+
+    def _draw_card(self, value: str, hovered: bool = False):
+        cv = self._card_cvs[value]
+        cv.delete("all")
+        W = int(cv["width"])
+        H = int(cv["height"])
+        R = self._CARD_R
+        sel = (value == self._selected)
+
+        if sel:
+            bg, border, bw = "#e8eef5", COLOR_ACCENT, 2
+        elif hovered:
+            bg, border, bw = "#f5f7fa", "#b8cad8", 1
+        else:
+            bg, border, bw = "#ffffff", MODAL_BORDER, 1
+
+        _create_rounded_rect(cv, 1, 1, W - 1, H - 1, R,
+                              fill=bg, outline=border, width=bw)
+
+        DOT_X, DOT_Y, DOT_R = 22, H // 2, 7
+        cv.create_oval(
+            DOT_X - DOT_R, DOT_Y - DOT_R, DOT_X + DOT_R, DOT_Y + DOT_R,
+            outline=COLOR_ACCENT if sel else "#b0bfcc",
+            fill="#ffffff", width=1.5,
+        )
+        if sel:
+            cv.create_oval(
+                DOT_X - 3, DOT_Y - 3, DOT_X + 3, DOT_Y + 3,
+                fill=COLOR_ACCENT, outline="",
+            )
+
         label_map = {v: (lbl, desc) for v, lbl, desc in self._OPTIONS}
         title, desc = label_map[value]
         TX = 44

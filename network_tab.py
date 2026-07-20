@@ -19,7 +19,7 @@ import tkinter as tk
 import tkinter.font as tkFont
 from typing import List, Dict, Tuple, Optional
 
-from aggregator import AggregationResult
+from aggregator import AggregationResult, aggregation_method_label
 from aggregation_tab import _PillScrollbar
 from constants import (
     FONT_FAMILY, FONT_SIZE_SMALL, FONT_SIZE_NORMAL,
@@ -369,11 +369,7 @@ class NetworkTab(tk.Frame):
         content = tk.Frame(bar, bg=COLOR_BG)
         content.grid(row=0, column=0, sticky="w", padx=16)
 
-        method_label = {
-            "average":  "Average",
-            "majority": "Majority Rule",
-            "weighted": "Weighted",
-        }.get(self._result.method, self._result.method.title())
+        method_label = aggregation_method_label(self._result)
 
         tk.Label(
             content,

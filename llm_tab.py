@@ -16,7 +16,7 @@ from tkinter import ttk, messagebox, filedialog
 import threading
 from typing import Optional
 
-from aggregator import AggregationResult
+from aggregator import AggregationResult, aggregation_method_label
 from coherence_scores_tab import compute_scores
 from range_of_influence_tab import compute_entropy
 from network_tab import compute_centrality
@@ -102,11 +102,7 @@ def build_prompt(result: AggregationResult) -> str:
     n       = result.n
     codes   = result.codes
     policies = result.policies
-    method_label = {
-        "average":  "Average",
-        "majority": "Majority Rule",
-        "weighted": "Weighted",
-    }.get(result.method, result.method.title())
+    method_label = aggregation_method_label(result)
 
     lines = []
 
@@ -311,11 +307,7 @@ class LLMInterpretationTab(tk.Frame):
         content = tk.Frame(bar, bg=COLOR_BG)
         content.pack(anchor="w", padx=16)
 
-        method_label = {
-            "average":  "Average",
-            "majority": "Majority Rule",
-            "weighted": "Weighted",
-        }.get(self._result.method, self._result.method.title())
+        method_label = aggregation_method_label(self._result)
 
         tk.Label(
             content,
