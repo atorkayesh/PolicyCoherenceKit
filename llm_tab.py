@@ -181,7 +181,7 @@ def build_prompt(result: AggregationResult) -> str:
 
     # ── Instruction ──────────────────────────────────────────────────
     lines.append(
-        "Please provide a structured, in-depth interpretation with the "
+        "Provide a structured, in-depth interpretation with the "
         "following sections. Each section should be multiple paragraphs "
         "with specific references to the data above:\n"
     )
