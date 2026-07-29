@@ -45,9 +45,10 @@ Policy Coherence Kit allows researchers and policy professionals to:
 - Colour-coded dropdowns for rating each cell
 
 ### Aggregation
-- **Average** — equal weighting across all decision-makers (auto-selected for < 3 DMs)
-- **Majority Rule** — most common rating wins; ties flagged for manual resolution
-- **Weighted** — assign importance weights (0–1) per decision-maker, must sum to 1.0
+- **Average**: arithmetic mean across decision-makers
+- **Median**: ordinal median aggregation, with lower/upper choice when the number of decision-makers is even
+- **Majority Rule**: most common rating at each cell
+- **Weighted**: weighted aggregation using user-defined decision-maker weights
 
 ### Analysis Tabs (generated per aggregation run)
 
@@ -78,41 +79,39 @@ Policy Coherence Kit allows researchers and policy professionals to:
 ### Requirements
 
 - Python 3.9 or higher
-- The following packages:
-
-```bash
-pip install openpyxl numpy reportlab
-```
-
-Optional (for PNG export of plots):
-```bash
-pip install Pillow
-```
+- Required packages:
+  - `openpyxl`
+  - `numpy`
+  - `reportlab`
+- Optional package for PNG export:
+  - `Pillow`
 
 ### Setup
 
 1. Clone or download this repository
-2. Navigate to the project root folder:
+2. Navigate to the project root folder.
+
+Main application files are located at the repository root.
 
 ```
-PolicyCoherenceKit/          ← root
-├── main.py
-└── PolicyCoherenceKit/      ← package
-    ├── __init__.py
-    ├── app.py
-    ├── constants.py
-    ├── models.py
-    ├── matrix_widget.py
-    ├── dialogs.py
-    ├── aggregator.py
-    ├── aggregation_dialog.py
-    ├── aggregation_tab.py
-    ├── coherence_scores_tab.py
-    ├── range_of_influence_tab.py
-    ├── pca_tab.py
-    ├── network_tab.py
-    ├── llm_tab.py
-    └── importer.py
+- `main.py` - application launcher
+- `app.py` - main GUI and workflow logic
+- `aggregator.py` - aggregation methods
+- `aggregation_dialog.py` - aggregation dialogs
+- `aggregation_tab.py` - aggregated matrix view
+- `coherence_scores_tab.py` - coherence scores module
+- `range_of_influence_tab.py` - entropy / range of influence module
+- `pca_tab.py` - PCA module
+- `network_tab.py` - network analysis module
+- `results_insights_tab.py` - consensus, disagreement, and summary insights
+- `llm_tab.py` - LLM interpretation module
+- `importer.py` - Excel import logic
+- `dialogs.py` - reusable dialogs
+- `models.py` - data models
+- `matrix_widget.py` - matrix input widget
+- `constants.py` - shared constants and labels
+- `theme.py` - theme and UI styling
+- `Example data/WEF Nexus Example.xlsx` - sample workbook for testing
 ```
 
 3. Run the app:
