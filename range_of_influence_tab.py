@@ -8,8 +8,8 @@
 #   3. Shannon entropy: H(i) = -sum(pj * log2(pj))
 #   4. Categorise using equal-band thresholds based on log2(n-1):
 #        Low          : 0     <= H < 0.25 * Hmax
-#        Low2Medium   : 0.25  <= H < 0.50 * Hmax
-#        Medium2High  : 0.50  <= H < 0.75 * Hmax
+#        Low-to-Medium: 0.25  <= H < 0.50 * Hmax
+#        Medium-to-High: 0.50  <= H < 0.75 * Hmax
 #        High         : 0.75  <= H
 #   If all outgoing scores are zero -> H = 0, category = "Low"
 # =============================================================================
@@ -55,12 +55,12 @@ from theme import (
 # Category colours
 _CAT_COLORS = {
     "Low":          ("#a3a3a3", "#ffffff"),
-    "Low2Medium":   ("#a7f3d0", "#2d2d2d"),
-    "Medium2High":  ("#34d399", "#ffffff"),
+    "Low-to-Medium": ("#a7f3d0", "#2d2d2d"),
+    "Medium-to-High": ("#34d399", "#ffffff"),
     "High":         ("#059669", "#ffffff"),
 }
 
-_CATEGORIES = ["Low", "Low2Medium", "Medium2High", "High"]
+_CATEGORIES = ["Low", "Low-to-Medium", "Medium-to-High", "High"]
 
 
 def _round_rect(canvas, x1, y1, x2, y2, r, **kwargs):
@@ -135,9 +135,9 @@ def _categorise(h: float, hmax: float) -> str:
     if ratio < 0.25:
         return "Low"
     if ratio < 0.50:
-        return "Low2Medium"
+        return "Low-to-Medium"
     if ratio < 0.75:
-        return "Medium2High"
+        return "Medium-to-High"
     return "High"
 
 
@@ -219,10 +219,10 @@ class RangeOfInfluenceTab(tk.Frame):
         ).grid(row=0, column=0, sticky="w", padx=(0, 16))
 
         thresholds = [
-            ("Low",         "H < 25% of max"),
-            ("Low2Medium",  "25% ≤ H < 50% of max"),
-            ("Medium2High", "50% ≤ H < 75% of max"),
-            ("High",        "H ≥ 75% of max"),
+            ("Low",           "H < 25% of max"),
+            ("Low-to-Medium", "25% ≤ H < 50% of max"),
+            ("Medium-to-High", "50% ≤ H < 75% of max"),
+            ("High",          "H ≥ 75% of max"),
         ]
         cat_row.grid_columnconfigure(0, weight=0)
         for idx, (cat, desc) in enumerate(thresholds, start=1):
