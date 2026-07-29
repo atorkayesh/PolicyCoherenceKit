@@ -172,6 +172,9 @@ Urban Mobility   Cancelling       Enabling        Neutral
 
 ---
 
+## Example Data
+A sample workbook is provided in the repository: Example data/WEF Nexus Example.xlsx
+
 ---
 
 ## License
