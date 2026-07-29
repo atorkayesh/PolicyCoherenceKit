@@ -86,13 +86,20 @@ Policy Coherence Kit allows researchers and policy professionals to:
 - Optional package for PNG export:
   - `Pillow`
   
-Install dependencies: pip install openpyxl numpy reportlab Pillow
-
+Install dependencies: 
+```bash
+pip install openpyxl numpy reportlab Pillow
+```
 ### Setup
 
-1. Clone or download this repository: git clone https://github.com/atorkayesh/PolicyCoherenceKit.git
-2. Navigate to the project root folder: cd PolicyCoherenceKit
-
+1. Clone or download this repository:
+```bash
+git clone https://github.com/atorkayesh/PolicyCoherenceKit.git
+```
+2. Navigate to the project root folder:
+```bash
+cd PolicyCoherenceKit
+```
 Main application files are located at the repository root.
 
 ```
