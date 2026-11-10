@@ -3,7 +3,8 @@
 ## Run and verify
 - This is a flat Python/Tkinter desktop app, not an installable package. Run from the repository root: `python3 main.py`; imports use root-level module names.
 - Install dependencies with `python3 -m pip install openpyxl numpy reportlab Pillow`. **Pillow is required at startup** (`app.py` imports `PIL` unconditionally), despite the README marking it optional. Python must also provide Tkinter/Tcl/Tk.
-- No dependency manifest/lockfile, automated tests, CI, or lint/format/typecheck configuration exists. Do not invent project check commands.
+- `pyproject.toml` (non-package, `[tool.uv] package = false`) and `uv.lock` exist only for dependency management and the Docker images; after editing `pyproject.toml`, run `uv lock`. No automated tests, CI, or lint/format/typecheck configuration exists. Do not invent project check commands.
+- Docker: `uv run scripts/docker.py up [--prod]` runs the GUI in a container served over noVNC at `http://localhost:6090`. The container starts `python /app/main.py` from `/workspace`, where `examples/` and `exports/` are mounted.
 - Syntax check: `python3 -m compileall -q .`. Dependency/import smoke check without creating a window: `python3 -c "import app, aggregator, importer"`. Neither replaces functional testing.
 - Manual smoke flow: import `Example data/WEF Nexus Example.xlsx`, aggregate, open each analysis tab, and export Excel. The UI forces Average for fewer than three decision-makers; use at least three to exercise method selection and four for even-count Median choices.
 - Launching `main.py` requires a graphical session and installs missing bundled Inter fonts into `~/Library/Fonts` on macOS or `~/.local/share/fonts` on Linux (where it invokes `fc-cache`). Avoid launching it just to check imports.
