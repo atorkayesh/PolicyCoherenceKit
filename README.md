@@ -179,18 +179,29 @@ A sample workbook is provided in the repository: Example data/WEF Nexus Example.
 
 ## Running with Docker
 
-The app can also run in a container and be used from a browser (via noVNC), with no local Python or Tk setup. You need Docker and [uv](https://docs.astral.sh/uv/). All commands run from the repository root:
+The app can also run in a container and be used from a browser (via noVNC), with no local Python or Tk setup.
+
+**Requirements:** to run it locally, install Docker and Make:
+
+- **macOS:** [Docker Desktop](https://docs.docker.com/desktop/) (or OrbStack). Make comes with the Xcode Command Line Tools: `xcode-select --install`.
+- **Linux:** [Docker Engine](https://docs.docker.com/engine/install/) with the Compose plugin, installed from Docker's own repository (distribution packages such as `docker.io` can be too old), and `make` (for example `sudo apt install make`). Add your user to the `docker` group rather than running with `sudo`.
+- **Windows:** [Docker Desktop](https://docs.docker.com/desktop/), plus Make in one of two ways: inside WSL (`sudo apt install make`, then run the commands from WSL), or install it with `winget install ezwinports.make` or `choco install make` and run it from Git Bash (Git for Windows doesn't include Make). Without Make, use the `docker compose` commands below.
+
+Docker Engine 25 or newer and Docker Compose 2.24 or newer are required (current Docker Desktop includes both).
+
+All commands run from the repository root:
 
 ```bash
-uv run scripts/docker.py up          # build, start, and open http://localhost:6090
-uv run scripts/docker.py logs -f     # follow logs
-uv run scripts/docker.py restart     # restart the container
-uv run scripts/docker.py status      # show container status
-uv run scripts/docker.py shell       # open a shell in the container
-uv run scripts/docker.py down        # stop and remove the container
+make dev       # build and start the dev setup, then print http://localhost:6090
+make prod      # build and start the prod setup (needs VNC_PASSWORD, see below)
+make logs      # follow the logs
+make restart   # restart the container
+make status    # show which setup is running
+make shell     # open a shell in the container
+make down      # stop and remove the container
 ```
 
-Add `--prod` to any command to use the production setup instead of the dev one. Use `up --no-build` to skip rebuilding the image and `up --no-open` to skip opening the browser.
+Only one setup runs at a time, because both use the same port: `make dev` stops prod first, and `make prod` stops dev. `logs`, `restart`, `status`, `shell` and `down` act on whichever one is running. To pick one explicitly, add `MODE=dev` or `MODE=prod`, for example `make logs MODE=prod`. Run `make` on its own to list the commands.
 
 | | Dev (`docker-compose-dev.yml`) | Prod (`docker-compose-prod.yml`) |
 |---|---|---|
@@ -204,14 +215,28 @@ Setup for production:
 
 ```bash
 cp .env.example .env   # then set VNC_PASSWORD
-uv run scripts/docker.py up --prod
+make prod
 ```
+
+Without Make, use the plain `docker compose` commands (these are what the `make` targets run):
+
+```bash
+docker compose -f docker-compose-dev.yml up -d --build --wait
+docker compose -f docker-compose-dev.yml logs -f
+docker compose -f docker-compose-dev.yml restart
+docker compose -f docker-compose-dev.yml exec -u app policycoherencekit bash
+docker compose -f docker-compose-dev.yml down
+```
+
+For prod, use `docker-compose-prod.yml` instead and stop dev first.
 
 Notes:
 - In the app's file dialogs, the example workbook is in `examples/` (read-only) and exports should be saved to `exports/`.
 - Everyone who opens the URL shares the same app session, so the production setup suits one user at a time. noVNC traffic is not encrypted: before exposing it beyond `localhost`, put it behind a TLS reverse proxy with its own login. VNC passwords are limited to 8 characters.
-- Dev and prod share `.env`, so setting `VNC_PASSWORD` for prod also adds a password to the dev session. `NOVNC_PORT` and the other settings there apply when you start with `scripts/docker.py`.
-- On Linux, `scripts/docker.py` builds the image for your user ID so `exports/` stays writable. If you run `docker compose` directly, set `APP_UID`/`APP_GID` yourself.
+- Without a `VNC_PASSWORD`, `make prod` stops before starting. With plain `docker compose`, the prod container logs the error once and waits instead of restarting, and after about 2 minutes `docker compose ps` reports it as unhealthy.
+- Dev and prod share `.env`, so setting `VNC_PASSWORD` for prod also adds a password to the dev session.
+- On Linux, the container runs the app as the owner of `exports/` (normally you), so exported files are yours. Keep the `exports/` folder that comes with the repository: if it is missing, Docker creates it owned by root and the app then runs as root, so exported files are owned by root. With rootless Docker or Podman the app also runs as root inside the container, which is your own user on the host, so exports are still yours.
+- On Windows, dev reload works automatically with Docker Desktop's default WSL2 backend. If edits don't restart the app (for example with the Hyper-V backend), set `WATCHFILES_FORCE_POLLING=true` in `.env`.
 - Dependencies are listed in `pyproject.toml` (used for dependency management only; the app still runs with `python main.py`) and locked in `uv.lock`. After changing `pyproject.toml`, run `uv lock` and rebuild.
 
 ---
