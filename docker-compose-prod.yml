@@ -1,0 +1,36 @@
+name: policycoherencekit-prod
+
+services:
+  policycoherencekit:
+    container_name: policycoherencekit-prod
+    image: policycoherencekit:prod
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      args:
+        APP_UID: ${APP_UID:-1000}
+        APP_GID: ${APP_GID:-1000}
+    env_file:
+      # Must define VNC_PASSWORD; the container refuses to start without it.
+      - path: ./.env
+        required: true
+    environment:
+      - APP_MODE=prod
+    ports:
+      # Localhost by default; set NOVNC_BIND=0.0.0.0 only behind a TLS reverse proxy or firewall.
+      - "${NOVNC_BIND:-127.0.0.1}:${NOVNC_PORT:-6090}:6080"
+    volumes:
+      - ./Example data:/workspace/examples:ro
+      - policycoherencekit-exports:/workspace/exports
+    shm_size: 256mb
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:6080/')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  policycoherencekit-exports:
+    name: policycoherencekit-exports
