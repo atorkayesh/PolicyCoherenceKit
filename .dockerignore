@@ -6,5 +6,5 @@ venv
 **/*.pyc
 exports
 Example data
-scripts
+Makefile
 docker-compose-*.yml
