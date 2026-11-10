@@ -27,5 +27,7 @@ Thumbs.db
 # Local environment files (commit only .env.example)
 .env
 
-# Files exported from the dev Docker container
-exports/
+# Files exported from the dev Docker container (the folder itself is kept, so Docker
+# never creates it as root on Linux)
+exports/*
+!exports/.gitkeep
