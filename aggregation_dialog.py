@@ -28,6 +28,7 @@ from constants import (
 )
 from dialogs import (
     _create_rounded_rect,
+    _grab_modal,
     _make_canvas_button,
     _make_modal_close_btn,
     _modal_divider,
@@ -85,7 +86,7 @@ class AggregationMethodDialog(tk.Toplevel):
         self.title("Aggregation Method")
         self.configure(bg=MODAL_BG)
         self.resizable(False, False)
-        self.grab_set()
+        _grab_modal(self)
 
         self.result: Optional[str] = None
         self._decision_makers = decision_makers
@@ -274,7 +275,7 @@ class MedianChoiceDialog(tk.Toplevel):
         self.title("Median Choice")
         self.configure(bg=MODAL_BG)
         self.resizable(False, False)
-        self.grab_set()
+        _grab_modal(self)
 
         self.result: Optional[str] = None
         self._decision_makers = decision_makers
@@ -443,7 +444,7 @@ class WeightDialog(tk.Toplevel):
         self.title("Decision-Maker Weights")
         self.configure(bg=MODAL_BG)
         self.resizable(False, True)
-        self.grab_set()
+        _grab_modal(self)
 
         self.result: Optional[List[float]] = None
         self._decision_makers = decision_makers
@@ -641,7 +642,7 @@ class TieResolutionDialog(tk.Toplevel):
         self.title("Resolve Majority Ties")
         self.configure(bg=MODAL_BG)
         self.resizable(False, True)
-        self.grab_set()
+        _grab_modal(self)
 
         self.result: Optional[List[TiedCell]] = None
         self._ties = ties

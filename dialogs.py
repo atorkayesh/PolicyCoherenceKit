@@ -96,6 +96,28 @@ from theme import (
 from matrix_widget import _PillScrollbar
 
 
+def _grab_modal(win: tk.Toplevel, _attempts: int = 100) -> None:
+    """Make ``win`` modal by grabbing input for it.
+
+    X11 (Linux, including the Docker/noVNC setup) refuses a grab until the window is
+    mapped and raises "grab failed: window not viewable"; dialogs grab in ``__init__``,
+    before Tk maps them. If the immediate grab fails, retry briefly until the window is
+    shown. macOS and Windows grab immediately, as before.
+    """
+    try:
+        win.grab_set()
+    except tk.TclError:
+        if _attempts <= 0:
+            return
+        def _retry():
+            try:
+                if win.winfo_exists():
+                    _grab_modal(win, _attempts - 1)
+            except tk.TclError:
+                pass
+        win.after(20, _retry)
+
+
 def _create_rounded_rect(canvas, x1, y1, x2, y2, r,
                           fill="", outline="black", width=1, tags=()):
     """Draw a filled, outlined rounded rectangle on a Canvas."""
@@ -295,10 +317,11 @@ class ProjectSetupDialog(tk.Toplevel):
         super().__init__(parent)
         self._parent = parent
         self._transparent_key = "#00ff01"
+        self._bg_radius = MODAL_RADIUS  # corner radius of the drawn modal background
 
         self._configure_modal_window()
 
-        self.grab_set()
+        _grab_modal(self)
 
         self._dialog_title = title
         self._include_project_name = include_project_name
@@ -350,11 +373,14 @@ class ProjectSetupDialog(tk.Toplevel):
             except Exception:
                 pass
             return
-        self.configure(bg=self._transparent_key)
         try:
             self.wm_attributes("-transparentcolor", self._transparent_key)
         except Exception:
-            pass
+            # Only Windows supports a transparent colour key. Elsewhere (X11/Linux) the key
+            # colour would show as bright green corners, so use a solid square modal instead.
+            self._transparent_key = MODAL_BG
+            self._bg_radius = 0
+        self.configure(bg=self._transparent_key)
         if platform.startswith("win"):
             try:
                 self.wm_attributes("-toolwindow", True)
@@ -386,7 +412,7 @@ class ProjectSetupDialog(tk.Toplevel):
             if shell_w < 4 or shell_h < 4:
                 return
             _create_rounded_rect(
-                outer, 0, 0, shell_w - 1, shell_h - 1, r,
+                outer, 0, 0, shell_w - 1, shell_h - 1, self._bg_radius,
                 fill=MODAL_BG, outline=MODAL_BORDER, width=1, tags="modal_bg",
             )
             outer.tag_lower("modal_bg")
@@ -1278,7 +1304,7 @@ class NewMatrixDialog(tk.Toplevel):
         self.title("Add Decision-Maker Matrix")
         self.configure(bg=MODAL_BG)
         self.resizable(True, True)
-        self.grab_set()
+        _grab_modal(self)
 
         self.result: Optional[Tuple[str, List[str]]] = None
 
@@ -1512,7 +1538,7 @@ class _SimpleInputDialog(tk.Toplevel):
         self.title(title)
         self.configure(bg=MODAL_BG)
         self.resizable(False, False)
-        self.grab_set()
+        _grab_modal(self)
 
         self.result: Optional[str] = None
         self._title_text = title

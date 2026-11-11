@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 
 from models import PolicyMatrix, make_empty_matrix
 from matrix_widget import MatrixWidget
-from dialogs import (NewMatrixDialog, ProjectSetupDialog, _SimpleInputDialog,
+from dialogs import (NewMatrixDialog, ProjectSetupDialog, _SimpleInputDialog, _grab_modal,
                      _make_canvas_button, _make_modal_close_btn, _modal_divider)
 from theme import (
     MODAL_BG, MODAL_TITLE_COLOR, MODAL_TITLE_SIZE,
@@ -203,7 +203,7 @@ class _ProjectNameDialog(tk.Toplevel):
         self.title(title)
         self.configure(bg=MODAL_BG)
         self.resizable(False, False)
-        self.grab_set()
+        _grab_modal(self)
         self._existing   = existing_names or []
         self._title_text = title
         self.result: Optional[str] = None
