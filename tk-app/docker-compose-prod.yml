@@ -1,9 +1,9 @@
-name: policycoherencekit-prod
+name: policycoherencekit-tk-prod
 
 services:
   policycoherencekit:
-    container_name: policycoherencekit-prod
-    image: policycoherencekit:prod
+    container_name: policycoherencekit-tk-prod
+    image: policycoherencekit-tk:prod
     build:
       context: .
       dockerfile: Dockerfile.prod
@@ -17,7 +17,7 @@ services:
       # Localhost by default; set NOVNC_BIND=0.0.0.0 only behind a TLS reverse proxy or firewall.
       - "${NOVNC_BIND:-127.0.0.1}:${NOVNC_PORT:-6090}:6080"
     volumes:
-      - ./Example data:/workspace/examples:ro
+      - ../data/examples:/workspace/examples:ro
       - policycoherencekit-exports:/workspace/exports
     shm_size: 256mb
     restart: unless-stopped

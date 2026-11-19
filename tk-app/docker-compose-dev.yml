@@ -1,9 +1,9 @@
-name: policycoherencekit-dev
+name: policycoherencekit-tk-dev
 
 services:
   policycoherencekit:
-    container_name: policycoherencekit-dev
-    image: policycoherencekit:dev
+    container_name: policycoherencekit-tk-dev
+    image: policycoherencekit-tk:dev
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -18,7 +18,7 @@ services:
     volumes:
       # Live source: edits to the root-level .py files restart the GUI.
       - .:/app
-      - ./Example data:/workspace/examples:ro
+      - ../data/examples:/workspace/examples:ro
       - ./exports:/workspace/exports
     shm_size: 256mb
     restart: unless-stopped

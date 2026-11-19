@@ -1,6 +1,6 @@
 # Shortcuts for the Policy Coherence Kit Docker setups. Each target runs a plain `docker compose`
-# command (echoed as it runs; also listed in README.md, "Running with Docker").
-# Run from the repository root. Needs Docker (Compose 2.24+) and make.
+# command (echoed as it runs; legacy Tkinter app, kept as the reference for apps/).
+# Run from tk-app/. Needs Docker (Compose 2.24+) and make.
 #
 #   make dev | make prod     build and start one setup (stopping the other one first)
 #   make logs | restart | shell | status | down
@@ -10,7 +10,7 @@
 # add MODE=dev or MODE=prod, e.g. `make logs MODE=prod`.
 
 APP          := Policy Coherence Kit
-PROJECT      := policycoherencekit
+PROJECT      := policycoherencekit-tk
 SERVICE      := policycoherencekit
 ENV_FILE     := .env
 DEFAULT_PORT := 6090
@@ -45,7 +45,7 @@ URL = http://localhost:$(NOVNC_PORT)
 .PHONY: help dev prod logs restart shell status down check-running check-prod-env
 
 help:
-	@echo "$(APP) Docker shortcuts (run from the repository root):"
+	@echo "$(APP) Docker shortcuts (run from tk-app/):"
 	@echo "  make dev       build and start the dev setup (reloads on code changes)"
 	@echo "  make prod      build and start the prod setup (needs VNC_PASSWORD in $(ENV_FILE))"
 	@echo "  make logs      follow the logs of the running setup"
