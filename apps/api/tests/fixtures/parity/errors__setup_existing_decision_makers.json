@@ -1,0 +1,25 @@
+{
+ "name": "setup_existing_decision_makers",
+ "source": "dialogs.py:1080-1124",
+ "api_message_rule": "identical",
+ "title": "Existing Decision-Makers",
+ "error_message": "These decision-maker names already exist in the project:\n\nAl\nZed",
+ "setup": {
+  "project_name": "Errors",
+  "decision_makers": [
+   "Zed",
+   "Bea",
+   "Al"
+  ],
+  "policies": [
+   "Alpha",
+   "Beta",
+   "Gamma",
+   "Delta"
+  ],
+  "existing_decision_makers": [
+   "Al",
+   "Zed"
+  ]
+ }
+}

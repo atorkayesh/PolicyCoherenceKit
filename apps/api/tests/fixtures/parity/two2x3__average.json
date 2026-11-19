@@ -1,0 +1,618 @@
+{
+ "request": {
+  "project_name": "Parity two2x3",
+  "policies": [
+   "Urban Mobility Plan",
+   "Renewable Energy Act"
+  ],
+  "decision_makers": [
+   {
+    "name": "DM 1",
+    "ratings": [
+     [
+      "Neutral",
+      "Cancelling"
+     ],
+     [
+      "Enabling",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 2",
+    "ratings": [
+     [
+      "Neutral",
+      "Cancelling"
+     ],
+     [
+      "Indivisible",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 3",
+    "ratings": [
+     [
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Constraining",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "average",
+   "weights": null,
+   "median_choice": null,
+   "tie_choices": []
+  }
+ },
+ "aggregation": {
+  "requested_method": "average",
+  "method": "average",
+  "label": "Average",
+  "n": 2,
+  "codes": [
+   "P1",
+   "P2"
+  ],
+  "policies": [
+   "Urban Mobility Plan",
+   "Renewable Energy Act"
+  ],
+  "decision_makers": 3,
+  "decision_maker_names": [
+   "DM 1",
+   "DM 2",
+   "DM 3"
+  ],
+  "scores": [
+   [
+    0.0,
+    -1.0
+   ],
+   [
+    1.0,
+    0.0
+   ]
+  ],
+  "ties": [],
+  "source_scores": [
+   [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     -3.0,
+     -3.0,
+     3.0
+    ]
+   ],
+   [
+    [
+     1.0,
+     3.0,
+     -1.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0
+    ]
+   ]
+  ],
+  "ordinal_cells": null,
+  "median_even_choice": null
+ },
+ "bands": [
+  [
+   "Neutral",
+   "Constraining"
+  ],
+  [
+   "Enabling",
+   "Neutral"
+  ]
+ ],
+ "scores": [
+  {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "oi": 1,
+   "ii": 1,
+   "woi": -1.0,
+   "wii": 1.0,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#e07b39",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#25c263",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P2",
+   "policy": "Renewable Energy Act",
+   "oi": 1,
+   "ii": 1,
+   "woi": 1.0,
+   "wii": -1.0,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#25c263",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#e07b39",
+    "#ffffff"
+   ]
+  }
+ ],
+ "entropy": [
+  {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "entropy": -0.0,
+   "category": "Low",
+   "hmax": 1.0
+  },
+  {
+   "code": "P2",
+   "policy": "Renewable Energy Act",
+   "entropy": -0.0,
+   "category": "Low",
+   "hmax": 1.0
+  }
+ ],
+ "pca": {
+  "coords": [],
+  "explained": [
+   0.0,
+   0.0
+  ],
+  "explained_unrounded": null,
+  "valid": false,
+  "singular_values": null
+ },
+ "graph_edges": [
+  [
+   0,
+   1,
+   -1.0
+  ],
+  [
+   1,
+   0,
+   1.0
+  ]
+ ],
+ "centrality": [
+  {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "betweenness": 0.0,
+   "closeness": 1.0
+  },
+  {
+   "code": "P2",
+   "policy": "Renewable Energy Act",
+   "betweenness": 0.0,
+   "closeness": 1.0
+  }
+ ],
+ "centrality_ranking": [
+  "P1",
+  "P2"
+ ],
+ "network_info": {
+  "edge_count": 2,
+  "isolated": 0,
+  "density": 1.0,
+  "stats_text": "2 nodes  |  2 directed edges  |  density: 1.0"
+ },
+ "insights": {
+  "rows": [
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 1,
+    "ii": 1,
+    "woi": -1.0,
+    "wii": 1.0,
+    "index": 0,
+    "net": -2.0,
+    "prominence": 2.0,
+    "entropy": -0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 1.0,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 1,
+    "ii": 1,
+    "woi": 1.0,
+    "wii": -1.0,
+    "index": 1,
+    "net": 2.0,
+    "prominence": 2.0,
+    "entropy": -0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 1.0,
+    "quadrant": "System Driver"
+   }
+  ],
+  "drivers": [
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 1,
+    "ii": 1,
+    "woi": 1.0,
+    "wii": -1.0,
+    "index": 1,
+    "net": 2.0,
+    "prominence": 2.0,
+    "entropy": -0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 1.0,
+    "quadrant": "System Driver"
+   }
+  ],
+  "dependents": [
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 1,
+    "ii": 1,
+    "woi": -1.0,
+    "wii": 1.0,
+    "index": 0,
+    "net": -2.0,
+    "prominence": 2.0,
+    "entropy": -0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 1.0,
+    "quadrant": "System Dependent"
+   }
+  ],
+  "balanced": [],
+  "top_driver": {
+   "code": "P2",
+   "policy": "Renewable Energy Act",
+   "oi": 1,
+   "ii": 1,
+   "woi": 1.0,
+   "wii": -1.0,
+   "index": 1,
+   "net": 2.0,
+   "prominence": 2.0,
+   "entropy": -0.0,
+   "entropy_category": "Low",
+   "betweenness": 0.0,
+   "closeness": 1.0,
+   "quadrant": "System Driver"
+  },
+  "top_dependent": {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "oi": 1,
+   "ii": 1,
+   "woi": -1.0,
+   "wii": 1.0,
+   "index": 0,
+   "net": -2.0,
+   "prominence": 2.0,
+   "entropy": -0.0,
+   "entropy_category": "Low",
+   "betweenness": 0.0,
+   "closeness": 1.0,
+   "quadrant": "System Dependent"
+  },
+  "top_prominent": {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "oi": 1,
+   "ii": 1,
+   "woi": -1.0,
+   "wii": 1.0,
+   "index": 0,
+   "net": -2.0,
+   "prominence": 2.0,
+   "entropy": -0.0,
+   "entropy_category": "Low",
+   "betweenness": 0.0,
+   "closeness": 1.0,
+   "quadrant": "System Dependent"
+  },
+  "top_broker": {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "oi": 1,
+   "ii": 1,
+   "woi": -1.0,
+   "wii": 1.0,
+   "index": 0,
+   "net": -2.0,
+   "prominence": 2.0,
+   "entropy": -0.0,
+   "entropy_category": "Low",
+   "betweenness": 0.0,
+   "closeness": 1.0,
+   "quadrant": "System Dependent"
+  },
+  "top_prominence_rows": [
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 1,
+    "ii": 1,
+    "woi": -1.0,
+    "wii": 1.0,
+    "index": 0,
+    "net": -2.0,
+    "prominence": 2.0,
+    "entropy": -0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 1.0,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 1,
+    "ii": 1,
+    "woi": 1.0,
+    "wii": -1.0,
+    "index": 1,
+    "net": 2.0,
+    "prominence": 2.0,
+    "entropy": -0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 1.0,
+    "quadrant": "System Driver"
+   }
+  ],
+  "top_driver_rows": [
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 1,
+    "ii": 1,
+    "woi": 1.0,
+    "wii": -1.0,
+    "index": 1,
+    "net": 2.0,
+    "prominence": 2.0,
+    "entropy": -0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 1.0,
+    "quadrant": "System Driver"
+   },
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 1,
+    "ii": 1,
+    "woi": -1.0,
+    "wii": 1.0,
+    "index": 0,
+    "net": -2.0,
+    "prominence": 2.0,
+    "entropy": -0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 1.0,
+    "quadrant": "System Dependent"
+   }
+  ],
+  "top_dependent_rows": [
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 1,
+    "ii": 1,
+    "woi": -1.0,
+    "wii": 1.0,
+    "index": 0,
+    "net": -2.0,
+    "prominence": 2.0,
+    "entropy": -0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 1.0,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 1,
+    "ii": 1,
+    "woi": 1.0,
+    "wii": -1.0,
+    "index": 1,
+    "net": 2.0,
+    "prominence": 2.0,
+    "entropy": -0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 1.0,
+    "quadrant": "System Driver"
+   }
+  ],
+  "graph": {
+   "positive_edges": 1,
+   "negative_edges": 1,
+   "zero_edges": 0,
+   "density": 1.0,
+   "polarity": 0.5,
+   "strongest_pos": 1.0,
+   "strongest_neg": -1.0,
+   "strongest_pos_pair": [
+    1,
+    0
+   ],
+   "strongest_neg_pair": [
+    0,
+    1
+   ]
+  },
+  "agreement": {
+   "rows": [
+    {
+     "i": 0,
+     "j": 1,
+     "pair": "Urban Mobility Plan (P1) -> Renewable Energy Act (P2)",
+     "score": -1.0,
+     "agreement_ratio": 0.667,
+     "spread": 6.0
+    },
+    {
+     "i": 1,
+     "j": 0,
+     "pair": "Renewable Energy Act (P2) -> Urban Mobility Plan (P1)",
+     "score": 1.0,
+     "agreement_ratio": 0.333,
+     "spread": 4.0
+    }
+   ],
+   "contested": [
+    {
+     "i": 1,
+     "j": 0,
+     "pair": "Renewable Energy Act (P2) -> Urban Mobility Plan (P1)",
+     "score": 1.0,
+     "agreement_ratio": 0.333,
+     "spread": 4.0
+    },
+    {
+     "i": 0,
+     "j": 1,
+     "pair": "Urban Mobility Plan (P1) -> Renewable Energy Act (P2)",
+     "score": -1.0,
+     "agreement_ratio": 0.667,
+     "spread": 6.0
+    }
+   ],
+   "strong_consensus": [
+    {
+     "i": 0,
+     "j": 1,
+     "pair": "Urban Mobility Plan (P1) -> Renewable Energy Act (P2)",
+     "score": -1.0,
+     "agreement_ratio": 0.667,
+     "spread": 6.0
+    },
+    {
+     "i": 1,
+     "j": 0,
+     "pair": "Renewable Energy Act (P2) -> Urban Mobility Plan (P1)",
+     "score": 1.0,
+     "agreement_ratio": 0.333,
+     "spread": 4.0
+    }
+   ],
+   "average_agreement": 0.333,
+   "average_correlation": -0.333
+  },
+  "quadrant_threshold": 2.0,
+  "narrative": [
+   "Renewable Energy Act (P2) has the highest weighted outgoing coherence score of +1.00, suggesting the strongest outward influence on the policy system.",
+   "Urban Mobility Plan (P1) has the highest weighted incoming coherence score of +1.00, indicating that it receives the strongest aggregate influence.",
+   "Urban Mobility Plan (P1) shows the highest overall prominence (2.00), making it a central policy for interpretation and intervention sequencing.",
+   "The aggregated structure contains 1 positive and 1 negative relations with density 1.000 and a positive polarity share of 0.500."
+  ]
+ },
+ "texts": {
+  "story": "Renewable Energy Act (P2) emerges as the top driving policy in the system, with the highest weighted outgoing coherence score of +1.00 and its strongest influence through the reinforcing relationship Renewable Energy Act (P2) -> Urban Mobility Plan (P1) (+1.00 Reinforcing), which indicates a not yet fully stable and structurally significant interaction. In contrast, the linkage Renewable Energy Act (P2) -> Urban Mobility Plan (P1) remains contested across decision-makers, reflecting a lack of consensus and highlighting an area of uncertainty within the system.",
+  "interpretation": "Interpretation: The system remains contested, so the strongest signals should be treated as provisional.",
+  "health": {
+   "score": 50,
+   "synergy": 17,
+   "conflict": 17,
+   "neutral_uncertain": 0
+  },
+  "strongest_link": [
+   "Renewable Energy Act (P2) -> Urban Mobility Plan (P1) (+1.00 Reinforcing)",
+   1.0
+  ],
+  "cards": {
+   "top_driver": {
+    "hero": "Renewable Energy Act (P2)",
+    "label": "Top Driving Policy",
+    "value_text": "+1.00 WOI"
+   },
+   "top_dependent": {
+    "hero": "Urban Mobility Plan (P1)",
+    "label": "Top Influenced Policy",
+    "value_text": "+1.00 WII"
+   },
+   "strongest_link": {
+    "title": "Strongest Link",
+    "main": "Renewable Energy Act (P2) -> Urban Mobility Plan (P1)",
+    "value_text": "+1.00 Reinforcing",
+    "caption": "Strongest relation"
+   },
+   "most_contested": {
+    "title": "Most Contested",
+    "main": "Renewable Energy Act (P2) ↔ Urban Mobility Plan (P1)",
+    "value_text": "Agreement: 0.33",
+    "caption": "⚠ High disagreement"
+   },
+   "conflict_ratio": {
+    "title": "Conflict Ratio",
+    "main": "50%",
+    "value_text": "1 of 2 active links",
+    "caption": "High conflict pressure"
+   }
+  },
+  "tags": {
+   "top_driver": "Top Driving Policy: Renewable Energy Act (P2)",
+   "strongest_link": "Strongest Link: Renewable Energy Act (P2) → Urban Mobility Plan (P1)",
+   "contested": "Contested: Renewable Energy Act (P2) → Urban Mobility Plan (P1)"
+  },
+  "overview": {
+   "agreement": "0.33"
+  },
+  "status": "Analysis complete for \"Parity two2x3\"  |  method: Average  |  3 decision-makers"
+ },
+ "prompt": "You are given the results of a policy coherence analysis for 2 policies, aggregated using the Average method.\n\nPOLICY LIST:\n  P1: Urban Mobility Plan\n  P2: Renewable Energy Act\n\nAGGREGATED SCORE MATRIX (rows = influencing policy, columns = influenced policy, scale: -3=Cancelling to +3=Indivisible, 0=diagonal):\n             P1      P2\n     P1    0.00   -1.00\n     P2    1.00    0.00\n\nCOHERENCE SCORES (OI=Outgoing Influence count, II=Incoming Influence count, WOI=Weighted Outgoing, WII=Weighted Incoming):\n  Code     OI   II     WOI     WII  Policy\n  P1        1    1   -1.00    1.00  Urban Mobility Plan\n  P2        1    1    1.00   -1.00  Renewable Energy Act\n\nRANGE OF INFLUENCE — SHANNON ENTROPY (0=concentrated on one policy, higher=distributed; categories based on fraction of max entropy):\n  Code    Entropy  Category        Policy\n  P1      -0.0000  Low             Urban Mobility Plan\n  P2      -0.0000  Low             Renewable Energy Act\n\nNETWORK CENTRALITY (Betweenness: broker role 0-1; Closeness: reachability, higher=more central):\n  Code    Betweenness  Closeness  Policy\n  P1           0.0000     1.0000  Urban Mobility Plan\n  P2           0.0000     1.0000  Renewable Energy Act\n\nProvide a structured, in-depth interpretation with the following sections. Each section should be multiple paragraphs with specific references to the data above:\n\n## 1. Overall Coherence Assessment\n## 2. Key Synergies\n## 3. Key Conflicts\n## 4. Influential Policies\n## 5. Range of Influence\n## 6. Network Structure\n## 7. Strategic Recommendations\n\nEnsure your interpretation is analytical, references specific policies by name and code, and provides actionable insights for policy professionals.",
+ "env": {
+  "python": "3.13.2",
+  "numpy": "2.5.4",
+  "platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "blas": "accelerate"
+ }
+}

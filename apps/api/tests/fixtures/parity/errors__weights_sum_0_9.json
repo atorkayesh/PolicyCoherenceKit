@@ -1,0 +1,121 @@
+{
+ "name": "weights_sum_0_9",
+ "source": "aggregation_dialog.py:570-613",
+ "api_message_rule": "identical_except_L2",
+ "title": "Weights Do Not Sum to 1",
+ "error_message": "Current sum is 0.9.\nPlease adjust the weights so they sum to exactly 1.0.",
+ "request": {
+  "project_name": "Errors",
+  "policies": [
+   "Alpha",
+   "Beta",
+   "Gamma",
+   "Delta"
+  ],
+  "decision_makers": [
+   {
+    "name": "Expert A",
+    "ratings": [
+     [
+      "Neutral",
+      "Enabling",
+      "Reinforcing",
+      "Neutral"
+     ],
+     [
+      "Counteracting",
+      "Neutral",
+      "Indivisible",
+      "Indivisible"
+     ],
+     [
+      "Cancelling",
+      "Constraining",
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Enabling",
+      "Constraining",
+      "Indivisible",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "Expert B",
+    "ratings": [
+     [
+      "Neutral",
+      "Constraining",
+      "Reinforcing",
+      "Indivisible"
+     ],
+     [
+      "Indivisible",
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Indivisible",
+      "Reinforcing",
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Indivisible",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "Expert C",
+    "ratings": [
+     [
+      "Neutral",
+      "Cancelling",
+      "Constraining",
+      "Indivisible"
+     ],
+     [
+      "Reinforcing",
+      "Neutral",
+      "Counteracting",
+      "Counteracting"
+     ],
+     [
+      "Constraining",
+      "Indivisible",
+      "Neutral",
+      "Constraining"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Indivisible",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "weighted",
+   "weights": [
+    0.3,
+    0.3,
+    0.3
+   ],
+   "median_choice": null,
+   "tie_choices": []
+  }
+ },
+ "raw_weights": [
+  "0.3",
+  "0.3",
+  "0.3"
+ ],
+ "aggregator_message": "Weights sum to 0.9 — must sum to exactly 1.0."
+}

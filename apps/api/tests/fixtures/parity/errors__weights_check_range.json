@@ -1,0 +1,17 @@
+{
+ "name": "weights_check_range",
+ "source": "aggregation_dialog.py:570-613",
+ "api_message_rule": "identical",
+ "title": "Out of Range",
+ "error_message": "Weight for \"Expert A\" must be between 0.0 and 1.0.",
+ "raw_weights": [
+  "1.5",
+  "0.5",
+  "0.5"
+ ],
+ "decision_makers": [
+  "Expert A",
+  "Expert B",
+  "Expert C"
+ ]
+}

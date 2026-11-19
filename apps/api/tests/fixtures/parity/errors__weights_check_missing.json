@@ -1,0 +1,17 @@
+{
+ "name": "weights_check_missing",
+ "source": "aggregation_dialog.py:570-613",
+ "api_message_rule": "identical",
+ "title": "Missing Weight",
+ "error_message": "Please enter a weight for \"Expert A\".",
+ "raw_weights": [
+  "",
+  "0.5",
+  "0.5"
+ ],
+ "decision_makers": [
+  "Expert A",
+  "Expert B",
+  "Expert C"
+ ]
+}

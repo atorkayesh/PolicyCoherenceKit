@@ -1,0 +1,41 @@
+{
+ "file": "short_header.xlsx",
+ "legacy": {
+  "matrices": [
+   {
+    "decision_maker": "Expert A",
+    "policies": [
+     "Alpha",
+     "Beta",
+     "Gamma"
+    ],
+    "ratings": [
+     [
+      "Neutral",
+      "Constraining",
+      "Reinforcing"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Enabling"
+     ],
+     [
+      "Reinforcing",
+      "Enabling",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "warnings": [
+   "Sheet \"Short\": fewer than 2 policies in header row, skipped."
+  ]
+ },
+ "app_messages": [
+  [
+   "Import Complete with Warnings",
+   "1 matrix/matrices imported.\n\nThe following sheets have blank cells:\n\nSheet \"Short\": fewer than 2 policies in header row, skipped."
+  ]
+ ]
+}

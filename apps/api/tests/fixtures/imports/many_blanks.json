@@ -1,0 +1,203 @@
+{
+ "file": "many_blanks.xlsx",
+ "legacy": {
+  "matrices": [
+   {
+    "decision_maker": "Expert A",
+    "policies": [
+     "Policy 1",
+     "Policy 2",
+     "Policy 3",
+     "Policy 4",
+     "Policy 5",
+     "Policy 6",
+     "Policy 7",
+     "Policy 8",
+     "Policy 9",
+     "Policy 10",
+     "Policy 11",
+     "Policy 12"
+    ],
+    "ratings": [
+     [
+      "Neutral",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     [
+      "",
+      "Neutral",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     [
+      "Reinforcing",
+      "Enabling",
+      "Neutral",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining"
+     ],
+     [
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Neutral",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing"
+     ],
+     [
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Neutral",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling"
+     ],
+     [
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Neutral",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining"
+     ],
+     [
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Neutral",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing"
+     ],
+     [
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Neutral",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling"
+     ],
+     [
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Neutral",
+      "Reinforcing",
+      "Enabling",
+      "Constraining"
+     ],
+     [
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Neutral",
+      "Constraining",
+      "Reinforcing"
+     ],
+     [
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Neutral",
+      "Enabling"
+     ],
+     [
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Constraining",
+      "Reinforcing",
+      "Enabling",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "warnings": [
+   "\"Expert A\": 22 blank cell(s): P1->P2, P1->P3, P1->P4, P1->P5, P1->P6, P1->P7, P1->P8, P1->P9, P1->P10, P1->P11 (+12 more)"
+  ]
+ },
+ "app_messages": [
+  [
+   "Import Complete with Warnings",
+   "1 matrix/matrices imported.\n\nThe following sheets have blank cells:\n\n\"Expert A\": 22 blank cell(s): P1->P2, P1->P3, P1->P4, P1->P5, P1->P6, P1->P7, P1->P8, P1->P9, P1->P10, P1->P11 (+12 more)"
+  ]
+ ]
+}

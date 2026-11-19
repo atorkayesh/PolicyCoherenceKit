@@ -1,0 +1,12 @@
+{
+ "file": "one_bad_sheet.xlsx",
+ "legacy": {
+  "error_message": "Sheet \"Expert B\": unrecognised rating values:\n  P2->P3: \"maybe\"\n\nAllowed values: Indivisible, Reinforcing, Enabling, Neutral, Constraining, Counteracting, Cancelling"
+ },
+ "app_messages": [
+  [
+   "Import Error",
+   "Sheet \"Expert B\": unrecognised rating values:\n  P2->P3: \"maybe\"\n\nAllowed values: Indivisible, Reinforcing, Enabling, Neutral, Constraining, Counteracting, Cancelling"
+  ]
+ ]
+}

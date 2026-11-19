@@ -1,0 +1,22 @@
+{
+ "name": "setup_duplicate_project",
+ "source": "dialogs.py:1080-1124",
+ "api_message_rule": "documentation",
+ "title": "Duplicate Project",
+ "error_message": "A project named \"Errors\" already exists.",
+ "setup": {
+  "project_name": "Errors",
+  "decision_makers": [
+   "Expert A",
+   "Expert B",
+   "Expert C"
+  ],
+  "policies": [
+   "Alpha",
+   "Beta",
+   "Gamma",
+   "Delta"
+  ],
+  "existing_decision_makers": []
+ }
+}

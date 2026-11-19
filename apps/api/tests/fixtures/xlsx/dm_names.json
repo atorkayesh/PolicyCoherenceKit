@@ -1,0 +1,101 @@
+{
+ "name": "dm_names",
+ "file": null,
+ "error_message": "ValueError: Invalid character / found in sheet title",
+ "request": {
+  "project_name": "DM names",
+  "policies": [
+   "Alpha",
+   "Beta",
+   "Gamma"
+  ],
+  "decision_makers": [
+   {
+    "name": "A/B",
+    "ratings": [
+     [
+      "Neutral",
+      "Neutral",
+      "Enabling"
+     ],
+     [
+      "Reinforcing",
+      "Neutral",
+      "Reinforcing"
+     ],
+     [
+      "Neutral",
+      "Constraining",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "Aggregated (Average)",
+    "ratings": [
+     [
+      "Neutral",
+      "Counteracting",
+      "Enabling"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Enabling"
+     ],
+     [
+      "Neutral",
+      "Cancelling",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "Department of Energy Transition Unit A12",
+    "ratings": [
+     [
+      "Neutral",
+      "Counteracting",
+      "Cancelling"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Cancelling",
+      "Reinforcing",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "Department of Energy Transition Unit B",
+    "ratings": [
+     [
+      "Neutral",
+      "Counteracting",
+      "Cancelling"
+     ],
+     [
+      "Indivisible",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Reinforcing",
+      "Reinforcing",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "average",
+   "weights": null,
+   "median_choice": null,
+   "tie_choices": []
+  }
+ }
+}

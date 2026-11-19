@@ -1,0 +1,41 @@
+{
+ "file": "none_cells.xlsx",
+ "legacy": {
+  "matrices": [
+   {
+    "decision_maker": "Expert A",
+    "policies": [
+     "Alpha",
+     "Beta",
+     "Gamma"
+    ],
+    "ratings": [
+     [
+      "Neutral",
+      "",
+      "Reinforcing"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Enabling"
+     ],
+     [
+      "Reinforcing",
+      "Enabling",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "warnings": [
+   "\"Expert A\": 1 blank cell(s): P1->P2"
+  ]
+ },
+ "app_messages": [
+  [
+   "Import Complete with Warnings",
+   "1 matrix/matrices imported.\n\nThe following sheets have blank cells:\n\n\"Expert A\": 1 blank cell(s): P1->P2"
+  ]
+ ]
+}

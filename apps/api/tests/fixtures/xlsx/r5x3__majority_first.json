@@ -1,0 +1,2361 @@
+{
+ "name": "r5x3__majority_first",
+ "file": "r5x3__majority_first.xlsx",
+ "sheets": [
+  {
+   "title": "DM 1",
+   "cells": [
+    {
+     "ref": "A1",
+     "value": "Policy Index",
+     "bold": true,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B1",
+     "value": "P1: Urban Mobility Plan",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C1",
+     "value": "P2: Renewable Energy Act",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D1",
+     "value": "P3: Water Resources Strategy",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E1",
+     "value": "P4: Agricultural Subsidy Reform",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F1",
+     "value": "P5: Green bonds worth $5bn and $3bn",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A3",
+     "value": "Influencing / Influenced",
+     "bold": true,
+     "italic": true,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B3",
+     "value": "P1",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C3",
+     "value": "P2",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D3",
+     "value": "P3",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E3",
+     "value": "P4",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F3",
+     "value": "P5",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A4",
+     "value": "P1",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B4",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "C4",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D4",
+     "value": "Cancelling",
+     "bold": false,
+     "italic": false,
+     "fill": "009B2226",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E4",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "F4",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "A5",
+     "value": "P2",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B5",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C5",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "D5",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E5",
+     "value": "Cancelling",
+     "bold": false,
+     "italic": false,
+     "fill": "009B2226",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F5",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A6",
+     "value": "P3",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B6",
+     "value": "Cancelling",
+     "bold": false,
+     "italic": false,
+     "fill": "009B2226",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C6",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "D6",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E6",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "F6",
+     "value": "Cancelling",
+     "bold": false,
+     "italic": false,
+     "fill": "009B2226",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A7",
+     "value": "P4",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B7",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "C7",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "D7",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E7",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "F7",
+     "value": "Counteracting",
+     "bold": false,
+     "italic": false,
+     "fill": "00E76F51",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A8",
+     "value": "P5",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B8",
+     "value": "Counteracting",
+     "bold": false,
+     "italic": false,
+     "fill": "00E76F51",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C8",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "D8",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "E8",
+     "value": "Counteracting",
+     "bold": false,
+     "italic": false,
+     "fill": "00E76F51",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F8",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    }
+   ],
+   "column_widths": {
+    "A": 28.0,
+    "B": 27.0,
+    "C": 28.0,
+    "D": 32.0,
+    "E": 35.0,
+    "F": 39.0
+   }
+  },
+  {
+   "title": "DM 2",
+   "cells": [
+    {
+     "ref": "A1",
+     "value": "Policy Index",
+     "bold": true,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B1",
+     "value": "P1: Urban Mobility Plan",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C1",
+     "value": "P2: Renewable Energy Act",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D1",
+     "value": "P3: Water Resources Strategy",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E1",
+     "value": "P4: Agricultural Subsidy Reform",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F1",
+     "value": "P5: Green bonds worth $5bn and $3bn",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A3",
+     "value": "Influencing / Influenced",
+     "bold": true,
+     "italic": true,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B3",
+     "value": "P1",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C3",
+     "value": "P2",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D3",
+     "value": "P3",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E3",
+     "value": "P4",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F3",
+     "value": "P5",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A4",
+     "value": "P1",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B4",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "C4",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "D4",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "E4",
+     "value": "Counteracting",
+     "bold": false,
+     "italic": false,
+     "fill": "00E76F51",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F4",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "A5",
+     "value": "P2",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B5",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "C5",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "D5",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "E5",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "F5",
+     "value": "Counteracting",
+     "bold": false,
+     "italic": false,
+     "fill": "00E76F51",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A6",
+     "value": "P3",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B6",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C6",
+     "value": "Cancelling",
+     "bold": false,
+     "italic": false,
+     "fill": "009B2226",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D6",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E6",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F6",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A7",
+     "value": "P4",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B7",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "C7",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "D7",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E7",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "F7",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "A8",
+     "value": "P5",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B8",
+     "value": "Counteracting",
+     "bold": false,
+     "italic": false,
+     "fill": "00E76F51",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C8",
+     "value": "Cancelling",
+     "bold": false,
+     "italic": false,
+     "fill": "009B2226",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D8",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E8",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "F8",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    }
+   ],
+   "column_widths": {
+    "A": 28.0,
+    "B": 27.0,
+    "C": 28.0,
+    "D": 32.0,
+    "E": 35.0,
+    "F": 39.0
+   }
+  },
+  {
+   "title": "DM 3",
+   "cells": [
+    {
+     "ref": "A1",
+     "value": "Policy Index",
+     "bold": true,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B1",
+     "value": "P1: Urban Mobility Plan",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C1",
+     "value": "P2: Renewable Energy Act",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D1",
+     "value": "P3: Water Resources Strategy",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E1",
+     "value": "P4: Agricultural Subsidy Reform",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F1",
+     "value": "P5: Green bonds worth $5bn and $3bn",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A3",
+     "value": "Influencing / Influenced",
+     "bold": true,
+     "italic": true,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B3",
+     "value": "P1",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C3",
+     "value": "P2",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D3",
+     "value": "P3",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E3",
+     "value": "P4",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F3",
+     "value": "P5",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A4",
+     "value": "P1",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B4",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "C4",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "D4",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "E4",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "F4",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "A5",
+     "value": "P2",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B5",
+     "value": "Cancelling",
+     "bold": false,
+     "italic": false,
+     "fill": "009B2226",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C5",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "D5",
+     "value": "Cancelling",
+     "bold": false,
+     "italic": false,
+     "fill": "009B2226",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E5",
+     "value": "Cancelling",
+     "bold": false,
+     "italic": false,
+     "fill": "009B2226",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F5",
+     "value": "Cancelling",
+     "bold": false,
+     "italic": false,
+     "fill": "009B2226",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A6",
+     "value": "P3",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B6",
+     "value": "Counteracting",
+     "bold": false,
+     "italic": false,
+     "fill": "00E76F51",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C6",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D6",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E6",
+     "value": "Cancelling",
+     "bold": false,
+     "italic": false,
+     "fill": "009B2226",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F6",
+     "value": "Cancelling",
+     "bold": false,
+     "italic": false,
+     "fill": "009B2226",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A7",
+     "value": "P4",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B7",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C7",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "D7",
+     "value": "Cancelling",
+     "bold": false,
+     "italic": false,
+     "fill": "009B2226",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E7",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "F7",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A8",
+     "value": "P5",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B8",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "C8",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D8",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E8",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F8",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    }
+   ],
+   "column_widths": {
+    "A": 28.0,
+    "B": 27.0,
+    "C": 28.0,
+    "D": 32.0,
+    "E": 35.0,
+    "F": 39.0
+   }
+  },
+  {
+   "title": "Aggregated (Majority)",
+   "cells": [
+    {
+     "ref": "A1",
+     "value": "Policy Index",
+     "bold": true,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B1",
+     "value": "P1: Urban Mobility Plan",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C1",
+     "value": "P2: Renewable Energy Act",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D1",
+     "value": "P3: Water Resources Strategy",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E1",
+     "value": "P4: Agricultural Subsidy Reform",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F1",
+     "value": "P5: Green bonds worth $5bn and $3bn",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A3",
+     "value": "Influencing / Influenced",
+     "bold": true,
+     "italic": true,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B3",
+     "value": "P1",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C3",
+     "value": "P2",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D3",
+     "value": "P3",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E3",
+     "value": "P4",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F3",
+     "value": "P5",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A4",
+     "value": "P1",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B4",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C4",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D4",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E4",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F4",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A5",
+     "value": "P2",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B5",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C5",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D5",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E5",
+     "value": -3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F5",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A6",
+     "value": "P3",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B6",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C6",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D6",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E6",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F6",
+     "value": -3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A7",
+     "value": "P4",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B7",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C7",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D7",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E7",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F7",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A8",
+     "value": "P5",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B8",
+     "value": -2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C8",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D8",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E8",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F8",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    }
+   ],
+   "column_widths": {
+    "A": 28.0,
+    "B": 27.0,
+    "C": 28.0,
+    "D": 32.0,
+    "E": 35.0,
+    "F": 39.0
+   }
+  },
+  {
+   "title": "Coh Scores (Majority)",
+   "cells": [
+    {
+     "ref": "A1",
+     "value": "Code",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B1",
+     "value": "Policy",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C1",
+     "value": "OI",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D1",
+     "value": "II",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E1",
+     "value": "WOI",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F1",
+     "value": "WII",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A2",
+     "value": "P1",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B2",
+     "value": "Urban Mobility Plan",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C2",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D2",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E2",
+     "value": 5,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F2",
+     "value": 6,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A3",
+     "value": "P2",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B3",
+     "value": "Renewable Energy Act",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C3",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D3",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E3",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F3",
+     "value": 8,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A4",
+     "value": "P3",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B4",
+     "value": "Water Resources Strategy",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C4",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D4",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E4",
+     "value": 5,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F4",
+     "value": 9,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A5",
+     "value": "P4",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B5",
+     "value": "Agricultural Subsidy Reform",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C5",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D5",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E5",
+     "value": 9,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F5",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A6",
+     "value": "P5",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B6",
+     "value": "Green bonds worth $5bn and $3bn",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C6",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D6",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E6",
+     "value": 7,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F6",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    }
+   ],
+   "column_widths": {
+    "A": 14.0,
+    "B": 35.0,
+    "C": 14.0,
+    "D": 14.0,
+    "E": 14.0,
+    "F": 14.0
+   }
+  },
+  {
+   "title": "Range Influence (Majority)",
+   "cells": [
+    {
+     "ref": "A1",
+     "value": "Code",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B1",
+     "value": "Policy",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C1",
+     "value": "Entropy",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D1",
+     "value": "Category",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A2",
+     "value": "P1",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B2",
+     "value": "Urban Mobility Plan",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C2",
+     "value": 1.9219,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D2",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A3",
+     "value": "P2",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B3",
+     "value": "Renewable Energy Act",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C3",
+     "value": 1.9749,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D3",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A4",
+     "value": "P3",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B4",
+     "value": "Water Resources Strategy",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C4",
+     "value": 1.9808,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D4",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A5",
+     "value": "P4",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B5",
+     "value": "Agricultural Subsidy Reform",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C5",
+     "value": 1.8911,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D5",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A6",
+     "value": "P5",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B6",
+     "value": "Green bonds worth $5bn and $3bn",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C6",
+     "value": 1.9808,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D6",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    }
+   ],
+   "column_widths": {
+    "A": 14.0,
+    "B": 35.0,
+    "C": 14.0,
+    "D": 14.0
+   }
+  },
+  {
+   "title": "Centrality (Majority)",
+   "cells": [
+    {
+     "ref": "A1",
+     "value": "Code",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B1",
+     "value": "Policy",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C1",
+     "value": "Betweenness",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D1",
+     "value": "Closeness",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A2",
+     "value": "P2",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B2",
+     "value": "Renewable Energy Act",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C2",
+     "value": 0.1667,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D2",
+     "value": 2.1818,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A3",
+     "value": "P1",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B3",
+     "value": "Urban Mobility Plan",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C3",
+     "value": 0.0278,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D3",
+     "value": 1.2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A4",
+     "value": "P3",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B4",
+     "value": "Water Resources Strategy",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C4",
+     "value": 0.0278,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D4",
+     "value": 2.6667,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A5",
+     "value": "P5",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B5",
+     "value": "Green bonds worth $5bn and $3bn",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C5",
+     "value": 0.0278,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D5",
+     "value": 2.6667,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A6",
+     "value": "P4",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B6",
+     "value": "Agricultural Subsidy Reform",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C6",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D6",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    }
+   ],
+   "column_widths": {
+    "A": 14.0,
+    "B": 35.0,
+    "C": 15.0,
+    "D": 14.0
+   }
+  }
+ ]
+}

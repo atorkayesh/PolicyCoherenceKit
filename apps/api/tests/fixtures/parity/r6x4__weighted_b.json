@@ -1,0 +1,1958 @@
+{
+ "request": {
+  "project_name": "Parity r6x4",
+  "policies": [
+   "Urban Mobility Plan",
+   "Renewable Energy Act",
+   "Water Resources Strategy",
+   "Agricultural Subsidy Reform",
+   "Green bonds worth $5bn and $3bn",
+   "Biodiversity Action Plan"
+  ],
+  "decision_makers": [
+   {
+    "name": "DM 1",
+    "ratings": [
+     [
+      "Neutral",
+      "Neutral",
+      "Indivisible",
+      "Counteracting",
+      "Constraining",
+      "Neutral"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Counteracting",
+      "Indivisible",
+      "Reinforcing",
+      "Enabling"
+     ],
+     [
+      "Counteracting",
+      "Cancelling",
+      "Neutral",
+      "Counteracting",
+      "Cancelling",
+      "Cancelling"
+     ],
+     [
+      "Reinforcing",
+      "Counteracting",
+      "Cancelling",
+      "Neutral",
+      "Cancelling",
+      "Counteracting"
+     ],
+     [
+      "Reinforcing",
+      "Indivisible",
+      "Cancelling",
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Reinforcing",
+      "Counteracting",
+      "Indivisible",
+      "Indivisible",
+      "Neutral",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 2",
+    "ratings": [
+     [
+      "Neutral",
+      "Counteracting",
+      "Indivisible",
+      "Indivisible",
+      "Reinforcing",
+      "Indivisible"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Indivisible",
+      "Constraining",
+      "Enabling",
+      "Reinforcing"
+     ],
+     [
+      "Constraining",
+      "Reinforcing",
+      "Neutral",
+      "Indivisible",
+      "Cancelling",
+      "Indivisible"
+     ],
+     [
+      "Cancelling",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Reinforcing",
+      "Enabling"
+     ],
+     [
+      "Counteracting",
+      "Reinforcing",
+      "Constraining",
+      "Neutral",
+      "Neutral",
+      "Enabling"
+     ],
+     [
+      "Constraining",
+      "Enabling",
+      "Counteracting",
+      "Enabling",
+      "Counteracting",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 3",
+    "ratings": [
+     [
+      "Neutral",
+      "Neutral",
+      "Constraining",
+      "Reinforcing",
+      "Indivisible",
+      "Indivisible"
+     ],
+     [
+      "Reinforcing",
+      "Neutral",
+      "Neutral",
+      "Reinforcing",
+      "Reinforcing",
+      "Reinforcing"
+     ],
+     [
+      "Indivisible",
+      "Counteracting",
+      "Neutral",
+      "Enabling",
+      "Reinforcing",
+      "Counteracting"
+     ],
+     [
+      "Reinforcing",
+      "Cancelling",
+      "Cancelling",
+      "Neutral",
+      "Indivisible",
+      "Counteracting"
+     ],
+     [
+      "Cancelling",
+      "Enabling",
+      "Cancelling",
+      "Cancelling",
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Reinforcing",
+      "Enabling",
+      "Reinforcing",
+      "Counteracting",
+      "Cancelling",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 4",
+    "ratings": [
+     [
+      "Neutral",
+      "Constraining",
+      "Counteracting",
+      "Reinforcing",
+      "Cancelling",
+      "Counteracting"
+     ],
+     [
+      "Reinforcing",
+      "Neutral",
+      "Reinforcing",
+      "Constraining",
+      "Enabling",
+      "Neutral"
+     ],
+     [
+      "Neutral",
+      "Enabling",
+      "Neutral",
+      "Counteracting",
+      "Enabling",
+      "Reinforcing"
+     ],
+     [
+      "Enabling",
+      "Reinforcing",
+      "Cancelling",
+      "Neutral",
+      "Reinforcing",
+      "Enabling"
+     ],
+     [
+      "Indivisible",
+      "Reinforcing",
+      "Indivisible",
+      "Indivisible",
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Constraining",
+      "Indivisible",
+      "Cancelling",
+      "Reinforcing",
+      "Enabling",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "weighted",
+   "weights": [
+    0.1,
+    0.2,
+    0.3,
+    0.4
+   ],
+   "median_choice": null,
+   "tie_choices": []
+  }
+ },
+ "aggregation": {
+  "requested_method": "weighted",
+  "method": "weighted",
+  "label": "Weighted",
+  "n": 6,
+  "codes": [
+   "P1",
+   "P2",
+   "P3",
+   "P4",
+   "P5",
+   "P6"
+  ],
+  "policies": [
+   "Urban Mobility Plan",
+   "Renewable Energy Act",
+   "Water Resources Strategy",
+   "Agricultural Subsidy Reform",
+   "Green bonds worth $5bn and $3bn",
+   "Biodiversity Action Plan"
+  ],
+  "decision_makers": 4,
+  "decision_maker_names": [
+   "DM 1",
+   "DM 2",
+   "DM 3",
+   "DM 4"
+  ],
+  "scores": [
+   [
+    0.0,
+    -0.8,
+    -0.2,
+    1.8,
+    -0.0,
+    0.7
+   ],
+   [
+    1.1,
+    0.0,
+    1.2,
+    0.3,
+    1.4,
+    1.1
+   ],
+   [
+    0.5,
+    -0.1,
+    0.0,
+    -0.1,
+    0.1,
+    0.5
+   ],
+   [
+    0.6,
+    -0.3,
+    -2.4,
+    0.0,
+    1.8,
+    -0.2
+   ],
+   [
+    0.1,
+    1.8,
+    -0.2,
+    0.3,
+    0.0,
+    2.3
+   ],
+   [
+    0.2,
+    1.5,
+    -0.7,
+    0.7,
+    -0.9,
+    0.0
+   ]
+  ],
+  "ties": [],
+  "source_scores": [
+   [
+    [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -2.0,
+     0.0,
+     -1.0
+    ],
+    [
+     3.0,
+     3.0,
+     -1.0,
+     -2.0
+    ],
+    [
+     -2.0,
+     3.0,
+     2.0,
+     2.0
+    ],
+    [
+     -1.0,
+     2.0,
+     3.0,
+     -3.0
+    ],
+    [
+     0.0,
+     3.0,
+     3.0,
+     -2.0
+    ]
+   ],
+   [
+    [
+     -1.0,
+     -1.0,
+     2.0,
+     2.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     -2.0,
+     3.0,
+     0.0,
+     2.0
+    ],
+    [
+     3.0,
+     -1.0,
+     2.0,
+     -1.0
+    ],
+    [
+     2.0,
+     1.0,
+     2.0,
+     1.0
+    ],
+    [
+     1.0,
+     2.0,
+     2.0,
+     0.0
+    ]
+   ],
+   [
+    [
+     -2.0,
+     -1.0,
+     3.0,
+     0.0
+    ],
+    [
+     -3.0,
+     2.0,
+     -2.0,
+     1.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     -2.0,
+     3.0,
+     1.0,
+     -2.0
+    ],
+    [
+     -3.0,
+     -3.0,
+     2.0,
+     1.0
+    ],
+    [
+     -3.0,
+     3.0,
+     -2.0,
+     2.0
+    ]
+   ],
+   [
+    [
+     2.0,
+     -3.0,
+     2.0,
+     1.0
+    ],
+    [
+     -2.0,
+     0.0,
+     -3.0,
+     2.0
+    ],
+    [
+     -3.0,
+     0.0,
+     -3.0,
+     -3.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     -3.0,
+     2.0,
+     3.0,
+     2.0
+    ],
+    [
+     -2.0,
+     1.0,
+     -2.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     2.0,
+     -2.0,
+     -3.0,
+     3.0
+    ],
+    [
+     3.0,
+     2.0,
+     1.0,
+     2.0
+    ],
+    [
+     -3.0,
+     -1.0,
+     -3.0,
+     3.0
+    ],
+    [
+     0.0,
+     0.0,
+     -3.0,
+     3.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     3.0,
+     3.0
+    ]
+   ],
+   [
+    [
+     2.0,
+     -1.0,
+     2.0,
+     -1.0
+    ],
+    [
+     -2.0,
+     1.0,
+     1.0,
+     3.0
+    ],
+    [
+     3.0,
+     -2.0,
+     2.0,
+     -3.0
+    ],
+    [
+     3.0,
+     1.0,
+     -2.0,
+     2.0
+    ],
+    [
+     0.0,
+     -2.0,
+     -3.0,
+     1.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   ]
+  ],
+  "ordinal_cells": null,
+  "median_even_choice": null
+ },
+ "bands": [
+  [
+   "Neutral",
+   "Constraining",
+   "Neutral",
+   "Reinforcing",
+   "Neutral",
+   "Enabling"
+  ],
+  [
+   "Enabling",
+   "Neutral",
+   "Enabling",
+   "Neutral",
+   "Enabling",
+   "Enabling"
+  ],
+  [
+   "Enabling",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Enabling"
+  ],
+  [
+   "Enabling",
+   "Neutral",
+   "Counteracting",
+   "Neutral",
+   "Reinforcing",
+   "Neutral"
+  ],
+  [
+   "Neutral",
+   "Reinforcing",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Reinforcing"
+  ],
+  [
+   "Neutral",
+   "Reinforcing",
+   "Constraining",
+   "Enabling",
+   "Constraining",
+   "Neutral"
+  ]
+ ],
+ "scores": [
+  {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "oi": 4,
+   "ii": 5,
+   "woi": 1.5,
+   "wii": 2.5,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#25c263",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P2",
+   "policy": "Renewable Energy Act",
+   "oi": 5,
+   "ii": 5,
+   "woi": 5.1,
+   "wii": 2.1,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P3",
+   "policy": "Water Resources Strategy",
+   "oi": 5,
+   "ii": 5,
+   "woi": 0.9,
+   "wii": -2.3,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#25c263",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#ef4444",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P4",
+   "policy": "Agricultural Subsidy Reform",
+   "oi": 5,
+   "ii": 5,
+   "woi": -0.5,
+   "wii": 3.0,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#f5c07a",
+    "#2d2d2d"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P5",
+   "policy": "Green bonds worth $5bn and $3bn",
+   "oi": 5,
+   "ii": 4,
+   "woi": 4.3,
+   "wii": 2.4,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P6",
+   "policy": "Biodiversity Action Plan",
+   "oi": 5,
+   "ii": 5,
+   "woi": 0.8,
+   "wii": 4.4,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#25c263",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  }
+ ],
+ "entropy": [
+  {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "entropy": 1.6804,
+   "category": "Medium-to-High",
+   "hmax": 2.3219
+  },
+  {
+   "code": "P2",
+   "policy": "Renewable Energy Act",
+   "entropy": 2.1982,
+   "category": "High",
+   "hmax": 2.3219
+  },
+  {
+   "code": "P3",
+   "policy": "Water Resources Strategy",
+   "entropy": 1.9143,
+   "category": "High",
+   "hmax": 2.3219
+  },
+  {
+   "code": "P4",
+   "policy": "Agricultural Subsidy Reform",
+   "entropy": 1.8154,
+   "category": "High",
+   "hmax": 2.3219
+  },
+  {
+   "code": "P5",
+   "policy": "Green bonds worth $5bn and $3bn",
+   "entropy": 1.6002,
+   "category": "Medium-to-High",
+   "hmax": 2.3219
+  },
+  {
+   "code": "P6",
+   "policy": "Biodiversity Action Plan",
+   "entropy": 2.111,
+   "category": "High",
+   "hmax": 2.3219
+  }
+ ],
+ "pca": {
+  "coords": [
+   [
+    -2.4943173537621264,
+    1.2792071384735326
+   ],
+   [
+    0.9102857633031647,
+    -1.3341119867561593
+   ],
+   [
+    -0.36328334649749344,
+    0.5812535707514899
+   ],
+   [
+    2.4447529682864584,
+    1.0493217941235145
+   ],
+   [
+    -1.0529591318574825,
+    -1.819305605844694
+   ],
+   [
+    0.5555211005274793,
+    0.24363508925231633
+   ]
+  ],
+  "explained": [
+   48.6,
+   27.4
+  ],
+  "explained_unrounded": [
+   48.58785908144172,
+   27.414628605449913
+  ],
+  "valid": true,
+  "singular_values": [
+   3.8178996482925673,
+   2.867819482051646,
+   1.9211058332160307,
+   1.443765311618473,
+   1.193376636474446
+  ]
+ },
+ "graph_edges": [
+  [
+   0,
+   1,
+   -0.8
+  ],
+  [
+   0,
+   2,
+   -0.2
+  ],
+  [
+   0,
+   3,
+   1.8
+  ],
+  [
+   0,
+   5,
+   0.7
+  ],
+  [
+   1,
+   0,
+   1.1
+  ],
+  [
+   1,
+   2,
+   1.2
+  ],
+  [
+   1,
+   3,
+   0.3
+  ],
+  [
+   1,
+   4,
+   1.4
+  ],
+  [
+   1,
+   5,
+   1.1
+  ],
+  [
+   2,
+   0,
+   0.5
+  ],
+  [
+   2,
+   1,
+   -0.1
+  ],
+  [
+   2,
+   3,
+   -0.1
+  ],
+  [
+   2,
+   4,
+   0.1
+  ],
+  [
+   2,
+   5,
+   0.5
+  ],
+  [
+   3,
+   0,
+   0.6
+  ],
+  [
+   3,
+   1,
+   -0.3
+  ],
+  [
+   3,
+   2,
+   -2.4
+  ],
+  [
+   3,
+   4,
+   1.8
+  ],
+  [
+   3,
+   5,
+   -0.2
+  ],
+  [
+   4,
+   0,
+   0.1
+  ],
+  [
+   4,
+   1,
+   1.8
+  ],
+  [
+   4,
+   2,
+   -0.2
+  ],
+  [
+   4,
+   3,
+   0.3
+  ],
+  [
+   4,
+   5,
+   2.3
+  ],
+  [
+   5,
+   0,
+   0.2
+  ],
+  [
+   5,
+   1,
+   1.5
+  ],
+  [
+   5,
+   2,
+   -0.7
+  ],
+  [
+   5,
+   3,
+   0.7
+  ],
+  [
+   5,
+   4,
+   -0.9
+  ]
+ ],
+ "centrality": [
+  {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "betweenness": 0.15,
+   "closeness": 0.9403
+  },
+  {
+   "code": "P2",
+   "policy": "Renewable Energy Act",
+   "betweenness": 0.15,
+   "closeness": 1.0351
+  },
+  {
+   "code": "P3",
+   "policy": "Water Resources Strategy",
+   "betweenness": 0.0,
+   "closeness": 0.4054
+  },
+  {
+   "code": "P4",
+   "policy": "Agricultural Subsidy Reform",
+   "betweenness": 0.15,
+   "closeness": 1.0548
+  },
+  {
+   "code": "P5",
+   "policy": "Green bonds worth $5bn and $3bn",
+   "betweenness": 0.1,
+   "closeness": 0.8761
+  },
+  {
+   "code": "P6",
+   "policy": "Biodiversity Action Plan",
+   "betweenness": 0.1,
+   "closeness": 0.8051
+  }
+ ],
+ "centrality_ranking": [
+  "P1",
+  "P2",
+  "P4",
+  "P5",
+  "P6",
+  "P3"
+ ],
+ "network_info": {
+  "edge_count": 29,
+  "isolated": 0,
+  "density": 0.967,
+  "stats_text": "6 nodes  |  29 directed edges  |  density: 0.967"
+ },
+ "insights": {
+  "rows": [
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 4,
+    "ii": 5,
+    "woi": 1.5,
+    "wii": 2.5,
+    "index": 0,
+    "net": -1.0,
+    "prominence": 6.0,
+    "entropy": 1.6804,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.15,
+    "closeness": 0.9403,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 5,
+    "ii": 5,
+    "woi": 5.1,
+    "wii": 2.1,
+    "index": 1,
+    "net": 3.0,
+    "prominence": 9.6,
+    "entropy": 2.1982,
+    "entropy_category": "High",
+    "betweenness": 0.15,
+    "closeness": 1.0351,
+    "quadrant": "System Driver"
+   },
+   {
+    "code": "P3",
+    "policy": "Water Resources Strategy",
+    "oi": 5,
+    "ii": 5,
+    "woi": 0.9,
+    "wii": -2.3,
+    "index": 2,
+    "net": 3.2,
+    "prominence": 6.0,
+    "entropy": 1.9143,
+    "entropy_category": "High",
+    "betweenness": 0.0,
+    "closeness": 0.4054,
+    "quadrant": "Strategic Lever"
+   },
+   {
+    "code": "P4",
+    "policy": "Agricultural Subsidy Reform",
+    "oi": 5,
+    "ii": 5,
+    "woi": -0.5,
+    "wii": 3.0,
+    "index": 3,
+    "net": -3.5,
+    "prominence": 8.5,
+    "entropy": 1.8154,
+    "entropy_category": "High",
+    "betweenness": 0.15,
+    "closeness": 1.0548,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P5",
+    "policy": "Green bonds worth $5bn and $3bn",
+    "oi": 5,
+    "ii": 4,
+    "woi": 4.3,
+    "wii": 2.4,
+    "index": 4,
+    "net": 1.9,
+    "prominence": 8.9,
+    "entropy": 1.6002,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.1,
+    "closeness": 0.8761,
+    "quadrant": "System Driver"
+   },
+   {
+    "code": "P6",
+    "policy": "Biodiversity Action Plan",
+    "oi": 5,
+    "ii": 5,
+    "woi": 0.8,
+    "wii": 4.4,
+    "index": 5,
+    "net": -3.6,
+    "prominence": 8.8,
+    "entropy": 2.111,
+    "entropy_category": "High",
+    "betweenness": 0.1,
+    "closeness": 0.8051,
+    "quadrant": "System Dependent"
+   }
+  ],
+  "drivers": [
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 5,
+    "ii": 5,
+    "woi": 5.1,
+    "wii": 2.1,
+    "index": 1,
+    "net": 3.0,
+    "prominence": 9.6,
+    "entropy": 2.1982,
+    "entropy_category": "High",
+    "betweenness": 0.15,
+    "closeness": 1.0351,
+    "quadrant": "System Driver"
+   },
+   {
+    "code": "P3",
+    "policy": "Water Resources Strategy",
+    "oi": 5,
+    "ii": 5,
+    "woi": 0.9,
+    "wii": -2.3,
+    "index": 2,
+    "net": 3.2,
+    "prominence": 6.0,
+    "entropy": 1.9143,
+    "entropy_category": "High",
+    "betweenness": 0.0,
+    "closeness": 0.4054,
+    "quadrant": "Strategic Lever"
+   },
+   {
+    "code": "P5",
+    "policy": "Green bonds worth $5bn and $3bn",
+    "oi": 5,
+    "ii": 4,
+    "woi": 4.3,
+    "wii": 2.4,
+    "index": 4,
+    "net": 1.9,
+    "prominence": 8.9,
+    "entropy": 1.6002,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.1,
+    "closeness": 0.8761,
+    "quadrant": "System Driver"
+   }
+  ],
+  "dependents": [
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 4,
+    "ii": 5,
+    "woi": 1.5,
+    "wii": 2.5,
+    "index": 0,
+    "net": -1.0,
+    "prominence": 6.0,
+    "entropy": 1.6804,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.15,
+    "closeness": 0.9403,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P4",
+    "policy": "Agricultural Subsidy Reform",
+    "oi": 5,
+    "ii": 5,
+    "woi": -0.5,
+    "wii": 3.0,
+    "index": 3,
+    "net": -3.5,
+    "prominence": 8.5,
+    "entropy": 1.8154,
+    "entropy_category": "High",
+    "betweenness": 0.15,
+    "closeness": 1.0548,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P6",
+    "policy": "Biodiversity Action Plan",
+    "oi": 5,
+    "ii": 5,
+    "woi": 0.8,
+    "wii": 4.4,
+    "index": 5,
+    "net": -3.6,
+    "prominence": 8.8,
+    "entropy": 2.111,
+    "entropy_category": "High",
+    "betweenness": 0.1,
+    "closeness": 0.8051,
+    "quadrant": "System Dependent"
+   }
+  ],
+  "balanced": [],
+  "top_driver": {
+   "code": "P2",
+   "policy": "Renewable Energy Act",
+   "oi": 5,
+   "ii": 5,
+   "woi": 5.1,
+   "wii": 2.1,
+   "index": 1,
+   "net": 3.0,
+   "prominence": 9.6,
+   "entropy": 2.1982,
+   "entropy_category": "High",
+   "betweenness": 0.15,
+   "closeness": 1.0351,
+   "quadrant": "System Driver"
+  },
+  "top_dependent": {
+   "code": "P6",
+   "policy": "Biodiversity Action Plan",
+   "oi": 5,
+   "ii": 5,
+   "woi": 0.8,
+   "wii": 4.4,
+   "index": 5,
+   "net": -3.6,
+   "prominence": 8.8,
+   "entropy": 2.111,
+   "entropy_category": "High",
+   "betweenness": 0.1,
+   "closeness": 0.8051,
+   "quadrant": "System Dependent"
+  },
+  "top_prominent": {
+   "code": "P2",
+   "policy": "Renewable Energy Act",
+   "oi": 5,
+   "ii": 5,
+   "woi": 5.1,
+   "wii": 2.1,
+   "index": 1,
+   "net": 3.0,
+   "prominence": 9.6,
+   "entropy": 2.1982,
+   "entropy_category": "High",
+   "betweenness": 0.15,
+   "closeness": 1.0351,
+   "quadrant": "System Driver"
+  },
+  "top_broker": {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "oi": 4,
+   "ii": 5,
+   "woi": 1.5,
+   "wii": 2.5,
+   "index": 0,
+   "net": -1.0,
+   "prominence": 6.0,
+   "entropy": 1.6804,
+   "entropy_category": "Medium-to-High",
+   "betweenness": 0.15,
+   "closeness": 0.9403,
+   "quadrant": "Vulnerable Node"
+  },
+  "top_prominence_rows": [
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 5,
+    "ii": 5,
+    "woi": 5.1,
+    "wii": 2.1,
+    "index": 1,
+    "net": 3.0,
+    "prominence": 9.6,
+    "entropy": 2.1982,
+    "entropy_category": "High",
+    "betweenness": 0.15,
+    "closeness": 1.0351,
+    "quadrant": "System Driver"
+   },
+   {
+    "code": "P5",
+    "policy": "Green bonds worth $5bn and $3bn",
+    "oi": 5,
+    "ii": 4,
+    "woi": 4.3,
+    "wii": 2.4,
+    "index": 4,
+    "net": 1.9,
+    "prominence": 8.9,
+    "entropy": 1.6002,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.1,
+    "closeness": 0.8761,
+    "quadrant": "System Driver"
+   },
+   {
+    "code": "P6",
+    "policy": "Biodiversity Action Plan",
+    "oi": 5,
+    "ii": 5,
+    "woi": 0.8,
+    "wii": 4.4,
+    "index": 5,
+    "net": -3.6,
+    "prominence": 8.8,
+    "entropy": 2.111,
+    "entropy_category": "High",
+    "betweenness": 0.1,
+    "closeness": 0.8051,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P4",
+    "policy": "Agricultural Subsidy Reform",
+    "oi": 5,
+    "ii": 5,
+    "woi": -0.5,
+    "wii": 3.0,
+    "index": 3,
+    "net": -3.5,
+    "prominence": 8.5,
+    "entropy": 1.8154,
+    "entropy_category": "High",
+    "betweenness": 0.15,
+    "closeness": 1.0548,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 4,
+    "ii": 5,
+    "woi": 1.5,
+    "wii": 2.5,
+    "index": 0,
+    "net": -1.0,
+    "prominence": 6.0,
+    "entropy": 1.6804,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.15,
+    "closeness": 0.9403,
+    "quadrant": "Vulnerable Node"
+   }
+  ],
+  "top_driver_rows": [
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 5,
+    "ii": 5,
+    "woi": 5.1,
+    "wii": 2.1,
+    "index": 1,
+    "net": 3.0,
+    "prominence": 9.6,
+    "entropy": 2.1982,
+    "entropy_category": "High",
+    "betweenness": 0.15,
+    "closeness": 1.0351,
+    "quadrant": "System Driver"
+   },
+   {
+    "code": "P5",
+    "policy": "Green bonds worth $5bn and $3bn",
+    "oi": 5,
+    "ii": 4,
+    "woi": 4.3,
+    "wii": 2.4,
+    "index": 4,
+    "net": 1.9,
+    "prominence": 8.9,
+    "entropy": 1.6002,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.1,
+    "closeness": 0.8761,
+    "quadrant": "System Driver"
+   },
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 4,
+    "ii": 5,
+    "woi": 1.5,
+    "wii": 2.5,
+    "index": 0,
+    "net": -1.0,
+    "prominence": 6.0,
+    "entropy": 1.6804,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.15,
+    "closeness": 0.9403,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P3",
+    "policy": "Water Resources Strategy",
+    "oi": 5,
+    "ii": 5,
+    "woi": 0.9,
+    "wii": -2.3,
+    "index": 2,
+    "net": 3.2,
+    "prominence": 6.0,
+    "entropy": 1.9143,
+    "entropy_category": "High",
+    "betweenness": 0.0,
+    "closeness": 0.4054,
+    "quadrant": "Strategic Lever"
+   },
+   {
+    "code": "P6",
+    "policy": "Biodiversity Action Plan",
+    "oi": 5,
+    "ii": 5,
+    "woi": 0.8,
+    "wii": 4.4,
+    "index": 5,
+    "net": -3.6,
+    "prominence": 8.8,
+    "entropy": 2.111,
+    "entropy_category": "High",
+    "betweenness": 0.1,
+    "closeness": 0.8051,
+    "quadrant": "System Dependent"
+   }
+  ],
+  "top_dependent_rows": [
+   {
+    "code": "P6",
+    "policy": "Biodiversity Action Plan",
+    "oi": 5,
+    "ii": 5,
+    "woi": 0.8,
+    "wii": 4.4,
+    "index": 5,
+    "net": -3.6,
+    "prominence": 8.8,
+    "entropy": 2.111,
+    "entropy_category": "High",
+    "betweenness": 0.1,
+    "closeness": 0.8051,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P4",
+    "policy": "Agricultural Subsidy Reform",
+    "oi": 5,
+    "ii": 5,
+    "woi": -0.5,
+    "wii": 3.0,
+    "index": 3,
+    "net": -3.5,
+    "prominence": 8.5,
+    "entropy": 1.8154,
+    "entropy_category": "High",
+    "betweenness": 0.15,
+    "closeness": 1.0548,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 4,
+    "ii": 5,
+    "woi": 1.5,
+    "wii": 2.5,
+    "index": 0,
+    "net": -1.0,
+    "prominence": 6.0,
+    "entropy": 1.6804,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.15,
+    "closeness": 0.9403,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P5",
+    "policy": "Green bonds worth $5bn and $3bn",
+    "oi": 5,
+    "ii": 4,
+    "woi": 4.3,
+    "wii": 2.4,
+    "index": 4,
+    "net": 1.9,
+    "prominence": 8.9,
+    "entropy": 1.6002,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.1,
+    "closeness": 0.8761,
+    "quadrant": "System Driver"
+   },
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 5,
+    "ii": 5,
+    "woi": 5.1,
+    "wii": 2.1,
+    "index": 1,
+    "net": 3.0,
+    "prominence": 9.6,
+    "entropy": 2.1982,
+    "entropy_category": "High",
+    "betweenness": 0.15,
+    "closeness": 1.0351,
+    "quadrant": "System Driver"
+   }
+  ],
+  "graph": {
+   "positive_edges": 19,
+   "negative_edges": 10,
+   "zero_edges": 1,
+   "density": 0.967,
+   "polarity": 0.655,
+   "strongest_pos": 2.3,
+   "strongest_neg": -2.4,
+   "strongest_pos_pair": [
+    4,
+    5
+   ],
+   "strongest_neg_pair": [
+    3,
+    2
+   ]
+  },
+  "agreement": {
+   "rows": [
+    {
+     "i": 0,
+     "j": 1,
+     "pair": "Urban Mobility Plan (P1) -> Renewable Energy Act (P2)",
+     "score": -0.8,
+     "agreement_ratio": 0.5,
+     "spread": 2.0
+    },
+    {
+     "i": 0,
+     "j": 2,
+     "pair": "Urban Mobility Plan (P1) -> Water Resources Strategy (P3)",
+     "score": -0.2,
+     "agreement_ratio": 0.5,
+     "spread": 5.0
+    },
+    {
+     "i": 0,
+     "j": 3,
+     "pair": "Urban Mobility Plan (P1) -> Agricultural Subsidy Reform (P4)",
+     "score": 1.8,
+     "agreement_ratio": 0.5,
+     "spread": 5.0
+    },
+    {
+     "i": 0,
+     "j": 4,
+     "pair": "Urban Mobility Plan (P1) -> Green bonds worth $5bn and $3bn (P5)",
+     "score": 0.0,
+     "agreement_ratio": 0.25,
+     "spread": 6.0
+    },
+    {
+     "i": 0,
+     "j": 5,
+     "pair": "Urban Mobility Plan (P1) -> Biodiversity Action Plan (P6)",
+     "score": 0.7,
+     "agreement_ratio": 0.5,
+     "spread": 5.0
+    },
+    {
+     "i": 1,
+     "j": 0,
+     "pair": "Renewable Energy Act (P2) -> Urban Mobility Plan (P1)",
+     "score": 1.1,
+     "agreement_ratio": 0.5,
+     "spread": 3.0
+    },
+    {
+     "i": 1,
+     "j": 2,
+     "pair": "Renewable Energy Act (P2) -> Water Resources Strategy (P3)",
+     "score": 1.2,
+     "agreement_ratio": 0.25,
+     "spread": 5.0
+    },
+    {
+     "i": 1,
+     "j": 3,
+     "pair": "Renewable Energy Act (P2) -> Agricultural Subsidy Reform (P4)",
+     "score": 0.3,
+     "agreement_ratio": 0.5,
+     "spread": 4.0
+    },
+    {
+     "i": 1,
+     "j": 4,
+     "pair": "Renewable Energy Act (P2) -> Green bonds worth $5bn and $3bn (P5)",
+     "score": 1.4,
+     "agreement_ratio": 0.5,
+     "spread": 1.0
+    },
+    {
+     "i": 1,
+     "j": 5,
+     "pair": "Renewable Energy Act (P2) -> Biodiversity Action Plan (P6)",
+     "score": 1.1,
+     "agreement_ratio": 0.5,
+     "spread": 2.0
+    },
+    {
+     "i": 2,
+     "j": 0,
+     "pair": "Water Resources Strategy (P3) -> Urban Mobility Plan (P1)",
+     "score": 0.5,
+     "agreement_ratio": 0.25,
+     "spread": 5.0
+    },
+    {
+     "i": 2,
+     "j": 1,
+     "pair": "Water Resources Strategy (P3) -> Renewable Energy Act (P2)",
+     "score": -0.1,
+     "agreement_ratio": 0.25,
+     "spread": 5.0
+    },
+    {
+     "i": 2,
+     "j": 3,
+     "pair": "Water Resources Strategy (P3) -> Agricultural Subsidy Reform (P4)",
+     "score": -0.1,
+     "agreement_ratio": 0.5,
+     "spread": 5.0
+    },
+    {
+     "i": 2,
+     "j": 4,
+     "pair": "Water Resources Strategy (P3) -> Green bonds worth $5bn and $3bn (P5)",
+     "score": 0.1,
+     "agreement_ratio": 0.5,
+     "spread": 5.0
+    },
+    {
+     "i": 2,
+     "j": 5,
+     "pair": "Water Resources Strategy (P3) -> Biodiversity Action Plan (P6)",
+     "score": 0.5,
+     "agreement_ratio": 0.25,
+     "spread": 6.0
+    },
+    {
+     "i": 3,
+     "j": 0,
+     "pair": "Agricultural Subsidy Reform (P4) -> Urban Mobility Plan (P1)",
+     "score": 0.6,
+     "agreement_ratio": 0.5,
+     "spread": 5.0
+    },
+    {
+     "i": 3,
+     "j": 1,
+     "pair": "Agricultural Subsidy Reform (P4) -> Renewable Energy Act (P2)",
+     "score": -0.3,
+     "agreement_ratio": 0.25,
+     "spread": 5.0
+    },
+    {
+     "i": 3,
+     "j": 2,
+     "pair": "Agricultural Subsidy Reform (P4) -> Water Resources Strategy (P3)",
+     "score": -2.4,
+     "agreement_ratio": 0.75,
+     "spread": 3.0
+    },
+    {
+     "i": 3,
+     "j": 4,
+     "pair": "Agricultural Subsidy Reform (P4) -> Green bonds worth $5bn and $3bn (P5)",
+     "score": 1.8,
+     "agreement_ratio": 0.5,
+     "spread": 6.0
+    },
+    {
+     "i": 3,
+     "j": 5,
+     "pair": "Agricultural Subsidy Reform (P4) -> Biodiversity Action Plan (P6)",
+     "score": -0.2,
+     "agreement_ratio": 0.5,
+     "spread": 3.0
+    },
+    {
+     "i": 4,
+     "j": 0,
+     "pair": "Green bonds worth $5bn and $3bn (P5) -> Urban Mobility Plan (P1)",
+     "score": 0.1,
+     "agreement_ratio": 0.25,
+     "spread": 6.0
+    },
+    {
+     "i": 4,
+     "j": 1,
+     "pair": "Green bonds worth $5bn and $3bn (P5) -> Renewable Energy Act (P2)",
+     "score": 1.8,
+     "agreement_ratio": 0.5,
+     "spread": 2.0
+    },
+    {
+     "i": 4,
+     "j": 2,
+     "pair": "Green bonds worth $5bn and $3bn (P5) -> Water Resources Strategy (P3)",
+     "score": -0.2,
+     "agreement_ratio": 0.5,
+     "spread": 6.0
+    },
+    {
+     "i": 4,
+     "j": 3,
+     "pair": "Green bonds worth $5bn and $3bn (P5) -> Agricultural Subsidy Reform (P4)",
+     "score": 0.3,
+     "agreement_ratio": 0.5,
+     "spread": 6.0
+    },
+    {
+     "i": 4,
+     "j": 5,
+     "pair": "Green bonds worth $5bn and $3bn (P5) -> Biodiversity Action Plan (P6)",
+     "score": 2.3,
+     "agreement_ratio": 0.5,
+     "spread": 3.0
+    },
+    {
+     "i": 5,
+     "j": 0,
+     "pair": "Biodiversity Action Plan (P6) -> Urban Mobility Plan (P1)",
+     "score": 0.2,
+     "agreement_ratio": 0.5,
+     "spread": 3.0
+    },
+    {
+     "i": 5,
+     "j": 1,
+     "pair": "Biodiversity Action Plan (P6) -> Renewable Energy Act (P2)",
+     "score": 1.5,
+     "agreement_ratio": 0.5,
+     "spread": 5.0
+    },
+    {
+     "i": 5,
+     "j": 2,
+     "pair": "Biodiversity Action Plan (P6) -> Water Resources Strategy (P3)",
+     "score": -0.7,
+     "agreement_ratio": 0.25,
+     "spread": 6.0
+    },
+    {
+     "i": 5,
+     "j": 3,
+     "pair": "Biodiversity Action Plan (P6) -> Agricultural Subsidy Reform (P4)",
+     "score": 0.7,
+     "agreement_ratio": 0.25,
+     "spread": 5.0
+    },
+    {
+     "i": 5,
+     "j": 4,
+     "pair": "Biodiversity Action Plan (P6) -> Green bonds worth $5bn and $3bn (P5)",
+     "score": -0.9,
+     "agreement_ratio": 0.25,
+     "spread": 4.0
+    }
+   ],
+   "contested": [
+    {
+     "i": 5,
+     "j": 2,
+     "pair": "Biodiversity Action Plan (P6) -> Water Resources Strategy (P3)",
+     "score": -0.7,
+     "agreement_ratio": 0.25,
+     "spread": 6.0
+    },
+    {
+     "i": 2,
+     "j": 5,
+     "pair": "Water Resources Strategy (P3) -> Biodiversity Action Plan (P6)",
+     "score": 0.5,
+     "agreement_ratio": 0.25,
+     "spread": 6.0
+    },
+    {
+     "i": 4,
+     "j": 0,
+     "pair": "Green bonds worth $5bn and $3bn (P5) -> Urban Mobility Plan (P1)",
+     "score": 0.1,
+     "agreement_ratio": 0.25,
+     "spread": 6.0
+    },
+    {
+     "i": 0,
+     "j": 4,
+     "pair": "Urban Mobility Plan (P1) -> Green bonds worth $5bn and $3bn (P5)",
+     "score": 0.0,
+     "agreement_ratio": 0.25,
+     "spread": 6.0
+    },
+    {
+     "i": 1,
+     "j": 2,
+     "pair": "Renewable Energy Act (P2) -> Water Resources Strategy (P3)",
+     "score": 1.2,
+     "agreement_ratio": 0.25,
+     "spread": 5.0
+    }
+   ],
+   "strong_consensus": [
+    {
+     "i": 3,
+     "j": 2,
+     "pair": "Agricultural Subsidy Reform (P4) -> Water Resources Strategy (P3)",
+     "score": -2.4,
+     "agreement_ratio": 0.75,
+     "spread": 3.0
+    },
+    {
+     "i": 4,
+     "j": 5,
+     "pair": "Green bonds worth $5bn and $3bn (P5) -> Biodiversity Action Plan (P6)",
+     "score": 2.3,
+     "agreement_ratio": 0.5,
+     "spread": 3.0
+    },
+    {
+     "i": 0,
+     "j": 3,
+     "pair": "Urban Mobility Plan (P1) -> Agricultural Subsidy Reform (P4)",
+     "score": 1.8,
+     "agreement_ratio": 0.5,
+     "spread": 5.0
+    },
+    {
+     "i": 3,
+     "j": 4,
+     "pair": "Agricultural Subsidy Reform (P4) -> Green bonds worth $5bn and $3bn (P5)",
+     "score": 1.8,
+     "agreement_ratio": 0.5,
+     "spread": 6.0
+    },
+    {
+     "i": 4,
+     "j": 1,
+     "pair": "Green bonds worth $5bn and $3bn (P5) -> Renewable Energy Act (P2)",
+     "score": 1.8,
+     "agreement_ratio": 0.5,
+     "spread": 2.0
+    }
+   ],
+   "average_agreement": 0.465,
+   "average_correlation": -0.071
+  },
+  "quadrant_threshold": 8.8,
+  "narrative": [
+   "Renewable Energy Act (P2) has the highest weighted outgoing coherence score of +5.10, suggesting the strongest outward influence on the policy system.",
+   "Biodiversity Action Plan (P6) has the highest weighted incoming coherence score of +4.40, indicating that it receives the strongest aggregate influence.",
+   "Renewable Energy Act (P2) shows the highest overall prominence (9.60), making it a central policy for interpretation and intervention sequencing.",
+   "The aggregated structure contains 19 positive and 10 negative relations with density 0.967 and a positive polarity share of 0.655."
+  ]
+ },
+ "texts": {
+  "story": "Renewable Energy Act (P2) emerges as the top driving policy in the system, with the highest weighted outgoing coherence score of +5.10 and its strongest influence through the reinforcing relationship Renewable Energy Act (P2) -> Green bonds worth $5bn and $3bn (P5) (+1.40 Reinforcing), which indicates a not yet fully stable and structurally significant interaction. In contrast, the linkage Biodiversity Action Plan (P6) -> Water Resources Strategy (P3) remains contested across decision-makers, reflecting a lack of consensus and highlighting an area of uncertainty within the system.",
+  "interpretation": "Interpretation: The system remains contested, so the strongest signals should be treated as provisional.",
+  "health": {
+   "score": 62,
+   "synergy": 20,
+   "conflict": 7,
+   "neutral_uncertain": 3
+  },
+  "strongest_link": [
+   "Renewable Energy Act (P2) -> Green bonds worth $5bn and $3bn (P5) (+1.40 Reinforcing)",
+   1.4
+  ],
+  "cards": {
+   "top_driver": {
+    "hero": "Renewable Energy Act (P2)",
+    "label": "Top Driving Policy",
+    "value_text": "+5.10 WOI"
+   },
+   "top_dependent": {
+    "hero": "Biodiversity Action Plan (P6)",
+    "label": "Top Influenced Policy",
+    "value_text": "+4.40 WII"
+   },
+   "strongest_link": {
+    "title": "Strongest Link",
+    "main": "Green bonds worth $5bn and $3bn (P5) -> Biodiversity Action Plan (P6)",
+    "value_text": "+2.30 Reinforcing",
+    "caption": "Strongest relation"
+   },
+   "most_contested": {
+    "title": "Most Contested",
+    "main": "Biodiversity Action Plan (P6) ↔ Water Resources Strategy (P3)",
+    "value_text": "Agreement: 0.25",
+    "caption": "⚠ High disagreement"
+   },
+   "conflict_ratio": {
+    "title": "Conflict Ratio",
+    "main": "34%",
+    "value_text": "10 of 29 active links",
+    "caption": "Moderate conflict pressure"
+   }
+  },
+  "tags": {
+   "top_driver": "Top Driving Policy: Renewable Energy Act (P2)",
+   "strongest_link": "Strongest Link: Green bonds worth $5bn and $3bn (P5) → Biodiversity Action Plan (P6)",
+   "contested": "Contested: Biodiversity Action Plan (P6) → Water Resources Strategy (P3)"
+  },
+  "overview": {
+   "agreement": "0.47"
+  },
+  "status": "Analysis complete for \"Parity r6x4\"  |  method: Weighted  |  4 decision-makers"
+ },
+ "prompt": "You are given the results of a policy coherence analysis for 6 policies, aggregated using the Weighted method.\n\nPOLICY LIST:\n  P1: Urban Mobility Plan\n  P2: Renewable Energy Act\n  P3: Water Resources Strategy\n  P4: Agricultural Subsidy Reform\n  P5: Green bonds worth $5bn and $3bn\n  P6: Biodiversity Action Plan\n\nAGGREGATED SCORE MATRIX (rows = influencing policy, columns = influenced policy, scale: -3=Cancelling to +3=Indivisible, 0=diagonal):\n             P1      P2      P3      P4      P5      P6\n     P1    0.00   -0.80   -0.20    1.80    0.00    0.70\n     P2    1.10    0.00    1.20    0.30    1.40    1.10\n     P3    0.50   -0.10    0.00   -0.10    0.10    0.50\n     P4    0.60   -0.30   -2.40    0.00    1.80   -0.20\n     P5    0.10    1.80   -0.20    0.30    0.00    2.30\n     P6    0.20    1.50   -0.70    0.70   -0.90    0.00\n\nCOHERENCE SCORES (OI=Outgoing Influence count, II=Incoming Influence count, WOI=Weighted Outgoing, WII=Weighted Incoming):\n  Code     OI   II     WOI     WII  Policy\n  P1        4    5    1.50    2.50  Urban Mobility Plan\n  P2        5    5    5.10    2.10  Renewable Energy Act\n  P3        5    5    0.90   -2.30  Water Resources Strategy\n  P4        5    5   -0.50    3.00  Agricultural Subsidy Reform\n  P5        5    4    4.30    2.40  Green bonds worth $5bn and $3bn\n  P6        5    5    0.80    4.40  Biodiversity Action Plan\n\nRANGE OF INFLUENCE — SHANNON ENTROPY (0=concentrated on one policy, higher=distributed; categories based on fraction of max entropy):\n  Code    Entropy  Category        Policy\n  P1       1.6804  Medium-to-High  Urban Mobility Plan\n  P2       2.1982  High            Renewable Energy Act\n  P3       1.9143  High            Water Resources Strategy\n  P4       1.8154  High            Agricultural Subsidy Reform\n  P5       1.6002  Medium-to-High  Green bonds worth $5bn and $3bn\n  P6       2.1110  High            Biodiversity Action Plan\n\nNETWORK CENTRALITY (Betweenness: broker role 0-1; Closeness: reachability, higher=more central):\n  Code    Betweenness  Closeness  Policy\n  P1           0.1500     0.9403  Urban Mobility Plan\n  P2           0.1500     1.0351  Renewable Energy Act\n  P4           0.1500     1.0548  Agricultural Subsidy Reform\n  P5           0.1000     0.8761  Green bonds worth $5bn and $3bn\n  P6           0.1000     0.8051  Biodiversity Action Plan\n  P3           0.0000     0.4054  Water Resources Strategy\n\nProvide a structured, in-depth interpretation with the following sections. Each section should be multiple paragraphs with specific references to the data above:\n\n## 1. Overall Coherence Assessment\n## 2. Key Synergies\n## 3. Key Conflicts\n## 4. Influential Policies\n## 5. Range of Influence\n## 6. Network Structure\n## 7. Strategic Recommendations\n\nEnsure your interpretation is analytical, references specific policies by name and code, and provides actionable insights for policy professionals.",
+ "env": {
+  "python": "3.13.2",
+  "numpy": "2.5.4",
+  "platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "blas": "accelerate"
+ }
+}

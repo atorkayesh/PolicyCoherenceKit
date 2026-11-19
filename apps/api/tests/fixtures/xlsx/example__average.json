@@ -1,0 +1,6295 @@
+{
+ "name": "example__average",
+ "file": "example__average.xlsx",
+ "sheets": [
+  {
+   "title": "Research Team",
+   "cells": [
+    {
+     "ref": "A1",
+     "value": "Policy Index",
+     "bold": true,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B1",
+     "value": "P1: P1",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C1",
+     "value": "P2: P2",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D1",
+     "value": "P3: P3",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E1",
+     "value": "P4: P4",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F1",
+     "value": "P5: P5",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "G1",
+     "value": "P6: P6",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "H1",
+     "value": "P7: P7",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "I1",
+     "value": "P8: P8",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "J1",
+     "value": "P9: P9",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "K1",
+     "value": "P10: P10",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "L1",
+     "value": "P11: P11",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "M1",
+     "value": "P12: P12",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "N1",
+     "value": "P13: P13",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "O1",
+     "value": "P14: P14",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A3",
+     "value": "Influencing / Influenced",
+     "bold": true,
+     "italic": true,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B3",
+     "value": "P1",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C3",
+     "value": "P2",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D3",
+     "value": "P3",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E3",
+     "value": "P4",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F3",
+     "value": "P5",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "G3",
+     "value": "P6",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "H3",
+     "value": "P7",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "I3",
+     "value": "P8",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "J3",
+     "value": "P9",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "K3",
+     "value": "P10",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "L3",
+     "value": "P11",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "M3",
+     "value": "P12",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "N3",
+     "value": "P13",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "O3",
+     "value": "P14",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A4",
+     "value": "P1",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B4",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "C4",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D4",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E4",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "F4",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "G4",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "H4",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "I4",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "J4",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "K4",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "L4",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "M4",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "N4",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "O4",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A5",
+     "value": "P2",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B5",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C5",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "D5",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E5",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "F5",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "G5",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "H5",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "I5",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "J5",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "K5",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "L5",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "M5",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "N5",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "O5",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A6",
+     "value": "P3",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B6",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C6",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "D6",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E6",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "F6",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "G6",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "H6",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "I6",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "J6",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "K6",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "L6",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "M6",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "N6",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "O6",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "A7",
+     "value": "P4",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B7",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C7",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "D7",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E7",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "F7",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "G7",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "H7",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "I7",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "J7",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "K7",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "L7",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "M7",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "N7",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "O7",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "A8",
+     "value": "P5",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B8",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "C8",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "D8",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "E8",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "F8",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "G8",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "H8",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "I8",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "J8",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "K8",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "L8",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "M8",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "N8",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "O8",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "A9",
+     "value": "P6",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B9",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "C9",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "D9",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E9",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F9",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "G9",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "H9",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "I9",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "J9",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "K9",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "L9",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "M9",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "N9",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "O9",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A10",
+     "value": "P7",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B10",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C10",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "D10",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E10",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "F10",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "G10",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "H10",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "I10",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "J10",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "K10",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "L10",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "M10",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "N10",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "O10",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A11",
+     "value": "P8",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B11",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C11",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "D11",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E11",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "F11",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "G11",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "H11",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "I11",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "J11",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "K11",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "L11",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "M11",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "N11",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "O11",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "A12",
+     "value": "P9",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B12",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "C12",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "D12",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E12",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "F12",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "G12",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "H12",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "I12",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "J12",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "K12",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "L12",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "M12",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "N12",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "O12",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "A13",
+     "value": "P10",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B13",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C13",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D13",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E13",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F13",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "G13",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "H13",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "I13",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "J13",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "K13",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "L13",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "M13",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "N13",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "O13",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "A14",
+     "value": "P11",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B14",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C14",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "D14",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E14",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "F14",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "G14",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "H14",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "I14",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "J14",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "K14",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "L14",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "M14",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "N14",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "O14",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A15",
+     "value": "P12",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B15",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "C15",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "D15",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E15",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "F15",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "G15",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "H15",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "I15",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "J15",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "K15",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "L15",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "M15",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "N15",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "O15",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A16",
+     "value": "P13",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B16",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "C16",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D16",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "E16",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "F16",
+     "value": "Constraining",
+     "bold": false,
+     "italic": false,
+     "fill": "00E9C46A",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "G16",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "H16",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "I16",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "J16",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "K16",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "L16",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "M16",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "N16",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "O16",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A17",
+     "value": "P14",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B17",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C17",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D17",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "E17",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "F17",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "G17",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "H17",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    },
+    {
+     "ref": "I17",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "J17",
+     "value": "Enabling",
+     "bold": false,
+     "italic": false,
+     "fill": "006BAF92",
+     "font_colour": "002D2D2D",
+     "number_format": "General"
+    },
+    {
+     "ref": "K17",
+     "value": "Reinforcing",
+     "bold": false,
+     "italic": false,
+     "fill": "002A9D8F",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "L17",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "M17",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "N17",
+     "value": "Indivisible",
+     "bold": false,
+     "italic": false,
+     "fill": "000B6E6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "O17",
+     "value": "Neutral",
+     "bold": false,
+     "italic": false,
+     "fill": "00B0B7C3",
+     "font_colour": "00555555",
+     "number_format": "General"
+    }
+   ],
+   "column_widths": {
+    "A": 28.0,
+    "B": 16.0,
+    "C": 15.0,
+    "D": 15.0,
+    "E": 16.0,
+    "F": 16.0,
+    "G": 14.0,
+    "H": 15.0,
+    "I": 15.0,
+    "J": 15.0,
+    "K": 16.0,
+    "L": 16.0,
+    "M": 16.0,
+    "N": 16.0,
+    "O": 15.0
+   }
+  },
+  {
+   "title": "Aggregated (Avg)",
+   "cells": [
+    {
+     "ref": "A1",
+     "value": "Policy Index",
+     "bold": true,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B1",
+     "value": "P1: P1",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C1",
+     "value": "P2: P2",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D1",
+     "value": "P3: P3",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E1",
+     "value": "P4: P4",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F1",
+     "value": "P5: P5",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "G1",
+     "value": "P6: P6",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "H1",
+     "value": "P7: P7",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "I1",
+     "value": "P8: P8",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "J1",
+     "value": "P9: P9",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "K1",
+     "value": "P10: P10",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "L1",
+     "value": "P11: P11",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "M1",
+     "value": "P12: P12",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "N1",
+     "value": "P13: P13",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "O1",
+     "value": "P14: P14",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A3",
+     "value": "Influencing / Influenced",
+     "bold": true,
+     "italic": true,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B3",
+     "value": "P1",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C3",
+     "value": "P2",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D3",
+     "value": "P3",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E3",
+     "value": "P4",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F3",
+     "value": "P5",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "G3",
+     "value": "P6",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "H3",
+     "value": "P7",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "I3",
+     "value": "P8",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "J3",
+     "value": "P9",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "K3",
+     "value": "P10",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "L3",
+     "value": "P11",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "M3",
+     "value": "P12",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "N3",
+     "value": "P13",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "O3",
+     "value": "P14",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A4",
+     "value": "P1",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B4",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C4",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D4",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E4",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F4",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G4",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H4",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I4",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J4",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K4",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L4",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M4",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N4",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O4",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A5",
+     "value": "P2",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B5",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C5",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D5",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E5",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F5",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G5",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H5",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I5",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J5",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K5",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L5",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M5",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N5",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O5",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A6",
+     "value": "P3",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B6",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C6",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D6",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E6",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F6",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G6",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H6",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I6",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J6",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K6",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L6",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M6",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N6",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O6",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A7",
+     "value": "P4",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B7",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C7",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D7",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E7",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F7",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G7",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H7",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I7",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J7",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K7",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L7",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M7",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N7",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O7",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A8",
+     "value": "P5",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B8",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C8",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D8",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E8",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F8",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G8",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H8",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I8",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J8",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K8",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L8",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M8",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N8",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O8",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A9",
+     "value": "P6",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B9",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C9",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D9",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E9",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F9",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G9",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H9",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I9",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J9",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K9",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L9",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M9",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N9",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O9",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A10",
+     "value": "P7",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B10",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C10",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D10",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E10",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F10",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G10",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H10",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I10",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J10",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K10",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L10",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M10",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N10",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O10",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A11",
+     "value": "P8",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B11",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C11",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D11",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E11",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F11",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G11",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H11",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I11",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J11",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K11",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L11",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M11",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N11",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O11",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A12",
+     "value": "P9",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B12",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C12",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D12",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E12",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F12",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G12",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H12",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I12",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J12",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K12",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L12",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M12",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N12",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O12",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A13",
+     "value": "P10",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B13",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C13",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D13",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E13",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F13",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G13",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H13",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I13",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J13",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K13",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L13",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M13",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N13",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O13",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A14",
+     "value": "P11",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B14",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C14",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D14",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E14",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F14",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G14",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H14",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I14",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J14",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K14",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L14",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M14",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N14",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O14",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A15",
+     "value": "P12",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B15",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C15",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D15",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E15",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F15",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G15",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H15",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I15",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J15",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K15",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L15",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M15",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N15",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O15",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A16",
+     "value": "P13",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B16",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C16",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D16",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E16",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F16",
+     "value": -1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G16",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H16",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I16",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J16",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K16",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L16",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M16",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N16",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O16",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "A17",
+     "value": "P14",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B17",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "C17",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "D17",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "E17",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "F17",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "G17",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "H17",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "I17",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "J17",
+     "value": 1,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "K17",
+     "value": 2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "L17",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "M17",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "N17",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    },
+    {
+     "ref": "O17",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "0.00"
+    }
+   ],
+   "column_widths": {
+    "A": 28.0,
+    "B": 14.0,
+    "C": 14.0,
+    "D": 14.0,
+    "E": 14.0,
+    "F": 14.0,
+    "G": 14.0,
+    "H": 14.0,
+    "I": 14.0,
+    "J": 14.0,
+    "K": 14.0,
+    "L": 14.0,
+    "M": 14.0,
+    "N": 14.0,
+    "O": 14.0
+   }
+  },
+  {
+   "title": "Coh Scores (Avg)",
+   "cells": [
+    {
+     "ref": "A1",
+     "value": "Code",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B1",
+     "value": "Policy",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C1",
+     "value": "OI",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D1",
+     "value": "II",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "E1",
+     "value": "WOI",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "F1",
+     "value": "WII",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A2",
+     "value": "P1",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B2",
+     "value": "P1",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C2",
+     "value": 11,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D2",
+     "value": 11,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E2",
+     "value": 16,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F2",
+     "value": 19,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A3",
+     "value": "P2",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B3",
+     "value": "P2",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C3",
+     "value": 8,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D3",
+     "value": 6,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E3",
+     "value": 16,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F3",
+     "value": 11,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A4",
+     "value": "P3",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B4",
+     "value": "P3",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C4",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D4",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E4",
+     "value": 5,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F4",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A5",
+     "value": "P4",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B5",
+     "value": "P4",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C5",
+     "value": 9,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D5",
+     "value": 9,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E5",
+     "value": 14,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F5",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A6",
+     "value": "P5",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B6",
+     "value": "P5",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C6",
+     "value": 8,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D6",
+     "value": 9,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E6",
+     "value": -2,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F6",
+     "value": 7,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A7",
+     "value": "P6",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B7",
+     "value": "P6",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C7",
+     "value": 8,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D7",
+     "value": 7,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E7",
+     "value": 11,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F7",
+     "value": 7,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A8",
+     "value": "P7",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B8",
+     "value": "P7",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C8",
+     "value": 9,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D8",
+     "value": 8,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E8",
+     "value": 22,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F8",
+     "value": 13,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A9",
+     "value": "P8",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B9",
+     "value": "P8",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C9",
+     "value": 7,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D9",
+     "value": 8,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E9",
+     "value": 5,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F9",
+     "value": 12,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A10",
+     "value": "P9",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B10",
+     "value": "P9",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C10",
+     "value": 4,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D10",
+     "value": 6,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E10",
+     "value": 7,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F10",
+     "value": 10,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A11",
+     "value": "P10",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B11",
+     "value": "P10",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C11",
+     "value": 10,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D11",
+     "value": 12,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E11",
+     "value": 18,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F11",
+     "value": 21,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A12",
+     "value": "P11",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B12",
+     "value": "P11",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C12",
+     "value": 10,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D12",
+     "value": 10,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E12",
+     "value": 16,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F12",
+     "value": 17,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A13",
+     "value": "P12",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B13",
+     "value": "P12",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C13",
+     "value": 12,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D13",
+     "value": 12,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E13",
+     "value": 18,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F13",
+     "value": 19,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A14",
+     "value": "P13",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B14",
+     "value": "P13",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C14",
+     "value": 12,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D14",
+     "value": 11,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E14",
+     "value": 18,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F14",
+     "value": 19,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A15",
+     "value": "P14",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B15",
+     "value": "P14",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C15",
+     "value": 12,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D15",
+     "value": 12,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "E15",
+     "value": 22,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "F15",
+     "value": 24,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    }
+   ],
+   "column_widths": {
+    "A": 14.0,
+    "B": 14.0,
+    "C": 14.0,
+    "D": 14.0,
+    "E": 14.0,
+    "F": 14.0
+   }
+  },
+  {
+   "title": "Range Influence (Avg)",
+   "cells": [
+    {
+     "ref": "A1",
+     "value": "Code",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B1",
+     "value": "Policy",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C1",
+     "value": "Entropy",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D1",
+     "value": "Category",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A2",
+     "value": "P1",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B2",
+     "value": "P1",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C2",
+     "value": 3.3083,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D2",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A3",
+     "value": "P2",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B3",
+     "value": "P2",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C3",
+     "value": 2.8585,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D3",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A4",
+     "value": "P3",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B4",
+     "value": "P3",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C4",
+     "value": 1.9219,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D4",
+     "value": "Medium-to-High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A5",
+     "value": "P4",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B5",
+     "value": "P4",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C5",
+     "value": 3.0391,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D5",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A6",
+     "value": "P5",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B6",
+     "value": "P5",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C6",
+     "value": 3,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D6",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A7",
+     "value": "P6",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B7",
+     "value": "P6",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C7",
+     "value": 2.914,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D7",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A8",
+     "value": "P7",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B8",
+     "value": "P7",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C8",
+     "value": 3.106,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D8",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A9",
+     "value": "P8",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B9",
+     "value": "P8",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C9",
+     "value": 2.7255,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D9",
+     "value": "Medium-to-High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A10",
+     "value": "P9",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B10",
+     "value": "P9",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C10",
+     "value": 1.8424,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D10",
+     "value": "Low-to-Medium",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A11",
+     "value": "P10",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B11",
+     "value": "P10",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C11",
+     "value": 3.281,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D11",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A12",
+     "value": "P11",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B12",
+     "value": "P11",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C12",
+     "value": 3.1332,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D12",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A13",
+     "value": "P12",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B13",
+     "value": "P12",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C13",
+     "value": 3.4131,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D13",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A14",
+     "value": "P13",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B14",
+     "value": "P13",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C14",
+     "value": 3.4131,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D14",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A15",
+     "value": "P14",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B15",
+     "value": "P14",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C15",
+     "value": 3.4474,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D15",
+     "value": "High",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    }
+   ],
+   "column_widths": {
+    "A": 14.0,
+    "B": 14.0,
+    "C": 14.0,
+    "D": 18.0
+   }
+  },
+  {
+   "title": "Centrality (Avg)",
+   "cells": [
+    {
+     "ref": "A1",
+     "value": "Code",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "B1",
+     "value": "Policy",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "C1",
+     "value": "Betweenness",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "D1",
+     "value": "Closeness",
+     "bold": true,
+     "italic": false,
+     "fill": "002C4A6E",
+     "font_colour": "00FFFFFF",
+     "number_format": "General"
+    },
+    {
+     "ref": "A2",
+     "value": "P1",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B2",
+     "value": "P1",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C2",
+     "value": 0.1846,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D2",
+     "value": 1.322,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A3",
+     "value": "P14",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B3",
+     "value": "P14",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C3",
+     "value": 0.1298,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D3",
+     "value": 1.5,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A4",
+     "value": "P10",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B4",
+     "value": "P10",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C4",
+     "value": 0.1168,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D4",
+     "value": 1.5294,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A5",
+     "value": "P7",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B5",
+     "value": "P7",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C5",
+     "value": 0.1047,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D5",
+     "value": 1.6957,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A6",
+     "value": "P12",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B6",
+     "value": "P12",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C6",
+     "value": 0.0815,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D6",
+     "value": 1.5294,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A7",
+     "value": "P13",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B7",
+     "value": "P13",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C7",
+     "value": 0.0473,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D7",
+     "value": 1.5294,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A8",
+     "value": "P11",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B8",
+     "value": "P11",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C8",
+     "value": 0.0294,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D8",
+     "value": 1.5,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A9",
+     "value": "P9",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B9",
+     "value": "P9",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C9",
+     "value": 0.0096,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D9",
+     "value": 1.1304,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A10",
+     "value": "P2",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B10",
+     "value": "P2",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C10",
+     "value": 0.0077,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D10",
+     "value": 1.3684,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A11",
+     "value": "P4",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B11",
+     "value": "P4",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C11",
+     "value": 0.0048,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D11",
+     "value": 1.2381,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A12",
+     "value": "P5",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B12",
+     "value": "P5",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C12",
+     "value": 0.0016,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D12",
+     "value": 0.8387,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A13",
+     "value": "P3",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B13",
+     "value": "P3",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C13",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D13",
+     "value": 0.8667,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A14",
+     "value": "P6",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B14",
+     "value": "P6",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C14",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D14",
+     "value": 1.0986,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "A15",
+     "value": "P8",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "B15",
+     "value": "P8",
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "C15",
+     "value": 0,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    },
+    {
+     "ref": "D15",
+     "value": 0.975,
+     "bold": false,
+     "italic": false,
+     "fill": null,
+     "font_colour": null,
+     "number_format": "General"
+    }
+   ],
+   "column_widths": {
+    "A": 14.0,
+    "B": 14.0,
+    "C": 15.0,
+    "D": 14.0
+   }
+  }
+ ]
+}

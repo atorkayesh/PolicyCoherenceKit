@@ -1,0 +1,40 @@
+{
+ "file": "gap_column.xlsx",
+ "legacy": {
+  "matrices": [
+   {
+    "decision_maker": "Expert A",
+    "policies": [
+     "Alpha",
+     "Beta",
+     "Gamma"
+    ],
+    "ratings": [
+     [
+      "Neutral",
+      "Constraining",
+      "Reinforcing"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Enabling"
+     ],
+     [
+      "Reinforcing",
+      "Enabling",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "warnings": []
+ },
+ "app_messages": [
+  [
+   "Import Complete",
+   "1 matrix/matrices imported successfully."
+  ]
+ ],
+ "api_expected_error": "Sheet \"Expert A\": header row has a blank policy name in column C."
+}

@@ -1,0 +1,12 @@
+{
+ "file": "numeric_cells.xlsx",
+ "legacy": {
+  "error_message": "Sheet \"Expert A\": unrecognised rating values:\n  P1->P2: \"3\"\n\nAllowed values: Indivisible, Reinforcing, Enabling, Neutral, Constraining, Counteracting, Cancelling"
+ },
+ "app_messages": [
+  [
+   "Import Error",
+   "Sheet \"Expert A\": unrecognised rating values:\n  P1->P2: \"3\"\n\nAllowed values: Indivisible, Reinforcing, Enabling, Neutral, Constraining, Counteracting, Cancelling"
+  ]
+ ]
+}

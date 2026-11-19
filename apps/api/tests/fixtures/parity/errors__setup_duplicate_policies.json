@@ -1,0 +1,21 @@
+{
+ "name": "setup_duplicate_policies",
+ "source": "dialogs.py:1080-1124",
+ "api_message_rule": "identical",
+ "title": "Duplicate Policies",
+ "error_message": "Policy names must be unique.",
+ "setup": {
+  "project_name": "Errors",
+  "decision_makers": [
+   "Expert A",
+   "Expert B",
+   "Expert C"
+  ],
+  "policies": [
+   "Alpha",
+   "Beta",
+   "Alpha"
+  ],
+  "existing_decision_makers": []
+ }
+}

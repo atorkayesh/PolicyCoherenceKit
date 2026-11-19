@@ -1,0 +1,22 @@
+{
+ "name": "setup_duplicate_decision_makers",
+ "source": "dialogs.py:1080-1124",
+ "api_message_rule": "identical",
+ "title": "Duplicate Decision-Makers",
+ "error_message": "Decision-maker names must be unique.",
+ "setup": {
+  "project_name": "Errors",
+  "decision_makers": [
+   "A",
+   "B",
+   "A"
+  ],
+  "policies": [
+   "Alpha",
+   "Beta",
+   "Gamma",
+   "Delta"
+  ],
+  "existing_decision_makers": []
+ }
+}

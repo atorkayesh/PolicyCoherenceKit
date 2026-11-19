@@ -1,0 +1,7 @@
+{
+ "name": "empty_matrix_list",
+ "source": "aggregator.py:337-370",
+ "api_message_rule": "documentation",
+ "title": null,
+ "error_message": "No matrices provided for aggregation."
+}

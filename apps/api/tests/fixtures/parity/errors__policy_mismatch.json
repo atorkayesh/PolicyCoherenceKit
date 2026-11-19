@@ -1,0 +1,7 @@
+{
+ "name": "policy_mismatch",
+ "source": "aggregator.py:337-370",
+ "api_message_rule": "documentation",
+ "title": null,
+ "error_message": "Matrix \"Expert B\" has a different policy list from \"Expert A\". All matrices must share the same policies to be aggregated."
+}

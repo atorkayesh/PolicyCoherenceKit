@@ -1,0 +1,872 @@
+{
+ "request": {
+  "project_name": "Parity neutral3x3",
+  "policies": [
+   "Urban Mobility Plan",
+   "Renewable Energy Act",
+   "Water Resources Strategy"
+  ],
+  "decision_makers": [
+   {
+    "name": "DM 1",
+    "ratings": [
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 2",
+    "ratings": [
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 3",
+    "ratings": [
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "median",
+   "weights": null,
+   "median_choice": null,
+   "tie_choices": []
+  }
+ },
+ "aggregation": {
+  "requested_method": "median",
+  "method": "median",
+  "label": "Median",
+  "n": 3,
+  "codes": [
+   "P1",
+   "P2",
+   "P3"
+  ],
+  "policies": [
+   "Urban Mobility Plan",
+   "Renewable Energy Act",
+   "Water Resources Strategy"
+  ],
+  "decision_makers": 3,
+  "decision_maker_names": [
+   "DM 1",
+   "DM 2",
+   "DM 3"
+  ],
+  "scores": [
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0
+   ]
+  ],
+  "ties": [],
+  "source_scores": [
+   [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0
+    ]
+   ]
+  ],
+  "ordinal_cells": [
+   [
+    [
+     "Neutral"
+    ],
+    [
+     "Neutral"
+    ],
+    [
+     "Neutral"
+    ]
+   ],
+   [
+    [
+     "Neutral"
+    ],
+    [
+     "Neutral"
+    ],
+    [
+     "Neutral"
+    ]
+   ],
+   [
+    [
+     "Neutral"
+    ],
+    [
+     "Neutral"
+    ],
+    [
+     "Neutral"
+    ]
+   ]
+  ],
+  "median_even_choice": null
+ },
+ "bands": [
+  [
+   "Neutral",
+   "Neutral",
+   "Neutral"
+  ],
+  [
+   "Neutral",
+   "Neutral",
+   "Neutral"
+  ],
+  [
+   "Neutral",
+   "Neutral",
+   "Neutral"
+  ]
+ ],
+ "scores": [
+  {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "oi": 0,
+   "ii": 0,
+   "woi": 0.0,
+   "wii": 0.0,
+   "oi_colour": [
+    "#eae7e0",
+    "#666666"
+   ],
+   "ii_colour": [
+    "#eae7e0",
+    "#666666"
+   ],
+   "woi_colour": [
+    "#d9d9d9",
+    "#555555"
+   ],
+   "wii_colour": [
+    "#d9d9d9",
+    "#555555"
+   ]
+  },
+  {
+   "code": "P2",
+   "policy": "Renewable Energy Act",
+   "oi": 0,
+   "ii": 0,
+   "woi": 0.0,
+   "wii": 0.0,
+   "oi_colour": [
+    "#eae7e0",
+    "#666666"
+   ],
+   "ii_colour": [
+    "#eae7e0",
+    "#666666"
+   ],
+   "woi_colour": [
+    "#d9d9d9",
+    "#555555"
+   ],
+   "wii_colour": [
+    "#d9d9d9",
+    "#555555"
+   ]
+  },
+  {
+   "code": "P3",
+   "policy": "Water Resources Strategy",
+   "oi": 0,
+   "ii": 0,
+   "woi": 0.0,
+   "wii": 0.0,
+   "oi_colour": [
+    "#eae7e0",
+    "#666666"
+   ],
+   "ii_colour": [
+    "#eae7e0",
+    "#666666"
+   ],
+   "woi_colour": [
+    "#d9d9d9",
+    "#555555"
+   ],
+   "wii_colour": [
+    "#d9d9d9",
+    "#555555"
+   ]
+  }
+ ],
+ "entropy": [
+  {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "entropy": 0.0,
+   "category": "Low",
+   "hmax": 1.0
+  },
+  {
+   "code": "P2",
+   "policy": "Renewable Energy Act",
+   "entropy": 0.0,
+   "category": "Low",
+   "hmax": 1.0
+  },
+  {
+   "code": "P3",
+   "policy": "Water Resources Strategy",
+   "entropy": 0.0,
+   "category": "Low",
+   "hmax": 1.0
+  }
+ ],
+ "pca": {
+  "coords": [
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ]
+  ],
+  "explained": [
+   0.0,
+   0.0
+  ],
+  "explained_unrounded": null,
+  "valid": true,
+  "singular_values": [
+   0.0,
+   0.0
+  ]
+ },
+ "graph_edges": [],
+ "centrality": [
+  {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "betweenness": 0.0,
+   "closeness": 0.0
+  },
+  {
+   "code": "P2",
+   "policy": "Renewable Energy Act",
+   "betweenness": 0.0,
+   "closeness": 0.0
+  },
+  {
+   "code": "P3",
+   "policy": "Water Resources Strategy",
+   "betweenness": 0.0,
+   "closeness": 0.0
+  }
+ ],
+ "centrality_ranking": [
+  "P1",
+  "P2",
+  "P3"
+ ],
+ "network_info": {
+  "edge_count": 0,
+  "isolated": 3,
+  "density": 0.0,
+  "stats_text": "3 nodes  |  0 directed edges  |  density: 0.0  |  3 isolated"
+ },
+ "insights": {
+  "rows": [
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 0,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   },
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 1,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   },
+   {
+    "code": "P3",
+    "policy": "Water Resources Strategy",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 2,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   }
+  ],
+  "drivers": [],
+  "dependents": [],
+  "balanced": [
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 0,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   },
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 1,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   },
+   {
+    "code": "P3",
+    "policy": "Water Resources Strategy",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 2,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   }
+  ],
+  "top_driver": {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "oi": 0,
+   "ii": 0,
+   "woi": 0.0,
+   "wii": 0.0,
+   "index": 0,
+   "net": 0.0,
+   "prominence": 0.0,
+   "entropy": 0.0,
+   "entropy_category": "Low",
+   "betweenness": 0.0,
+   "closeness": 0.0,
+   "quadrant": "Balanced"
+  },
+  "top_dependent": {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "oi": 0,
+   "ii": 0,
+   "woi": 0.0,
+   "wii": 0.0,
+   "index": 0,
+   "net": 0.0,
+   "prominence": 0.0,
+   "entropy": 0.0,
+   "entropy_category": "Low",
+   "betweenness": 0.0,
+   "closeness": 0.0,
+   "quadrant": "Balanced"
+  },
+  "top_prominent": {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "oi": 0,
+   "ii": 0,
+   "woi": 0.0,
+   "wii": 0.0,
+   "index": 0,
+   "net": 0.0,
+   "prominence": 0.0,
+   "entropy": 0.0,
+   "entropy_category": "Low",
+   "betweenness": 0.0,
+   "closeness": 0.0,
+   "quadrant": "Balanced"
+  },
+  "top_broker": {
+   "code": "P1",
+   "policy": "Urban Mobility Plan",
+   "oi": 0,
+   "ii": 0,
+   "woi": 0.0,
+   "wii": 0.0,
+   "index": 0,
+   "net": 0.0,
+   "prominence": 0.0,
+   "entropy": 0.0,
+   "entropy_category": "Low",
+   "betweenness": 0.0,
+   "closeness": 0.0,
+   "quadrant": "Balanced"
+  },
+  "top_prominence_rows": [
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 0,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   },
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 1,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   },
+   {
+    "code": "P3",
+    "policy": "Water Resources Strategy",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 2,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   }
+  ],
+  "top_driver_rows": [
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 0,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   },
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 1,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   },
+   {
+    "code": "P3",
+    "policy": "Water Resources Strategy",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 2,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   }
+  ],
+  "top_dependent_rows": [
+   {
+    "code": "P1",
+    "policy": "Urban Mobility Plan",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 0,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   },
+   {
+    "code": "P2",
+    "policy": "Renewable Energy Act",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 1,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   },
+   {
+    "code": "P3",
+    "policy": "Water Resources Strategy",
+    "oi": 0,
+    "ii": 0,
+    "woi": 0.0,
+    "wii": 0.0,
+    "index": 2,
+    "net": 0.0,
+    "prominence": 0.0,
+    "entropy": 0.0,
+    "entropy_category": "Low",
+    "betweenness": 0.0,
+    "closeness": 0.0,
+    "quadrant": "Balanced"
+   }
+  ],
+  "graph": {
+   "positive_edges": 0,
+   "negative_edges": 0,
+   "zero_edges": 6,
+   "density": 0.0,
+   "polarity": 0.5,
+   "strongest_pos": 0.0,
+   "strongest_neg": 0.0,
+   "strongest_pos_pair": null,
+   "strongest_neg_pair": null
+  },
+  "agreement": {
+   "rows": [
+    {
+     "i": 0,
+     "j": 1,
+     "pair": "Urban Mobility Plan (P1) -> Renewable Energy Act (P2)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 2,
+     "pair": "Urban Mobility Plan (P1) -> Water Resources Strategy (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 0,
+     "pair": "Renewable Energy Act (P2) -> Urban Mobility Plan (P1)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 2,
+     "pair": "Renewable Energy Act (P2) -> Water Resources Strategy (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 0,
+     "pair": "Water Resources Strategy (P3) -> Urban Mobility Plan (P1)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 1,
+     "pair": "Water Resources Strategy (P3) -> Renewable Energy Act (P2)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    }
+   ],
+   "contested": [
+    {
+     "i": 0,
+     "j": 1,
+     "pair": "Urban Mobility Plan (P1) -> Renewable Energy Act (P2)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 2,
+     "pair": "Urban Mobility Plan (P1) -> Water Resources Strategy (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 0,
+     "pair": "Renewable Energy Act (P2) -> Urban Mobility Plan (P1)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 2,
+     "pair": "Renewable Energy Act (P2) -> Water Resources Strategy (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 0,
+     "pair": "Water Resources Strategy (P3) -> Urban Mobility Plan (P1)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    }
+   ],
+   "strong_consensus": [],
+   "average_agreement": 1.0,
+   "average_correlation": 1.0
+  },
+  "quadrant_threshold": 0.0,
+  "narrative": [
+   "Urban Mobility Plan (P1) has the highest weighted outgoing coherence score of +0.00, suggesting the strongest outward influence on the policy system.",
+   "Urban Mobility Plan (P1) has the highest weighted incoming coherence score of +0.00, indicating that it receives the strongest aggregate influence.",
+   "Urban Mobility Plan (P1) shows the highest overall prominence (0.00), making it a central policy for interpretation and intervention sequencing.",
+   "The aggregated structure contains 0 positive and 0 negative relations with density 0.000 and a positive polarity share of 0.500."
+  ]
+ },
+ "texts": {
+  "story": "Urban Mobility Plan (P1) emerges as the top driving policy in the system, with the highest weighted outgoing coherence score of +0.00 and its strongest influence through the constraining relationship No strong outgoing link, which indicates a stable and structurally significant interaction. In contrast, the linkage Urban Mobility Plan (P1) -> Renewable Energy Act (P2) remains contested across decision-makers, reflecting a lack of consensus and highlighting an area of uncertainty within the system.",
+  "interpretation": "Interpretation: The system is relatively stable, but one important relation still lacks consensus.",
+  "health": {
+   "score": 15,
+   "synergy": 0,
+   "conflict": 0,
+   "neutral_uncertain": 100
+  },
+  "strongest_link": [
+   "No strong outgoing link",
+   0.0
+  ],
+  "cards": {
+   "top_driver": {
+    "hero": "Urban Mobility Plan (P1)",
+    "label": "Top Driving Policy",
+    "value_text": "+0.00 WOI"
+   },
+   "top_dependent": {
+    "hero": "Urban Mobility Plan (P1)",
+    "label": "Top Influenced Policy",
+    "value_text": "+0.00 WII"
+   },
+   "strongest_link": {
+    "title": "Strongest Link",
+    "main": "No non-zero relation",
+    "value_text": "No strong link",
+    "caption": "Strongest relation"
+   },
+   "most_contested": {
+    "title": "Most Contested",
+    "main": "Urban Mobility Plan (P1) ↔ Renewable Energy Act (P2)",
+    "value_text": "Agreement: 1.00",
+    "caption": "Moderate disagreement"
+   },
+   "conflict_ratio": {
+    "title": "Conflict Ratio",
+    "main": "0%",
+    "value_text": "0 of 0 active links",
+    "caption": "Low systemic conflict"
+   }
+  },
+  "tags": {
+   "top_driver": "Top Driving Policy: Urban Mobility Plan (P1)",
+   "strongest_link": "Strongest Link: No non-zero relation",
+   "contested": "Contested: Urban Mobility Plan (P1) → Renewable Energy Act (P2)"
+  },
+  "overview": {
+   "agreement": "1.00"
+  },
+  "status": "Analysis complete for \"Parity neutral3x3\"  |  method: Median  |  3 decision-makers"
+ },
+ "prompt": "You are given the results of a policy coherence analysis for 3 policies, aggregated using the Median method.\n\nPOLICY LIST:\n  P1: Urban Mobility Plan\n  P2: Renewable Energy Act\n  P3: Water Resources Strategy\n\nAGGREGATED SCORE MATRIX (rows = influencing policy, columns = influenced policy, scale: -3=Cancelling to +3=Indivisible, 0=diagonal):\n             P1      P2      P3\n     P1    0.00    0.00    0.00\n     P2    0.00    0.00    0.00\n     P3    0.00    0.00    0.00\n\nCOHERENCE SCORES (OI=Outgoing Influence count, II=Incoming Influence count, WOI=Weighted Outgoing, WII=Weighted Incoming):\n  Code     OI   II     WOI     WII  Policy\n  P1        0    0    0.00    0.00  Urban Mobility Plan\n  P2        0    0    0.00    0.00  Renewable Energy Act\n  P3        0    0    0.00    0.00  Water Resources Strategy\n\nRANGE OF INFLUENCE — SHANNON ENTROPY (0=concentrated on one policy, higher=distributed; categories based on fraction of max entropy):\n  Code    Entropy  Category        Policy\n  P1       0.0000  Low             Urban Mobility Plan\n  P2       0.0000  Low             Renewable Energy Act\n  P3       0.0000  Low             Water Resources Strategy\n\nNETWORK CENTRALITY (Betweenness: broker role 0-1; Closeness: reachability, higher=more central):\n  Code    Betweenness  Closeness  Policy\n  P1           0.0000     0.0000  Urban Mobility Plan\n  P2           0.0000     0.0000  Renewable Energy Act\n  P3           0.0000     0.0000  Water Resources Strategy\n\nProvide a structured, in-depth interpretation with the following sections. Each section should be multiple paragraphs with specific references to the data above:\n\n## 1. Overall Coherence Assessment\n## 2. Key Synergies\n## 3. Key Conflicts\n## 4. Influential Policies\n## 5. Range of Influence\n## 6. Network Structure\n## 7. Strategic Recommendations\n\nEnsure your interpretation is analytical, references specific policies by name and code, and provides actionable insights for policy professionals.",
+ "env": {
+  "python": "3.13.2",
+  "numpy": "2.5.4",
+  "platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "blas": "accelerate"
+ }
+}

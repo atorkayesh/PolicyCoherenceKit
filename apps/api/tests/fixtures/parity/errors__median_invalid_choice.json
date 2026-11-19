@@ -1,0 +1,7 @@
+{
+ "name": "median_invalid_choice",
+ "source": "aggregator.py:337-370",
+ "api_message_rule": "documentation",
+ "title": null,
+ "error_message": "Invalid median choice \"middle\". Expected \"lower\" or \"upper\"."
+}
