@@ -1,0 +1,29 @@
+FROM python:3.13-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+# uv installs exactly the versions in uv.lock, without dev dependencies.
+RUN pip install --no-cache-dir uv==0.12.10
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
+ENV PATH="/opt/venv/bin:$PATH"
+
+WORKDIR /app
+
+# Install dependencies
+COPY pyproject.toml uv.lock /app/
+RUN uv sync --frozen --no-dev
+
+# Copy project files
+COPY . /app/
+
+# Run as a non-root user. The API is stateless: no data volume.
+RUN useradd --system --no-create-home --uid 1001 app
+USER app
+
+EXPOSE 50002
+
+# Production: Use Gunicorn with Uvicorn workers (worker count from WEB_CONCURRENCY, default 2)
+ENV WEB_CONCURRENCY=2
+CMD ["gunicorn", "-k", "uvicorn_worker.UvicornWorker", "main:app", "--bind", "0.0.0.0:50002"]
