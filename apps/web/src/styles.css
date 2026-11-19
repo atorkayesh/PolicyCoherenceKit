@@ -1,0 +1,278 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/manrope";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* ice2kg palette (ink #023d6b) with warm whites */
+  --background: #faf8f4;
+  --foreground: #023d6b;
+  --card: #fffdf9;
+  --card-foreground: #023d6b;
+  --popover: #fffdf9;
+  --popover-foreground: #023d6b;
+  --primary: #023d6b;
+  --primary-foreground: #fffdf9;
+  --secondary: #f4f1ea;
+  --secondary-foreground: #023d6b;
+  --muted: #f4f1ea;
+  --muted-foreground: #6f6a60;
+  --accent: #f4f1ea;
+  --accent-foreground: #023d6b;
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: #e8e3d9;
+  --input: #e8e3d9;
+  --ring: #a39d91;
+  --soft-2: #eeeae1;
+  --line-strong: #d6cfc2;
+  --placeholder: #a39d91;
+  /* Domain colours (decision record 2026-11-18-warm-white-variant-of-the-ice2kg-theme): legacy rating,
+     band and entropy colours, adjusted in lightness only where a text pair failed WCAG AA (4.5:1). */
+  --rating-indivisible: #0B6E6E;
+  --rating-indivisible-foreground: #ffffff;
+  --rating-reinforcing: #238377;
+  --rating-reinforcing-foreground: #ffffff;
+  --rating-enabling: #6BAF92;
+  --rating-enabling-foreground: #2d2d2d;
+  --rating-neutral: #B0B7C3;
+  --rating-neutral-foreground: #484848;
+  --rating-constraining: #E9C46A;
+  --rating-constraining-foreground: #2d2d2d;
+  --rating-counteracting: #d6421d;
+  --rating-counteracting-foreground: #ffffff;
+  --rating-cancelling: #9B2226;
+  --rating-cancelling-foreground: #ffffff;
+  --value-strong-positive: #177e40;
+  --value-strong-positive-foreground: #ffffff;
+  --value-positive: #25c263;
+  --value-positive-foreground: #2d2d2d;
+  --value-weak-positive: #88edaf;
+  --value-weak-positive-foreground: #2d2d2d;
+  --value-zero: #d9d9d9;
+  --value-zero-foreground: #555555;
+  --value-weak-negative: #f5c07a;
+  --value-weak-negative-foreground: #2d2d2d;
+  --value-negative: #e07b39;
+  --value-negative-foreground: #2d2d2d;
+  --value-strong-negative: #eb1515;
+  --value-strong-negative-foreground: #ffffff;
+  --count-very-high: #7799b9;
+  --count-very-high-foreground: #2d2d2d;
+  --count-high: #a6bcd3;
+  --count-high-foreground: #1f2937;
+  --count-medium: #d0dbe7;
+  --count-medium-foreground: #1f2937;
+  --count-low: #eae7e0;
+  --count-low-foreground: #666666;
+  --count-none: #d9d9d9;
+  --count-none-foreground: #555555;
+  --entropy-low: #a3a3a3;
+  --entropy-low-foreground: #2d2d2d;
+  --entropy-low-to-medium: #a7f3d0;
+  --entropy-low-to-medium-foreground: #2d2d2d;
+  --entropy-medium-to-high: #34d399;
+  --entropy-medium-to-high-foreground: #2d2d2d;
+  --entropy-high: #05875f;
+  --entropy-high-foreground: #ffffff;
+  /* Story role inks on the card surface and health bar fills (non-text graphics keep legacy values). */
+  --role-driver: #238377;
+  --role-dependent: #b9590d;
+  --role-balanced: #6B7280;
+  --health-synergy: #15803d;
+  --health-conflict: #b91c1c;
+  --health-neutral: #2563EB;
+  --health-track: #f5f5f5;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0.006 85);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@theme inline {
+  --font-sans: 'Manrope Variable', 'Helvetica Neue', Helvetica, sans-serif;
+  --color-soft-2: var(--soft-2);
+  --color-line-strong: var(--line-strong);
+  --color-placeholder: var(--placeholder);
+  --color-rating-indivisible: var(--rating-indivisible);
+  --color-rating-indivisible-foreground: var(--rating-indivisible-foreground);
+  --color-rating-reinforcing: var(--rating-reinforcing);
+  --color-rating-reinforcing-foreground: var(--rating-reinforcing-foreground);
+  --color-rating-enabling: var(--rating-enabling);
+  --color-rating-enabling-foreground: var(--rating-enabling-foreground);
+  --color-rating-neutral: var(--rating-neutral);
+  --color-rating-neutral-foreground: var(--rating-neutral-foreground);
+  --color-rating-constraining: var(--rating-constraining);
+  --color-rating-constraining-foreground: var(--rating-constraining-foreground);
+  --color-rating-counteracting: var(--rating-counteracting);
+  --color-rating-counteracting-foreground: var(--rating-counteracting-foreground);
+  --color-rating-cancelling: var(--rating-cancelling);
+  --color-rating-cancelling-foreground: var(--rating-cancelling-foreground);
+  --color-value-strong-positive: var(--value-strong-positive);
+  --color-value-strong-positive-foreground: var(--value-strong-positive-foreground);
+  --color-value-positive: var(--value-positive);
+  --color-value-positive-foreground: var(--value-positive-foreground);
+  --color-value-weak-positive: var(--value-weak-positive);
+  --color-value-weak-positive-foreground: var(--value-weak-positive-foreground);
+  --color-value-zero: var(--value-zero);
+  --color-value-zero-foreground: var(--value-zero-foreground);
+  --color-value-weak-negative: var(--value-weak-negative);
+  --color-value-weak-negative-foreground: var(--value-weak-negative-foreground);
+  --color-value-negative: var(--value-negative);
+  --color-value-negative-foreground: var(--value-negative-foreground);
+  --color-value-strong-negative: var(--value-strong-negative);
+  --color-value-strong-negative-foreground: var(--value-strong-negative-foreground);
+  --color-count-very-high: var(--count-very-high);
+  --color-count-very-high-foreground: var(--count-very-high-foreground);
+  --color-count-high: var(--count-high);
+  --color-count-high-foreground: var(--count-high-foreground);
+  --color-count-medium: var(--count-medium);
+  --color-count-medium-foreground: var(--count-medium-foreground);
+  --color-count-low: var(--count-low);
+  --color-count-low-foreground: var(--count-low-foreground);
+  --color-count-none: var(--count-none);
+  --color-count-none-foreground: var(--count-none-foreground);
+  --color-entropy-low: var(--entropy-low);
+  --color-entropy-low-foreground: var(--entropy-low-foreground);
+  --color-entropy-low-to-medium: var(--entropy-low-to-medium);
+  --color-entropy-low-to-medium-foreground: var(--entropy-low-to-medium-foreground);
+  --color-entropy-medium-to-high: var(--entropy-medium-to-high);
+  --color-entropy-medium-to-high-foreground: var(--entropy-medium-to-high-foreground);
+  --color-entropy-high: var(--entropy-high);
+  --color-entropy-high-foreground: var(--entropy-high-foreground);
+  --color-role-driver: var(--role-driver);
+  --color-role-dependent: var(--role-dependent);
+  --color-role-balanced: var(--role-balanced);
+  --color-health-synergy: var(--health-synergy);
+  --color-health-conflict: var(--health-conflict);
+  --color-health-neutral: var(--health-neutral);
+  --color-health-track: var(--health-track);
+  --shadow-soft: 0 1px 0 rgba(17, 24, 39, 0.04);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-heading: var(--font-sans);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Width of the app layout (header, page, footer) */
+@theme {
+  --container-layout: 1200px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  /* Tailwind v4 resets buttons to the default cursor; every clickable control shows a pointer. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"]:not([aria-disabled="true"]),
+  [role="radio"]:not([aria-disabled="true"]),
+  [role="checkbox"]:not([aria-disabled="true"]),
+  [role="option"],
+  [role="menuitem"],
+  select:not(:disabled),
+  label:has(input:not(:disabled)),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled),
+  input[type="file"]:not(:disabled) {
+    cursor: pointer;
+  }
+  button:disabled,
+  select:disabled {
+    cursor: not-allowed;
+  }
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, #fffdf9 0%, transparent 55%),
+      linear-gradient(180deg, #fbf9f5 0%, var(--background) 40%, #f4f1ea 100%);
+    min-height: 100vh;
+  }
+  html {
+    @apply font-sans;
+  }
+}

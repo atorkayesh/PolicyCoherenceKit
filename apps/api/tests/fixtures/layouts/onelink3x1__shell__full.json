@@ -1,0 +1,73 @@
+{
+ "request": {
+  "project_name": "Parity onelink3x1",
+  "policies": [
+   "Urban Mobility Plan",
+   "Renewable Energy Act",
+   "Water Resources Strategy"
+  ],
+  "decision_makers": [
+   {
+    "name": "DM 1",
+    "ratings": [
+     [
+      "Neutral",
+      "Reinforcing",
+      "Neutral"
+     ],
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "average",
+   "weights": null,
+   "median_choice": null,
+   "tie_choices": []
+  }
+ },
+ "layout": "shell",
+ "focus": null,
+ "canvas": [
+  600,
+  600
+ ],
+ "node_order": [
+  0,
+  1,
+  2
+ ],
+ "positions": {
+  "0": [
+   246.65283512687859,
+   330.8
+  ],
+  "1": [
+   353.3471648731214,
+   330.8
+  ],
+  "2": [
+   300.0,
+   238.39999999999998
+  ]
+ },
+ "edges": [
+  [
+   0,
+   1,
+   2.0
+  ]
+ ],
+ "eigenvalues": null,
+ "chosen_eigen_indices": null,
+ "spectral_degenerate": false
+}

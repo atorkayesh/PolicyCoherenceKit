@@ -1,0 +1,19 @@
+{
+ "name": "setup_too_few_policies",
+ "source": "dialogs.py:1080-1124",
+ "api_message_rule": "identical",
+ "title": "Too Few Policies",
+ "error_message": "Please enter at least 2 policy names.",
+ "setup": {
+  "project_name": "Errors",
+  "decision_makers": [
+   "Expert A",
+   "Expert B",
+   "Expert C"
+  ],
+  "policies": [
+   "Alpha"
+  ],
+  "existing_decision_makers": []
+ }
+}

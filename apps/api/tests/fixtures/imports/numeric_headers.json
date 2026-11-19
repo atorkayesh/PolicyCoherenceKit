@@ -1,0 +1,39 @@
+{
+ "file": "numeric_headers.xlsx",
+ "legacy": {
+  "matrices": [
+   {
+    "decision_maker": "Expert A",
+    "policies": [
+     "1",
+     "2",
+     "3"
+    ],
+    "ratings": [
+     [
+      "Neutral",
+      "Constraining",
+      "Reinforcing"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Enabling"
+     ],
+     [
+      "Reinforcing",
+      "Enabling",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "warnings": []
+ },
+ "app_messages": [
+  [
+   "Import Complete",
+   "1 matrix/matrices imported successfully."
+  ]
+ ]
+}

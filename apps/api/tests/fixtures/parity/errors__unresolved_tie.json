@@ -1,0 +1,112 @@
+{
+ "name": "unresolved_tie",
+ "source": "aggregation_dialog.py:779-787",
+ "api_message_rule": "identical_after_L11",
+ "title": "Unresolved Tie",
+ "error_message": "Please select a rating for cell P1 -> P2.",
+ "request": {
+  "project_name": "Errors",
+  "policies": [
+   "Alpha",
+   "Beta",
+   "Gamma",
+   "Delta"
+  ],
+  "decision_makers": [
+   {
+    "name": "Expert A",
+    "ratings": [
+     [
+      "Neutral",
+      "Cancelling",
+      "Neutral",
+      "Cancelling"
+     ],
+     [
+      "Neutral",
+      "Neutral",
+      "Indivisible",
+      "Enabling"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Cancelling",
+      "Cancelling",
+      "Enabling",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "Expert B",
+    "ratings": [
+     [
+      "Neutral",
+      "Neutral",
+      "Enabling",
+      "Constraining"
+     ],
+     [
+      "Reinforcing",
+      "Neutral",
+      "Constraining",
+      "Reinforcing"
+     ],
+     [
+      "Enabling",
+      "Reinforcing",
+      "Neutral",
+      "Cancelling"
+     ],
+     [
+      "Indivisible",
+      "Constraining",
+      "Cancelling",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "Expert C",
+    "ratings": [
+     [
+      "Neutral",
+      "Enabling",
+      "Constraining",
+      "Counteracting"
+     ],
+     [
+      "Cancelling",
+      "Neutral",
+      "Constraining",
+      "Reinforcing"
+     ],
+     [
+      "Enabling",
+      "Indivisible",
+      "Neutral",
+      "Counteracting"
+     ],
+     [
+      "Indivisible",
+      "Cancelling",
+      "Counteracting",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "majority",
+   "weights": null,
+   "median_choice": null,
+   "tie_choices": []
+  }
+ },
+ "resolve_ties_message": "Tie at P1 -> P2 has not been resolved."
+}

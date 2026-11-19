@@ -1,0 +1,5022 @@
+{
+ "request": {
+  "project_name": "WEF Nexus Example",
+  "policies": [
+   "P1",
+   "P2",
+   "P3",
+   "P4",
+   "P5",
+   "P6",
+   "P7",
+   "P8",
+   "P9",
+   "P10",
+   "P11",
+   "P12",
+   "P13",
+   "P14"
+  ],
+  "decision_makers": [
+   {
+    "name": "Research Team",
+    "ratings": [
+     [
+      "Neutral",
+      "Indivisible",
+      "Reinforcing",
+      "Constraining",
+      "Enabling",
+      "Neutral",
+      "Enabling",
+      "Enabling",
+      "Neutral",
+      "Reinforcing",
+      "Reinforcing",
+      "Enabling",
+      "Enabling",
+      "Indivisible"
+     ],
+     [
+      "Indivisible",
+      "Neutral",
+      "Neutral",
+      "Enabling",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Enabling",
+      "Neutral",
+      "Reinforcing",
+      "Enabling",
+      "Reinforcing",
+      "Indivisible",
+      "Indivisible"
+     ],
+     [
+      "Reinforcing",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Enabling",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Enabling",
+      "Neutral",
+      "Enabling"
+     ],
+     [
+      "Reinforcing",
+      "Enabling",
+      "Neutral",
+      "Neutral",
+      "Indivisible",
+      "Enabling",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Enabling",
+      "Enabling",
+      "Reinforcing",
+      "Reinforcing",
+      "Enabling"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Enabling",
+      "Enabling",
+      "Neutral",
+      "Enabling",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Constraining",
+      "Constraining",
+      "Constraining",
+      "Constraining",
+      "Neutral"
+     ],
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Reinforcing",
+      "Reinforcing",
+      "Neutral",
+      "Enabling",
+      "Neutral",
+      "Neutral",
+      "Enabling",
+      "Enabling",
+      "Enabling",
+      "Enabling",
+      "Reinforcing"
+     ],
+     [
+      "Reinforcing",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Enabling",
+      "Neutral",
+      "Indivisible",
+      "Indivisible",
+      "Indivisible",
+      "Reinforcing",
+      "Indivisible",
+      "Indivisible",
+      "Reinforcing"
+     ],
+     [
+      "Reinforcing",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Enabling",
+      "Neutral",
+      "Reinforcing",
+      "Enabling",
+      "Neutral",
+      "Constraining",
+      "Constraining",
+      "Enabling"
+     ],
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Indivisible",
+      "Reinforcing",
+      "Neutral",
+      "Enabling",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Enabling"
+     ],
+     [
+      "Reinforcing",
+      "Reinforcing",
+      "Neutral",
+      "Reinforcing",
+      "Reinforcing",
+      "Enabling",
+      "Reinforcing",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Reinforcing",
+      "Reinforcing",
+      "Reinforcing",
+      "Enabling"
+     ],
+     [
+      "Indivisible",
+      "Neutral",
+      "Neutral",
+      "Constraining",
+      "Constraining",
+      "Neutral",
+      "Enabling",
+      "Enabling",
+      "Enabling",
+      "Indivisible",
+      "Neutral",
+      "Indivisible",
+      "Indivisible",
+      "Indivisible"
+     ],
+     [
+      "Enabling",
+      "Enabling",
+      "Neutral",
+      "Constraining",
+      "Constraining",
+      "Enabling",
+      "Reinforcing",
+      "Enabling",
+      "Reinforcing",
+      "Indivisible",
+      "Indivisible",
+      "Neutral",
+      "Indivisible",
+      "Indivisible"
+     ],
+     [
+      "Enabling",
+      "Reinforcing",
+      "Neutral",
+      "Constraining",
+      "Constraining",
+      "Enabling",
+      "Reinforcing",
+      "Enabling",
+      "Enabling",
+      "Indivisible",
+      "Indivisible",
+      "Indivisible",
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Reinforcing",
+      "Reinforcing",
+      "Enabling",
+      "Enabling",
+      "Enabling",
+      "Enabling",
+      "Neutral",
+      "Reinforcing",
+      "Enabling",
+      "Reinforcing",
+      "Indivisible",
+      "Indivisible",
+      "Indivisible",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "median",
+   "weights": null,
+   "median_choice": null,
+   "tie_choices": []
+  }
+ },
+ "aggregation": {
+  "requested_method": "median",
+  "method": "average",
+  "label": "Average",
+  "n": 14,
+  "codes": [
+   "P1",
+   "P2",
+   "P3",
+   "P4",
+   "P5",
+   "P6",
+   "P7",
+   "P8",
+   "P9",
+   "P10",
+   "P11",
+   "P12",
+   "P13",
+   "P14"
+  ],
+  "policies": [
+   "P1",
+   "P2",
+   "P3",
+   "P4",
+   "P5",
+   "P6",
+   "P7",
+   "P8",
+   "P9",
+   "P10",
+   "P11",
+   "P12",
+   "P13",
+   "P14"
+  ],
+  "decision_makers": 1,
+  "decision_maker_names": [
+   "Research Team"
+  ],
+  "scores": [
+   [
+    0.0,
+    3.0,
+    2.0,
+    -1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    2.0,
+    2.0,
+    1.0,
+    1.0,
+    3.0
+   ],
+   [
+    3.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    2.0,
+    1.0,
+    2.0,
+    3.0,
+    3.0
+   ],
+   [
+    2.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0
+   ],
+   [
+    2.0,
+    1.0,
+    0.0,
+    0.0,
+    3.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    2.0,
+    2.0,
+    1.0
+   ],
+   [
+    -1.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    -1.0,
+    -1.0,
+    -1.0,
+    -1.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    2.0,
+    2.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    2.0
+   ],
+   [
+    2.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    3.0,
+    3.0,
+    3.0,
+    2.0,
+    3.0,
+    3.0,
+    2.0
+   ],
+   [
+    2.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    2.0,
+    1.0,
+    0.0,
+    -1.0,
+    -1.0,
+    1.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    3.0,
+    2.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   [
+    2.0,
+    2.0,
+    0.0,
+    2.0,
+    2.0,
+    1.0,
+    2.0,
+    0.0,
+    0.0,
+    0.0,
+    2.0,
+    2.0,
+    2.0,
+    1.0
+   ],
+   [
+    3.0,
+    0.0,
+    0.0,
+    -1.0,
+    -1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    3.0,
+    0.0,
+    3.0,
+    3.0,
+    3.0
+   ],
+   [
+    1.0,
+    1.0,
+    0.0,
+    -1.0,
+    -1.0,
+    1.0,
+    2.0,
+    1.0,
+    2.0,
+    3.0,
+    3.0,
+    0.0,
+    3.0,
+    3.0
+   ],
+   [
+    1.0,
+    2.0,
+    0.0,
+    -1.0,
+    -1.0,
+    1.0,
+    2.0,
+    1.0,
+    1.0,
+    3.0,
+    3.0,
+    3.0,
+    0.0,
+    3.0
+   ],
+   [
+    2.0,
+    2.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    2.0,
+    1.0,
+    2.0,
+    3.0,
+    3.0,
+    3.0,
+    0.0
+   ]
+  ],
+  "ties": [],
+  "source_scores": [
+   [
+    [
+     0.0
+    ],
+    [
+     3.0
+    ],
+    [
+     2.0
+    ],
+    [
+     -1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     2.0
+    ],
+    [
+     2.0
+    ],
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     3.0
+    ]
+   ],
+   [
+    [
+     3.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     2.0
+    ],
+    [
+     1.0
+    ],
+    [
+     2.0
+    ],
+    [
+     3.0
+    ],
+    [
+     3.0
+    ]
+   ],
+   [
+    [
+     2.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ]
+   ],
+   [
+    [
+     2.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     3.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     2.0
+    ],
+    [
+     2.0
+    ],
+    [
+     1.0
+    ]
+   ],
+   [
+    [
+     -1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     -1.0
+    ],
+    [
+     -1.0
+    ],
+    [
+     -1.0
+    ],
+    [
+     -1.0
+    ],
+    [
+     0.0
+    ]
+   ],
+   [
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     2.0
+    ],
+    [
+     2.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     2.0
+    ]
+   ],
+   [
+    [
+     2.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     3.0
+    ],
+    [
+     3.0
+    ],
+    [
+     3.0
+    ],
+    [
+     2.0
+    ],
+    [
+     3.0
+    ],
+    [
+     3.0
+    ],
+    [
+     2.0
+    ]
+   ],
+   [
+    [
+     2.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     2.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     -1.0
+    ],
+    [
+     -1.0
+    ],
+    [
+     1.0
+    ]
+   ],
+   [
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     3.0
+    ],
+    [
+     2.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ]
+   ],
+   [
+    [
+     2.0
+    ],
+    [
+     2.0
+    ],
+    [
+     0.0
+    ],
+    [
+     2.0
+    ],
+    [
+     2.0
+    ],
+    [
+     1.0
+    ],
+    [
+     2.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     2.0
+    ],
+    [
+     2.0
+    ],
+    [
+     2.0
+    ],
+    [
+     1.0
+    ]
+   ],
+   [
+    [
+     3.0
+    ],
+    [
+     0.0
+    ],
+    [
+     0.0
+    ],
+    [
+     -1.0
+    ],
+    [
+     -1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     3.0
+    ],
+    [
+     0.0
+    ],
+    [
+     3.0
+    ],
+    [
+     3.0
+    ],
+    [
+     3.0
+    ]
+   ],
+   [
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     -1.0
+    ],
+    [
+     -1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     2.0
+    ],
+    [
+     1.0
+    ],
+    [
+     2.0
+    ],
+    [
+     3.0
+    ],
+    [
+     3.0
+    ],
+    [
+     0.0
+    ],
+    [
+     3.0
+    ],
+    [
+     3.0
+    ]
+   ],
+   [
+    [
+     1.0
+    ],
+    [
+     2.0
+    ],
+    [
+     0.0
+    ],
+    [
+     -1.0
+    ],
+    [
+     -1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     2.0
+    ],
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     3.0
+    ],
+    [
+     3.0
+    ],
+    [
+     3.0
+    ],
+    [
+     0.0
+    ],
+    [
+     3.0
+    ]
+   ],
+   [
+    [
+     2.0
+    ],
+    [
+     2.0
+    ],
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     1.0
+    ],
+    [
+     0.0
+    ],
+    [
+     2.0
+    ],
+    [
+     1.0
+    ],
+    [
+     2.0
+    ],
+    [
+     3.0
+    ],
+    [
+     3.0
+    ],
+    [
+     3.0
+    ],
+    [
+     0.0
+    ]
+   ]
+  ],
+  "ordinal_cells": null,
+  "median_even_choice": null
+ },
+ "bands": [
+  [
+   "Neutral",
+   "Indivisible",
+   "Reinforcing",
+   "Constraining",
+   "Enabling",
+   "Neutral",
+   "Enabling",
+   "Enabling",
+   "Neutral",
+   "Reinforcing",
+   "Reinforcing",
+   "Enabling",
+   "Enabling",
+   "Indivisible"
+  ],
+  [
+   "Indivisible",
+   "Neutral",
+   "Neutral",
+   "Enabling",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Enabling",
+   "Neutral",
+   "Reinforcing",
+   "Enabling",
+   "Reinforcing",
+   "Indivisible",
+   "Indivisible"
+  ],
+  [
+   "Reinforcing",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Enabling",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Enabling",
+   "Neutral",
+   "Enabling"
+  ],
+  [
+   "Reinforcing",
+   "Enabling",
+   "Neutral",
+   "Neutral",
+   "Indivisible",
+   "Enabling",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Enabling",
+   "Enabling",
+   "Reinforcing",
+   "Reinforcing",
+   "Enabling"
+  ],
+  [
+   "Constraining",
+   "Neutral",
+   "Enabling",
+   "Enabling",
+   "Neutral",
+   "Enabling",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Constraining",
+   "Constraining",
+   "Constraining",
+   "Constraining",
+   "Neutral"
+  ],
+  [
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Reinforcing",
+   "Reinforcing",
+   "Neutral",
+   "Enabling",
+   "Neutral",
+   "Neutral",
+   "Enabling",
+   "Enabling",
+   "Enabling",
+   "Enabling",
+   "Reinforcing"
+  ],
+  [
+   "Reinforcing",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Enabling",
+   "Neutral",
+   "Indivisible",
+   "Indivisible",
+   "Indivisible",
+   "Reinforcing",
+   "Indivisible",
+   "Indivisible",
+   "Reinforcing"
+  ],
+  [
+   "Reinforcing",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Enabling",
+   "Neutral",
+   "Reinforcing",
+   "Enabling",
+   "Neutral",
+   "Constraining",
+   "Constraining",
+   "Enabling"
+  ],
+  [
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Indivisible",
+   "Reinforcing",
+   "Neutral",
+   "Enabling",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Enabling"
+  ],
+  [
+   "Reinforcing",
+   "Reinforcing",
+   "Neutral",
+   "Reinforcing",
+   "Reinforcing",
+   "Enabling",
+   "Reinforcing",
+   "Neutral",
+   "Neutral",
+   "Neutral",
+   "Reinforcing",
+   "Reinforcing",
+   "Reinforcing",
+   "Enabling"
+  ],
+  [
+   "Indivisible",
+   "Neutral",
+   "Neutral",
+   "Constraining",
+   "Constraining",
+   "Neutral",
+   "Enabling",
+   "Enabling",
+   "Enabling",
+   "Indivisible",
+   "Neutral",
+   "Indivisible",
+   "Indivisible",
+   "Indivisible"
+  ],
+  [
+   "Enabling",
+   "Enabling",
+   "Neutral",
+   "Constraining",
+   "Constraining",
+   "Enabling",
+   "Reinforcing",
+   "Enabling",
+   "Reinforcing",
+   "Indivisible",
+   "Indivisible",
+   "Neutral",
+   "Indivisible",
+   "Indivisible"
+  ],
+  [
+   "Enabling",
+   "Reinforcing",
+   "Neutral",
+   "Constraining",
+   "Constraining",
+   "Enabling",
+   "Reinforcing",
+   "Enabling",
+   "Enabling",
+   "Indivisible",
+   "Indivisible",
+   "Indivisible",
+   "Neutral",
+   "Indivisible"
+  ],
+  [
+   "Reinforcing",
+   "Reinforcing",
+   "Enabling",
+   "Enabling",
+   "Enabling",
+   "Enabling",
+   "Neutral",
+   "Reinforcing",
+   "Enabling",
+   "Reinforcing",
+   "Indivisible",
+   "Indivisible",
+   "Indivisible",
+   "Neutral"
+  ]
+ ],
+ "scores": [
+  {
+   "code": "P1",
+   "policy": "P1",
+   "oi": 11,
+   "ii": 11,
+   "woi": 16.0,
+   "wii": 19.0,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P2",
+   "policy": "P2",
+   "oi": 8,
+   "ii": 6,
+   "woi": 16.0,
+   "wii": 11.0,
+   "oi_colour": [
+    "#a6bcd3",
+    "#1f2937"
+   ],
+   "ii_colour": [
+    "#d0dbe7",
+    "#1f2937"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P3",
+   "policy": "P3",
+   "oi": 4,
+   "ii": 3,
+   "woi": 5.0,
+   "wii": 4.0,
+   "oi_colour": [
+    "#d0dbe7",
+    "#1f2937"
+   ],
+   "ii_colour": [
+    "#eae7e0",
+    "#666666"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P4",
+   "policy": "P4",
+   "oi": 9,
+   "ii": 9,
+   "woi": 14.0,
+   "wii": 3.0,
+   "oi_colour": [
+    "#a6bcd3",
+    "#1f2937"
+   ],
+   "ii_colour": [
+    "#a6bcd3",
+    "#1f2937"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P5",
+   "policy": "P5",
+   "oi": 8,
+   "ii": 9,
+   "woi": -2.0,
+   "wii": 7.0,
+   "oi_colour": [
+    "#a6bcd3",
+    "#1f2937"
+   ],
+   "ii_colour": [
+    "#a6bcd3",
+    "#1f2937"
+   ],
+   "woi_colour": [
+    "#ef4444",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P6",
+   "policy": "P6",
+   "oi": 8,
+   "ii": 7,
+   "woi": 11.0,
+   "wii": 7.0,
+   "oi_colour": [
+    "#a6bcd3",
+    "#1f2937"
+   ],
+   "ii_colour": [
+    "#a6bcd3",
+    "#1f2937"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P7",
+   "policy": "P7",
+   "oi": 9,
+   "ii": 8,
+   "woi": 22.0,
+   "wii": 13.0,
+   "oi_colour": [
+    "#a6bcd3",
+    "#1f2937"
+   ],
+   "ii_colour": [
+    "#a6bcd3",
+    "#1f2937"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P8",
+   "policy": "P8",
+   "oi": 7,
+   "ii": 8,
+   "woi": 5.0,
+   "wii": 12.0,
+   "oi_colour": [
+    "#a6bcd3",
+    "#1f2937"
+   ],
+   "ii_colour": [
+    "#a6bcd3",
+    "#1f2937"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P9",
+   "policy": "P9",
+   "oi": 4,
+   "ii": 6,
+   "woi": 7.0,
+   "wii": 10.0,
+   "oi_colour": [
+    "#d0dbe7",
+    "#1f2937"
+   ],
+   "ii_colour": [
+    "#d0dbe7",
+    "#1f2937"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P10",
+   "policy": "P10",
+   "oi": 10,
+   "ii": 12,
+   "woi": 18.0,
+   "wii": 21.0,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P11",
+   "policy": "P11",
+   "oi": 10,
+   "ii": 10,
+   "woi": 16.0,
+   "wii": 17.0,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P12",
+   "policy": "P12",
+   "oi": 12,
+   "ii": 12,
+   "woi": 18.0,
+   "wii": 19.0,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P13",
+   "policy": "P13",
+   "oi": 12,
+   "ii": 11,
+   "woi": 18.0,
+   "wii": 19.0,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  },
+  {
+   "code": "P14",
+   "policy": "P14",
+   "oi": 12,
+   "ii": 12,
+   "woi": 22.0,
+   "wii": 24.0,
+   "oi_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "ii_colour": [
+    "#7799b9",
+    "#ffffff"
+   ],
+   "woi_colour": [
+    "#177e40",
+    "#ffffff"
+   ],
+   "wii_colour": [
+    "#177e40",
+    "#ffffff"
+   ]
+  }
+ ],
+ "entropy": [
+  {
+   "code": "P1",
+   "policy": "P1",
+   "entropy": 3.3083,
+   "category": "High",
+   "hmax": 3.7004
+  },
+  {
+   "code": "P2",
+   "policy": "P2",
+   "entropy": 2.8585,
+   "category": "High",
+   "hmax": 3.7004
+  },
+  {
+   "code": "P3",
+   "policy": "P3",
+   "entropy": 1.9219,
+   "category": "Medium-to-High",
+   "hmax": 3.7004
+  },
+  {
+   "code": "P4",
+   "policy": "P4",
+   "entropy": 3.0391,
+   "category": "High",
+   "hmax": 3.7004
+  },
+  {
+   "code": "P5",
+   "policy": "P5",
+   "entropy": 3.0,
+   "category": "High",
+   "hmax": 3.7004
+  },
+  {
+   "code": "P6",
+   "policy": "P6",
+   "entropy": 2.914,
+   "category": "High",
+   "hmax": 3.7004
+  },
+  {
+   "code": "P7",
+   "policy": "P7",
+   "entropy": 3.106,
+   "category": "High",
+   "hmax": 3.7004
+  },
+  {
+   "code": "P8",
+   "policy": "P8",
+   "entropy": 2.7255,
+   "category": "Medium-to-High",
+   "hmax": 3.7004
+  },
+  {
+   "code": "P9",
+   "policy": "P9",
+   "entropy": 1.8424,
+   "category": "Low-to-Medium",
+   "hmax": 3.7004
+  },
+  {
+   "code": "P10",
+   "policy": "P10",
+   "entropy": 3.281,
+   "category": "High",
+   "hmax": 3.7004
+  },
+  {
+   "code": "P11",
+   "policy": "P11",
+   "entropy": 3.1332,
+   "category": "High",
+   "hmax": 3.7004
+  },
+  {
+   "code": "P12",
+   "policy": "P12",
+   "entropy": 3.4131,
+   "category": "High",
+   "hmax": 3.7004
+  },
+  {
+   "code": "P13",
+   "policy": "P13",
+   "entropy": 3.4131,
+   "category": "High",
+   "hmax": 3.7004
+  },
+  {
+   "code": "P14",
+   "policy": "P14",
+   "entropy": 3.4474,
+   "category": "High",
+   "hmax": 3.7004
+  }
+ ],
+ "pca": {
+  "coords": [
+   [
+    -1.4850536222898432,
+    -1.339817678022225
+   ],
+   [
+    -0.7426452262897296,
+    0.48471649602534234
+   ],
+   [
+    2.3247316955753465,
+    0.1629530024031535
+   ],
+   [
+    1.323780100199299,
+    -1.8220412392184593
+   ],
+   [
+    5.142601659315878,
+    0.34871150438944476
+   ],
+   [
+    1.6150027726955447,
+    -1.6764799092500042
+   ],
+   [
+    -2.6845586116371427,
+    1.62048447185504
+   ],
+   [
+    2.064952665779387,
+    2.114170790637934
+   ],
+   [
+    1.5463065768236028,
+    2.6276090174833895
+   ],
+   [
+    0.27735431132703015,
+    -2.61454674454099
+   ],
+   [
+    -2.124460330636743,
+    1.140351271983865
+   ],
+   [
+    -2.9824068182135983,
+    0.6626450305962728
+   ],
+   [
+    -2.8630547331719316,
+    0.03477394704933579
+   ],
+   [
+    -1.4125504394771,
+    -1.743529961392098
+   ]
+  ],
+  "explained": [
+   42.0,
+   18.6
+  ],
+  "explained_unrounded": [
+   42.037143052341484,
+   18.640171069830615
+  ],
+  "valid": true,
+  "singular_values": [
+   8.746862314868201,
+   5.824526705844152,
+   4.481264336116839,
+   4.147675271111285,
+   3.5251084849122996,
+   2.702007824016634,
+   2.588516521689667,
+   1.963911868105122,
+   1.5600598269419388,
+   1.0485944377518466,
+   0.6654008516852176,
+   0.13474294837057835,
+   0.0591054873295139
+  ]
+ },
+ "graph_edges": [
+  [
+   0,
+   1,
+   3.0
+  ],
+  [
+   0,
+   2,
+   2.0
+  ],
+  [
+   0,
+   3,
+   -1.0
+  ],
+  [
+   0,
+   4,
+   1.0
+  ],
+  [
+   0,
+   6,
+   1.0
+  ],
+  [
+   0,
+   7,
+   1.0
+  ],
+  [
+   0,
+   9,
+   2.0
+  ],
+  [
+   0,
+   10,
+   2.0
+  ],
+  [
+   0,
+   11,
+   1.0
+  ],
+  [
+   0,
+   12,
+   1.0
+  ],
+  [
+   0,
+   13,
+   3.0
+  ],
+  [
+   1,
+   0,
+   3.0
+  ],
+  [
+   1,
+   3,
+   1.0
+  ],
+  [
+   1,
+   7,
+   1.0
+  ],
+  [
+   1,
+   9,
+   2.0
+  ],
+  [
+   1,
+   10,
+   1.0
+  ],
+  [
+   1,
+   11,
+   2.0
+  ],
+  [
+   1,
+   12,
+   3.0
+  ],
+  [
+   1,
+   13,
+   3.0
+  ],
+  [
+   2,
+   0,
+   2.0
+  ],
+  [
+   2,
+   4,
+   1.0
+  ],
+  [
+   2,
+   11,
+   1.0
+  ],
+  [
+   2,
+   13,
+   1.0
+  ],
+  [
+   3,
+   0,
+   2.0
+  ],
+  [
+   3,
+   1,
+   1.0
+  ],
+  [
+   3,
+   4,
+   3.0
+  ],
+  [
+   3,
+   5,
+   1.0
+  ],
+  [
+   3,
+   9,
+   1.0
+  ],
+  [
+   3,
+   10,
+   1.0
+  ],
+  [
+   3,
+   11,
+   2.0
+  ],
+  [
+   3,
+   12,
+   2.0
+  ],
+  [
+   3,
+   13,
+   1.0
+  ],
+  [
+   4,
+   0,
+   -1.0
+  ],
+  [
+   4,
+   2,
+   1.0
+  ],
+  [
+   4,
+   3,
+   1.0
+  ],
+  [
+   4,
+   5,
+   1.0
+  ],
+  [
+   4,
+   9,
+   -1.0
+  ],
+  [
+   4,
+   10,
+   -1.0
+  ],
+  [
+   4,
+   11,
+   -1.0
+  ],
+  [
+   4,
+   12,
+   -1.0
+  ],
+  [
+   5,
+   3,
+   2.0
+  ],
+  [
+   5,
+   4,
+   2.0
+  ],
+  [
+   5,
+   6,
+   1.0
+  ],
+  [
+   5,
+   9,
+   1.0
+  ],
+  [
+   5,
+   10,
+   1.0
+  ],
+  [
+   5,
+   11,
+   1.0
+  ],
+  [
+   5,
+   12,
+   1.0
+  ],
+  [
+   5,
+   13,
+   2.0
+  ],
+  [
+   6,
+   0,
+   2.0
+  ],
+  [
+   6,
+   5,
+   1.0
+  ],
+  [
+   6,
+   7,
+   3.0
+  ],
+  [
+   6,
+   8,
+   3.0
+  ],
+  [
+   6,
+   9,
+   3.0
+  ],
+  [
+   6,
+   10,
+   2.0
+  ],
+  [
+   6,
+   11,
+   3.0
+  ],
+  [
+   6,
+   12,
+   3.0
+  ],
+  [
+   6,
+   13,
+   2.0
+  ],
+  [
+   7,
+   0,
+   2.0
+  ],
+  [
+   7,
+   6,
+   1.0
+  ],
+  [
+   7,
+   8,
+   2.0
+  ],
+  [
+   7,
+   9,
+   1.0
+  ],
+  [
+   7,
+   11,
+   -1.0
+  ],
+  [
+   7,
+   12,
+   -1.0
+  ],
+  [
+   7,
+   13,
+   1.0
+  ],
+  [
+   8,
+   6,
+   3.0
+  ],
+  [
+   8,
+   7,
+   2.0
+  ],
+  [
+   8,
+   9,
+   1.0
+  ],
+  [
+   8,
+   13,
+   1.0
+  ],
+  [
+   9,
+   0,
+   2.0
+  ],
+  [
+   9,
+   1,
+   2.0
+  ],
+  [
+   9,
+   3,
+   2.0
+  ],
+  [
+   9,
+   4,
+   2.0
+  ],
+  [
+   9,
+   5,
+   1.0
+  ],
+  [
+   9,
+   6,
+   2.0
+  ],
+  [
+   9,
+   10,
+   2.0
+  ],
+  [
+   9,
+   11,
+   2.0
+  ],
+  [
+   9,
+   12,
+   2.0
+  ],
+  [
+   9,
+   13,
+   1.0
+  ],
+  [
+   10,
+   0,
+   3.0
+  ],
+  [
+   10,
+   3,
+   -1.0
+  ],
+  [
+   10,
+   4,
+   -1.0
+  ],
+  [
+   10,
+   6,
+   1.0
+  ],
+  [
+   10,
+   7,
+   1.0
+  ],
+  [
+   10,
+   8,
+   1.0
+  ],
+  [
+   10,
+   9,
+   3.0
+  ],
+  [
+   10,
+   11,
+   3.0
+  ],
+  [
+   10,
+   12,
+   3.0
+  ],
+  [
+   10,
+   13,
+   3.0
+  ],
+  [
+   11,
+   0,
+   1.0
+  ],
+  [
+   11,
+   1,
+   1.0
+  ],
+  [
+   11,
+   3,
+   -1.0
+  ],
+  [
+   11,
+   4,
+   -1.0
+  ],
+  [
+   11,
+   5,
+   1.0
+  ],
+  [
+   11,
+   6,
+   2.0
+  ],
+  [
+   11,
+   7,
+   1.0
+  ],
+  [
+   11,
+   8,
+   2.0
+  ],
+  [
+   11,
+   9,
+   3.0
+  ],
+  [
+   11,
+   10,
+   3.0
+  ],
+  [
+   11,
+   12,
+   3.0
+  ],
+  [
+   11,
+   13,
+   3.0
+  ],
+  [
+   12,
+   0,
+   1.0
+  ],
+  [
+   12,
+   1,
+   2.0
+  ],
+  [
+   12,
+   3,
+   -1.0
+  ],
+  [
+   12,
+   4,
+   -1.0
+  ],
+  [
+   12,
+   5,
+   1.0
+  ],
+  [
+   12,
+   6,
+   2.0
+  ],
+  [
+   12,
+   7,
+   1.0
+  ],
+  [
+   12,
+   8,
+   1.0
+  ],
+  [
+   12,
+   9,
+   3.0
+  ],
+  [
+   12,
+   10,
+   3.0
+  ],
+  [
+   12,
+   11,
+   3.0
+  ],
+  [
+   12,
+   13,
+   3.0
+  ],
+  [
+   13,
+   0,
+   2.0
+  ],
+  [
+   13,
+   1,
+   2.0
+  ],
+  [
+   13,
+   2,
+   1.0
+  ],
+  [
+   13,
+   3,
+   1.0
+  ],
+  [
+   13,
+   4,
+   1.0
+  ],
+  [
+   13,
+   5,
+   1.0
+  ],
+  [
+   13,
+   7,
+   2.0
+  ],
+  [
+   13,
+   8,
+   1.0
+  ],
+  [
+   13,
+   9,
+   2.0
+  ],
+  [
+   13,
+   10,
+   3.0
+  ],
+  [
+   13,
+   11,
+   3.0
+  ],
+  [
+   13,
+   12,
+   3.0
+  ]
+ ],
+ "centrality": [
+  {
+   "code": "P1",
+   "policy": "P1",
+   "betweenness": 0.1846,
+   "closeness": 1.322
+  },
+  {
+   "code": "P2",
+   "policy": "P2",
+   "betweenness": 0.0077,
+   "closeness": 1.3684
+  },
+  {
+   "code": "P3",
+   "policy": "P3",
+   "betweenness": 0.0,
+   "closeness": 0.8667
+  },
+  {
+   "code": "P4",
+   "policy": "P4",
+   "betweenness": 0.0048,
+   "closeness": 1.2381
+  },
+  {
+   "code": "P5",
+   "policy": "P5",
+   "betweenness": 0.0016,
+   "closeness": 0.8387
+  },
+  {
+   "code": "P6",
+   "policy": "P6",
+   "betweenness": 0.0,
+   "closeness": 1.0986
+  },
+  {
+   "code": "P7",
+   "policy": "P7",
+   "betweenness": 0.1047,
+   "closeness": 1.6957
+  },
+  {
+   "code": "P8",
+   "policy": "P8",
+   "betweenness": 0.0,
+   "closeness": 0.975
+  },
+  {
+   "code": "P9",
+   "policy": "P9",
+   "betweenness": 0.0096,
+   "closeness": 1.1304
+  },
+  {
+   "code": "P10",
+   "policy": "P10",
+   "betweenness": 0.1168,
+   "closeness": 1.5294
+  },
+  {
+   "code": "P11",
+   "policy": "P11",
+   "betweenness": 0.0294,
+   "closeness": 1.5
+  },
+  {
+   "code": "P12",
+   "policy": "P12",
+   "betweenness": 0.0815,
+   "closeness": 1.5294
+  },
+  {
+   "code": "P13",
+   "policy": "P13",
+   "betweenness": 0.0473,
+   "closeness": 1.5294
+  },
+  {
+   "code": "P14",
+   "policy": "P14",
+   "betweenness": 0.1298,
+   "closeness": 1.5
+  }
+ ],
+ "centrality_ranking": [
+  "P1",
+  "P14",
+  "P10",
+  "P7",
+  "P12",
+  "P13",
+  "P11",
+  "P9",
+  "P2",
+  "P4",
+  "P5",
+  "P3",
+  "P6",
+  "P8"
+ ],
+ "network_info": {
+  "edge_count": 124,
+  "isolated": 0,
+  "density": 0.681,
+  "stats_text": "14 nodes  |  124 directed edges  |  density: 0.681"
+ },
+ "insights": {
+  "rows": [
+   {
+    "code": "P1",
+    "policy": "P1",
+    "oi": 11,
+    "ii": 11,
+    "woi": 16.0,
+    "wii": 19.0,
+    "index": 0,
+    "net": -3.0,
+    "prominence": 39.0,
+    "entropy": 3.3083,
+    "entropy_category": "High",
+    "betweenness": 0.1846,
+    "closeness": 1.322,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P2",
+    "policy": "P2",
+    "oi": 8,
+    "ii": 6,
+    "woi": 16.0,
+    "wii": 11.0,
+    "index": 1,
+    "net": 5.0,
+    "prominence": 27.0,
+    "entropy": 2.8585,
+    "entropy_category": "High",
+    "betweenness": 0.0077,
+    "closeness": 1.3684,
+    "quadrant": "Strategic Lever"
+   },
+   {
+    "code": "P3",
+    "policy": "P3",
+    "oi": 4,
+    "ii": 3,
+    "woi": 5.0,
+    "wii": 4.0,
+    "index": 2,
+    "net": 1.0,
+    "prominence": 9.0,
+    "entropy": 1.9219,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.0,
+    "closeness": 0.8667,
+    "quadrant": "Strategic Lever"
+   },
+   {
+    "code": "P4",
+    "policy": "P4",
+    "oi": 9,
+    "ii": 9,
+    "woi": 14.0,
+    "wii": 3.0,
+    "index": 3,
+    "net": 11.0,
+    "prominence": 25.0,
+    "entropy": 3.0391,
+    "entropy_category": "High",
+    "betweenness": 0.0048,
+    "closeness": 1.2381,
+    "quadrant": "Strategic Lever"
+   },
+   {
+    "code": "P5",
+    "policy": "P5",
+    "oi": 8,
+    "ii": 9,
+    "woi": -2.0,
+    "wii": 7.0,
+    "index": 4,
+    "net": -9.0,
+    "prominence": 21.0,
+    "entropy": 3.0,
+    "entropy_category": "High",
+    "betweenness": 0.0016,
+    "closeness": 0.8387,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P6",
+    "policy": "P6",
+    "oi": 8,
+    "ii": 7,
+    "woi": 11.0,
+    "wii": 7.0,
+    "index": 5,
+    "net": 4.0,
+    "prominence": 18.0,
+    "entropy": 2.914,
+    "entropy_category": "High",
+    "betweenness": 0.0,
+    "closeness": 1.0986,
+    "quadrant": "Strategic Lever"
+   },
+   {
+    "code": "P7",
+    "policy": "P7",
+    "oi": 9,
+    "ii": 8,
+    "woi": 22.0,
+    "wii": 13.0,
+    "index": 6,
+    "net": 9.0,
+    "prominence": 35.0,
+    "entropy": 3.106,
+    "entropy_category": "High",
+    "betweenness": 0.1047,
+    "closeness": 1.6957,
+    "quadrant": "System Driver"
+   },
+   {
+    "code": "P8",
+    "policy": "P8",
+    "oi": 7,
+    "ii": 8,
+    "woi": 5.0,
+    "wii": 12.0,
+    "index": 7,
+    "net": -7.0,
+    "prominence": 21.0,
+    "entropy": 2.7255,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.0,
+    "closeness": 0.975,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P9",
+    "policy": "P9",
+    "oi": 4,
+    "ii": 6,
+    "woi": 7.0,
+    "wii": 10.0,
+    "index": 8,
+    "net": -3.0,
+    "prominence": 17.0,
+    "entropy": 1.8424,
+    "entropy_category": "Low-to-Medium",
+    "betweenness": 0.0096,
+    "closeness": 1.1304,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P10",
+    "policy": "P10",
+    "oi": 10,
+    "ii": 12,
+    "woi": 18.0,
+    "wii": 21.0,
+    "index": 9,
+    "net": -3.0,
+    "prominence": 41.0,
+    "entropy": 3.281,
+    "entropy_category": "High",
+    "betweenness": 0.1168,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P11",
+    "policy": "P11",
+    "oi": 10,
+    "ii": 10,
+    "woi": 16.0,
+    "wii": 17.0,
+    "index": 10,
+    "net": -1.0,
+    "prominence": 39.0,
+    "entropy": 3.1332,
+    "entropy_category": "High",
+    "betweenness": 0.0294,
+    "closeness": 1.5,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P12",
+    "policy": "P12",
+    "oi": 12,
+    "ii": 12,
+    "woi": 18.0,
+    "wii": 19.0,
+    "index": 11,
+    "net": -1.0,
+    "prominence": 45.0,
+    "entropy": 3.4131,
+    "entropy_category": "High",
+    "betweenness": 0.0815,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P13",
+    "policy": "P13",
+    "oi": 12,
+    "ii": 11,
+    "woi": 18.0,
+    "wii": 19.0,
+    "index": 12,
+    "net": -1.0,
+    "prominence": 45.0,
+    "entropy": 3.4131,
+    "entropy_category": "High",
+    "betweenness": 0.0473,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P14",
+    "policy": "P14",
+    "oi": 12,
+    "ii": 12,
+    "woi": 22.0,
+    "wii": 24.0,
+    "index": 13,
+    "net": -2.0,
+    "prominence": 46.0,
+    "entropy": 3.4474,
+    "entropy_category": "High",
+    "betweenness": 0.1298,
+    "closeness": 1.5,
+    "quadrant": "System Dependent"
+   }
+  ],
+  "drivers": [
+   {
+    "code": "P2",
+    "policy": "P2",
+    "oi": 8,
+    "ii": 6,
+    "woi": 16.0,
+    "wii": 11.0,
+    "index": 1,
+    "net": 5.0,
+    "prominence": 27.0,
+    "entropy": 2.8585,
+    "entropy_category": "High",
+    "betweenness": 0.0077,
+    "closeness": 1.3684,
+    "quadrant": "Strategic Lever"
+   },
+   {
+    "code": "P3",
+    "policy": "P3",
+    "oi": 4,
+    "ii": 3,
+    "woi": 5.0,
+    "wii": 4.0,
+    "index": 2,
+    "net": 1.0,
+    "prominence": 9.0,
+    "entropy": 1.9219,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.0,
+    "closeness": 0.8667,
+    "quadrant": "Strategic Lever"
+   },
+   {
+    "code": "P4",
+    "policy": "P4",
+    "oi": 9,
+    "ii": 9,
+    "woi": 14.0,
+    "wii": 3.0,
+    "index": 3,
+    "net": 11.0,
+    "prominence": 25.0,
+    "entropy": 3.0391,
+    "entropy_category": "High",
+    "betweenness": 0.0048,
+    "closeness": 1.2381,
+    "quadrant": "Strategic Lever"
+   },
+   {
+    "code": "P6",
+    "policy": "P6",
+    "oi": 8,
+    "ii": 7,
+    "woi": 11.0,
+    "wii": 7.0,
+    "index": 5,
+    "net": 4.0,
+    "prominence": 18.0,
+    "entropy": 2.914,
+    "entropy_category": "High",
+    "betweenness": 0.0,
+    "closeness": 1.0986,
+    "quadrant": "Strategic Lever"
+   },
+   {
+    "code": "P7",
+    "policy": "P7",
+    "oi": 9,
+    "ii": 8,
+    "woi": 22.0,
+    "wii": 13.0,
+    "index": 6,
+    "net": 9.0,
+    "prominence": 35.0,
+    "entropy": 3.106,
+    "entropy_category": "High",
+    "betweenness": 0.1047,
+    "closeness": 1.6957,
+    "quadrant": "System Driver"
+   }
+  ],
+  "dependents": [
+   {
+    "code": "P1",
+    "policy": "P1",
+    "oi": 11,
+    "ii": 11,
+    "woi": 16.0,
+    "wii": 19.0,
+    "index": 0,
+    "net": -3.0,
+    "prominence": 39.0,
+    "entropy": 3.3083,
+    "entropy_category": "High",
+    "betweenness": 0.1846,
+    "closeness": 1.322,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P5",
+    "policy": "P5",
+    "oi": 8,
+    "ii": 9,
+    "woi": -2.0,
+    "wii": 7.0,
+    "index": 4,
+    "net": -9.0,
+    "prominence": 21.0,
+    "entropy": 3.0,
+    "entropy_category": "High",
+    "betweenness": 0.0016,
+    "closeness": 0.8387,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P8",
+    "policy": "P8",
+    "oi": 7,
+    "ii": 8,
+    "woi": 5.0,
+    "wii": 12.0,
+    "index": 7,
+    "net": -7.0,
+    "prominence": 21.0,
+    "entropy": 2.7255,
+    "entropy_category": "Medium-to-High",
+    "betweenness": 0.0,
+    "closeness": 0.975,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P9",
+    "policy": "P9",
+    "oi": 4,
+    "ii": 6,
+    "woi": 7.0,
+    "wii": 10.0,
+    "index": 8,
+    "net": -3.0,
+    "prominence": 17.0,
+    "entropy": 1.8424,
+    "entropy_category": "Low-to-Medium",
+    "betweenness": 0.0096,
+    "closeness": 1.1304,
+    "quadrant": "Vulnerable Node"
+   },
+   {
+    "code": "P10",
+    "policy": "P10",
+    "oi": 10,
+    "ii": 12,
+    "woi": 18.0,
+    "wii": 21.0,
+    "index": 9,
+    "net": -3.0,
+    "prominence": 41.0,
+    "entropy": 3.281,
+    "entropy_category": "High",
+    "betweenness": 0.1168,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P11",
+    "policy": "P11",
+    "oi": 10,
+    "ii": 10,
+    "woi": 16.0,
+    "wii": 17.0,
+    "index": 10,
+    "net": -1.0,
+    "prominence": 39.0,
+    "entropy": 3.1332,
+    "entropy_category": "High",
+    "betweenness": 0.0294,
+    "closeness": 1.5,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P12",
+    "policy": "P12",
+    "oi": 12,
+    "ii": 12,
+    "woi": 18.0,
+    "wii": 19.0,
+    "index": 11,
+    "net": -1.0,
+    "prominence": 45.0,
+    "entropy": 3.4131,
+    "entropy_category": "High",
+    "betweenness": 0.0815,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P13",
+    "policy": "P13",
+    "oi": 12,
+    "ii": 11,
+    "woi": 18.0,
+    "wii": 19.0,
+    "index": 12,
+    "net": -1.0,
+    "prominence": 45.0,
+    "entropy": 3.4131,
+    "entropy_category": "High",
+    "betweenness": 0.0473,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P14",
+    "policy": "P14",
+    "oi": 12,
+    "ii": 12,
+    "woi": 22.0,
+    "wii": 24.0,
+    "index": 13,
+    "net": -2.0,
+    "prominence": 46.0,
+    "entropy": 3.4474,
+    "entropy_category": "High",
+    "betweenness": 0.1298,
+    "closeness": 1.5,
+    "quadrant": "System Dependent"
+   }
+  ],
+  "balanced": [],
+  "top_driver": {
+   "code": "P14",
+   "policy": "P14",
+   "oi": 12,
+   "ii": 12,
+   "woi": 22.0,
+   "wii": 24.0,
+   "index": 13,
+   "net": -2.0,
+   "prominence": 46.0,
+   "entropy": 3.4474,
+   "entropy_category": "High",
+   "betweenness": 0.1298,
+   "closeness": 1.5,
+   "quadrant": "System Dependent"
+  },
+  "top_dependent": {
+   "code": "P14",
+   "policy": "P14",
+   "oi": 12,
+   "ii": 12,
+   "woi": 22.0,
+   "wii": 24.0,
+   "index": 13,
+   "net": -2.0,
+   "prominence": 46.0,
+   "entropy": 3.4474,
+   "entropy_category": "High",
+   "betweenness": 0.1298,
+   "closeness": 1.5,
+   "quadrant": "System Dependent"
+  },
+  "top_prominent": {
+   "code": "P14",
+   "policy": "P14",
+   "oi": 12,
+   "ii": 12,
+   "woi": 22.0,
+   "wii": 24.0,
+   "index": 13,
+   "net": -2.0,
+   "prominence": 46.0,
+   "entropy": 3.4474,
+   "entropy_category": "High",
+   "betweenness": 0.1298,
+   "closeness": 1.5,
+   "quadrant": "System Dependent"
+  },
+  "top_broker": {
+   "code": "P1",
+   "policy": "P1",
+   "oi": 11,
+   "ii": 11,
+   "woi": 16.0,
+   "wii": 19.0,
+   "index": 0,
+   "net": -3.0,
+   "prominence": 39.0,
+   "entropy": 3.3083,
+   "entropy_category": "High",
+   "betweenness": 0.1846,
+   "closeness": 1.322,
+   "quadrant": "System Dependent"
+  },
+  "top_prominence_rows": [
+   {
+    "code": "P14",
+    "policy": "P14",
+    "oi": 12,
+    "ii": 12,
+    "woi": 22.0,
+    "wii": 24.0,
+    "index": 13,
+    "net": -2.0,
+    "prominence": 46.0,
+    "entropy": 3.4474,
+    "entropy_category": "High",
+    "betweenness": 0.1298,
+    "closeness": 1.5,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P12",
+    "policy": "P12",
+    "oi": 12,
+    "ii": 12,
+    "woi": 18.0,
+    "wii": 19.0,
+    "index": 11,
+    "net": -1.0,
+    "prominence": 45.0,
+    "entropy": 3.4131,
+    "entropy_category": "High",
+    "betweenness": 0.0815,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P13",
+    "policy": "P13",
+    "oi": 12,
+    "ii": 11,
+    "woi": 18.0,
+    "wii": 19.0,
+    "index": 12,
+    "net": -1.0,
+    "prominence": 45.0,
+    "entropy": 3.4131,
+    "entropy_category": "High",
+    "betweenness": 0.0473,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P10",
+    "policy": "P10",
+    "oi": 10,
+    "ii": 12,
+    "woi": 18.0,
+    "wii": 21.0,
+    "index": 9,
+    "net": -3.0,
+    "prominence": 41.0,
+    "entropy": 3.281,
+    "entropy_category": "High",
+    "betweenness": 0.1168,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P1",
+    "policy": "P1",
+    "oi": 11,
+    "ii": 11,
+    "woi": 16.0,
+    "wii": 19.0,
+    "index": 0,
+    "net": -3.0,
+    "prominence": 39.0,
+    "entropy": 3.3083,
+    "entropy_category": "High",
+    "betweenness": 0.1846,
+    "closeness": 1.322,
+    "quadrant": "System Dependent"
+   }
+  ],
+  "top_driver_rows": [
+   {
+    "code": "P14",
+    "policy": "P14",
+    "oi": 12,
+    "ii": 12,
+    "woi": 22.0,
+    "wii": 24.0,
+    "index": 13,
+    "net": -2.0,
+    "prominence": 46.0,
+    "entropy": 3.4474,
+    "entropy_category": "High",
+    "betweenness": 0.1298,
+    "closeness": 1.5,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P7",
+    "policy": "P7",
+    "oi": 9,
+    "ii": 8,
+    "woi": 22.0,
+    "wii": 13.0,
+    "index": 6,
+    "net": 9.0,
+    "prominence": 35.0,
+    "entropy": 3.106,
+    "entropy_category": "High",
+    "betweenness": 0.1047,
+    "closeness": 1.6957,
+    "quadrant": "System Driver"
+   },
+   {
+    "code": "P12",
+    "policy": "P12",
+    "oi": 12,
+    "ii": 12,
+    "woi": 18.0,
+    "wii": 19.0,
+    "index": 11,
+    "net": -1.0,
+    "prominence": 45.0,
+    "entropy": 3.4131,
+    "entropy_category": "High",
+    "betweenness": 0.0815,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P13",
+    "policy": "P13",
+    "oi": 12,
+    "ii": 11,
+    "woi": 18.0,
+    "wii": 19.0,
+    "index": 12,
+    "net": -1.0,
+    "prominence": 45.0,
+    "entropy": 3.4131,
+    "entropy_category": "High",
+    "betweenness": 0.0473,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P10",
+    "policy": "P10",
+    "oi": 10,
+    "ii": 12,
+    "woi": 18.0,
+    "wii": 21.0,
+    "index": 9,
+    "net": -3.0,
+    "prominence": 41.0,
+    "entropy": 3.281,
+    "entropy_category": "High",
+    "betweenness": 0.1168,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   }
+  ],
+  "top_dependent_rows": [
+   {
+    "code": "P14",
+    "policy": "P14",
+    "oi": 12,
+    "ii": 12,
+    "woi": 22.0,
+    "wii": 24.0,
+    "index": 13,
+    "net": -2.0,
+    "prominence": 46.0,
+    "entropy": 3.4474,
+    "entropy_category": "High",
+    "betweenness": 0.1298,
+    "closeness": 1.5,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P10",
+    "policy": "P10",
+    "oi": 10,
+    "ii": 12,
+    "woi": 18.0,
+    "wii": 21.0,
+    "index": 9,
+    "net": -3.0,
+    "prominence": 41.0,
+    "entropy": 3.281,
+    "entropy_category": "High",
+    "betweenness": 0.1168,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P12",
+    "policy": "P12",
+    "oi": 12,
+    "ii": 12,
+    "woi": 18.0,
+    "wii": 19.0,
+    "index": 11,
+    "net": -1.0,
+    "prominence": 45.0,
+    "entropy": 3.4131,
+    "entropy_category": "High",
+    "betweenness": 0.0815,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P13",
+    "policy": "P13",
+    "oi": 12,
+    "ii": 11,
+    "woi": 18.0,
+    "wii": 19.0,
+    "index": 12,
+    "net": -1.0,
+    "prominence": 45.0,
+    "entropy": 3.4131,
+    "entropy_category": "High",
+    "betweenness": 0.0473,
+    "closeness": 1.5294,
+    "quadrant": "System Dependent"
+   },
+   {
+    "code": "P1",
+    "policy": "P1",
+    "oi": 11,
+    "ii": 11,
+    "woi": 16.0,
+    "wii": 19.0,
+    "index": 0,
+    "net": -3.0,
+    "prominence": 39.0,
+    "entropy": 3.3083,
+    "entropy_category": "High",
+    "betweenness": 0.1846,
+    "closeness": 1.322,
+    "quadrant": "System Dependent"
+   }
+  ],
+  "graph": {
+   "positive_edges": 110,
+   "negative_edges": 14,
+   "zero_edges": 58,
+   "density": 0.681,
+   "polarity": 0.887,
+   "strongest_pos": 3.0,
+   "strongest_neg": -1.0,
+   "strongest_pos_pair": [
+    0,
+    1
+   ],
+   "strongest_neg_pair": [
+    0,
+    3
+   ]
+  },
+  "agreement": {
+   "rows": [
+    {
+     "i": 0,
+     "j": 1,
+     "pair": "P1 (P1) -> P2 (P2)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 2,
+     "pair": "P1 (P1) -> P3 (P3)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 3,
+     "pair": "P1 (P1) -> P4 (P4)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 4,
+     "pair": "P1 (P1) -> P5 (P5)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 5,
+     "pair": "P1 (P1) -> P6 (P6)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 6,
+     "pair": "P1 (P1) -> P7 (P7)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 7,
+     "pair": "P1 (P1) -> P8 (P8)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 8,
+     "pair": "P1 (P1) -> P9 (P9)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 9,
+     "pair": "P1 (P1) -> P10 (P10)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 10,
+     "pair": "P1 (P1) -> P11 (P11)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 11,
+     "pair": "P1 (P1) -> P12 (P12)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 12,
+     "pair": "P1 (P1) -> P13 (P13)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 13,
+     "pair": "P1 (P1) -> P14 (P14)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 0,
+     "pair": "P2 (P2) -> P1 (P1)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 2,
+     "pair": "P2 (P2) -> P3 (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 3,
+     "pair": "P2 (P2) -> P4 (P4)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 4,
+     "pair": "P2 (P2) -> P5 (P5)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 5,
+     "pair": "P2 (P2) -> P6 (P6)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 6,
+     "pair": "P2 (P2) -> P7 (P7)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 7,
+     "pair": "P2 (P2) -> P8 (P8)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 8,
+     "pair": "P2 (P2) -> P9 (P9)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 9,
+     "pair": "P2 (P2) -> P10 (P10)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 10,
+     "pair": "P2 (P2) -> P11 (P11)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 11,
+     "pair": "P2 (P2) -> P12 (P12)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 12,
+     "pair": "P2 (P2) -> P13 (P13)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 13,
+     "pair": "P2 (P2) -> P14 (P14)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 0,
+     "pair": "P3 (P3) -> P1 (P1)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 1,
+     "pair": "P3 (P3) -> P2 (P2)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 3,
+     "pair": "P3 (P3) -> P4 (P4)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 4,
+     "pair": "P3 (P3) -> P5 (P5)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 5,
+     "pair": "P3 (P3) -> P6 (P6)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 6,
+     "pair": "P3 (P3) -> P7 (P7)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 7,
+     "pair": "P3 (P3) -> P8 (P8)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 8,
+     "pair": "P3 (P3) -> P9 (P9)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 9,
+     "pair": "P3 (P3) -> P10 (P10)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 10,
+     "pair": "P3 (P3) -> P11 (P11)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 11,
+     "pair": "P3 (P3) -> P12 (P12)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 12,
+     "pair": "P3 (P3) -> P13 (P13)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 2,
+     "j": 13,
+     "pair": "P3 (P3) -> P14 (P14)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 3,
+     "j": 0,
+     "pair": "P4 (P4) -> P1 (P1)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 3,
+     "j": 1,
+     "pair": "P4 (P4) -> P2 (P2)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 3,
+     "j": 2,
+     "pair": "P4 (P4) -> P3 (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 3,
+     "j": 4,
+     "pair": "P4 (P4) -> P5 (P5)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 3,
+     "j": 5,
+     "pair": "P4 (P4) -> P6 (P6)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 3,
+     "j": 6,
+     "pair": "P4 (P4) -> P7 (P7)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 3,
+     "j": 7,
+     "pair": "P4 (P4) -> P8 (P8)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 3,
+     "j": 8,
+     "pair": "P4 (P4) -> P9 (P9)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 3,
+     "j": 9,
+     "pair": "P4 (P4) -> P10 (P10)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 3,
+     "j": 10,
+     "pair": "P4 (P4) -> P11 (P11)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 3,
+     "j": 11,
+     "pair": "P4 (P4) -> P12 (P12)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 3,
+     "j": 12,
+     "pair": "P4 (P4) -> P13 (P13)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 3,
+     "j": 13,
+     "pair": "P4 (P4) -> P14 (P14)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 4,
+     "j": 0,
+     "pair": "P5 (P5) -> P1 (P1)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 4,
+     "j": 1,
+     "pair": "P5 (P5) -> P2 (P2)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 4,
+     "j": 2,
+     "pair": "P5 (P5) -> P3 (P3)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 4,
+     "j": 3,
+     "pair": "P5 (P5) -> P4 (P4)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 4,
+     "j": 5,
+     "pair": "P5 (P5) -> P6 (P6)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 4,
+     "j": 6,
+     "pair": "P5 (P5) -> P7 (P7)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 4,
+     "j": 7,
+     "pair": "P5 (P5) -> P8 (P8)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 4,
+     "j": 8,
+     "pair": "P5 (P5) -> P9 (P9)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 4,
+     "j": 9,
+     "pair": "P5 (P5) -> P10 (P10)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 4,
+     "j": 10,
+     "pair": "P5 (P5) -> P11 (P11)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 4,
+     "j": 11,
+     "pair": "P5 (P5) -> P12 (P12)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 4,
+     "j": 12,
+     "pair": "P5 (P5) -> P13 (P13)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 4,
+     "j": 13,
+     "pair": "P5 (P5) -> P14 (P14)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 5,
+     "j": 0,
+     "pair": "P6 (P6) -> P1 (P1)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 5,
+     "j": 1,
+     "pair": "P6 (P6) -> P2 (P2)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 5,
+     "j": 2,
+     "pair": "P6 (P6) -> P3 (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 5,
+     "j": 3,
+     "pair": "P6 (P6) -> P4 (P4)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 5,
+     "j": 4,
+     "pair": "P6 (P6) -> P5 (P5)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 5,
+     "j": 6,
+     "pair": "P6 (P6) -> P7 (P7)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 5,
+     "j": 7,
+     "pair": "P6 (P6) -> P8 (P8)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 5,
+     "j": 8,
+     "pair": "P6 (P6) -> P9 (P9)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 5,
+     "j": 9,
+     "pair": "P6 (P6) -> P10 (P10)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 5,
+     "j": 10,
+     "pair": "P6 (P6) -> P11 (P11)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 5,
+     "j": 11,
+     "pair": "P6 (P6) -> P12 (P12)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 5,
+     "j": 12,
+     "pair": "P6 (P6) -> P13 (P13)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 5,
+     "j": 13,
+     "pair": "P6 (P6) -> P14 (P14)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 6,
+     "j": 0,
+     "pair": "P7 (P7) -> P1 (P1)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 6,
+     "j": 1,
+     "pair": "P7 (P7) -> P2 (P2)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 6,
+     "j": 2,
+     "pair": "P7 (P7) -> P3 (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 6,
+     "j": 3,
+     "pair": "P7 (P7) -> P4 (P4)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 6,
+     "j": 4,
+     "pair": "P7 (P7) -> P5 (P5)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 6,
+     "j": 5,
+     "pair": "P7 (P7) -> P6 (P6)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 6,
+     "j": 7,
+     "pair": "P7 (P7) -> P8 (P8)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 6,
+     "j": 8,
+     "pair": "P7 (P7) -> P9 (P9)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 6,
+     "j": 9,
+     "pair": "P7 (P7) -> P10 (P10)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 6,
+     "j": 10,
+     "pair": "P7 (P7) -> P11 (P11)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 6,
+     "j": 11,
+     "pair": "P7 (P7) -> P12 (P12)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 6,
+     "j": 12,
+     "pair": "P7 (P7) -> P13 (P13)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 6,
+     "j": 13,
+     "pair": "P7 (P7) -> P14 (P14)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 7,
+     "j": 0,
+     "pair": "P8 (P8) -> P1 (P1)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 7,
+     "j": 1,
+     "pair": "P8 (P8) -> P2 (P2)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 7,
+     "j": 2,
+     "pair": "P8 (P8) -> P3 (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 7,
+     "j": 3,
+     "pair": "P8 (P8) -> P4 (P4)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 7,
+     "j": 4,
+     "pair": "P8 (P8) -> P5 (P5)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 7,
+     "j": 5,
+     "pair": "P8 (P8) -> P6 (P6)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 7,
+     "j": 6,
+     "pair": "P8 (P8) -> P7 (P7)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 7,
+     "j": 8,
+     "pair": "P8 (P8) -> P9 (P9)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 7,
+     "j": 9,
+     "pair": "P8 (P8) -> P10 (P10)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 7,
+     "j": 10,
+     "pair": "P8 (P8) -> P11 (P11)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 7,
+     "j": 11,
+     "pair": "P8 (P8) -> P12 (P12)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 7,
+     "j": 12,
+     "pair": "P8 (P8) -> P13 (P13)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 7,
+     "j": 13,
+     "pair": "P8 (P8) -> P14 (P14)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 8,
+     "j": 0,
+     "pair": "P9 (P9) -> P1 (P1)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 8,
+     "j": 1,
+     "pair": "P9 (P9) -> P2 (P2)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 8,
+     "j": 2,
+     "pair": "P9 (P9) -> P3 (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 8,
+     "j": 3,
+     "pair": "P9 (P9) -> P4 (P4)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 8,
+     "j": 4,
+     "pair": "P9 (P9) -> P5 (P5)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 8,
+     "j": 5,
+     "pair": "P9 (P9) -> P6 (P6)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 8,
+     "j": 6,
+     "pair": "P9 (P9) -> P7 (P7)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 8,
+     "j": 7,
+     "pair": "P9 (P9) -> P8 (P8)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 8,
+     "j": 9,
+     "pair": "P9 (P9) -> P10 (P10)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 8,
+     "j": 10,
+     "pair": "P9 (P9) -> P11 (P11)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 8,
+     "j": 11,
+     "pair": "P9 (P9) -> P12 (P12)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 8,
+     "j": 12,
+     "pair": "P9 (P9) -> P13 (P13)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 8,
+     "j": 13,
+     "pair": "P9 (P9) -> P14 (P14)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 9,
+     "j": 0,
+     "pair": "P10 (P10) -> P1 (P1)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 9,
+     "j": 1,
+     "pair": "P10 (P10) -> P2 (P2)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 9,
+     "j": 2,
+     "pair": "P10 (P10) -> P3 (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 9,
+     "j": 3,
+     "pair": "P10 (P10) -> P4 (P4)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 9,
+     "j": 4,
+     "pair": "P10 (P10) -> P5 (P5)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 9,
+     "j": 5,
+     "pair": "P10 (P10) -> P6 (P6)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 9,
+     "j": 6,
+     "pair": "P10 (P10) -> P7 (P7)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 9,
+     "j": 7,
+     "pair": "P10 (P10) -> P8 (P8)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 9,
+     "j": 8,
+     "pair": "P10 (P10) -> P9 (P9)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 9,
+     "j": 10,
+     "pair": "P10 (P10) -> P11 (P11)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 9,
+     "j": 11,
+     "pair": "P10 (P10) -> P12 (P12)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 9,
+     "j": 12,
+     "pair": "P10 (P10) -> P13 (P13)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 9,
+     "j": 13,
+     "pair": "P10 (P10) -> P14 (P14)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 10,
+     "j": 0,
+     "pair": "P11 (P11) -> P1 (P1)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 10,
+     "j": 1,
+     "pair": "P11 (P11) -> P2 (P2)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 10,
+     "j": 2,
+     "pair": "P11 (P11) -> P3 (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 10,
+     "j": 3,
+     "pair": "P11 (P11) -> P4 (P4)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 10,
+     "j": 4,
+     "pair": "P11 (P11) -> P5 (P5)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 10,
+     "j": 5,
+     "pair": "P11 (P11) -> P6 (P6)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 10,
+     "j": 6,
+     "pair": "P11 (P11) -> P7 (P7)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 10,
+     "j": 7,
+     "pair": "P11 (P11) -> P8 (P8)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 10,
+     "j": 8,
+     "pair": "P11 (P11) -> P9 (P9)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 10,
+     "j": 9,
+     "pair": "P11 (P11) -> P10 (P10)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 10,
+     "j": 11,
+     "pair": "P11 (P11) -> P12 (P12)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 10,
+     "j": 12,
+     "pair": "P11 (P11) -> P13 (P13)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 10,
+     "j": 13,
+     "pair": "P11 (P11) -> P14 (P14)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 11,
+     "j": 0,
+     "pair": "P12 (P12) -> P1 (P1)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 11,
+     "j": 1,
+     "pair": "P12 (P12) -> P2 (P2)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 11,
+     "j": 2,
+     "pair": "P12 (P12) -> P3 (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 11,
+     "j": 3,
+     "pair": "P12 (P12) -> P4 (P4)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 11,
+     "j": 4,
+     "pair": "P12 (P12) -> P5 (P5)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 11,
+     "j": 5,
+     "pair": "P12 (P12) -> P6 (P6)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 11,
+     "j": 6,
+     "pair": "P12 (P12) -> P7 (P7)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 11,
+     "j": 7,
+     "pair": "P12 (P12) -> P8 (P8)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 11,
+     "j": 8,
+     "pair": "P12 (P12) -> P9 (P9)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 11,
+     "j": 9,
+     "pair": "P12 (P12) -> P10 (P10)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 11,
+     "j": 10,
+     "pair": "P12 (P12) -> P11 (P11)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 11,
+     "j": 12,
+     "pair": "P12 (P12) -> P13 (P13)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 11,
+     "j": 13,
+     "pair": "P12 (P12) -> P14 (P14)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 12,
+     "j": 0,
+     "pair": "P13 (P13) -> P1 (P1)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 12,
+     "j": 1,
+     "pair": "P13 (P13) -> P2 (P2)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 12,
+     "j": 2,
+     "pair": "P13 (P13) -> P3 (P3)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 12,
+     "j": 3,
+     "pair": "P13 (P13) -> P4 (P4)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 12,
+     "j": 4,
+     "pair": "P13 (P13) -> P5 (P5)",
+     "score": -1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 12,
+     "j": 5,
+     "pair": "P13 (P13) -> P6 (P6)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 12,
+     "j": 6,
+     "pair": "P13 (P13) -> P7 (P7)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 12,
+     "j": 7,
+     "pair": "P13 (P13) -> P8 (P8)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 12,
+     "j": 8,
+     "pair": "P13 (P13) -> P9 (P9)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 12,
+     "j": 9,
+     "pair": "P13 (P13) -> P10 (P10)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 12,
+     "j": 10,
+     "pair": "P13 (P13) -> P11 (P11)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 12,
+     "j": 11,
+     "pair": "P13 (P13) -> P12 (P12)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 12,
+     "j": 13,
+     "pair": "P13 (P13) -> P14 (P14)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 13,
+     "j": 0,
+     "pair": "P14 (P14) -> P1 (P1)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 13,
+     "j": 1,
+     "pair": "P14 (P14) -> P2 (P2)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 13,
+     "j": 2,
+     "pair": "P14 (P14) -> P3 (P3)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 13,
+     "j": 3,
+     "pair": "P14 (P14) -> P4 (P4)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 13,
+     "j": 4,
+     "pair": "P14 (P14) -> P5 (P5)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 13,
+     "j": 5,
+     "pair": "P14 (P14) -> P6 (P6)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 13,
+     "j": 6,
+     "pair": "P14 (P14) -> P7 (P7)",
+     "score": 0.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 13,
+     "j": 7,
+     "pair": "P14 (P14) -> P8 (P8)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 13,
+     "j": 8,
+     "pair": "P14 (P14) -> P9 (P9)",
+     "score": 1.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 13,
+     "j": 9,
+     "pair": "P14 (P14) -> P10 (P10)",
+     "score": 2.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 13,
+     "j": 10,
+     "pair": "P14 (P14) -> P11 (P11)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 13,
+     "j": 11,
+     "pair": "P14 (P14) -> P12 (P12)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 13,
+     "j": 12,
+     "pair": "P14 (P14) -> P13 (P13)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    }
+   ],
+   "contested": [
+    {
+     "i": 0,
+     "j": 1,
+     "pair": "P1 (P1) -> P2 (P2)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 13,
+     "pair": "P1 (P1) -> P14 (P14)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 0,
+     "pair": "P2 (P2) -> P1 (P1)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 12,
+     "pair": "P2 (P2) -> P13 (P13)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 13,
+     "pair": "P2 (P2) -> P14 (P14)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    }
+   ],
+   "strong_consensus": [
+    {
+     "i": 0,
+     "j": 1,
+     "pair": "P1 (P1) -> P2 (P2)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 0,
+     "j": 13,
+     "pair": "P1 (P1) -> P14 (P14)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 0,
+     "pair": "P2 (P2) -> P1 (P1)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 12,
+     "pair": "P2 (P2) -> P13 (P13)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    },
+    {
+     "i": 1,
+     "j": 13,
+     "pair": "P2 (P2) -> P14 (P14)",
+     "score": 3.0,
+     "agreement_ratio": 1.0,
+     "spread": 0.0
+    }
+   ],
+   "average_agreement": 1.0,
+   "average_correlation": 1.0
+  },
+  "quadrant_threshold": 35.0,
+  "narrative": [
+   "P14 (P14) has the highest weighted outgoing coherence score of +22.00, suggesting the strongest outward influence on the policy system.",
+   "P14 (P14) has the highest weighted incoming coherence score of +24.00, indicating that it receives the strongest aggregate influence.",
+   "P14 (P14) shows the highest overall prominence (46.00), making it a central policy for interpretation and intervention sequencing.",
+   "The aggregated structure contains 110 positive and 14 negative relations with density 0.681 and a positive polarity share of 0.887."
+  ]
+ },
+ "texts": {
+  "story": "P14 (P14) emerges as the top driving policy in the system, with the highest weighted outgoing coherence score of +22.00 and its strongest influence through the reinforcing relationship P14 (P14) -> P11 (P11) (+3.00 Reinforcing), which indicates a stable and structurally significant interaction. In contrast, the linkage P1 (P1) -> P2 (P2) remains contested across decision-makers, reflecting a lack of consensus and highlighting an area of uncertainty within the system.",
+  "interpretation": "Interpretation: The system is relatively stable, but one important relation still lacks consensus.",
+  "health": {
+   "score": 73,
+   "synergy": 37,
+   "conflict": 3,
+   "neutral_uncertain": 32
+  },
+  "strongest_link": [
+   "P14 (P14) -> P11 (P11) (+3.00 Reinforcing)",
+   3.0
+  ],
+  "cards": {
+   "top_driver": {
+    "hero": "P14 (P14)",
+    "label": "Top Driving Policy",
+    "value_text": "+22.00 WOI"
+   },
+   "top_dependent": {
+    "hero": "P14 (P14)",
+    "label": "Top Influenced Policy",
+    "value_text": "+24.00 WII"
+   },
+   "strongest_link": {
+    "title": "Strongest Link",
+    "main": "P1 (P1) -> P2 (P2)",
+    "value_text": "+3.00 Reinforcing",
+    "caption": "Strongest relation"
+   },
+   "most_contested": {
+    "title": "Most Contested",
+    "main": "P1 (P1) ↔ P2 (P2)",
+    "value_text": "Agreement: 1.00",
+    "caption": "Moderate disagreement"
+   },
+   "conflict_ratio": {
+    "title": "Conflict Ratio",
+    "main": "11%",
+    "value_text": "14 of 124 active links",
+    "caption": "Low systemic conflict"
+   }
+  },
+  "tags": {
+   "top_driver": "Top Driving Policy: P14 (P14)",
+   "strongest_link": "Strongest Link: P1 (P1) → P2 (P2)",
+   "contested": "Contested: P1 (P1) → P2 (P2)"
+  },
+  "overview": {
+   "agreement": "1.00"
+  },
+  "status": "Analysis complete for \"WEF Nexus Example\"  |  method: Average  |  1 decision-maker"
+ },
+ "prompt": "You are given the results of a policy coherence analysis for 14 policies, aggregated using the Average method.\n\nPOLICY LIST:\n  P1: P1\n  P2: P2\n  P3: P3\n  P4: P4\n  P5: P5\n  P6: P6\n  P7: P7\n  P8: P8\n  P9: P9\n  P10: P10\n  P11: P11\n  P12: P12\n  P13: P13\n  P14: P14\n\nAGGREGATED SCORE MATRIX (rows = influencing policy, columns = influenced policy, scale: -3=Cancelling to +3=Indivisible, 0=diagonal):\n             P1      P2      P3      P4      P5      P6      P7      P8      P9     P10     P11     P12     P13     P14\n     P1    0.00    3.00    2.00   -1.00    1.00    0.00    1.00    1.00    0.00    2.00    2.00    1.00    1.00    3.00\n     P2    3.00    0.00    0.00    1.00    0.00    0.00    0.00    1.00    0.00    2.00    1.00    2.00    3.00    3.00\n     P3    2.00    0.00    0.00    0.00    1.00    0.00    0.00    0.00    0.00    0.00    0.00    1.00    0.00    1.00\n     P4    2.00    1.00    0.00    0.00    3.00    1.00    0.00    0.00    0.00    1.00    1.00    2.00    2.00    1.00\n     P5   -1.00    0.00    1.00    1.00    0.00    1.00    0.00    0.00    0.00   -1.00   -1.00   -1.00   -1.00    0.00\n     P6    0.00    0.00    0.00    2.00    2.00    0.00    1.00    0.00    0.00    1.00    1.00    1.00    1.00    2.00\n     P7    2.00    0.00    0.00    0.00    0.00    1.00    0.00    3.00    3.00    3.00    2.00    3.00    3.00    2.00\n     P8    2.00    0.00    0.00    0.00    0.00    0.00    1.00    0.00    2.00    1.00    0.00   -1.00   -1.00    1.00\n     P9    0.00    0.00    0.00    0.00    0.00    0.00    3.00    2.00    0.00    1.00    0.00    0.00    0.00    1.00\n    P10    2.00    2.00    0.00    2.00    2.00    1.00    2.00    0.00    0.00    0.00    2.00    2.00    2.00    1.00\n    P11    3.00    0.00    0.00   -1.00   -1.00    0.00    1.00    1.00    1.00    3.00    0.00    3.00    3.00    3.00\n    P12    1.00    1.00    0.00   -1.00   -1.00    1.00    2.00    1.00    2.00    3.00    3.00    0.00    3.00    3.00\n    P13    1.00    2.00    0.00   -1.00   -1.00    1.00    2.00    1.00    1.00    3.00    3.00    3.00    0.00    3.00\n    P14    2.00    2.00    1.00    1.00    1.00    1.00    0.00    2.00    1.00    2.00    3.00    3.00    3.00    0.00\n\nCOHERENCE SCORES (OI=Outgoing Influence count, II=Incoming Influence count, WOI=Weighted Outgoing, WII=Weighted Incoming):\n  Code     OI   II     WOI     WII  Policy\n  P1       11   11   16.00   19.00  P1\n  P2        8    6   16.00   11.00  P2\n  P3        4    3    5.00    4.00  P3\n  P4        9    9   14.00    3.00  P4\n  P5        8    9   -2.00    7.00  P5\n  P6        8    7   11.00    7.00  P6\n  P7        9    8   22.00   13.00  P7\n  P8        7    8    5.00   12.00  P8\n  P9        4    6    7.00   10.00  P9\n  P10      10   12   18.00   21.00  P10\n  P11      10   10   16.00   17.00  P11\n  P12      12   12   18.00   19.00  P12\n  P13      12   11   18.00   19.00  P13\n  P14      12   12   22.00   24.00  P14\n\nRANGE OF INFLUENCE — SHANNON ENTROPY (0=concentrated on one policy, higher=distributed; categories based on fraction of max entropy):\n  Code    Entropy  Category        Policy\n  P1       3.3083  High            P1\n  P2       2.8585  High            P2\n  P3       1.9219  Medium-to-High  P3\n  P4       3.0391  High            P4\n  P5       3.0000  High            P5\n  P6       2.9140  High            P6\n  P7       3.1060  High            P7\n  P8       2.7255  Medium-to-High  P8\n  P9       1.8424  Low-to-Medium   P9\n  P10      3.2810  High            P10\n  P11      3.1332  High            P11\n  P12      3.4131  High            P12\n  P13      3.4131  High            P13\n  P14      3.4474  High            P14\n\nNETWORK CENTRALITY (Betweenness: broker role 0-1; Closeness: reachability, higher=more central):\n  Code    Betweenness  Closeness  Policy\n  P1           0.1846     1.3220  P1\n  P14          0.1298     1.5000  P14\n  P10          0.1168     1.5294  P10\n  P7           0.1047     1.6957  P7\n  P12          0.0815     1.5294  P12\n  P13          0.0473     1.5294  P13\n  P11          0.0294     1.5000  P11\n  P9           0.0096     1.1304  P9\n  P2           0.0077     1.3684  P2\n  P4           0.0048     1.2381  P4\n  P5           0.0016     0.8387  P5\n  P3           0.0000     0.8667  P3\n  P6           0.0000     1.0986  P6\n  P8           0.0000     0.9750  P8\n\nProvide a structured, in-depth interpretation with the following sections. Each section should be multiple paragraphs with specific references to the data above:\n\n## 1. Overall Coherence Assessment\n## 2. Key Synergies\n## 3. Key Conflicts\n## 4. Influential Policies\n## 5. Range of Influence\n## 6. Network Structure\n## 7. Strategic Recommendations\n\nEnsure your interpretation is analytical, references specific policies by name and code, and provides actionable insights for policy professionals.",
+ "env": {
+  "python": "3.13.2",
+  "numpy": "2.5.4",
+  "platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "blas": "accelerate"
+ }
+}

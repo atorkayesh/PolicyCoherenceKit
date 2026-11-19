@@ -1,0 +1,318 @@
+{
+ "request": {
+  "project_name": "Parity r6x4",
+  "policies": [
+   "Urban Mobility Plan",
+   "Renewable Energy Act",
+   "Water Resources Strategy",
+   "Agricultural Subsidy Reform",
+   "Green bonds worth $5bn and $3bn",
+   "Biodiversity Action Plan"
+  ],
+  "decision_makers": [
+   {
+    "name": "DM 1",
+    "ratings": [
+     [
+      "Neutral",
+      "Neutral",
+      "Indivisible",
+      "Counteracting",
+      "Constraining",
+      "Neutral"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Counteracting",
+      "Indivisible",
+      "Reinforcing",
+      "Enabling"
+     ],
+     [
+      "Counteracting",
+      "Cancelling",
+      "Neutral",
+      "Counteracting",
+      "Cancelling",
+      "Cancelling"
+     ],
+     [
+      "Reinforcing",
+      "Counteracting",
+      "Cancelling",
+      "Neutral",
+      "Cancelling",
+      "Counteracting"
+     ],
+     [
+      "Reinforcing",
+      "Indivisible",
+      "Cancelling",
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Reinforcing",
+      "Counteracting",
+      "Indivisible",
+      "Indivisible",
+      "Neutral",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 2",
+    "ratings": [
+     [
+      "Neutral",
+      "Counteracting",
+      "Indivisible",
+      "Indivisible",
+      "Reinforcing",
+      "Indivisible"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Indivisible",
+      "Constraining",
+      "Enabling",
+      "Reinforcing"
+     ],
+     [
+      "Constraining",
+      "Reinforcing",
+      "Neutral",
+      "Indivisible",
+      "Cancelling",
+      "Indivisible"
+     ],
+     [
+      "Cancelling",
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Reinforcing",
+      "Enabling"
+     ],
+     [
+      "Counteracting",
+      "Reinforcing",
+      "Constraining",
+      "Neutral",
+      "Neutral",
+      "Enabling"
+     ],
+     [
+      "Constraining",
+      "Enabling",
+      "Counteracting",
+      "Enabling",
+      "Counteracting",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 3",
+    "ratings": [
+     [
+      "Neutral",
+      "Neutral",
+      "Constraining",
+      "Reinforcing",
+      "Indivisible",
+      "Indivisible"
+     ],
+     [
+      "Reinforcing",
+      "Neutral",
+      "Neutral",
+      "Reinforcing",
+      "Reinforcing",
+      "Reinforcing"
+     ],
+     [
+      "Indivisible",
+      "Counteracting",
+      "Neutral",
+      "Enabling",
+      "Reinforcing",
+      "Counteracting"
+     ],
+     [
+      "Reinforcing",
+      "Cancelling",
+      "Cancelling",
+      "Neutral",
+      "Indivisible",
+      "Counteracting"
+     ],
+     [
+      "Cancelling",
+      "Enabling",
+      "Cancelling",
+      "Cancelling",
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Reinforcing",
+      "Enabling",
+      "Reinforcing",
+      "Counteracting",
+      "Cancelling",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 4",
+    "ratings": [
+     [
+      "Neutral",
+      "Constraining",
+      "Counteracting",
+      "Reinforcing",
+      "Cancelling",
+      "Counteracting"
+     ],
+     [
+      "Reinforcing",
+      "Neutral",
+      "Reinforcing",
+      "Constraining",
+      "Enabling",
+      "Neutral"
+     ],
+     [
+      "Neutral",
+      "Enabling",
+      "Neutral",
+      "Counteracting",
+      "Enabling",
+      "Reinforcing"
+     ],
+     [
+      "Enabling",
+      "Reinforcing",
+      "Cancelling",
+      "Neutral",
+      "Reinforcing",
+      "Enabling"
+     ],
+     [
+      "Indivisible",
+      "Reinforcing",
+      "Indivisible",
+      "Indivisible",
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Constraining",
+      "Indivisible",
+      "Cancelling",
+      "Reinforcing",
+      "Enabling",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "average",
+   "weights": null,
+   "median_choice": null,
+   "tie_choices": []
+  }
+ },
+ "layout": "force_directed",
+ "focus": 0,
+ "canvas": [
+  600,
+  600
+ ],
+ "node_order": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "positions": {
+  "0": [
+   308.0540549323792,
+   280.5209897593354
+  ],
+  "1": [
+   456.50977010943745,
+   80.0
+  ],
+  "2": [
+   520.0,
+   378.468400537441
+  ],
+  "3": [
+   303.4133452592205,
+   520.0
+  ],
+  "4": [
+   80.0,
+   373.8356218463109
+  ],
+  "5": [
+   172.08565631658917,
+   80.0
+  ]
+ },
+ "edges": [
+  [
+   0,
+   1,
+   -0.75
+  ],
+  [
+   0,
+   2,
+   0.75
+  ],
+  [
+   0,
+   3,
+   1.25
+  ],
+  [
+   0,
+   4,
+   0.25
+  ],
+  [
+   0,
+   5,
+   1.0
+  ],
+  [
+   1,
+   0,
+   0.5
+  ],
+  [
+   3,
+   0,
+   0.5
+  ],
+  [
+   5,
+   0,
+   0.5
+  ]
+ ],
+ "eigenvalues": null,
+ "chosen_eigen_indices": null,
+ "spectral_degenerate": false
+}

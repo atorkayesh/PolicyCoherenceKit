@@ -1,0 +1,22 @@
+{
+ "name": "setup_project_name_required",
+ "source": "dialogs.py:1080-1124",
+ "api_message_rule": "identical",
+ "title": "Project Name Required",
+ "error_message": "Please enter a project name.",
+ "setup": {
+  "project_name": "",
+  "decision_makers": [
+   "Expert A",
+   "Expert B",
+   "Expert C"
+  ],
+  "policies": [
+   "Alpha",
+   "Beta",
+   "Gamma",
+   "Delta"
+  ],
+  "existing_decision_makers": []
+ }
+}

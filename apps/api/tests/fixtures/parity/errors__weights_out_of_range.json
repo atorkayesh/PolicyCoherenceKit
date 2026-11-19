@@ -1,0 +1,121 @@
+{
+ "name": "weights_out_of_range",
+ "source": "aggregation_dialog.py:570-613",
+ "api_message_rule": "identical",
+ "title": "Out of Range",
+ "error_message": "Weight for \"Expert A\" must be between 0.0 and 1.0.",
+ "request": {
+  "project_name": "Errors",
+  "policies": [
+   "Alpha",
+   "Beta",
+   "Gamma",
+   "Delta"
+  ],
+  "decision_makers": [
+   {
+    "name": "Expert A",
+    "ratings": [
+     [
+      "Neutral",
+      "Enabling",
+      "Reinforcing",
+      "Neutral"
+     ],
+     [
+      "Counteracting",
+      "Neutral",
+      "Indivisible",
+      "Indivisible"
+     ],
+     [
+      "Cancelling",
+      "Constraining",
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Enabling",
+      "Constraining",
+      "Indivisible",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "Expert B",
+    "ratings": [
+     [
+      "Neutral",
+      "Constraining",
+      "Reinforcing",
+      "Indivisible"
+     ],
+     [
+      "Indivisible",
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Indivisible",
+      "Reinforcing",
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Indivisible",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "Expert C",
+    "ratings": [
+     [
+      "Neutral",
+      "Cancelling",
+      "Constraining",
+      "Indivisible"
+     ],
+     [
+      "Reinforcing",
+      "Neutral",
+      "Counteracting",
+      "Counteracting"
+     ],
+     [
+      "Constraining",
+      "Indivisible",
+      "Neutral",
+      "Constraining"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Indivisible",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "weighted",
+   "weights": [
+    1.2,
+    -0.1,
+    -0.1
+   ],
+   "median_choice": null,
+   "tie_choices": []
+  }
+ },
+ "raw_weights": [
+  "1.2",
+  "-0.1",
+  "-0.1"
+ ],
+ "aggregator_message": "Weight 1 is 1.2000 — must be between 0.0 and 1.0."
+}

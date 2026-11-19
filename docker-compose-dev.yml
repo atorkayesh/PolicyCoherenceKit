@@ -1,32 +1,49 @@
 name: policycoherencekit-dev
 
 services:
-  policycoherencekit:
-    container_name: policycoherencekit-dev
-    image: policycoherencekit:dev
+  # The TanStack Start app.
+  web:
+    container_name: policycoherencekit-web
     build:
-      context: .
+      context: ./apps/web
       dockerfile: Dockerfile.dev
-    env_file:
-      - path: ./.env
-        required: false
-    environment:
-      - APP_MODE=dev
     ports:
-      # Bound to localhost only: the dev session has no password by default.
-      - "127.0.0.1:${NOVNC_PORT:-6090}:6080"
+      - "3001:3001"
+    env_file:
+      - ./apps/web/.env
     volumes:
-      # Live source: edits to the root-level .py files restart the GUI.
-      - .:/app
-      - ./Example data:/workspace/examples:ro
-      - ./exports:/workspace/exports
-    shm_size: 256mb
+      - ./apps/web:/app:z
+      - /app/node_modules
+    depends_on:
+      - api
+    networks:
+      - app-network
     restart: unless-stopped
+
+  api:
+    container_name: policycoherencekit-api
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile.dev
+    ports:
+      - "50002:50002"
+    # API settings come from the API's own env file; Compose overrides only what Docker decides.
+    env_file:
+      - ./apps/api/.env
+    environment:
+      - APP_ENV=development
+    volumes:
+      - ./apps/api:/app:z
     healthcheck:
-      # Runs as root: use the system Python in isolated mode (ignores the app-writable cwd).
-      test: ["CMD", "/usr/local/bin/python3", "-I", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:6080/')"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:50002/api/v1/is-alive')"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
-      start_interval: 1s
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge

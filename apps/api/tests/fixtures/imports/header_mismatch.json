@@ -1,0 +1,12 @@
+{
+ "file": "header_mismatch.xlsx",
+ "legacy": {
+  "error_message": "Sheet \"Expert A\": row and column headers do not match.\n  row 1: \"Other 0\" vs col \"Policy 1\"\n  row 2: \"Other 1\" vs col \"Policy 2\"\n  row 3: \"Other 2\" vs col \"Policy 3\"\n  row 4: \"Other 3\" vs col \"Policy 4\"\n  row 5: \"Other 4\" vs col \"Policy 5\""
+ },
+ "app_messages": [
+  [
+   "Import Error",
+   "Sheet \"Expert A\": row and column headers do not match.\n  row 1: \"Other 0\" vs col \"Policy 1\"\n  row 2: \"Other 1\" vs col \"Policy 2\"\n  row 3: \"Other 2\" vs col \"Policy 3\"\n  row 4: \"Other 3\" vs col \"Policy 4\"\n  row 5: \"Other 4\" vs col \"Policy 5\""
+  ]
+ ]
+}

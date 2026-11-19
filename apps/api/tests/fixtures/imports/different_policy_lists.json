@@ -1,0 +1,56 @@
+{
+ "file": "different_policy_lists.xlsx",
+ "legacy": {
+  "matrices": [
+   {
+    "decision_maker": "Expert A",
+    "policies": [
+     "Alpha",
+     "Beta",
+     "Gamma"
+    ],
+    "ratings": [
+     [
+      "Neutral",
+      "Constraining",
+      "Reinforcing"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Enabling"
+     ],
+     [
+      "Reinforcing",
+      "Enabling",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "decision_maker": "Expert B",
+    "policies": [
+     "Alpha",
+     "Beta"
+    ],
+    "ratings": [
+     [
+      "Neutral",
+      "Constraining"
+     ],
+     [
+      "Constraining",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "warnings": []
+ },
+ "app_messages": [
+  [
+   "Policy List Mismatch",
+   "The following sheets have a different policy list and cannot be imported:\n\n  - Expert B\n\nAll matrices must share the same policy list."
+  ]
+ ]
+}

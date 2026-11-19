@@ -1,0 +1,12 @@
+{
+ "file": "many_bad_values.xlsx",
+ "legacy": {
+  "error_message": "Sheet \"Expert A\": unrecognised rating values:\n  P1->P2: \"good\"\n  P1->P3: \"good\"\n  P1->P4: \"good\"\n  P1->P5: \"good\"\n  P1->P6: \"good\"\n  P1->P7: \"good\"\n  P1->P8: \"good\"\n  P1->P9: \"good\"\n  P1->P10: \"good\"\n  P1->P11: \"good\"\n  ...\n\nAllowed values: Indivisible, Reinforcing, Enabling, Neutral, Constraining, Counteracting, Cancelling"
+ },
+ "app_messages": [
+  [
+   "Import Error",
+   "Sheet \"Expert A\": unrecognised rating values:\n  P1->P2: \"good\"\n  P1->P3: \"good\"\n  P1->P4: \"good\"\n  P1->P5: \"good\"\n  P1->P6: \"good\"\n  P1->P7: \"good\"\n  P1->P8: \"good\"\n  P1->P9: \"good\"\n  P1->P10: \"good\"\n  P1->P11: \"good\"\n  ...\n\nAllowed values: Indivisible, Reinforcing, Enabling, Neutral, Constraining, Counteracting, Cancelling"
+  ]
+ ]
+}

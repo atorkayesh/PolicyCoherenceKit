@@ -1,0 +1,111 @@
+{
+ "name": "incomplete",
+ "source": "app.py:2546-2556",
+ "api_message_rule": "identical_after_L11",
+ "title": "Incomplete Matrices",
+ "error_message": "Please fill all cells before aggregating.\n\n  Expert A: P1->P2, P1->P3, P1->P4, P2->P1, P2->P3, P2->P4, P3->P1, P3->P2, P3->P4, P4->P1 (+2 more)",
+ "request": {
+  "project_name": "Errors",
+  "policies": [
+   "Alpha",
+   "Beta",
+   "Gamma",
+   "Delta"
+  ],
+  "decision_makers": [
+   {
+    "name": "Expert A",
+    "ratings": [
+     [
+      "Neutral",
+      "",
+      "",
+      ""
+     ],
+     [
+      "",
+      "Neutral",
+      "",
+      ""
+     ],
+     [
+      "",
+      "",
+      "Neutral",
+      ""
+     ],
+     [
+      "",
+      "",
+      "",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "Expert B",
+    "ratings": [
+     [
+      "Neutral",
+      "Cancelling",
+      "Constraining",
+      "Neutral"
+     ],
+     [
+      "Counteracting",
+      "Neutral",
+      "Constraining",
+      "Cancelling"
+     ],
+     [
+      "Reinforcing",
+      "Indivisible",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Enabling",
+      "Reinforcing",
+      "Indivisible",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "Expert C",
+    "ratings": [
+     [
+      "Neutral",
+      "Constraining",
+      "Cancelling",
+      "Counteracting"
+     ],
+     [
+      "Counteracting",
+      "Neutral",
+      "Indivisible",
+      "Constraining"
+     ],
+     [
+      "Neutral",
+      "Neutral",
+      "Neutral",
+      "Counteracting"
+     ],
+     [
+      "Counteracting",
+      "Constraining",
+      "Counteracting",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "average",
+   "weights": null,
+   "median_choice": null,
+   "tie_choices": []
+  }
+ }
+}

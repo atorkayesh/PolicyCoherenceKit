@@ -1,0 +1,91 @@
+{
+ "request": {
+  "project_name": "Parity two2x3",
+  "policies": [
+   "Urban Mobility Plan",
+   "Renewable Energy Act"
+  ],
+  "decision_makers": [
+   {
+    "name": "DM 1",
+    "ratings": [
+     [
+      "Neutral",
+      "Cancelling"
+     ],
+     [
+      "Enabling",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 2",
+    "ratings": [
+     [
+      "Neutral",
+      "Cancelling"
+     ],
+     [
+      "Indivisible",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 3",
+    "ratings": [
+     [
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Constraining",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "average",
+   "weights": null,
+   "median_choice": null,
+   "tie_choices": []
+  }
+ },
+ "layout": "force_directed",
+ "focus": 0,
+ "canvas": [
+  600,
+  600
+ ],
+ "node_order": [
+  0,
+  1
+ ],
+ "positions": {
+  "0": [
+   300.0,
+   80.0
+  ],
+  "1": [
+   300.0,
+   520.0
+  ]
+ },
+ "edges": [
+  [
+   0,
+   1,
+   -1.0
+  ],
+  [
+   1,
+   0,
+   1.0
+  ]
+ ],
+ "eigenvalues": null,
+ "chosen_eigen_indices": null,
+ "spectral_degenerate": false
+}

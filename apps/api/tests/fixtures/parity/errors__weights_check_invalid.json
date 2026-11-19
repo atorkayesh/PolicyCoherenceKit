@@ -1,0 +1,17 @@
+{
+ "name": "weights_check_invalid",
+ "source": "aggregation_dialog.py:570-613",
+ "api_message_rule": "identical",
+ "title": "Invalid Value",
+ "error_message": "\"abc\" is not a valid number for \"Expert A\". Use a decimal like 0.3.",
+ "raw_weights": [
+  "abc",
+  "0.5",
+  "0.5"
+ ],
+ "decision_makers": [
+  "Expert A",
+  "Expert B",
+  "Expert C"
+ ]
+}

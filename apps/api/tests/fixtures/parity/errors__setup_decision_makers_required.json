@@ -1,0 +1,18 @@
+{
+ "name": "setup_decision_makers_required",
+ "source": "dialogs.py:1080-1124",
+ "api_message_rule": "identical",
+ "title": "Decision-Makers Required",
+ "error_message": "Please enter at least one decision-maker name.",
+ "setup": {
+  "project_name": "Errors",
+  "decision_makers": [],
+  "policies": [
+   "Alpha",
+   "Beta",
+   "Gamma",
+   "Delta"
+  ],
+  "existing_decision_makers": []
+ }
+}

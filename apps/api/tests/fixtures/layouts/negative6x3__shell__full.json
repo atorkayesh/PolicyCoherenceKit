@@ -1,0 +1,375 @@
+{
+ "request": {
+  "project_name": "Parity negative6x3",
+  "policies": [
+   "Urban Mobility Plan",
+   "Renewable Energy Act",
+   "Water Resources Strategy",
+   "Agricultural Subsidy Reform",
+   "Green bonds worth $5bn and $3bn",
+   "Biodiversity Action Plan"
+  ],
+  "decision_makers": [
+   {
+    "name": "DM 1",
+    "ratings": [
+     [
+      "Neutral",
+      "Counteracting",
+      "Counteracting",
+      "Counteracting",
+      "Counteracting",
+      "Counteracting"
+     ],
+     [
+      "Cancelling",
+      "Neutral",
+      "Constraining",
+      "Counteracting",
+      "Cancelling",
+      "Constraining"
+     ],
+     [
+      "Constraining",
+      "Cancelling",
+      "Neutral",
+      "Constraining",
+      "Counteracting",
+      "Constraining"
+     ],
+     [
+      "Cancelling",
+      "Counteracting",
+      "Cancelling",
+      "Neutral",
+      "Cancelling",
+      "Constraining"
+     ],
+     [
+      "Constraining",
+      "Cancelling",
+      "Constraining",
+      "Counteracting",
+      "Neutral",
+      "Constraining"
+     ],
+     [
+      "Counteracting",
+      "Cancelling",
+      "Cancelling",
+      "Constraining",
+      "Constraining",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 2",
+    "ratings": [
+     [
+      "Neutral",
+      "Cancelling",
+      "Cancelling",
+      "Constraining",
+      "Constraining",
+      "Cancelling"
+     ],
+     [
+      "Cancelling",
+      "Neutral",
+      "Counteracting",
+      "Counteracting",
+      "Cancelling",
+      "Counteracting"
+     ],
+     [
+      "Counteracting",
+      "Cancelling",
+      "Neutral",
+      "Constraining",
+      "Constraining",
+      "Constraining"
+     ],
+     [
+      "Constraining",
+      "Counteracting",
+      "Cancelling",
+      "Neutral",
+      "Counteracting",
+      "Constraining"
+     ],
+     [
+      "Constraining",
+      "Cancelling",
+      "Constraining",
+      "Cancelling",
+      "Neutral",
+      "Constraining"
+     ],
+     [
+      "Counteracting",
+      "Counteracting",
+      "Constraining",
+      "Counteracting",
+      "Constraining",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "DM 3",
+    "ratings": [
+     [
+      "Neutral",
+      "Counteracting",
+      "Constraining",
+      "Counteracting",
+      "Counteracting",
+      "Constraining"
+     ],
+     [
+      "Counteracting",
+      "Neutral",
+      "Cancelling",
+      "Cancelling",
+      "Cancelling",
+      "Cancelling"
+     ],
+     [
+      "Constraining",
+      "Constraining",
+      "Neutral",
+      "Cancelling",
+      "Constraining",
+      "Cancelling"
+     ],
+     [
+      "Counteracting",
+      "Cancelling",
+      "Counteracting",
+      "Neutral",
+      "Constraining",
+      "Cancelling"
+     ],
+     [
+      "Constraining",
+      "Counteracting",
+      "Constraining",
+      "Counteracting",
+      "Neutral",
+      "Counteracting"
+     ],
+     [
+      "Cancelling",
+      "Cancelling",
+      "Constraining",
+      "Counteracting",
+      "Counteracting",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "average",
+   "weights": null,
+   "median_choice": null,
+   "tie_choices": []
+  }
+ },
+ "layout": "shell",
+ "focus": null,
+ "canvas": [
+  600,
+  600
+ ],
+ "node_order": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "positions": {
+  "0": [
+   132.3374818273326,
+   203.2000000000001
+  ],
+  "1": [
+   300.0,
+   300.0
+  ],
+  "2": [
+   300.00000000000006,
+   493.6
+  ],
+  "3": [
+   390.22682527940344,
+   209.77317472059656
+  ],
+  "4": [
+   467.6625181726673,
+   203.2
+  ],
+  "5": [
+   209.77317472059656,
+   390.22682527940344
+  ]
+ },
+ "edges": [
+  [
+   0,
+   1,
+   -2.33
+  ],
+  [
+   0,
+   2,
+   -2.0
+  ],
+  [
+   0,
+   3,
+   -1.67
+  ],
+  [
+   0,
+   4,
+   -1.67
+  ],
+  [
+   0,
+   5,
+   -2.0
+  ],
+  [
+   1,
+   0,
+   -2.67
+  ],
+  [
+   1,
+   2,
+   -2.0
+  ],
+  [
+   1,
+   3,
+   -2.33
+  ],
+  [
+   1,
+   4,
+   -3.0
+  ],
+  [
+   1,
+   5,
+   -2.0
+  ],
+  [
+   2,
+   0,
+   -1.33
+  ],
+  [
+   2,
+   1,
+   -2.33
+  ],
+  [
+   2,
+   3,
+   -1.67
+  ],
+  [
+   2,
+   4,
+   -1.33
+  ],
+  [
+   2,
+   5,
+   -1.67
+  ],
+  [
+   3,
+   0,
+   -2.0
+  ],
+  [
+   3,
+   1,
+   -2.33
+  ],
+  [
+   3,
+   2,
+   -2.67
+  ],
+  [
+   3,
+   4,
+   -2.0
+  ],
+  [
+   3,
+   5,
+   -1.67
+  ],
+  [
+   4,
+   0,
+   -1.0
+  ],
+  [
+   4,
+   1,
+   -2.67
+  ],
+  [
+   4,
+   2,
+   -1.0
+  ],
+  [
+   4,
+   3,
+   -2.33
+  ],
+  [
+   4,
+   5,
+   -1.33
+  ],
+  [
+   5,
+   0,
+   -2.33
+  ],
+  [
+   5,
+   1,
+   -2.67
+  ],
+  [
+   5,
+   2,
+   -1.67
+  ],
+  [
+   5,
+   3,
+   -1.67
+  ],
+  [
+   5,
+   4,
+   -1.33
+  ]
+ ],
+ "eigenvalues": null,
+ "chosen_eigen_indices": null,
+ "spectral_degenerate": false
+}

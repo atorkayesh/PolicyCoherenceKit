@@ -1,0 +1,24 @@
+FROM python:3.13-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+# uv installs exactly the versions in uv.lock. The virtualenv lives outside /app so the
+# source bind mount in docker-compose-dev.yml does not hide it.
+RUN pip install --no-cache-dir uv==0.12.10
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv
+ENV UV_LINK_MODE=copy
+ENV PATH="/opt/venv/bin:$PATH"
+
+WORKDIR /app
+
+# Install dependencies (including dev tools for running tests in the container)
+COPY pyproject.toml uv.lock /app/
+RUN uv sync --frozen
+
+# Copy project files
+COPY . /app/
+
+EXPOSE 50002
+
+# Development: Use uvicorn with reload
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "50002", "--reload"]

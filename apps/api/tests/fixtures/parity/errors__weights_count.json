@@ -1,0 +1,114 @@
+{
+ "name": "weights_count",
+ "source": "aggregator.py:351-354",
+ "api_message_rule": "identical",
+ "title": "Invalid Weights",
+ "error_message": "Expected 3 weights, got 2.",
+ "request": {
+  "project_name": "Errors",
+  "policies": [
+   "Alpha",
+   "Beta",
+   "Gamma",
+   "Delta"
+  ],
+  "decision_makers": [
+   {
+    "name": "Expert A",
+    "ratings": [
+     [
+      "Neutral",
+      "Enabling",
+      "Reinforcing",
+      "Neutral"
+     ],
+     [
+      "Counteracting",
+      "Neutral",
+      "Indivisible",
+      "Indivisible"
+     ],
+     [
+      "Cancelling",
+      "Constraining",
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Enabling",
+      "Constraining",
+      "Indivisible",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "Expert B",
+    "ratings": [
+     [
+      "Neutral",
+      "Constraining",
+      "Reinforcing",
+      "Indivisible"
+     ],
+     [
+      "Indivisible",
+      "Neutral",
+      "Neutral",
+      "Neutral"
+     ],
+     [
+      "Indivisible",
+      "Reinforcing",
+      "Neutral",
+      "Indivisible"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Indivisible",
+      "Neutral"
+     ]
+    ]
+   },
+   {
+    "name": "Expert C",
+    "ratings": [
+     [
+      "Neutral",
+      "Cancelling",
+      "Constraining",
+      "Indivisible"
+     ],
+     [
+      "Reinforcing",
+      "Neutral",
+      "Counteracting",
+      "Counteracting"
+     ],
+     [
+      "Constraining",
+      "Indivisible",
+      "Neutral",
+      "Constraining"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Indivisible",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "aggregation": {
+   "method": "weighted",
+   "weights": [
+    0.5,
+    0.5
+   ],
+   "median_choice": null,
+   "tie_choices": []
+  }
+ }
+}

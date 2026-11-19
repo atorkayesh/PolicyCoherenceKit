@@ -1,0 +1,41 @@
+{
+ "file": "empty_sheet.xlsx",
+ "legacy": {
+  "matrices": [
+   {
+    "decision_maker": "Expert A",
+    "policies": [
+     "Alpha",
+     "Beta",
+     "Gamma"
+    ],
+    "ratings": [
+     [
+      "Neutral",
+      "Constraining",
+      "Reinforcing"
+     ],
+     [
+      "Constraining",
+      "Neutral",
+      "Enabling"
+     ],
+     [
+      "Reinforcing",
+      "Enabling",
+      "Neutral"
+     ]
+    ]
+   }
+  ],
+  "warnings": [
+   "Sheet \"Empty\": empty, skipped."
+  ]
+ },
+ "app_messages": [
+  [
+   "Import Complete with Warnings",
+   "1 matrix/matrices imported.\n\nThe following sheets have blank cells:\n\nSheet \"Empty\": empty, skipped."
+  ]
+ ]
+}
