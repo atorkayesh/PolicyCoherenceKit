@@ -74,7 +74,33 @@ Policy Coherence Kit allows researchers and policy professionals to:
 
 ---
 
-## Installation
+## Apps (FastAPI API and web app)
+
+The application is rebuilt as a web app in `apps/`: a FastAPI API in `apps/api` and a TanStack Start web app
+in `apps/web`. Both run in Docker with Make; the host needs only Docker (or podman) and Make. The legacy Tk
+desktop app below lives in `tk-app/` and is kept as the reference.
+
+```bash
+make setup        # create apps/api/.env and apps/web/.env from their .env.example files
+make dev          # start the API and the web app with hot reload
+make check-api    # API checks inside the dev container: Ruff format, Ruff lint, pytest
+make prod         # production: Nginx is the only public entry, on HTTP_PORT (default 8081)
+make help         # every target
+```
+
+| Address | What |
+|---|---|
+| `http://localhost:50002/api/docs` | API docs (development) |
+| `http://localhost:3001` | Web app (development; API at `http://localhost:50002`) |
+| `http://localhost:8081` | Production through Nginx (`/api/` goes to the API) |
+
+The API is stateless: every request carries the whole project. AI provider keys are sent per request and never
+stored; enable HTTPS in `nginx/nginx.prod.conf` before using the AI interpretation in production. See
+[`apps/api/README.md`](apps/api/README.md) and [`AGENTS.md`](AGENTS.md).
+
+---
+
+## Installation (legacy Tk app)
 
 ### Requirements
 
@@ -100,7 +126,7 @@ git clone https://github.com/atorkayesh/PolicyCoherenceKit.git
 ```bash
 cd PolicyCoherenceKit
 ```
-Main application files are located at the repository root.
+The legacy application files are in `tk-app/`.
 
 ```
 - `main.py` - application launcher
@@ -120,12 +146,13 @@ Main application files are located at the repository root.
 - `matrix_widget.py` - matrix input widget
 - `constants.py` - shared constants and labels
 - `theme.py` - theme and UI styling
-- `Example data/WEF Nexus Example.xlsx` - sample workbook for testing
+- `../data/examples/WEF Nexus Example.xlsx` - sample workbook for testing (repository root `data/examples/`)
 ```
 
-3. Run the app:
+3. Run the app from `tk-app/`:
 
 ```bash
+cd tk-app
 python main.py
 ```
 
@@ -173,13 +200,13 @@ Urban Mobility   Cancelling       Enabling        Neutral
 ---
 
 ## Example Data
-A sample workbook is provided in the repository: Example data/WEF Nexus Example.xlsx
+A sample workbook is provided in the repository: `data/examples/WEF Nexus Example.xlsx`
 
 ---
 
-## Running with Docker
+## Running the legacy Tk app with Docker
 
-The app can also run in a container and be used from a browser (via noVNC), with no local Python or Tk setup.
+The legacy Tk app (`tk-app/`) can also run in a container and be used from a browser (via noVNC), with no local Python or Tk setup.
 
 **Requirements:** to run it locally, install Docker and Make:
 
@@ -189,16 +216,16 @@ The app can also run in a container and be used from a browser (via noVNC), with
 
 Docker Engine 25 or newer and Docker Compose 2.24 or newer are required (current Docker Desktop includes both).
 
-All commands run from the repository root:
+All commands run from the repository root with `-C tk-app` (or from inside `tk-app/` without it):
 
 ```bash
-make dev       # build and start the dev setup, then print http://localhost:6090
-make prod      # build and start the prod setup (needs VNC_PASSWORD, see below)
-make logs      # follow the logs
-make restart   # restart the container
-make status    # show which setup is running
-make shell     # open a shell in the container
-make down      # stop and remove the container
+make -C tk-app dev       # build and start the dev setup, then print http://localhost:6090
+make -C tk-app prod      # build and start the prod setup (needs VNC_PASSWORD, see below)
+make -C tk-app logs      # follow the logs
+make -C tk-app restart   # restart the container
+make -C tk-app status    # show which setup is running
+make -C tk-app shell     # open a shell in the container
+make -C tk-app down      # stop and remove the container
 ```
 
 Only one setup runs at a time, because both use the same port: `make dev` stops prod first, and `make prod` stops dev. `logs`, `restart`, `status`, `shell` and `down` act on whichever one is running. To pick one explicitly, add `MODE=dev` or `MODE=prod`, for example `make logs MODE=prod`. Run `make` on its own to list the commands.
@@ -208,17 +235,17 @@ Only one setup runs at a time, because both use the same port: `make dev` stops 
 | Image | `Dockerfile.dev` (includes dev tools) | `Dockerfile.prod` (runtime only) |
 | Source | Mounted from the repository; the app restarts when a `.py` file changes | Baked into the image; rebuild to update |
 | Password | None by default | `VNC_PASSWORD` required in `.env` |
-| Exports | `./exports/` on the host | `policycoherencekit-exports` Docker volume |
+| Exports | `tk-app/exports/` on the host | `policycoherencekit-exports` Docker volume |
 | Address | `127.0.0.1:${NOVNC_PORT:-6090}` | `127.0.0.1:${NOVNC_PORT:-6090}` (`NOVNC_BIND` to change the interface) |
 
 Setup for production:
 
 ```bash
-cp .env.example .env   # then set VNC_PASSWORD
-make prod
+cp tk-app/.env.example tk-app/.env   # then set VNC_PASSWORD
+make -C tk-app prod
 ```
 
-Without Make, use the plain `docker compose` commands (these are what the `make` targets run):
+Without Make, use the plain `docker compose` commands from `tk-app/` (these are what its `make` targets run):
 
 ```bash
 docker compose -f docker-compose-dev.yml up -d --build --wait
