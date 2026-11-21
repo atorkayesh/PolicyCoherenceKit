@@ -10,8 +10,8 @@ Numbers equal the legacy app's; see [`AGENTS.md`](./AGENTS.md) for the rules and
 With Docker (recommended), from the repository root:
 
 ```bash
-make setup && make dev      # http://localhost:50002/api/docs
-make check-api              # Ruff format check, Ruff lint, pytest (inside the container)
+just setup && just dev      # http://localhost:50002/api/docs
+just check-api              # Ruff format check, Ruff lint, pytest (inside the container)
 ```
 
 On the host:
@@ -56,6 +56,6 @@ uv run --frozen --python 3.13 --project tk-app python scripts/generate_parity_fi
 
 ## Security notes
 
-- AI keys travel with each request: enable HTTPS (`nginx/nginx.prod.conf`) before using the AI feature in production.
+- AI keys travel with each request: production serves the app only over HTTPS (shared proxy, DEMATELab repo `nginx/conf.d/policycoherencekit.conf`).
 - Uploads are size-limited while streaming; zip bombs, XML entities (defusedxml), oversized sheets and
   chartsheets are rejected; exported text cells are never formulas.

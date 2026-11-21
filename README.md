@@ -77,26 +77,33 @@ Policy Coherence Kit allows researchers and policy professionals to:
 ## Apps (FastAPI API and web app)
 
 The application is rebuilt as a web app in `apps/`: a FastAPI API in `apps/api` and a TanStack Start web app
-in `apps/web`. Both run in Docker with Make; the host needs only Docker (or podman) and Make. The legacy Tk
+in `apps/web`. Both run in Docker with [just](https://just.systems); the host needs only Docker (or podman) and
+just. Install just with `brew install just` (macOS), `sudo apt install just` (Debian 13+/Ubuntu 24.04+) or the [prebuilt binaries](https://just.systems/man/en/pre-built-binaries.html) (Linux, any distribution), or `winget install Casey.Just` (Windows). The legacy Tk
 desktop app below lives in `tk-app/` and is kept as the reference.
 
 ```bash
-make setup        # create apps/api/.env and apps/web/.env from their .env.example files
-make dev          # start the API and the web app with hot reload
-make check-api    # API checks inside the dev container: Ruff format, Ruff lint, pytest
-make prod         # production: Nginx is the only public entry, on HTTP_PORT (default 8081)
-make help         # every target
+just setup        # create apps/api/.env and apps/web/.env from their .env.example files
+just dev          # start the API and the web app with hot reload
+just check-api    # API checks inside the dev container: Ruff format, Ruff lint, pytest
+just prod         # production: API and web, served by the VPS's shared HTTPS proxy
+just              # every recipe
 ```
 
 | Address | What |
 |---|---|
 | `http://localhost:50002/api/docs` | API docs (development) |
 | `http://localhost:3001` | Web app (development; API at `http://localhost:50002`) |
-| `http://localhost:8081` | Production through Nginx (`/api/` goes to the API) |
+| `https://policycoherence.example.com` | Production on the VPS, through the shared proxy (`/api/` goes to the API) |
 
 The API is stateless: every request carries the whole project. AI provider keys are sent per request and never
-stored; enable HTTPS in `nginx/nginx.prod.conf` before using the AI interpretation in production. See
-[`apps/api/README.md`](apps/api/README.md) and [`AGENTS.md`](AGENTS.md).
+stored, and travel only over HTTPS on the VPS. See [`apps/api/README.md`](apps/api/README.md) and
+[`AGENTS.md`](AGENTS.md).
+
+On the VPS, one shared Nginx serves this app and DEMATELab next to it, and owns ports 80 and 443. Its config and
+the orchestration of both apps live in the DEMATELab repository's `nginx/` folder (`/srv/dematelab/nginx`
+on the VPS): from the DEMATELab checkout run `just proxy up-policycoherencekit`, `just proxy up-all`, or `just proxy`
+to list them ([decision](docs/decisions/2026-11-21-shared-https-proxy-on-the-vps.md)). Routes, body size and
+timeouts for this app are in DEMATELab's `nginx/conf.d/policycoherencekit.conf`.
 
 ---
 

@@ -1,6 +1,6 @@
 # Make Is The Entrypoint And Checks Run In The Containers
 
-**Status:** Accepted
+**Status:** Superseded by [just Is The Entrypoint And Checks Run In The Dev Containers](./2026-11-21-just-entrypoint-with-container-first-checks.md)
 **Date:** 18 November, 2026
 **Deciders:** Youpele Michael (owner), Claude Code
 

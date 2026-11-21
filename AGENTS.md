@@ -12,7 +12,7 @@ Tkinter desktop app lives in `tk-app/` as the read-only reference. App-specific 
 
 ```
 browser ──► apps/web (TanStack Start, :3001) ──► apps/api (FastAPI, :50002, /api/v1) ──► AI providers (per-request keys)
-                 ▲ production: nginx (:8081) routes /api/ to the API and everything else to the web app
+                 ▲ production: the VPS's shared HTTPS nginx (DEMATELab repo, nginx/) routes /api/ to the API and everything else to the web app
 ```
 
 - The API is stateless: every request carries the whole project (one project per browser session).
@@ -25,12 +25,11 @@ browser ──► apps/web (TanStack Start, :3001) ──► apps/api (FastAPI, 
 ```
 apps/api/        FastAPI API (see apps/api/AGENTS.md)
 apps/web/        TanStack Start web app
-nginx/           Production reverse proxy (the only public entry)
 scripts/         generate_parity_fixtures.py + parity/ helpers: the only code that runs against tk-app/
 tk-app/          Legacy Tk app with its own Makefile and Compose files (read-only)
 data/examples/   Sample workbook (WEF Nexus Example.xlsx)
 docs/            plans/, reports/, research/, decisions/
-Makefile  docker-compose-dev.yml  docker-compose-prod.yml
+justfile  docker-compose-dev.yml  docker-compose-prod.yml
 ```
 
 ### `tk-app/` is read-only
@@ -45,12 +44,12 @@ Never edit `tk-app/`. Nothing in `apps/` imports, reads or starts it (enforced b
 ## Running the App
 
 ```bash
-make setup       # create each service's .env from its .env.example (never overwrites)
-make dev         # api and web with hot reload; prints the URLs (web http://localhost:3001, API http://localhost:50002)
-make check-api   # Ruff format check, Ruff lint, pytest inside the api dev container
-make check       # check-api + check-web
-make prod        # production behind Nginx on HTTP_PORT (default 8081)
-make help        # every target; legacy app: make -C tk-app help
+just setup       # create each service's .env from its .env.example (never overwrites)
+just dev         # api and web with hot reload; prints the URLs (web http://localhost:3001, API http://localhost:50002)
+just check-api   # Ruff format check, Ruff lint, pytest inside the api dev container
+just check       # check-api + check-web
+just prod        # production api and web; the VPS's shared proxy serves them over HTTPS
+just             # every recipe ([decision](./docs/decisions/2026-11-21-just-entrypoint-with-container-first-checks.md)); legacy app: make -C tk-app help
 ```
 
 ### Docker services
@@ -58,8 +57,8 @@ make help        # every target; legacy app: make -C tk-app help
 | Service | Container | Port (dev) | Notes |
 |---|---|---|---|
 | api | `policycoherencekit-api` | 50002 | Healthcheck `/api/v1/is-alive`; source mounted in dev |
-| web | `policycoherencekit-web` | 3001 | `make check-web` runs format, lint, typecheck and tests |
-| nginx | `policycoherencekit-nginx` | `${HTTP_PORT:-8081}` | Production only |
+| web | `policycoherencekit-web` | 3001 | `just check-web` runs format, lint, typecheck and tests |
+| – | `proxy-nginx` | 80, 443 (VPS) | Shared HTTPS proxy, config in the DEMATELab repo's `nginx/` |
 
 Compose projects: `policycoherencekit-dev` and `policycoherencekit` (legacy: `policycoherencekit-tk-dev` /
 `policycoherencekit-tk-prod`, so all can run on one host next to DEMATELab and ice2kg). Dev and prod use the
@@ -83,12 +82,12 @@ There is no root `.env`. AI keys are never stored in env files.
 2. Respect the layers and rules in the app's AGENTS.md; record lasting choices in `docs/decisions/`.
 3. Keep every code file at or below 300 lines; split by responsibility.
 4. Never change maths or legacy-derived texts without regenerating the parity fixtures and recording a decision.
-5. Before committing, run `make format` and `make check-api` (and `make check-web` for web changes).
+5. Before committing, run `just format` and `just check-api` (and `just check-web` for web changes).
 
 ## Pre-Commit Checklist
 
 - [ ] Changes follow the app's AGENTS.md rules
-- [ ] Tests written or updated, and all checks pass (`make check-api`)
+- [ ] Tests written or updated, and all checks pass (`just check-api`)
 - [ ] Parity fixtures regenerated from `tk-app/` if maths or legacy-derived behaviour changed
 - [ ] Every code file in `apps/` is at or below 300 lines
 - [ ] No hardcoded secrets; no AI keys in env files or logs

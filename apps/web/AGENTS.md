@@ -7,7 +7,7 @@
 - Dev server on port **3001** (`pnpm run dev`, `--strictPort`); API on **50002**
   (`VITE_API_BASE_URL=http://localhost:50002` in dev, empty in production behind Nginx).
 - Checks: `pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build`
-  (Docker: `make check-web`). Never edit `src/routeTree.gen.ts` by hand (`pnpm run generate-routes`).
+  (Docker: `just check-web`). Never edit `src/routeTree.gen.ts` by hand (`pnpm run generate-routes`).
 - Versions are pinned by `pnpm-lock.yaml`; do not upgrade as a side effect.
 
 ## File organisation
