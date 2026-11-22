@@ -93,17 +93,16 @@ just              # every recipe
 |---|---|
 | `http://localhost:50002/api/docs` | API docs (development) |
 | `http://localhost:3001` | Web app (development; API at `http://localhost:50002`) |
-| `https://policycoherence.example.com` | Production on the VPS, through the shared proxy (`/api/` goes to the API) |
+| Configured HTTPS hostname | Production on the VPS, through the shared proxy (`/api/` goes to the API) |
 
 The API is stateless: every request carries the whole project. AI provider keys are sent per request and never
 stored, and travel only over HTTPS on the VPS. See [`apps/api/README.md`](apps/api/README.md) and
 [`AGENTS.md`](AGENTS.md).
 
 On the VPS, one shared Nginx serves this app and DEMATELab next to it, and owns ports 80 and 443. Its config and
-the orchestration of both apps live in the DEMATELab repository's `nginx/` folder (`/srv/dematelab/nginx`
-on the VPS): from the DEMATELab checkout run `just proxy up-policycoherencekit`, `just proxy up-all`, or `just proxy`
+the orchestration of both apps live in the DEMATELab repository's `nginx/` folder: from the DEMATELab checkout run `just proxy up-policycoherencekit`, `just proxy up-all`, or `just proxy`
 to list them ([decision](docs/decisions/2026-11-21-shared-https-proxy-on-the-vps.md)). Routes, body size and
-timeouts for this app are in DEMATELab's `nginx/conf.d/policycoherencekit.conf`.
+timeouts for this app are in DEMATELab's `nginx/templates/policycoherencekit.conf.template`.
 
 ---
 
